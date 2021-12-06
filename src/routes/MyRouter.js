@@ -53,7 +53,7 @@ function MyRouter() {
 
             <Switch>
                 <Route path="/" exact>
-                    <Home />
+                    <Login />
                 </Route>
                 <Route path="/home" exact>
                     <Home />
