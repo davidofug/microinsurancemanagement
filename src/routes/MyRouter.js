@@ -7,6 +7,7 @@ import Help from '../pages/Help'
 import Dashboard from '../pages/Dashboard'
 import NotAuthorized from '../pages/NotAuthorized'
 import NotFound from '../pages/NotFound'
+import Menu from '../parts/Menu'
 import { useAuth } from '../contexts/Auth'
 
 import {
@@ -21,7 +22,7 @@ function MyRouter() {
 
     return (
         <Router>
-                <header className="header">
+                {/* <header className="header">
                     <h1>
                         <Link to="/"></Link>
                     </h1>
@@ -49,7 +50,7 @@ function MyRouter() {
                             </li>
                         </ul>
                     </nav>
-                </header>
+                </header> */}
 
             <Switch>
                 <Route path="/" exact>
@@ -73,13 +74,16 @@ function MyRouter() {
                 <PrivateRoute path="/dashboard">
                     <Dashboard />
                 </PrivateRoute>
+                <PrivateRoute path="/menu">
+                    <Menu />
+                </PrivateRoute>
                 <Route path="*">
                     <NotFound />
                 </Route>
             </Switch>
-            <footer>
+            {/* <footer>
                 <p>&copy; Copyright {date.getFullYear() }</p>
-            </footer>
+            </footer> */}
         </Router>
     )
 }
