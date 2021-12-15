@@ -17,8 +17,13 @@ body, html{
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #FAFAFA;
 }
 
 .components{
     width: 95%;
+}
+
+#searchInput{
+    margin: 50px 20px;
 }
