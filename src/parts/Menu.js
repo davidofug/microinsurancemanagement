@@ -9,6 +9,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import AirlineSeatReclineExtraIcon from '@mui/icons-material/AirlineSeatReclineExtra';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
+import '../assets/styles/menu.css'
 
 function Menu() {
 
@@ -46,6 +48,8 @@ function Menu() {
         ]
     })
 
+    const [ toggleMenu, setToggeMenu ] = useState(true)
+
     useEffect(() => {
         setSelected({...selected, activeObject: selected.objects[0]})
     }, [])
@@ -65,13 +69,14 @@ function Menu() {
 
     return (
         <div>
-            <nav className='navbar'>
+            {toggleMenu === true ?
+                <nav className='navbar'>
                 <div id='brand'>
                     <div id="brand_logo">
                         <img src={logo} alt="Britam" />
-                        <i>
-                            <CloseIcon />
-                        </i>
+                        <i onClick={() => {
+                            setToggeMenu(!toggleMenu)
+                        }}><CloseIcon /></i>
                     </div>
                     <hr />
                 </div>
@@ -83,7 +88,7 @@ function Menu() {
                                     <li className={toggleActiveStyle(index)} onClick={() => {
                                         toggleActive(index)
                                     }} key={index}>
-                                        <i>{object.icon}</i>
+                                        <i className='icon'>{object.icon}</i>
                                         {object.name}
                                     </li>
                                 )
@@ -102,8 +107,46 @@ function Menu() {
                         <div className='circle'></div>
                     </div>
                 </div>
+
+                </nav> 
+            : 
+            <nav className='navbar navbar-m'>
+            <div id='brand-m'>
+                <div id="brand_logo">
+                    <i onClick={() => {
+                        setToggeMenu(!toggleMenu)
+                    }}><ViewHeadlineIcon/></i>
+                </div>
+                <hr />
+            </div>
+            
+            <div id="menu">
+                <ul>
+                    {
+                        selected.objects.map((object, index) => (
+                                <li className={toggleActiveStyle(index)} onClick={() => {
+                                    toggleActive(index)
+                                }} key={index}>
+                                    <i>{object.icon}</i>
+                                </li>
+                            )
+                        )
+                    }
+                </ul>
                 
-            </nav>
+            </div>
+            
+            <div id="account">
+                <img src={profile} alt="image" />
+                {/* <div id="eclipse">
+                    <div className='circle'></div>
+                    <div className='circle'></div>
+                    <div className='circle'></div>
+                </div> */}
+            </div>
+
+            </nav> 
+            }
         </div>
     )
 }

@@ -1,9 +1,9 @@
-body, ul{
+body, ul, p, *{
     padding: 0;
     margin: 0;
 }
 
-
+/* SideBar */
 
 /* Navigation menu */
 
@@ -22,19 +22,19 @@ body, ul{
 .navbar{
     display: grid; 
     grid-template-rows: 1fr 3fr 1fr;
-    grid-template-areas: 
-    "."
-    "."
-    ".";
-    align-items: center;
     width: 250px;
     height: 100vh;
     border-right: 1px solid #c6c7c8;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
 }
 
 /* Brand CSS */
 #brand {
     width: 250px;
+    height: 10vh;
+    margin: 0;
 }
 
 #brand_logo{
@@ -54,6 +54,7 @@ body, ul{
 /* Menu CSS */
 #menu {
     align-items: center;
+    height: 80vh;
 }
 
 .nav-link{
@@ -67,6 +68,10 @@ body, ul{
 .nav-link i {
     height: 25px;
     width: 25px;
+    
+}
+
+.nav-link .icon {
     margin-right: 20px;
 }
 
@@ -92,14 +97,16 @@ body, ul{
 /* footer account */
 #account{
     align-items: center;
-    border: 1px solid red;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
-    grid-template-areas: 
-    "."
-    "."
-    ".";
     align-items: center;
+    /* height: 100px; */
+    height: 10vh;
+    border-radius: 20px;
+}
+
+#account:hover{
+    background-color: #F4F4F4;
 }
 
 #account img{
@@ -117,4 +124,26 @@ body, ul{
     border-radius: 50%;
     background-color: black;
     margin: 1px;
+}
+
+
+/* SideBar */
+
+/* SideBar Miniminised */
+
+.navbar-m{
+    display: grid; 
+    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-areas: 
+    "."
+    "."
+    ".";
+    align-items: center;
+    width: 60px;
+    height: 100vh;
+    border-right: 1px solid #c6c7c8;
+}
+
+#brand-m {
+    width: 60px;
 }
