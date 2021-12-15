@@ -79,6 +79,15 @@ function Menu() {
         }
     } 
 
+    const dropDown = (index) => {
+        if(selected.objects[index] === selected.objects[4]){
+            console.log('Policies context')
+        }
+        else if(selected.objects[index] === selected.objects[3]){
+            console.log('User Management context')
+        }
+    }
+
     return (
         <div>
             {toggleMenu === true ?
@@ -99,6 +108,7 @@ function Menu() {
                             selected.objects.map((object, index) => (
                                     <Link to={`${object.link}`} className={toggleActiveStyle(index)} onClick={() => {
                                         toggleActive(index)
+                                        dropDown(index)
                                     }} key={index}>
                                         <i className='icon'>{object.icon}</i>
                                         {object.name}
@@ -110,14 +120,16 @@ function Menu() {
                     
                 </div>
                 
-                <div id="account">
-                    <img src={profile} alt="image" />
-                    <p>Charles Kasasira</p>
-                    <div id="eclipse">
-                        <div className='circle'></div>
-                        <div className='circle'></div>
-                        <div className='circle'></div>
-                    </div>
+                <div >
+                    <Link to="settings" id="account">
+                        <img src={profile} alt="image" />
+                        <p style={{"color": "black"}}>Charles Kasasira</p>
+                        <div id="eclipse">
+                            <div className='circle'></div>
+                            <div className='circle'></div>
+                            <div className='circle'></div>
+                        </div>
+                    </Link>
                 </div>
 
                 </nav> 
@@ -149,12 +161,9 @@ function Menu() {
             </div>
             
             <div id="account">
-                <img src={profile} alt="image" />
-                {/* <div id="eclipse">
-                    <div className='circle'></div>
-                    <div className='circle'></div>
-                    <div className='circle'></div>
-                </div> */}
+                <Link to="settings" id="account">
+                    <img src={profile} alt="image" />
+                </Link>
             </div>
 
             </nav> 
