@@ -16,12 +16,13 @@ import {
 
 function MyRouter() {
 
-    const date = new Date()
+    // const date = new Date()
     const { currentUser } = useAuth()
 
     return (
-        <Router>
-                <header className="header">
+        <div style={{"background-color":"#F9F9F9"}}>
+            <Router>
+                {/* <header className="header">
                     <h1>
                         <Link to="/"></Link>
                     </h1>
@@ -40,7 +41,7 @@ function MyRouter() {
                                     </li>
 
                                 </>
-                        }
+                            }
                             <li>
                                 <Link to="/help">Help</Link>
                             </li>
@@ -49,38 +50,40 @@ function MyRouter() {
                             </li>
                         </ul>
                     </nav>
-                </header>
+                </header> */}
 
-            <Switch>
-                <Route path="/" exact>
-                    <Login />
-                </Route>
-                <Route path="/home" exact>
-                    <Home />
-                </Route>
-                <Route path="/not-logged-in" >
-                    <NotLoggedIn />
-                </Route>
-                <Route path="/login">
-                    <Login />
-                </Route>
-                <Route path="/help">
-                    <Help />
-                </Route>
-                <Route path="/logout">
-                    <Logout />
-                </Route>
-                <PrivateRoute path="/dashboard">
-                    <Dashboard />
-                </PrivateRoute>
-                <Route path="*">
-                    <NotFound />
-                </Route>
-            </Switch>
-            <footer>
-                <p>&copy; Copyright {date.getFullYear() }</p>
-            </footer>
-        </Router>
+                <Switch>
+                    <Route path="/" exact>
+                        <Login />
+                    </Route>
+                    <Route path="/home" exact>
+                        <Home />
+                    </Route>
+                    <Route path="/not-logged-in" >
+                        <NotLoggedIn />
+                    </Route>
+                    <Route path="/login">
+                        <Login />
+                    </Route>
+                    <Route path="/help">
+                        <Help />
+                    </Route>
+                    <Route path="/logout">
+                        <Logout />
+                    </Route>
+                    <PrivateRoute path="/dashboard">
+                        <Dashboard />
+                    </PrivateRoute>
+                    <Route path="*">
+                        <NotFound />
+                    </Route>
+                </Switch>
+                {/* <footer>
+                    <p>&copy; Copyright {date.getFullYear() }</p>
+                </footer> */}
+            </Router>
+        </div>
+        
     )
 }
 
