@@ -2,8 +2,9 @@ import React from 'react'
 
 function Settings() {
     return (
-        <div>
-            <h1>Account Setting</h1>
+        <div className='components'>
+            <h1 className='title'>Account Setting</h1>
+            <p>MANAGING ACCOUNT</p>
         </div>
     )
 }

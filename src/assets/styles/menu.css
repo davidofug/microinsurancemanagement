@@ -22,7 +22,7 @@ body, ul, p, *{
 .navbar{
     display: grid; 
     grid-template-rows: 1fr 3fr 1fr;
-    width: 250px;
+    width: 18vw;
     height: 100vh;
     border-right: 1px solid #c6c7c8;
     align-items: stretch;

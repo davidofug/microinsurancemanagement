@@ -22,55 +22,56 @@ import {
 
 function MyRouter() {
 
-    const date = new Date()
     const { currentUser } = useAuth()
 
     return (
         <Router>
             <div className='container'>
-                <Menu />
+                <Menu  />
 
-                <Switch>
-                    <Route path="/" exact>
-                        <Login />
-                    </Route>
-                    <Route path="/organisations" exact>
-                        <Organisations />
-                    </Route>
-                    <Route path="/clients" exact>
-                        <Clients />
-                    </Route>
-                    <Route path="/not-logged-in" >
-                        <NotLoggedIn />
-                    </Route>
-                    <Route path="/login">
-                        <Login />
-                    </Route>
-                    <Route path="/user">
-                        <Users />
-                    </Route>
-                    <Route path="/policies">
-                        <Policies />
-                    </Route>
-                    <Route path="/claims">
-                        <Claims />
-                    </Route>
-                    <Route path="/reports">
-                        <Reports />
-                    </Route>
-                    <Route path="/settings">
-                        <Settings />
-                    </Route>
-                    <Route path="/logout">
-                        <Logout />
-                    </Route>
-                    <PrivateRoute path="/dashboard">
-                        <Dashboard />
-                    </PrivateRoute>
-                    <Route path="*">
-                        <NotFound />
-                    </Route>
-                </Switch>
+                <div className="displayContainer">
+                    <Switch>
+                        <Route path="/" exact>
+                            <Login />
+                        </Route>
+                        <Route path="/organisations" exact>
+                            <Organisations />
+                        </Route>
+                        <Route path="/clients" exact>
+                            <Clients />
+                        </Route>
+                        <Route path="/not-logged-in" >
+                            <NotLoggedIn />
+                        </Route>
+                        <Route path="/login">
+                            <Login />
+                        </Route>
+                        <Route path="/user">
+                            <Users />
+                        </Route>
+                        <Route path="/policies">
+                            <Policies />
+                        </Route>
+                        <Route path="/claims">
+                            <Claims />
+                        </Route>
+                        <Route path="/reports">
+                            <Reports />
+                        </Route>
+                        <Route path="/settings">
+                            <Settings />
+                        </Route>
+                        <Route path="/logout">
+                            <Logout />
+                        </Route>
+                        <PrivateRoute path="/dashboard">
+                            <Dashboard />
+                        </PrivateRoute>
+                        <Route path="*">
+                            <NotFound />
+                        </Route>
+                    </Switch>
+                </div>
             </div>
         </Router>
     )

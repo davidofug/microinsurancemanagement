@@ -7,11 +7,8 @@ import Menu from '../parts/Menu'
 function Dashboard() {
     const {currentUser} = useAuth()
     return (
-        <div >
-            <div>
-                <Link to="/account">Account</Link>
-                <h1>Welcome to the Dashboard</h1>
-            </div>
+        <div className='components'>
+            <h1 className='title'>Welcome Charles</h1>
         </div>
     )
 }
