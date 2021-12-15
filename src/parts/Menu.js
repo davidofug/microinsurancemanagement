@@ -12,6 +12,11 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 import '../assets/styles/menu.css'
 
+import {
+    BrowserRouter as Router,
+    Switch, Route, Link
+} from 'react-router-dom'
+
 function Menu() {
 
     const [ selected, setSelected ] = useState({
@@ -19,31 +24,38 @@ function Menu() {
         objects: [
             {
                 name: "Dashboard",
-                icon: <AccountBalanceIcon />
+                icon: <AccountBalanceIcon />,
+                link: "dashboard"
             },
             {
                 name: "Organisations",
-                icon: <BusinessCenterIcon />
+                icon: <BusinessCenterIcon />,
+                link: "organisations"
             },
             {
                 name: "Clients",
-                icon: <PersonIcon />
+                icon: <PersonIcon />,
+                link: "clients"
             },
             {
                 name: "User Management",
-                icon: <PeopleIcon />
+                icon: <PeopleIcon />,
+                link: "user"
             },
             {
                 name: "Policies",
-                icon: <DirectionsCarIcon />
+                icon: <DirectionsCarIcon />,
+                link: "policies"
             },
             {
                 name: "Claims",
-                icon: <AirlineSeatReclineExtraIcon />
+                icon: <AirlineSeatReclineExtraIcon />,
+                link: "claims"
             },
             {
                 name: "Reports",
-                icon: <AssessmentIcon />
+                icon: <AssessmentIcon />,
+                link: "reports"
             }
         ]
     })
@@ -85,12 +97,12 @@ function Menu() {
                     <ul>
                         {
                             selected.objects.map((object, index) => (
-                                    <li className={toggleActiveStyle(index)} onClick={() => {
+                                    <Link to={`${object.link}`} className={toggleActiveStyle(index)} onClick={() => {
                                         toggleActive(index)
                                     }} key={index}>
                                         <i className='icon'>{object.icon}</i>
                                         {object.name}
-                                    </li>
+                                    </Link>
                                 )
                             )
                         }
@@ -124,11 +136,11 @@ function Menu() {
                 <ul>
                     {
                         selected.objects.map((object, index) => (
-                                <li className={toggleActiveStyle(index)} onClick={() => {
+                                <Link to={`${object.link}`} className={toggleActiveStyle(index)} onClick={() => {
                                     toggleActive(index)
                                 }} key={index}>
                                     <i>{object.icon}</i>
-                                </li>
+                                </Link>
                             )
                         )
                     }
