@@ -10,7 +10,11 @@ function Clients() {
             </div>
             <div style={{marginTop: "60px", backgroundColor: "#fff", padding: "20px", borderRadius: "10px"}}>   
 
-                <input type="text" placeholder='Search for client...' id='searchInput' />
+                <div id="search">
+                    <input type="text" placeholder='Search for client...' id='searchInput' />
+                    <button className='btn btn-primary'>Search</button>
+                    <button className='btn btn-primary'>Export</button>
+                </div>
 
                 <table class="table table-striped" style={{border: "1px solid black"}}>
                     <thead>
