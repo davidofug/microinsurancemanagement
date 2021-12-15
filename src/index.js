@@ -6,6 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import { combineProviders } from './helpers/combineProviders';
 import AuthProvider from './contexts/Auth';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../src/styles/index.css'
+
 const Providers = combineProviders([AuthProvider]);
 ReactDOM.render(
   <React.StrictMode>
