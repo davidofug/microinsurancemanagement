@@ -36,6 +36,7 @@ function Clients() {
                                         <td>{generatedClient.email}</td>
                                         <td>{generatedClient.contact}</td>
                                         <td>{generatedClient.address}</td>
+                                        <td><div id="action"><div></div><div></div><div></div></div></td>
                                     </tr>
                                 ))}
                     </tbody>
