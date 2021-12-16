@@ -1,14 +1,13 @@
-import React from 'react'
-import Menu from '../parts/Menu'
+
 
 function Clients() {
     return (
         <div className='components'>
             <div>
                 <h1 className='title'>Clients</h1>
-                <p>MANAGING CLIENTS</p>
+                <p className="subtitle">MANAGING CLIENTS</p>
             </div>
-            <div style={{marginTop: "60px", backgroundColor: "#fff", padding: "20px", borderRadius: "10px"}}>   
+            <div className="table-card">   
 
                 <div id="search">
                     <input type="text" placeholder='Search for client...' id='searchInput' />

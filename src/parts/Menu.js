@@ -1,21 +1,17 @@
-import profile from '../assets/imgs/image 2.png'
+import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import profile from '../assets/imgs/image 2.png'
 import logo from '../assets/imgs/britam-logo.png'
 import CloseIcon from '@mui/icons-material/Close';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import AirlineSeatReclineExtraIcon from '@mui/icons-material/AirlineSeatReclineExtra';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import AirlineSeatReclineExtraIcon from '@mui/icons-material/AirlineSeatReclineExtra';
 import '../assets/styles/menu.css'
-
-import {
-    BrowserRouter as Router,
-    Switch, Route, Link
-} from 'react-router-dom'
 
 function Menu() {
 
