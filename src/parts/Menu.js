@@ -1,47 +1,21 @@
-import menuData from './menuData';
+import menuData from './menuData'
 import '../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import profile from '../assets/imgs/image 2.png'
 import logo from '../assets/imgs/britam-logo.png'
-import CloseIcon from '@mui/icons-material/Close';
-import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
+import CloseIcon from '@mui/icons-material/Close'
+import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline'
 
 function Menu() {
 
-    const [ selected, setSelected ] = useState({
-        activeObject: null,
-        menuData
-    })
-
+    const [ selected, setSelected ] = useState({ activeObject: null, menuData })
     const [ toggleMenu, setToggeMenu ] = useState(true)
 
-    useEffect(() => {
-        setSelected({...selected, activeObject: selected.menuData[0]})
-    }, [])
+    useEffect(() => setSelected({...selected, activeObject: selected.menuData[0]}), [])
     
-    const toggleActive = (index) => {
-        setSelected({...selected, activeObject: selected.menuData[index]})
-    }
-
-
-    const toggleActiveStyle = (index) => {
-        if(selected.menuData[index] === selected.activeObject){
-            return "nav-link active"
-        }
-        else{
-            return "nav-link"
-        }
-    } 
-
-    const dropDown = (index) => {
-        if(selected.menuData[index] === selected.menuData[4]){
-            console.log('Policies context')
-        }
-        else if(selected.menuData[index] === selected.menuData[3]){
-            console.log('User Management context')
-        }
-    }
+    const toggleActive = index => setSelected({...selected, activeObject: selected.menuData[index]})
+    const toggleActiveStyle = index => selected.menuData[index] === selected.activeObject ? "nav-link active" : "nav-link"
 
     return (
         <div>
@@ -63,7 +37,6 @@ function Menu() {
                             selected.menuData.map((object, index) => (
                                     <Link to={`${object.link}`} className={toggleActiveStyle(index)} onClick={() => {
                                         toggleActive(index)
-                                        dropDown(index)
                                     }} key={index}>
                                         <i className='icon'>{object.icon}</i>
                                         {object.name}
