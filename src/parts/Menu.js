@@ -6,6 +6,7 @@ import profile from '../assets/imgs/image 2.png'
 import logo from '../assets/imgs/britam-logo.png'
 import CloseIcon from '@mui/icons-material/Close'
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline'
+import { MenuItem } from '@mui/material';
 
 function Menu() {
 
@@ -15,7 +16,8 @@ function Menu() {
     useEffect(() => setSelected({...selected, activeObject: selected.menuData[0]}), [])
     
     const toggleActive = index => setSelected({...selected, activeObject: selected.menuData[index]})
-    const toggleActiveStyle = index => selected.menuData[index] === selected.activeObject ? "nav-link active" : "nav-link"
+
+    const toggleActiveIdStyle = index => selected.menuData[index] === selected.activeObject ? "nav-link-active" : "nav-link"
 
     return (
         <div>
@@ -32,19 +34,25 @@ function Menu() {
                 
                     <div id="menu">
                             { selected.menuData.map((object, index) => (
-                                        <Link to={`${object.link}`} className={toggleActiveStyle(index)} onClick={() => toggleActive(index)} key={index}>
-                                            <i className='icon'>{object.icon}</i> {object.name}
-                                        </Link>
+                                            <MenuItem component={Link} to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                <i className='icon'>{object.icon}</i> {object.name}
+                                            </MenuItem>
                                     )
                                 )
                             }
                     </div>
-                
-                    <Link to="settings" id="account">
-                        <img src={profile} alt="profile image" />
-                        <p style={{"color": "black"}}>Charles Kasasira</p>
-                        <div id="eclipse"><div></div><div></div><div></div></div>
-                    </Link>
+
+                    
+                    <div >
+                        <MenuItem component={Link} to={'/settings'} id="account">
+                            
+                                <img src={profile} alt="profile image" />
+                                <p style={{"color": "black"}}>Charles Kasasira</p>
+                                <div id="eclipse"><div></div><div></div><div></div></div>
+                            
+                        </MenuItem>
+                    </div>
+                    
 
                 </nav> 
             : 
@@ -59,18 +67,18 @@ function Menu() {
                     <div id="menu">
                             {
                                 selected.menuData.map((object, index) => (
-                                        <Link to={`${object.link}`} className={toggleActiveStyle(index)} onClick={() =>toggleActive(index)} key={index}>
-                                            <i>{object.icon}</i>
-                                        </Link>
+                                        <MenuItem component={Link} to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                            <i className='icon'>{object.icon}</i>
+                                        </MenuItem>
                                     )
                                 )
                             }
                     </div>
                 
                     <div id="account">
-                        <Link to="settings" id="account">
-                            <img src={profile} alt="image" />
-                        </Link>
+                        <MenuItem component={Link} to={'/settings'} id="account">
+                            <img src={profile} alt="profile image" />
+                        </MenuItem>
                     </div>
 
                 </nav> 

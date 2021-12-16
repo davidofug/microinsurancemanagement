@@ -50,27 +50,51 @@ body, ul, p, *{
 /* End of Brand CSS */
 
 
+
+
 /* Menu CSS */
 #menu {
     align-items: center;
     height: 82vh;
 }
 
-.nav-link{
+
+#nav-link{
     color: black;
     margin: 20px 15px;
     height: 50px;
     font-size: 15px;
     cursor: pointer;
+
 }
 
-.nav-link i {
+#nav-link-active{
+    color: white;
+    margin: 20px 15px;
+    height: 50px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #1475cf;
+}
+
+#nav-link-active i {
     height: 25px;
     width: 25px;
     
 }
 
-.nav-link .icon {
+#nav-link-active .icon {
+    margin-right: 20px;
+}
+
+
+#nav-link i {
+    height: 25px;
+    width: 25px;
+    
+}
+
+#nav-link .icon {
     margin-right: 20px;
 }
 
@@ -81,15 +105,9 @@ body, ul, p, *{
 }
 
 
-.active {
-    color: #fff;
-    background-color: #1475cf;
-}
 
-.active:hover{
-    color: #fff;
-    background-color: #1475cf;
-}
+
+
 /* End Menu CSS */
 
 
@@ -115,7 +133,7 @@ body, ul, p, *{
 
 #eclipse{
     display: flex;
-    margin: 2px;
+    margin: 4px;
 }
 
 #eclipse div{
