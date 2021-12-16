@@ -33,7 +33,9 @@
 #row-container {
     display:flex;
     flex-direction:column;
-    gap: 50px;
+    gap: 43px;
+    justify-content: center;
+    align-items:center;
 }
 
 .col { 
@@ -45,8 +47,8 @@
 }
 
 .card {
-    width:7.875rem;
-    height:6.25rem; 
+    width:12rem;
+    height:6rem; 
 }
 
 .card-body {
@@ -64,7 +66,7 @@
 
 .card-text {
     color:white;
-    font-size:11px;
+    font-size:12px;
     font-family:'Roboto', sans-serif;
 }
 
@@ -78,9 +80,10 @@
 .summaries {
     width:27.688rem; 
     height:21.875rem;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    /* display:flex;
+    flex-direction:column; */
+    /* justify-content:center; */
+    /* align-items:center; */
     background-color:#FFFFFF;
     border-radius:0.4rem
 }

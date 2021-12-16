@@ -8,9 +8,9 @@ import '../styles/dashboard.css'
 function Dashboard() {
     const {currentUser} = useAuth()
     const [claims, setClaims] = useState(0)
-    const [stickers, setStickers] = useState(0)
-    const [policies, setPolicies] = useState(0)
-    const [claimNotifications, setClaimNotifications] = useState(0)
+    const [stickers, setStickers] = useState(13)
+    const [policies, setPolicies] = useState(2)
+    const [claimNotifications, setClaimNotifications] = useState(27)
 
     return (
         <div className="main">
@@ -23,49 +23,52 @@ function Dashboard() {
                 <div style={{display:"flex", gap:"2.5vw"}}>
                     <div className="shadow-sm p-3 mb-5 bg-body rounded" id="first-container">
                         <Container id="row-container">
-                            <Row className="justify-content-center">
-                                <Col className="col">
+                            <div style={{display:"flex", gap:"20px"}}>
+                                <div className="col">
                                     <Card className="card" style={{"background-color":"#804C75"}}>
                                         <Card.Body className="card-body">
                                             <div className="statistics">{`${claims}`}</div>
                                             <div className="card-text">Claim Settlement</div>
                                         </Card.Body>
                                     </Card>
-                                </Col>
-                                <Col className="col">
+                                </div>
+                                <div className="col">
                                     <Card className="card" style={{"background-color":"#C82E29"}}>
                                         <Card.Body className="card-body">
                                             <div className="statistics">{`${stickers}`}</div>
                                             <div className="card-text">Stickers</div>
                                         </Card.Body>
                                     </Card>
-                                </Col>
-                            </Row>
-                            <Row className="justify-content-center">
-                                <Col className="col">
+                                </div>
+                            </div>    
+                            <div style={{display:"flex", gap:"20px"}}>
+                                <div className="col">
                                     <Card className="card" style={{"background-color":"#FFB848"}}>
                                         <Card.Body className="card-body">
                                             <div className="statistics">{`${policies}`}</div> 
                                             <div className="card-text">Policies</div>
                                         </Card.Body>
                                     </Card>
-                                </Col>
-                                <Col className="col">
+                                </div>
+                                <div className="col">
                                     <Card className="card" style={{"background-color":"#1FBBA6"}}>
                                         <Card.Body className="card-body">
                                             <div className="statistics">{`${claimNotifications}`}</div>
                                             <div className="card-text">Claim Notifications</div>
                                         </Card.Body>
                                     </Card>
-                                </Col>
-                            </Row>
+                                </div>
+                            </div>
                         </Container>
                     </div>
 
                     <div className="shadow-sm p-3 mb-5 bg-body rounded summaries">   
                         {/* Are these supposed to be links or just mere words? */}
-                        <p>Agent issued reports</p>
-                        <p>Grand totals</p> 
+                        <div style={{padding:"7vh 5vh", display:"flex", flexDirection:"column", gap:"20px"}}>
+                            <div>Agent issued reports</div>
+                            <div>Grand totals</div>     
+                        </div>
+                        
                     </div>
                 </div>
                 <div id="title">
