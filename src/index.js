@@ -9,6 +9,7 @@ import { combineProviders } from './helpers/combineProviders';
 
 
 const Providers = combineProviders([AuthProvider]);
+
 ReactDOM.render(
   <React.StrictMode>
     <Providers>
