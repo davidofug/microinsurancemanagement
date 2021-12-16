@@ -20,6 +20,8 @@ body, ul, p, *{
 
 
 .navbar{
+    top: 0;
+    left: 0;
     display: grid; 
     grid-template-rows: 1fr 3fr 1fr;
     width: 18vw;
