@@ -68,6 +68,34 @@
     font-family:'Roboto', sans-serif;
 }
 
+.graph-container {
+    height:400px;
+    width:920px;
+    background-color:#FFFFFF;
+    border-radius:0.4rem;
+}
+
+.summaries {
+    width:27.688rem; 
+    height:21.875rem;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color:#FFFFFF;
+    border-radius:0.4rem
+}
+
+#title {
+    width:100%;
+}
+
+#title div {
+    width:100%;
+    padding-left: 80px;
+    padding-bottom: 10px;
+}
+
+
 
 
 

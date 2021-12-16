@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../contexts/Auth'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Card, Row, Col, Container } from 'react-bootstrap'
 
 import '../styles/dashboard.css'
@@ -61,20 +61,22 @@ function Dashboard() {
                             </Row>
                         </Container>
                     </div>
-                    <div className="shadow-sm p-3 mb-5 bg-body rounded" style={{ width:"27.688rem", height:"21.875rem", display:"flex", justifyContent:"center", alignItems:"center", "background-color":"#FFFFFF", borderRadius:"0.4rem"}}>    
+
+                    <div className="shadow-sm p-3 mb-5 bg-body rounded summaries">   
+                        {/* Are these supposed to be links or just mere words? */}
+                        <p>Agent issued reports</p>
+                        <p>Grand totals</p> 
                     </div>
                 </div>
-                <div>
-                    <h3 style={{alignItems:"bottom"}}>Monthly Stickers</h3>
+                <div id="title">
+                    <div style={{alignItems:"bottom"}}>Monthly Stickers</div>
                 </div>
 
                 {/* Graph div  */}
-                <div className="shadow-sm p-3 mb-5 bg-body rounded" style={{height:"400px", width:"920px", backgroundColor:"#FFFFFF", borderRadius:"0.4rem"}}>
-
+                <div className="shadow-sm p-3 mb-5 bg-body rounded graph-container">
                 </div>     
             </div>            
-        </div>
-            
+        </div>        
     )
 }
 
