@@ -1,24 +1,20 @@
-import PrivateRoute  from './PrivateRoute'
-import NotLoggedIn from '../pages/NotLoggedIn'
-import Login from '../pages/Login'
-import Logout from '../pages/Logout'
-import Organisations from '../pages/Organisations'
-import Users from '../pages/Users'
-import Dashboard from '../pages/Dashboard'
-import NotAuthorized from '../pages/NotAuthorized'
-import NotFound from '../pages/NotFound'
-import { useAuth } from '../contexts/Auth'
 import Menu from '../parts/Menu'
-import Clients from '../pages/Clients'
+import Users from '../pages/Users'
+import Login from '../pages/Login'
 import Claims from '../pages/Claims'
-import Policies from '../pages/Policies'
+import Logout from '../pages/Logout'
 import Reports from '../pages/Reports'
+import Clients from '../pages/Clients'
+import NotFound from '../pages/NotFound'
+import Policies from '../pages/Policies'
 import Settings from '../pages/Settings'
-
-import {
-    BrowserRouter as Router,
-    Switch, Route, Link
-} from 'react-router-dom'
+import PrivateRoute  from './PrivateRoute'
+import { useAuth } from '../contexts/Auth'
+import Dashboard from '../pages/Dashboard'
+import NotLoggedIn from '../pages/NotLoggedIn'
+import Organisations from '../pages/Organisations'
+import NotAuthorized from '../pages/NotAuthorized'
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 function MyRouter() {
 
@@ -28,48 +24,21 @@ function MyRouter() {
         <Router>
             <div className='container'>
                 <Menu  />
-
                 <div className="displayContainer">
                     <Switch>
-                        <Route path="/" exact>
-                            <Login />
-                        </Route>
-                        <Route path="/organisations" exact>
-                            <Organisations />
-                        </Route>
-                        <Route path="/clients" exact>
-                            <Clients />
-                        </Route>
-                        <Route path="/not-logged-in" >
-                            <NotLoggedIn />
-                        </Route>
-                        <Route path="/login">
-                            <Login />
-                        </Route>
-                        <Route path="/user">
-                            <Users />
-                        </Route>
-                        <Route path="/policies">
-                            <Policies />
-                        </Route>
-                        <Route path="/claims">
-                            <Claims />
-                        </Route>
-                        <Route path="/reports">
-                            <Reports />
-                        </Route>
-                        <Route path="/settings">
-                            <Settings />
-                        </Route>
-                        <Route path="/logout">
-                            <Logout />
-                        </Route>
-                        <PrivateRoute path="/dashboard">
-                            <Dashboard />
-                        </PrivateRoute>
-                        <Route path="*">
-                            <NotFound />
-                        </Route>
+                        <Route path="/" exact component={Login} />
+                        <Route path="/organisations" exact component={Organisations} />
+                        <Route path="/clients" exact component={Clients} />
+                        <Route path="/not-logged-in" component={NotLoggedIn} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/user" component={Users} />
+                        <Route path="/policies" component={Policies} />
+                        <Route path="/claims" component={Claims} />
+                        <Route path="/reports" component={Reports} />
+                        <Route path="/settings" component={Settings} />
+                        <Route path="/logout" component={Logout} />
+                        <PrivateRoute path="/dashboard" component={Dashboard} />
+                        <Route path="*" component={NotFound} />
                     </Switch>
                 </div>
             </div>
