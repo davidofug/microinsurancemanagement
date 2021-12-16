@@ -1,12 +1,12 @@
 import menuData from './menuData'
 import '../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
+import { MenuItem } from '@mui/material'
 import { useState, useEffect } from 'react'
 import profile from '../assets/imgs/image 2.png'
 import logo from '../assets/imgs/britam-logo.png'
 import CloseIcon from '@mui/icons-material/Close'
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline'
-import { MenuItem } from '@mui/material';
 
 function Menu() {
 
