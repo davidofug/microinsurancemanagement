@@ -43,15 +43,11 @@ function Menu() {
                     </div>
 
                     
-                    <div >
-                        <MenuItem component={Link} to={'/settings'} id="account">
-                            
-                                <img src={profile} alt="profile image" />
-                                <p style={{"color": "black"}}>Charles Kasasira</p>
-                                <div id="eclipse"><div></div><div></div><div></div></div>
-                            
-                        </MenuItem>
-                    </div>
+                    <MenuItem component={Link} to={'/settings'} id="account">
+                        <img src={profile} alt="profile image" />
+                        <p>Charles Kasasira</p>
+                        <div id="eclipse"><div></div><div></div><div></div></div>
+                    </MenuItem>
                     
 
                 </nav> 
@@ -75,11 +71,9 @@ function Menu() {
                             }
                     </div>
                 
-                    <div id="account">
-                        <MenuItem component={Link} to={'/settings'} id="account">
-                            <img src={profile} alt="profile image" />
-                        </MenuItem>
-                    </div>
+                    <MenuItem component={Link} to={'/settings'} id="account">
+                        <img src={profile} alt="profile image" />
+                    </MenuItem>
 
                 </nav> 
             }
