@@ -3,6 +3,8 @@ import { useAuth } from '../contexts/Auth'
 import {Link} from 'react-router-dom'
 import { Card, Row, Col, Container } from 'react-bootstrap'
 
+import '../styles/dashboard.css'
+
 function Dashboard() {
     const {currentUser} = useAuth()
     const [claims, setClaims] = useState(0)
@@ -11,48 +13,48 @@ function Dashboard() {
     const [claimNotifications, setClaimNotifications] = useState(0)
 
     return (
-        <div style={{display:"flex", height:"100%"}}>
+        <div className="main">
             {/* <Link to="/account">Account</Link>   */}
-            <div style={{width:"20vw", "background-color":"#FFFFFF"}}>
+            <div id="menu">
                 Menu Div
             </div>
             
-            <div style={{ paddingTop:"5vh", paddingBottom:"5vh", display:"flex", flexDirection:"column", alignItems:"center", width:"80vw", overflow:"hidden" }}>
+            <div id="main-container">
                 <div style={{display:"flex", gap:"2.5vw"}}>
-                    <div className="shadow-sm p-3 mb-5 bg-body rounded" style={{ width:"27.688rem", height:"21.875rem", display:"flex", justifyContent:"center", alignItems:"center", "background-color":"#FFFFFF", borderRadius:"0.4rem"}}>
-                        <Container style={{display:"flex", "flex-direction":"column", gap: "50px"}}>
+                    <div className="shadow-sm p-3 mb-5 bg-body rounded" id="first-container">
+                        <Container id="row-container">
                             <Row className="justify-content-center">
-                                <Col style={{width:"100%", height:"100%", display:"flex", "justify-content":"center", "align-items":"center"}}>
-                                    <Card style={{ width:"7.875rem", height:"6.25rem", "background-color":"#804C75"}}>
-                                        <Card.Body style={{display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
-                                            <div style={{color:"white", fontSize:"18px", fontFamily:"'Roboto', sans-serif'", fontWeight:"bold"}}>{`${claims}`}</div>
-                                            <div style={{color:"white", fontSize:"11px", fontFamily:"'Roboto', sans-serif'"}}>Claim Settlement</div>
+                                <Col className="col">
+                                    <Card className="card" style={{"background-color":"#804C75"}}>
+                                        <Card.Body className="card-body">
+                                            <div className="statistics">{`${claims}`}</div>
+                                            <div className="card-text">Claim Settlement</div>
                                         </Card.Body>
                                     </Card>
                                 </Col>
-                                <Col style={{width:"100%", height:"100%", display:"flex", "justify-content":"center", "align-items":"center"}}>
-                                    <Card style={{ width:"7.875rem", height:"6.25rem", "background-color":"#C82E29"}}>
-                                        <Card.Body style={{display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
-                                            <div style={{color:"white", fontSize:"18px", fontFamily:"'Roboto', sans-serif'", fontWeight:"bold"}}>{`${stickers}`}</div>
-                                            <div style={{color:"white", fontSize:"11px", fontFamily:"'Roboto', sans-serif'"}}>Stickers</div>
+                                <Col className="col">
+                                    <Card className="card" style={{"background-color":"#C82E29"}}>
+                                        <Card.Body className="card-body">
+                                            <div className="statistics">{`${stickers}`}</div>
+                                            <div className="card-text">Stickers</div>
                                         </Card.Body>
                                     </Card>
                                 </Col>
                             </Row>
                             <Row className="justify-content-center">
-                                <Col style={{width:"100%", height:"100%", display:"flex", "justify-content":"center", "align-items":"center"}}>
-                                    <Card style={{ width:"7.875rem", height:"6.25rem", "background-color":"#FFB848"}}>
-                                        <Card.Body style={{display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
-                                            <div style={{color:"white", fontSize:"18px", fontFamily:"'Roboto', sans-serif'", fontWeight:"bold"}}>{`${policies}`}</div> 
-                                            <div style={{color:"white", fontSize:"11px", fontFamily:"'Roboto', sans-serif'"}}>Policies</div>
+                                <Col className="col">
+                                    <Card className="card" style={{"background-color":"#FFB848"}}>
+                                        <Card.Body className="card-body">
+                                            <div className="statistics">{`${policies}`}</div> 
+                                            <div className="card-text">Policies</div>
                                         </Card.Body>
                                     </Card>
                                 </Col>
-                                <Col style={{width:"100%", height:"100%", display:"flex", "justify-content":"center", "align-items":"center"}}>
-                                    <Card style={{ width:"7.875rem", height:"6.25rem", "background-color":"#1FBBA6"}}>
-                                        <Card.Body style={{display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
-                                            <div style={{color:"white", fontSize:"18px", fontFamily:"'Roboto', sans-serif'", fontWeight:"bold"}}>{`${claimNotifications}`}</div>
-                                            <div style={{color:"white", fontSize:"11px", fontFamily:"'Roboto', sans-serif'"}}>Claim Notifications</div>
+                                <Col className="col">
+                                    <Card className="card" style={{"background-color":"#1FBBA6"}}>
+                                        <Card.Body className="card-body">
+                                            <div className="statistics">{`${claimNotifications}`}</div>
+                                            <div className="card-text">Claim Notifications</div>
                                         </Card.Body>
                                     </Card>
                                 </Col>
