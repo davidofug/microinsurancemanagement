@@ -11,9 +11,9 @@ const Providers = combineProviders([AuthProvider]);
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider>
+    <Providers>
       <App />
-    </AuthProvider>
+    </Providers>
   </React.StrictMode>,
   document.getElementById('root')
 );
