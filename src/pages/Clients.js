@@ -1,4 +1,5 @@
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import generatedData from '../helpers/generatedClients';
 
 function Clients() {
     return (
@@ -21,136 +22,28 @@ function Clients() {
 
                 <table class="table table-striped" style={{border: "1px solid black"}}>
                     <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Address</th>
-                        <th></th>
-                    </tr>
+                        <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
                     </thead>
+
                     <tbody>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                        <td><div id="action"><div></div><div></div><div></div></div></td>
-                    </tr>
+                        
+                            
+                                {generatedData[1].map((generatedClient, index) => (
+                                    <tr>
+                                        <td>{index+1}</td>
+                                        <td>{generatedClient.name}</td>
+                                        <td>{generatedClient.gender}</td>
+                                        <td>{generatedClient.email}</td>
+                                        <td>{generatedClient.contact}</td>
+                                        <td>{generatedClient.address}</td>
+                                        <td><div id="action"><div></div><div></div><div></div></div></td>
+                                    </tr>
+                                ))}
                     </tbody>
+
                     <tfoot>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Address</th>
-                        <th></th>
-                    </tr>
+                        <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th>
+                        </tr>
                     </tfoot>
                 </table>
             </div>

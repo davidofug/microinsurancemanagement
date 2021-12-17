@@ -2,16 +2,16 @@ import React from 'react'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import generatedData from '../helpers/generatedClients';
 
-function Claims() {
+function Windscreen() {
     return (
         <div className='components'>
             <div>
-                <h1 className='title'>Claims</h1>
-                <p className="subtitle">MANAGING CLAIMS</p>
+                <h1 className='title'>Windscreen Policy</h1>
+                <p className="subtitle">MANAGING WINDSCREEN POLICIES</p>
             </div>
             <div id="add_client_group">
                 <div></div>
-                <button className="btn btn-primary cta">Add Claim</button>
+                <button className="btn btn-primary cta">Add MTP</button>
             </div>
 
             <div className="table-card">   
@@ -51,4 +51,4 @@ function Claims() {
     )
 }
 
-export default Claims
+export default Windscreen

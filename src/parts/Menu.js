@@ -23,57 +23,75 @@ function Menu() {
         <div>
             {toggleMenu === true 
             ?
-                <nav className='navbar'>
+                <nav className='sidebar'>
                     <div id='brand'>
-                        <div id="brand_logo">
                             <img src={logo} alt="Britam" />
                             <i onClick={() => setToggeMenu(!toggleMenu)}><CloseIcon /></i>
-                        </div>
-                        <hr />
                     </div>
                 
-                    <div id="menu">
+                    <section id="menu_section">
                             { selected.menuData.map((object, index) => (
                                             <MenuItem component={Link} to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                <i className='icon'>{object.icon}</i> {object.name}
+                                                <i className='icon'>{object.icon}</i> <span>{object.name}</span>
+                                                {object?.subMenu && 
+                                                    (<ul>
+                                                        {object.subMenu.map((sub, index) => (
+                                                            
+                                                            <MenuItem component={Link} to={sub.link} className='sub-link' key={index} style={{color: "black"}}>
+                                                                {sub.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </ul>)
+                                                }
                                             </MenuItem>
                                     )
                                 )
                             }
-                    </div>
+                    </section>
 
                     
-                    <MenuItem component={Link} to={'/settings'} id="account">
-                        <img src={profile} alt="profile image" />
-                        <p>Charles Kasasira</p>
-                        <div id="eclipse"><div></div><div></div><div></div></div>
-                    </MenuItem>
+                    <footer>
+                        <MenuItem component={Link} to={'/settings'} id="account">
+                            <img src={profile} alt="profile image" />
+                            <p>Charles Kasasira</p>
+                            <div id="eclipse"><div></div><div></div><div></div></div>
+                        </MenuItem>
+                    </footer>
                     
 
                 </nav> 
             : 
-                <nav className='navbar navbar-m'>
-                    <div id='brand-m'>
-                        <div id="brand_logo">
+                <nav className='sidebar-m'>
+                    <section id='brand_m'>
                             <i onClick={() => setToggeMenu(!toggleMenu)}><ViewHeadlineIcon/></i>
-                        </div>
-                        <hr />
-                    </div>
+                    </section>
                 
-                    <div id="menu">
+                    <section id="menu_section_m">
                             {
                                 selected.menuData.map((object, index) => (
                                         <MenuItem component={Link} to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
                                             <i className='icon'>{object.icon}</i>
+                                            {object?.subMenu && 
+                                                    (<ul>
+                                                        {object.subMenu.map((sub, index) => (
+                                                            
+                                                            <MenuItem component={Link} to={sub.link} className='sub-link' key={index} style={{color: "black"}}>
+                                                                {sub.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </ul>)
+                                                }
                                         </MenuItem>
                                     )
                                 )
                             }
-                    </div>
+                    </section>
                 
-                    <MenuItem component={Link} to={'/settings'} id="account">
-                        <img src={profile} alt="profile image" />
-                    </MenuItem>
+                    <footer>
+                        <MenuItem component={Link} to={'/settings'} id="account">
+                            <img src={profile} alt="profile image" />
+                        </MenuItem>
+                    </footer>
 
                 </nav> 
             }
