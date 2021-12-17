@@ -1,14 +1,14 @@
-
+import { MdAccountBalance, MdBusinessCenter } from 'react-icons/md'
 
 const menuData = [
     {
         name: "Dashboard",
-        
+        icon: <MdAccountBalance />,
         link: "dashboard"
     },
     {
         name: "Organisations",
-        
+        link: <MdBusinessCenter />,
         link: "organisations"
     },
     {
@@ -18,8 +18,21 @@ const menuData = [
     },
     {
         name: "User Management",
-        
-        link: "user"
+        link: "user",
+        subMenu: [
+            {
+                name: "Agents",
+                link: "agents"
+            },
+            {
+                name: "Supervisor",
+                link: "supervisor"
+            },
+            {
+                name: "View Log Trail",
+                link: "view-log-trail"
+            }
+        ]
     },
     {
         name: "Policies",
