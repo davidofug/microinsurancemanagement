@@ -27,9 +27,12 @@ function MyRouter() {
     return (
         <Router>
             <div className='top-container' >
-                <div className='menuSide'>
-                    <Menu />
-                </div>
+                {currentUser && (
+                    <div className='menuSide'>
+                        <Menu />
+                    </div>
+                    )
+                }
                 <div className="displayContainer">
                     <Switch>
                         <Route path="/" exact component={Login} />
