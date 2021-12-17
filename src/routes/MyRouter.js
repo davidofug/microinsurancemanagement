@@ -12,6 +12,7 @@ import Settings from '../pages/Settings'
 import { useAuth } from '../contexts/Auth'
 import PrivateRoute  from './PrivateRoute'
 import Dashboard from '../pages/Dashboard'
+import AddClients from '../pages/AddClients'
 import Windscreen from '../pages/Windscreen'
 import NotLoggedIn from '../pages/NotLoggedIn'
 import Comprehensive from '../pages/Comprehensive'
@@ -45,6 +46,7 @@ function MyRouter() {
                         <Route path="/motor-third-party" component={Mtp} />
                         <Route path="/windscreen" component={Windscreen} />
                         <Route path="/comprehensive" component={Comprehensive} />
+                        <Route path="/add-clients" component={AddClients} />
                         <PrivateRoute path="/dashboard" component={Dashboard} />
                         <Route path="*" component={NotFound} />
                     </Switch>
