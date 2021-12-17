@@ -47,7 +47,9 @@ function MyRouter() {
                         <Route path="/windscreen" component={Windscreen} />
                         <Route path="/comprehensive" component={Comprehensive} />
                         <Route path="/add-clients" component={AddClients} />
-                        <PrivateRoute path="/dashboard" component={Dashboard} />
+                        <PrivateRoute path="/dashboard" >
+                            <Dashboard />
+                        </PrivateRoute>
                         <Route path="*" component={NotFound} />
                     </Switch>
                 </div>
