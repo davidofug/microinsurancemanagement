@@ -125,55 +125,6 @@ body, ul, p, *{
 
 
 
-/* SideBar */
-
-/* SideBar Miniminised */
-
-.sidebar-m{
-    top: 0;
-    left: 0;
-    display: grid; 
-    grid-template-rows: 1fr 3fr 1fr;
-    /* width: 10vw; */
-    border-right: 1px solid #c6c7c8;
-    align-items: stretch;
-    width: 80px;
-    height: 100vh;
-    background-color: #fff;
-    /* border-right: 1px solid #c6c7c8; */
-}
-
-#menu_section_m {
-    align-items: center;
-    height: 82vh;
-    width: 85px;
-    /* border: 1px solid red; */
-    /* background: red; */
-}
-
-
-
-
-#brand_m {
-    width: 80px;
-    /* height: 10vh; */
-    height: 80px;
-    margin: 0;
-    border-bottom: 1px solid #cccccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#brand_m i {
-    color: #1475cf;
-    font-size: 25px;
-    height: 50px;
-    min-width: 78px;
-    text-align: center;
-    line-height: 50px;
-}
-
 
 
 #menu_section li a{
@@ -284,3 +235,70 @@ footer a img{
 
 /* End of footer */
 
+
+
+
+
+
+
+/* SideBar Miniminised */
+
+.sidebar-m{
+    top: 0;
+    left: 0;
+    display: grid; 
+    grid-template-rows: 1fr 3fr 1fr;
+    /* width: 10vw; */
+    border-right: 1px solid #c6c7c8;
+    align-items: stretch;
+    width: 80px;
+    height: 100vh;
+    background-color: #fff;
+    /* border-right: 1px solid #c6c7c8; */
+}
+
+#menu_section_m {
+    align-items: center;
+    height: 82vh;
+    width: 85px;
+    /* border: 1px solid red; */
+    /* background: red; */
+}
+
+
+
+
+#brand_m {
+    width: 80px;
+    /* height: 10vh; */
+    height: 80px;
+    margin: 0;
+    border-bottom: 1px solid #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#brand_m i {
+    color: #1475cf;
+    font-size: 25px;
+    height: 50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
+}
+
+
+/* context */
+#menu_section_m li a{
+    position: relative;
+}
+
+#menu_section_m li a ul{
+    display: none;
+    background: #fff; 
+    padding: 10px 20px;
+    z-index: 1001;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    border-radius: 5px; 
+}

@@ -75,19 +75,22 @@ function Menu() {
                     <section id="menu_section_m">
                             {
                                 selected.menuData.map((object, index) => (
-                                        <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                            <i className='icon'>{object.icon}</i>
-                                            {object?.subMenu && 
-                                                    (<ul>
-                                                        {object.subMenu.map((sub, index) => (
-                                                            
-                                                            <Link to={sub.link} className='sub-link' key={index} style={{color: "black"}}>
-                                                                {sub.name}
-                                                            </Link>
-                                                        ))}
-                                                    </ul>)
-                                                }
-                                        </Link>
+                                        <li>
+                                            <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                <i className='icon'>{object.icon}</i>
+                                                
+                                                    {object?.subMenu &&
+                                                            (<ul>
+                                                                {object.subMenu.map((sub, index) => (
+                                                                    <Link to={sub.link} className='sub-link' key={index} style={{color: "black"}}>
+                                                                        {sub.name}
+                                                                    </Link>
+                                                                ))}
+                                                            </ul>)
+                                                        }
+                                                
+                                            </Link>
+                                        </li>
                                     )
                                 )
                             }
