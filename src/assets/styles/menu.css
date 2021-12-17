@@ -70,51 +70,49 @@ body, ul, p, *{
     /* background: red; */
 }
 
-
-#nav-link{
-    color: black;
-    margin: 20px 15px;
-    height: 50px;
-    font-size: 15px;
-    cursor: pointer;
-
+#menu_section li{
+    list-style-type: none;
 }
 
-#nav-link-active{
-    color: white;
-    margin: 20px 15px;
-    height: 50px;
-    font-size: 15px;
+#menu_section li a {
+    display: flex;
     cursor: pointer;
-    background-color: #1475cf;
+    font-size: 1.0rem;
+    text-decoration: none;
+    color: #000;
+    padding: 10px;
 }
 
-#nav-link-active i {
+
+#menu_section li a .icon {
+    margin-right: 20px;
+}
+
+#menu_section li a i {
     height: 25px;
     width: 25px;
     
 }
 
-#nav-link-active .icon {
-    margin-right: 20px;
-}
-
-
-#nav-link i {
-    height: 25px;
-    width: 25px;
-    
-}
-
-#nav-link .icon {
-    margin-right: 20px;
-}
-
-
-.nav-link:hover{
+#menu_section li a:hover{
     background-color: #F4F4F4;
     color: black;
 }
+
+
+
+#nav-link-active{
+    color: white;
+    background-color: #1475cf;
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -178,36 +176,41 @@ body, ul, p, *{
 
 
 
+#menu_section li a{
+    position: relative;
+}
 
 
-#nav-link ul{
+#menu_section li a ul{
     display: none;
-}
-
-#nav-link:hover > ul{
-    display: flex;
-    flex-direction: column;
     background: #fff; 
+    padding: 10px 20px;
+    z-index: 1001;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
     border-radius: 5px; 
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 10px 50px;
+}
+#menu_section li a:hover > ul{
+    /* display: flex;
+    flex-direction: column; */
+    display: block;
     position: absolute; 
-    top: -250%;
+    top: -50px;
+    left: 50px;
 }
 
-#nav-link ul li{
-    /* border: 1px solid red; */
+#menu_section li a ul li{
     list-style-type: none;
-    margin: 5px;
-    padding: 10px;
-    border-bottom: 2px solid #b3b3b3;
+    font-size: .7rem;
+    display: block;
+}
+
+#menu_section  li a ul li a{
+    border-radius: 20px;
+    display: inline-block;
 }
 
 #nav-link-acive ul li{
     list-style-type: none;
-    margin: 5px;
-    padding: 10px;
-    border-bottom: 2px solid #b3b3b3;
 }
 
 #nav-link-acive ul .sub-link{
@@ -218,12 +221,6 @@ body, ul, p, *{
 #nav-link-active:hover > ul{
     display: flex;
     flex-direction: column;
-    background: #fff; 
-    border-radius: 5px; 
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 10px 50px;
-    position: absolute; 
-    top: -250%;
 }
 
 #nav-link-active > ul{
@@ -231,10 +228,7 @@ body, ul, p, *{
     flex-direction: column;
     background: #fff; 
     border-radius: 5px; 
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 10px 50px;
-    position: absolute; 
-    top: -250%;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
 }
 
 
@@ -244,36 +238,37 @@ body, ul, p, *{
 footer{
     position: fixed;
     bottom: 0;
-    height: 80px;
-    justify-content: center;
-    align-items: center;
     padding: 10px 5px;
     width: inherit;
+    color: #000;
 }
 
-#account{
+footer a{
+    text-decoration: none;
     align-items: center;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
     gap: 5px;
 }
 
-#account:hover{
+footer a p{
+    color: #000;
+    margin: 0;
+}
+
+
+footer:hover{
     background-color: #F4F4F4;
     color: #000;
 }
 
-#account img{
-    /* margin: 10px; */
+footer a img{
     height: 50px;
     width: 50px;
     border-radius: 50%;
 }
 
-#account p{
-    text-align: center;
-    margin: 0;
-}
+
 
 #eclipse{
     display: flex;
@@ -286,4 +281,6 @@ footer{
     background-color: black;
     margin: 1px;
 }
+
+/* End of footer */
 
