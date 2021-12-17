@@ -1,4 +1,4 @@
-import { MdAccountBalance, MdBusinessCenter } from 'react-icons/md'
+import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson } from 'react-icons/md'
 
 const menuData = [
     {
@@ -8,16 +8,17 @@ const menuData = [
     },
     {
         name: "Organisations",
-        link: <MdBusinessCenter />,
+        icon: <MdBusinessCenter />,
         link: "organisations"
     },
     {
         name: "Clients",
-        
+        icon: <MdPerson />,
         link: "clients"
     },
     {
         name: "User Management",
+        icon: <MdPeople />,
         link: "user",
         subMenu: [
             {
@@ -36,7 +37,7 @@ const menuData = [
     },
     {
         name: "Policies",
-        
+        icon: <MdDirectionsCarFilled />,
         link: "policies",
         subMenu: [
             {
@@ -55,12 +56,12 @@ const menuData = [
     },
     {
         name: "Claims",
-        
+        icon: <MdAirlineSeatReclineExtra />,
         link: "claims"
     },
     {
         name: "Reports",
-        
+        icon: <MdAssessment />,
         link: "reports"
     }
 ]
