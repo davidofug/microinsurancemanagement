@@ -1,6 +1,5 @@
 import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
-import Icon, { FontAwesome, Feather, MaterialCommunityIcons } from 'react-web-vector-icons'
 
 function Clients() {
     return (
