@@ -19,35 +19,42 @@ body, ul, p, *{
 } */
 
 
-.navbar{
+.sidebar{
     top: 0;
     left: 0;
     display: grid; 
     grid-template-rows: 1fr 3fr 1fr;
-    width: 18vw;
+    width: 260px;
+    /* width: 18vw; */
     height: 100vh;
     border-right: 1px solid #c6c7c8;
     align-items: stretch;
-    margin: 0;
+    background-color: #fff;
 }
 
 /* Brand CSS */
 #brand {
-    width: 250px;
-    height: 10vh;
+    width: 100%;
+    /* height: 10vh; */
+    height: 80px;
     margin: 0;
+    border-bottom: 1px solid #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#brand_logo{
-    margin: 20px;
-}
 
-#brand_logo img{
-    margin-right: 15px;
-}
+/* #brand img{
+} */
 
-#brand_logo i {
+#brand i {
     color: #1475cf;
+    font-size: 25px;
+    height: 50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
 }
 /* End of Brand CSS */
 
@@ -55,56 +62,57 @@ body, ul, p, *{
 
 
 /* Menu CSS */
-#menu {
+#menu_section {
     align-items: center;
     height: 82vh;
+    width: 260px;
+    /* border: 1px solid red; */
+    /* background: red; */
 }
 
+#menu_section li{
+    list-style-type: none;
+}
 
-#nav-link{
-    color: black;
-    margin: 20px 15px;
-    height: 50px;
-    font-size: 15px;
+#menu_section li a {
+    display: flex;
     cursor: pointer;
-
+    font-size: 1.0rem;
+    text-decoration: none;
+    color: #000;
+    padding: 10px;
 }
 
-#nav-link-active{
-    color: white;
-    margin: 20px 15px;
-    height: 50px;
-    font-size: 15px;
-    cursor: pointer;
-    background-color: #1475cf;
+
+#menu_section li a .icon {
+    margin-right: 20px;
 }
 
-#nav-link-active i {
+#menu_section li a i {
     height: 25px;
     width: 25px;
     
 }
 
-#nav-link-active .icon {
-    margin-right: 20px;
-}
-
-
-#nav-link i {
-    height: 25px;
-    width: 25px;
-    
-}
-
-#nav-link .icon {
-    margin-right: 20px;
-}
-
-
-.nav-link:hover{
+#menu_section li a:hover{
     background-color: #F4F4F4;
     color: black;
 }
+
+
+
+#nav-link-active{
+    color: white;
+    background-color: #1475cf;
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -114,28 +122,156 @@ body, ul, p, *{
 
 
 
+
+
+
+/* SideBar */
+
+/* SideBar Miniminised */
+
+.sidebar-m{
+    top: 0;
+    left: 0;
+    display: grid; 
+    grid-template-rows: 1fr 3fr 1fr;
+    /* width: 10vw; */
+    border-right: 1px solid #c6c7c8;
+    align-items: stretch;
+    width: 80px;
+    height: 100vh;
+    background-color: #fff;
+    /* border-right: 1px solid #c6c7c8; */
+}
+
+#menu_section_m {
+    align-items: center;
+    height: 82vh;
+    width: 85px;
+    /* border: 1px solid red; */
+    /* background: red; */
+}
+
+
+
+
+#brand_m {
+    width: 80px;
+    /* height: 10vh; */
+    height: 80px;
+    margin: 0;
+    border-bottom: 1px solid #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#brand_m i {
+    color: #1475cf;
+    font-size: 25px;
+    height: 50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
+}
+
+
+
+#menu_section li a{
+    position: relative;
+}
+
+
+#menu_section li a ul{
+    display: none;
+    background: #fff; 
+    padding: 10px 20px;
+    z-index: 1001;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    border-radius: 5px; 
+}
+#menu_section li a:hover > ul{
+    /* display: flex;
+    flex-direction: column; */
+    display: block;
+    position: absolute; 
+    top: -50px;
+    left: 50px;
+}
+
+#menu_section li a ul li{
+    list-style-type: none;
+    font-size: .7rem;
+    display: block;
+}
+
+#menu_section  li a ul li a{
+    border-radius: 20px;
+    display: inline-block;
+}
+
+#nav-link-acive ul li{
+    list-style-type: none;
+}
+
+#nav-link-acive ul .sub-link{
+    color: black;
+}
+
+
+#nav-link-active:hover > ul{
+    display: flex;
+    flex-direction: column;
+}
+
+#nav-link-active > ul{
+    display: flex;
+    flex-direction: column;
+    background: #fff; 
+    border-radius: 5px; 
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+}
+
+
+
 /* footer account */
-#account{
+
+footer{
+    position: fixed;
+    bottom: 0;
+    padding: 10px 5px;
+    width: inherit;
+    color: #000;
+}
+
+footer a{
+    text-decoration: none;
     align-items: center;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
-    align-items: center;
-    /* height: 100px; */
-    height: 8vh;
-    border-radius: 20px;
+    gap: 5px;
 }
 
-#account:hover{
+footer a p{
+    color: #000;
+    margin: 0;
+}
+
+
+footer:hover{
     background-color: #F4F4F4;
+    color: #000;
 }
 
-#account img{
-    margin: 10px;
+footer a img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
 }
+
+
 
 #eclipse{
     display: flex;
-    margin: 4px;
 }
 
 #eclipse div{
@@ -146,25 +282,5 @@ body, ul, p, *{
     margin: 1px;
 }
 
+/* End of footer */
 
-/* SideBar */
-
-/* SideBar Miniminised */
-
-.navbar-m{
-    display: grid; 
-    position: fixed;
-    grid-template-rows: 1fr 3fr 1fr;
-    grid-template-areas: 
-    "."
-    "."
-    ".";
-    align-items: center;
-    width: 10vh;
-    height: 100vh;
-    border-right: 1px solid #c6c7c8;
-}
-
-#brand-m {
-    width: 10vh;
-}

@@ -6,6 +6,7 @@ import { Card, Container } from 'react-bootstrap'
 
 import '../styles/Dashboard.css'
 
+import '../styles/dashboard.css'
 
 function Dashboard() {
     const {currentUser} = useAuth()
