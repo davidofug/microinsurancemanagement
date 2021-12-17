@@ -1,85 +1,55 @@
-import PrivateRoute  from './PrivateRoute'
-import NotLoggedIn from '../pages/NotLoggedIn'
+import Mtp from '../pages/Mtp'
+import Menu from '../parts/Menu'
+import Users from '../pages/Users'
 import Login from '../pages/Login'
+import Claims from '../pages/Claims'
 import Logout from '../pages/Logout'
-import Home from '../pages/Home'
-import Help from '../pages/Help'
-import Dashboard from '../pages/Dashboard'
-import NotAuthorized from '../pages/NotAuthorized'
+import Reports from '../pages/Reports'
+import Clients from '../pages/Clients'
 import NotFound from '../pages/NotFound'
+import Policies from '../pages/Policies'
+import Settings from '../pages/Settings'
 import { useAuth } from '../contexts/Auth'
-
-import {
-    BrowserRouter as Router,
-    Switch, Route, Link
-} from 'react-router-dom'
+import PrivateRoute  from './PrivateRoute'
+import Dashboard from '../pages/Dashboard'
+import Windscreen from '../pages/Windscreen'
+import NotLoggedIn from '../pages/NotLoggedIn'
+import Comprehensive from '../pages/Comprehensive'
+import Organisations from '../pages/Organisations'
+import NotAuthorized from '../pages/NotAuthorized'
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 function MyRouter() {
 
-    const date = new Date()
     const { currentUser } = useAuth()
 
     return (
         <Router>
-                <header className="header">
-                    <h1>
-                        <Link to="/"></Link>
-                    </h1>
-                    <nav>
-                        <ul>
-                            {currentUser &&
-                                <>
-                                    <li>
-                                        <Link to="/">Shop</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/dashboard">Dashboard</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/account">My Account</Link>
-                                    </li>
-
-                                </>
-                        }
-                            <li>
-                                <Link to="/help">Help</Link>
-                            </li>
-                            <li>
-                                {currentUser ? <Link to="/logout">Logout</Link> : <Link to="/login">Login</Link>}
-                            </li>
-                        </ul>
-                    </nav>
-                </header>
-
-            <Switch>
-                <Route path="/" exact>
-                    <Login />
-                </Route>
-                <Route path="/home" exact>
-                    <Home />
-                </Route>
-                <Route path="/not-logged-in" >
-                    <NotLoggedIn />
-                </Route>
-                <Route path="/login">
-                    <Login />
-                </Route>
-                <Route path="/help">
-                    <Help />
-                </Route>
-                <Route path="/logout">
-                    <Logout />
-                </Route>
-                <PrivateRoute path="/dashboard">
-                    <Dashboard />
-                </PrivateRoute>
-                <Route path="*">
-                    <NotFound />
-                </Route>
-            </Switch>
-            <footer>
-                <p>&copy; Copyright {date.getFullYear() }</p>
-            </footer>
+            <div className='top-container' >
+                <div className='menuSide'>
+                    <Menu />
+                </div>
+                <div className="displayContainer">
+                    <Switch>
+                        <Route path="/" exact component={Login} />
+                        <Route path="/organisations" exact component={Organisations} />
+                        <Route path="/clients" exact component={Clients} />
+                        <Route path="/not-logged-in" component={NotLoggedIn} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/user" component={Users} />
+                        <Route path="/policies" component={Policies} />
+                        <Route path="/claims" component={Claims} />
+                        <Route path="/reports" component={Reports} />
+                        <Route path="/settings" component={Settings} />
+                        <Route path="/logout" component={Logout} />
+                        <Route path="/motor-third-party" component={Mtp} />
+                        <Route path="/windscreen" component={Windscreen} />
+                        <Route path="/comprehensive" component={Comprehensive} />
+                        <PrivateRoute path="/dashboard" component={Dashboard} />
+                        <Route path="*" component={NotFound} />
+                    </Switch>
+                </div>
+            </div>
         </Router>
     )
 }

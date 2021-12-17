@@ -1,0 +1,117 @@
+body, html{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body{
+    background-color: #fafafa;
+}
+
+
+.menuSide{
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.top-container{
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+.displayContainer{
+    padding-top: 30px;
+    margin-left: 260px;
+    min-width: 1000px;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FAFAFA;
+}
+
+.components{
+    width: 95%;
+}
+
+.title{
+    margin-bottom: 5px;
+}
+
+.subtitle{
+    color: #646464;
+}
+
+#searchInput{
+    margin: 50px 20px;
+    border-radius: 5px;
+    width: 400px;
+    height: 40px;
+    border: 2px solid #000;
+    padding: 10px;
+}
+
+.btn{
+    margin: 0 20px;
+}
+
+
+.table-card{
+    margin-top: 60px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 72px;
+}
+
+
+tbody, td, tfoot, th, thead, tr{
+    border-style: none;
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-accent-bg: transparent;
+    --bs-table-striped-color: #212529;
+    --bs-table-striped-bg: #f6f7f7;
+    --bs-table-active-color: #212529;
+    --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+    --bs-table-hover-color: #212529;
+    --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+    color: #212529;
+}
+
+#search{
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+}
+
+.cta{
+    height: 40px;
+    width: 120px;
+    background-color: #1475CF;
+}
+
+#add_client_group{
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+}
+
+#action{
+    display: flex;
+    flex-direction: column;
+}
+
+#action div{
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: black;
+    margin: 1px;
+}
