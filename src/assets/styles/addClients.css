@@ -1,0 +1,81 @@
+
+
+.required{
+    color: crimson;
+}
+
+form{
+    padding: 30px 30px;
+}
+
+#client_name{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+#client_name input{
+    border-radius: 3px;
+    border: 1px solid #000;
+    padding: 2px 8px;
+}
+
+#dob{
+    border: 1px solid green;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+#dob #date{
+    display: flex;
+    flex-direction: column;
+    justify-self: space-between;
+}
+
+#contact{
+    border: 1px solid yellow;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+#contact div{
+    display: flex;
+    flex-direction: column;
+}
+
+#address{
+    border: 1px solid blue;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+#address textarea{
+    resize: none;
+    height: 50px;
+}
+
+#upload{
+    border: 1px solid brown;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+#submit{
+    display: flex;
+    justify-content: end;
+}
+
+#gender{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}

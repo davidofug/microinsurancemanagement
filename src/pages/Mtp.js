@@ -1,5 +1,3 @@
-import React from 'react'
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import generatedData from '../helpers/generatedClients';
 
 function Mtp() {
@@ -16,34 +14,35 @@ function Mtp() {
 
             <div className="table-card">   
                 <div id="search">
-                <input type="text" placeholder='filter by Dates..' id='searchInput' />
+                    <div></div>
                     <input type="text" placeholder='Search for client...' id='searchInput' />
                 </div>
 
                 <table class="table table-striped" style={{border: "1px solid black"}}>
                     <thead>
-                        <tr><th>Notification Ref No.</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker No.</th><th>Claim Estimate</th><th>Status</th><th></th></tr>
+                        <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>Created At</th></tr>
                     </thead>
 
                     <tbody>
                         
                             
-                                {generatedData[0].map((generatedClient, index) => (
-                                    <tr>
-                                        <td>{generatedClient.refNumber}</td>
-                                        <td>{generatedClient.email}</td>
-                                        <td>{generatedClient.date}</td>
-                                        <td>{generatedClient.plateNumber}</td>
-                                        <td>{generatedClient.stickerNumber}</td>
-                                        <td>{generatedClient.estimate}</td>
+                                {generatedData[1].map((generatedClient, index) => (
+                                    <tr key={index}>
+                                        <td>{generatedClient.name}</td>
+                                        <td>{generatedClient.category}</td>
+                                        <td>{generatedClient.amount}</td>
+                                        <td>{generatedClient.paymentMethod}</td>
+                                        <td>{generatedClient.currency}</td>
+                                        <td>{generatedClient.agentName}</td>
                                         <td>{generatedClient.status}</td>
+                                        <td>{generatedClient.createdAt}</td>
                                         <td><div id="action"><div></div><div></div><div></div></div></td>
                                     </tr>
                                 ))}
                     </tbody>
 
                     <tfoot>
-                    <tr><th>Notification Ref No.</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker No.</th><th>Claim Estimate</th><th>Status</th><th></th></tr>
+                    <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>Created At</th></tr>
                     </tfoot>
                 </table>
             </div>
