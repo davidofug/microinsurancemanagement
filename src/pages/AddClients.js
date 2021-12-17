@@ -1,4 +1,3 @@
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import generatedData from '../helpers/generatedClients';
 import '../assets/styles/addClients.css'
 

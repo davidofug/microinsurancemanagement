@@ -4,10 +4,8 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import profile from '../assets/imgs/image 2.png'
 import logo from '../assets/imgs/britam-logo.png'
-import CloseIcon from '@mui/icons-material/Close'
-import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { HiOutlineChevronLeft } from 'react-icons/hi'
+
 
 function Menu() {
 
@@ -27,7 +25,9 @@ function Menu() {
                 <nav className='sidebar'>
                     <div id='brand'>
                             <img src={logo} alt="Britam" />
-                            <i onClick={() => setToggeMenu(!toggleMenu)}><ArrowBackIcon /></i>
+                            <i onClick={() => setToggeMenu(!toggleMenu)}>
+                            <HiOutlineChevronLeft />
+                            </i>
                     </div>
                 
                     <section id="menu_section">
@@ -67,7 +67,8 @@ function Menu() {
             : 
                 <nav className='sidebar-m'>
                     <section id='brand_m'>
-                            <i onClick={() => setToggeMenu(!toggleMenu)}><ArrowForwardIcon/></i>
+                            <i onClick={() => setToggeMenu(!toggleMenu)}>
+                                </i>
                     </section>
                 
                     <section id="menu_section_m">
