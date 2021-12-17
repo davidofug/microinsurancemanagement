@@ -30,7 +30,21 @@ const menuData = [
     {
         name: "Policies",
         icon: <DirectionsCarIcon />,
-        link: "policies"
+        link: "policies",
+        subMenu: [
+            {
+                name: "MTP",
+                link: "motor-third-party"
+            },
+            {
+                name: "Windscreen",
+                link: "windscreen"
+            },
+            {
+                name: "Comprehensive",
+                link: "comprehensive"
+            }
+        ]
     },
     {
         name: "Claims",

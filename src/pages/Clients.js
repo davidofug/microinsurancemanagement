@@ -1,5 +1,5 @@
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import generatedClients from '../helpers/generatedClients';
+import generatedData from '../helpers/generatedClients';
 
 function Clients() {
     return (
@@ -28,7 +28,7 @@ function Clients() {
                     <tbody>
                         
                             
-                                {generatedClients.map((generatedClient, index) => (
+                                {generatedData[1].map((generatedClient, index) => (
                                     <tr>
                                         <td>{index+1}</td>
                                         <td>{generatedClient.name}</td>

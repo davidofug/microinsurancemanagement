@@ -2,6 +2,11 @@ body, html{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body{
+    background-color: #fafafa;
 }
 
 
@@ -42,7 +47,7 @@ body, html{
 
 #searchInput{
     margin: 50px 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 400px;
     height: 40px;
     border: 2px solid #000;

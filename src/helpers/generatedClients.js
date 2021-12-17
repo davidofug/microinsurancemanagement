@@ -85,5 +85,38 @@ const generatedClients = [
     }
 ]
 
+const claims = [
+    {
+        refNumber: "1234",
+        date: "16/12/2021",
+        plateNumber: "UBB 757A",
+        email: "davidderrick@gmail.com",
+        stickerNumber: "9878",
+        estimate: "2,000,000",
+        status: "pending"
+    },
+    {
+        refNumber: "1234",
+        date: "16/03/2018",
+        plateNumber: "UBa 857E",
+        email: "charleskasasira01@gmail.com",
+        stickerNumber: "7891",
+        estimate: "1,800,000",
+        status: "settled"
+    },
+    {
+        refNumber: "1234",
+        date: "16/12/2021",
+        plateNumber: "UBB 757A",
+        email: "davidderrick@gmail.com",
+        stickerNumber: "9878",
+        estimate: "2,000,000",
+        status: "pending"
+    }
+]
 
-export default generatedClients
+
+const generatedData = [ claims, generatedClients]
+
+
+export default generatedData

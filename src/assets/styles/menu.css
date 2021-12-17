@@ -19,35 +19,42 @@ body, ul, p, *{
 } */
 
 
-.navbar{
+.sidebar{
     top: 0;
     left: 0;
     display: grid; 
     grid-template-rows: 1fr 3fr 1fr;
-    width: 18vw;
+    width: 260px;
+    /* width: 18vw; */
     height: 100vh;
     border-right: 1px solid #c6c7c8;
     align-items: stretch;
-    margin: 0;
+    background-color: #fff;
 }
 
 /* Brand CSS */
 #brand {
-    width: 250px;
-    height: 10vh;
+    width: 100%;
+    /* height: 10vh; */
+    height: 80px;
     margin: 0;
+    border-bottom: 1px solid #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#brand_logo{
-    margin: 20px;
-}
 
-#brand_logo img{
-    margin-right: 15px;
-}
+/* #brand img{
+} */
 
-#brand_logo i {
+#brand i {
     color: #1475cf;
+    font-size: 25px;
+    height: 50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
 }
 /* End of Brand CSS */
 
@@ -55,9 +62,12 @@ body, ul, p, *{
 
 
 /* Menu CSS */
-#menu {
+#menu_section {
     align-items: center;
     height: 82vh;
+    width: 260px;
+    /* border: 1px solid red; */
+    /* background: red; */
 }
 
 
@@ -114,28 +124,159 @@ body, ul, p, *{
 
 
 
+
+
+
+/* SideBar */
+
+/* SideBar Miniminised */
+
+.sidebar-m{
+    top: 0;
+    left: 0;
+    display: grid; 
+    grid-template-rows: 1fr 3fr 1fr;
+    /* width: 10vw; */
+    border-right: 1px solid #c6c7c8;
+    align-items: stretch;
+    width: 80px;
+    height: 100vh;
+    background-color: #fff;
+    /* border-right: 1px solid #c6c7c8; */
+}
+
+#menu_section_m {
+    align-items: center;
+    height: 82vh;
+    width: 85px;
+    /* border: 1px solid red; */
+    /* background: red; */
+}
+
+
+
+
+#brand_m {
+    width: 80px;
+    /* height: 10vh; */
+    height: 80px;
+    margin: 0;
+    border-bottom: 1px solid #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#brand_m i {
+    color: #1475cf;
+    font-size: 25px;
+    height: 50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
+}
+
+
+
+
+
+#nav-link ul{
+    display: none;
+}
+
+#nav-link:hover > ul{
+    display: flex;
+    flex-direction: column;
+    background: #fff; 
+    border-radius: 5px; 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 10px 50px;
+    position: absolute; 
+    top: -250%;
+}
+
+#nav-link ul li{
+    /* border: 1px solid red; */
+    list-style-type: none;
+    margin: 5px;
+    padding: 10px;
+    border-bottom: 2px solid #b3b3b3;
+}
+
+#nav-link-acive ul li{
+    list-style-type: none;
+    margin: 5px;
+    padding: 10px;
+    border-bottom: 2px solid #b3b3b3;
+}
+
+#nav-link-acive ul .sub-link{
+    color: black;
+}
+
+
+#nav-link-active:hover > ul{
+    display: flex;
+    flex-direction: column;
+    background: #fff; 
+    border-radius: 5px; 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 10px 50px;
+    position: absolute; 
+    top: -250%;
+}
+
+#nav-link-active > ul{
+    display: flex;
+    flex-direction: column;
+    background: #fff; 
+    border-radius: 5px; 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 10px 50px;
+    position: absolute; 
+    top: -250%;
+}
+
+
+
 /* footer account */
+
+footer{
+    position: fixed;
+    bottom: 0;
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 5px;
+    width: inherit;
+}
+
 #account{
     align-items: center;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
-    align-items: center;
-    /* height: 100px; */
-    height: 8vh;
-    border-radius: 20px;
+    gap: 5px;
 }
 
 #account:hover{
     background-color: #F4F4F4;
+    color: #000;
 }
 
 #account img{
-    margin: 10px;
+    /* margin: 10px; */
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+#account p{
+    text-align: center;
+    margin: 0;
 }
 
 #eclipse{
     display: flex;
-    margin: 4px;
 }
 
 #eclipse div{
@@ -146,25 +287,3 @@ body, ul, p, *{
     margin: 1px;
 }
 
-
-/* SideBar */
-
-/* SideBar Miniminised */
-
-.navbar-m{
-    display: grid; 
-    position: fixed;
-    grid-template-rows: 1fr 3fr 1fr;
-    grid-template-areas: 
-    "."
-    "."
-    ".";
-    align-items: center;
-    width: 10vh;
-    height: 100vh;
-    border-right: 1px solid #c6c7c8;
-}
-
-#brand-m {
-    width: 10vh;
-}

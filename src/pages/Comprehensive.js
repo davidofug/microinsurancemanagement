@@ -2,16 +2,16 @@ import React from 'react'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import generatedData from '../helpers/generatedClients';
 
-function Claims() {
+function Comprehensive() {
     return (
         <div className='components'>
             <div>
-                <h1 className='title'>Claims</h1>
-                <p className="subtitle">MANAGING CLAIMS</p>
+                <h1 className='title'>Comprehensive Policy</h1>
+                <p className="subtitle">COMPREHENSIVE POLICIES</p>
             </div>
             <div id="add_client_group">
                 <div></div>
-                <button className="btn btn-primary cta">Add Claim</button>
+                <button className="btn btn-primary cta">Add COMPREHENSIVE</button>
             </div>
 
             <div className="table-card">   
@@ -51,4 +51,4 @@ function Claims() {
     )
 }
 
-export default Claims
+export default Comprehensive
