@@ -7,7 +7,6 @@ import reportWebVitals from './reportWebVitals';
 import { combineProviders } from './helpers/combineProviders';
 import './index.css'
 
-
 const Providers = combineProviders([AuthProvider]);
 
 ReactDOM.render(

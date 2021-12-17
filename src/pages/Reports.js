@@ -3,8 +3,10 @@ import React from 'react'
 function Reports() {
     return (
         <div className='components'>
-            <h1 className='title'>Reports</h1>
-            <p>Managing Reports</p>
+            <div>
+                <h1 className='title'>Reports</h1>
+                <p className="subtitle">MANAGING REPORTS</p>
+            </div>
 
             <div style={{"padding": "20px", "border":"1px solid red"}}>
                 <h2>Striped Rows</h2>

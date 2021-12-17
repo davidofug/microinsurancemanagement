@@ -1,7 +1,19 @@
+
 body, html{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
+    font-family: 'Poppins' sans-serif;
+}
+
+body{
+    background-color: #fafafa;
+}
+
+.heading{
+    border: 1px solid red;
 }
 
 
@@ -11,21 +23,23 @@ body, html{
     left: 0;
 }
 
-.container{
+.top-container{
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    /* grid-template-columns: 1fr 4fr; */
 }
 
 .displayContainer{
-    padding-top: 30px;
+    /* padding-left: 30px; */
     margin-left: 260px;
-    width: 82vw;
+    min-width: 1000px;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #FAFAFA;
+    overflow: hidden;
 }
 
 .components{
@@ -42,7 +56,7 @@ body, html{
 
 #searchInput{
     margin: 50px 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 400px;
     height: 40px;
     border: 2px solid #000;
@@ -108,4 +122,8 @@ tbody, td, tfoot, th, thead, tr{
     border-radius: 50%;
     background-color: black;
     margin: 1px;
+}
+
+.place-items-center {
+    place-items: center;
 }

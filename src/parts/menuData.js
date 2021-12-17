@@ -1,45 +1,67 @@
-import PersonIcon from '@mui/icons-material/Person';
-import PeopleIcon from '@mui/icons-material/People';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import AirlineSeatReclineExtraIcon from '@mui/icons-material/AirlineSeatReclineExtra';
+import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson } from 'react-icons/md'
 
 const menuData = [
     {
         name: "Dashboard",
-        icon: <AccountBalanceIcon />,
+        icon: <MdAccountBalance />,
         link: "dashboard"
     },
     {
         name: "Organisations",
-        icon: <BusinessCenterIcon />,
+        icon: <MdBusinessCenter />,
         link: "organisations"
     },
     {
         name: "Clients",
-        icon: <PersonIcon />,
+        icon: <MdPerson />,
         link: "clients"
     },
     {
         name: "User Management",
-        icon: <PeopleIcon />,
-        link: "user"
+        icon: <MdPeople />,
+        link: "user",
+        subMenu: [
+            {
+                name: "Agents",
+                link: "agents"
+            },
+            {
+                name: "Supervisor",
+                link: "supervisor"
+            },
+            {
+                name: "View Log Trail",
+                link: "view-log-trail"
+            }
+        ]
     },
     {
         name: "Policies",
-        icon: <DirectionsCarIcon />,
-        link: "policies"
+        icon: <MdDirectionsCarFilled />,
+        link: "policies",
+        subMenu: [
+            {
+                name: "MTP",
+                link: "motor-third-party"
+            },
+            {
+                name: "Windscreen",
+                link: "windscreen"
+            },
+            {
+                name: "Comprehensive",
+                link: "comprehensive"
+            }
+        ]
     },
     {
         name: "Claims",
-        icon: <AirlineSeatReclineExtraIcon />,
+        icon: <MdAirlineSeatReclineExtra />,
         link: "claims"
     },
     {
         name: "Reports",
-        icon: <AssessmentIcon />,
+        icon: <MdAssessment />,
         link: "reports"
     }
 ]
