@@ -1,8 +1,9 @@
-import React from 'react'
+import { useState } from 'react'
 import { useAuth } from '../contexts/Auth'
-import {Link} from 'react-router-dom'
-import Menu from '../parts/Menu'
+import { Link } from 'react-router-dom'
+import { Card, Row, Col, Container } from 'react-bootstrap'
 
+import '../styles/dashboard.css'
 
 function Dashboard() {
     const {currentUser} = useAuth()
@@ -13,10 +14,6 @@ function Dashboard() {
 
     return (
         <div className="main">
-            {/* <Link to="/account">Account</Link>   */}
-            <div id="menu">
-                Menu Div
-            </div>
             
             <div id="main-container">
                 <div style={{display:"flex", gap:"2.5vw"}}>

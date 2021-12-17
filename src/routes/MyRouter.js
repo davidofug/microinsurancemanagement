@@ -1,3 +1,4 @@
+import Mtp from '../pages/Mtp'
 import Menu from '../parts/Menu'
 import Users from '../pages/Users'
 import Login from '../pages/Login'
@@ -8,10 +9,12 @@ import Clients from '../pages/Clients'
 import NotFound from '../pages/NotFound'
 import Policies from '../pages/Policies'
 import Settings from '../pages/Settings'
-import PrivateRoute  from './PrivateRoute'
 import { useAuth } from '../contexts/Auth'
+import PrivateRoute  from './PrivateRoute'
 import Dashboard from '../pages/Dashboard'
+import Windscreen from '../pages/Windscreen'
 import NotLoggedIn from '../pages/NotLoggedIn'
+import Comprehensive from '../pages/Comprehensive'
 import Organisations from '../pages/Organisations'
 import NotAuthorized from '../pages/NotAuthorized'
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
@@ -22,7 +25,7 @@ function MyRouter() {
 
     return (
         <Router>
-            <div className='container' >
+            <div className='top-container' >
                 <div className='menuSide'>
                     <Menu />
                 </div>
@@ -39,6 +42,9 @@ function MyRouter() {
                         <Route path="/reports" component={Reports} />
                         <Route path="/settings" component={Settings} />
                         <Route path="/logout" component={Logout} />
+                        <Route path="/motor-third-party" component={Mtp} />
+                        <Route path="/windscreen" component={Windscreen} />
+                        <Route path="/comprehensive" component={Comprehensive} />
                         <PrivateRoute path="/dashboard" component={Dashboard} />
                         <Route path="*" component={NotFound} />
                     </Switch>
