@@ -1,5 +1,6 @@
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import generatedData from '../helpers/generatedClients';
+import { Link } from 'react-router-dom'
 
 function Clients() {
     return (
@@ -10,7 +11,10 @@ function Clients() {
             </div>
             <div id="add_client_group">
                 <div></div>
-                <button className="btn btn-primary cta">Add Client</button>
+                <Link to="/add-clients">
+                    <button className="btn btn-primary cta">Add Client</button>
+                </Link>
+                
             </div>
 
             <div className="table-card">   
