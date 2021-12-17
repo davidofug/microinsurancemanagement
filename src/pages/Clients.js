@@ -1,11 +1,10 @@
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
 
 function Clients() {
     return (
         <div className='components'>
-            <div>
+            <div className='heading'>
                 <h1 className='title'>Clients</h1>
                 <p className="subtitle">MANAGING CLIENTS</p>
             </div>
@@ -21,7 +20,7 @@ function Clients() {
                 <div id="search">
                     <input type="text" placeholder='Search for client...' id='searchInput' />
                     <button className='btn btn-primary cta'>Search</button>
-                    <button className='btn btn-primary cta'>Export <FileDownloadIcon /></button>
+                    <button className='btn btn-primary cta'>Export </button>
                 </div>
 
                 <table class="table table-striped" style={{border: "1px solid black"}}>
