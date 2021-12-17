@@ -5,8 +5,10 @@ function Organisations() {
 
     return (
         <div className='components'>
-            <h1 className='title'>Organisations</h1>
-            <p className="subtitle">Manage Organsations</p>
+            <div>
+                <h1 className='title'>Organisations</h1>
+                <p className="subtitle">Manage Organsations</p>
+            </div>
 
             <div className="table-card">   
 

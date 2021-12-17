@@ -1,5 +1,4 @@
 import React from 'react'
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import generatedData from '../helpers/generatedClients';
 
 function Comprehensive() {
