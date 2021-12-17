@@ -9,12 +9,12 @@ import Clients from '../pages/Clients'
 import NotFound from '../pages/NotFound'
 import Policies from '../pages/Policies'
 import Settings from '../pages/Settings'
-import Windscreen from '../pages/Windscreen'
-import Comprehensive from '../pages/Comprehensive'
-import PrivateRoute  from './PrivateRoute'
 import { useAuth } from '../contexts/Auth'
+import PrivateRoute  from './PrivateRoute'
 import Dashboard from '../pages/Dashboard'
+import Windscreen from '../pages/Windscreen'
 import NotLoggedIn from '../pages/NotLoggedIn'
+import Comprehensive from '../pages/Comprehensive'
 import Organisations from '../pages/Organisations'
 import NotAuthorized from '../pages/NotAuthorized'
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
@@ -25,7 +25,7 @@ function MyRouter() {
 
     return (
         <Router>
-            <div className='container' >
+            <div className='top-container' >
                 <div className='menuSide'>
                     <Menu />
                 </div>
