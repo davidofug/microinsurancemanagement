@@ -20,7 +20,7 @@ function Clients() {
                 <div id="search">
                     <input type="text" placeholder='Search for client...' id='searchInput' />
                     <button className='btn btn-primary cta'>Search</button>
-                    <button className='btn btn-primary cta'>Export <MaterialCommunityIcons /></button>
+                    <button className='btn btn-primary cta'>Export </button>
                 </div>
 
                 <table class="table table-striped" style={{border: "1px solid black"}}>
