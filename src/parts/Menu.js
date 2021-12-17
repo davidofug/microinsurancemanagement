@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import profile from '../assets/imgs/image 2.png'
 import logo from '../assets/imgs/britam-logo.png'
-import { HiOutlineChevronLeft } from 'react-icons/hi'
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 
 
 function Menu() {
@@ -68,6 +68,7 @@ function Menu() {
                 <nav className='sidebar-m'>
                     <section id='brand_m'>
                             <i onClick={() => setToggeMenu(!toggleMenu)}>
+                            <HiOutlineChevronRight />
                                 </i>
                     </section>
                 
