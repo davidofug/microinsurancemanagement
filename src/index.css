@@ -12,9 +12,47 @@ body{
     background-color: #fafafa;
 }
 
-.heading{
-    border: 1px solid red;
+
+/* // client actions */
+
+.working-here{
+    position: relative;
 }
+
+
+.working-here ul{
+    position: absolute;
+    list-style-type: none;
+    background-color: #fff;
+    padding: 10px 20px;
+    z-index: 1001;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    border-radius: 5px; 
+    top: 0;
+    left: -120px;
+    display: none;
+}
+
+
+.working-here:hover > ul {
+    display: block;
+}
+
+#action_context li{
+    padding: 5px 10px;
+}
+
+#action_context button{
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+}
+
+#action_context button:hover{
+    border-radius: 20px;
+    background-color: #fafafa;
+}
+
 
 
 .menuSide{

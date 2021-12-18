@@ -2,25 +2,24 @@ import menuData from './menuData'
 import '../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import profile from '../assets/imgs/image 2.png'
 import logo from '../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 
 
-function Menu() {
+function SupervisorMenu() {
 
-    const { Admin } = menuData
+    const { superAdmin } = menuData
 
-    console.log(Admin)
+    console.log(superAdmin)
 
-    const [ selected, setSelected ] = useState({ activeObject: null, Admin })
+    const [ selected, setSelected ] = useState({ activeObject: null, superAdmin })
     const [ toggleMenu, setToggeMenu ] = useState(true)
 
-    useEffect(() => setSelected({...selected, activeObject: selected.Admin[0]}), [])
+    useEffect(() => setSelected({...selected, activeObject: selected.superAdmin[0]}), [])
     
-    const toggleActive = index => setSelected({...selected, activeObject: selected.Admin[index]})
+    const toggleActive = index => setSelected({...selected, activeObject: selected.superAdmin[index]})
 
-    const toggleActiveIdStyle = index => selected.Admin[index] === selected.activeObject ? "nav-link-active" : "nav-link"
+    const toggleActiveIdStyle = index => selected.superAdmin[index] === selected.activeObject ? "nav-link-active" : "nav-link"
 
     return (
         <div>
@@ -35,7 +34,7 @@ function Menu() {
                     </div>
                 
                     <section id="menu_section">
-                            { selected.Admin.map((object, index) => (
+                            { selected.superAdmin.map((object, index) => (
                                                 <li>
                                                     <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
                                                         <i className='icon'>{object.icon}</i> <span>{object.name}</span>
@@ -64,8 +63,8 @@ function Menu() {
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
                         <Link to={'/settings'}>
-                            <img src={profile} alt="profile image" />
-                            <p>Charles Kasasira</p>
+                            <img src="" alt="profile image" />
+                            <p>Anyuru David Derrick</p>
                             <div id="eclipse"><div></div><div></div><div></div></div>
                         </Link>
                     </footer>
@@ -110,7 +109,7 @@ function Menu() {
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
                         <Link to={'/settings'} id="account">
-                            <img src={profile} alt="profile image" />
+                            <img src='' alt="profile image" />
                         </Link>
                     </footer>
 
@@ -120,4 +119,4 @@ function Menu() {
     )
 }
 
-export default Menu
+export default SupervisorMenu

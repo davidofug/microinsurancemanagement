@@ -2,36 +2,36 @@ import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 
-function Clients() {
+function Supervisors() {
 
     useEffect(() => {
-        document.title = 'Britam - Clients'
+        document.title = 'Britam - Supervisors'
     }, [])
 
     return (
         <div className='components'>
             <div className='heading'>
-                <h1 className='title'>Clients</h1>
-                <p className="subtitle">MANAGING CLIENTS</p>
+                <h1 className='title'>Supervisors</h1>
+                <p className="subtitle">MANAGING SUPERVISORS</p>
             </div>
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-clients">
-                    <button className="btn btn-primary cta">Add Client</button>
+                <Link to="/add-Supervisors">
+                    <button className="btn btn-primary cta">Add supervisor</button>
                 </Link>
                 
             </div>
 
             <div className="table-card">   
                 <div id="search">
-                    <input type="text" placeholder='Search for client...' id='searchInput' />
+                    <input type="text" placeholder='Search for supervisor...' id='searchInput' />
                     <button className='btn btn-primary cta'>Search</button>
                     <button className='btn btn-primary cta'>Export </button>
                 </div>
 
                 <table class="table table-striped" style={{border: "1px solid black"}}>
                     <thead>
-                        <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                        <tr><th>#</th><th>License No.</th><th>Name</th><th>Gender</th><th>Email</th><th>NIN</th><th>Contact</th><th>Role</th><th>Branch Name</th></tr>
                     </thead>
 
                     <tbody>
@@ -40,11 +40,14 @@ function Clients() {
                                 {generatedData[1].map((generatedClient, index) => (
                                     <tr>
                                         <td>{index+1}</td>
+                                        <td>2093</td>
                                         <td>{generatedClient.name}</td>
                                         <td>{generatedClient.gender}</td>
                                         <td>{generatedClient.email}</td>
+                                        <td>CM9999999999FE</td>
                                         <td>{generatedClient.contact}</td>
-                                        <td>{generatedClient.address}</td>
+                                        <td>MTP</td>
+                                        <td>Kampala</td>
                                         <td className='working-here'>
                                                 <ul id="action_context">
                                                     <li><button onClick={() => {
@@ -71,4 +74,4 @@ function Clients() {
     )
 }
 
-export default Clients
+export default Supervisors
