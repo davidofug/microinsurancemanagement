@@ -55,6 +55,10 @@ function Menu() {
 
                     
                     <footer>
+                            <ul>
+                                <li><Link to="/settings">My Profile</Link></li>
+                                <li><Link to="/logout">Logout</Link></li>
+                            </ul>
                         <Link to={'/settings'}>
                             <img src={profile} alt="profile image" />
                             <p>Charles Kasasira</p>
@@ -75,25 +79,32 @@ function Menu() {
                     <section id="menu_section_m">
                             {
                                 selected.menuData.map((object, index) => (
-                                        <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                            <i className='icon'>{object.icon}</i>
-                                            {object?.subMenu && 
-                                                    (<ul>
-                                                        {object.subMenu.map((sub, index) => (
-                                                            
-                                                            <Link to={sub.link} className='sub-link' key={index} style={{color: "black"}}>
-                                                                {sub.name}
-                                                            </Link>
-                                                        ))}
-                                                    </ul>)
-                                                }
-                                        </Link>
+                                        <li>
+                                            <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                <i className='icon'>{object.icon}</i>
+                                                
+                                                    {object?.subMenu &&
+                                                            (<ul>
+                                                                {object.subMenu.map((sub, index) => (
+                                                                    <Link to={sub.link} className='sub-link' key={index} style={{color: "black"}}>
+                                                                        {sub.name}
+                                                                    </Link>
+                                                                ))}
+                                                            </ul>)
+                                                        }
+                                                
+                                            </Link>
+                                        </li>
                                     )
                                 )
                             }
                     </section>
                 
                     <footer>
+                            <ul>
+                                <li><Link to="/settings">Settings</Link></li>
+                                <li><Link to="/logout">Logout</Link></li>
+                            </ul>
                         <Link to={'/settings'} id="account">
                             <img src={profile} alt="profile image" />
                         </Link>

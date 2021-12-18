@@ -1,6 +1,10 @@
-import React from 'react'
+import {useEffect} from 'react'
 
 function Users() {
+
+    useEffect(() => {
+        document.title = 'Britam - User Management'
+    }, [])
     return (
         <div className='components'>
             <div>
