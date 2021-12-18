@@ -3,8 +3,8 @@ import React from 'react'
 function Settings() {
     return (
         <div className='components'>
-            <h1 className='title'>Account Setting</h1>
-            <p>MANAGING ACCOUNT</p>
+            <h1 className='title'>Account Settings</h1>
+            <p className='subtitle'>MANAGE YOUR ACCOUNT</p>
         </div>
     )
 }
