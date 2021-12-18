@@ -9,21 +9,42 @@
     grid-template-areas: 
         ". ."; 
     align-content: space-around; 
-    align-items: end; 
+    align-items: end;
+    background-color: #fff; 
     margin-top: 60px;
-    border: 1px solid red;
-    background-color: #fff;
-    padding: 20px;
 }
 
 #settings_columns ul{
     list-style-type: none;
 }
 
+#options ul li{
+    border-bottom: 1px solid #c6c7c8;
+    padding: 10px;
+}
+#options ul li button{
+    color: #646464;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+#options ul li button:hover{
+    color: #000;
+}
+
+#options{
+    height: 100%;
+    border-right: 5px solid #fafafa;
+    padding: 20px;
+}
+
 
 #edit_profile{
     display: flex;
     flex-direction: column;
+    padding: 20px;
 }
 
 #settings_columns img{
