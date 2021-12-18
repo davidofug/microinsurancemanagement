@@ -12,6 +12,10 @@ function Login() {
             setCurrentUser(loggedIn)
             setLogin(loggedIn)
         }
+        if (loggedIn === 2) {
+            setCurrentUser(loggedIn)
+            setLogin(loggedIn)
+        }
         document.title = 'Britam - With you every step of the way'
     })
 
@@ -25,7 +29,13 @@ function Login() {
                 localStorage.setItem('loggedIn', 1)
                 history.push('/dashboard')
             }}
-            >Login</button>
+            >Login Admin</button>
+            <button onClick={() => {
+                setCurrentUser(2)
+                localStorage.setItem('loggedIn', 2)
+                history.push('/dashboard')
+            }}
+            >Login Supervisor</button>
         </div>
     )
 }
