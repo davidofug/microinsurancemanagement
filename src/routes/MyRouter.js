@@ -19,6 +19,7 @@ import Comprehensive from '../pages/Comprehensive'
 import Organisations from '../pages/Organisations'
 import NotAuthorized from '../pages/NotAuthorized'
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import Logs from '../pages/Logs.js'
 
 function MyRouter() {
 
@@ -40,6 +41,9 @@ function MyRouter() {
                         <Route path="/login" component={Login} />
                         <PrivateRoute path="/organisations" >
                             <Organisations />
+                        </PrivateRoute>
+                        <PrivateRoute path="/logs" >
+                            <Logs />
                         </PrivateRoute>
                         <PrivateRoute path="/clients" >
                             <Clients />
