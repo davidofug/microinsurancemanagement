@@ -39,15 +39,15 @@ function MyRouter() {
                 <div className="displayContainer">
                     <Switch>
                         {currentUser === 1 && (
-                                <AgentsRoutes />
+                                <AdminRoutes />
                             )
                         }
                         {currentUser === 2 && (
                                 <SupervisorRoutes />
                             )
                         }
-                        {currentUser === 2 && (
-                                <AdminRoutes />
+                        {currentUser === 3 && (
+                                <AgentsRoutes />
                             )
                         }
                         {currentUser === 4 && (
