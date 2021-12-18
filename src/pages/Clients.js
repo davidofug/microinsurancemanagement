@@ -45,7 +45,18 @@ function Clients() {
                                         <td>{generatedClient.email}</td>
                                         <td>{generatedClient.contact}</td>
                                         <td>{generatedClient.address}</td>
-                                        <td><div id="action"><div></div><div></div><div></div></div></td>
+                                        <td className='working-here'>
+                                                <ul id="action_context">
+                                                    <li><button onClick={() => {
+                                                        console.log(`user ${index} successfully edited`)
+                                                    }}>edit</button></li>
+                                                    <li><button onClick={() => {
+                                                        console.log(`user ${index} successfully deleted`)
+                                                    }}>Delete</button></li>
+                                                </ul>
+                                            <div id="action" onClick={() => {
+                                            console.log(`clicked the three dots on ${index}`)
+                                        }}><div></div><div></div><div></div></div></td>
                                     </tr>
                                 ))}
                     </tbody>
