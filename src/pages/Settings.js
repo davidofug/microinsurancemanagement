@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import '../styles/Settings.css'
 import profile from '../assets/imgs/image 2.png'
+import { Link } from 'react-router-dom'
 
 function Settings() {
 
@@ -15,12 +16,13 @@ function Settings() {
 
             <form action="">
                 <div id='settings_columns'>
-                    <ul>
-                        <li>Edit Profile</li>
-                        <li>Notifications</li>
-                        <li>Messages</li>
-                        <li>Password & security</li>
-                    </ul>
+                    <div id="options">
+                        <ul>
+                            <li><button>Edit Profile</button></li>
+                            <li><button>Notifications</button></li>
+                            <li><button>Password & security</button></li>
+                        </ul>
+                    </div>
                     <div id="edit_profile">
                         <img src={profile} alt="profile image" />
                         <div className="first_last">
