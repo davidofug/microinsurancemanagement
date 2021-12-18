@@ -22,6 +22,18 @@ function AuthProvider({ children }) {
             setCurrentUser(loggedIn)
             // console.log(currentUser)
         }
+        if (loggedIn === 2) {
+            setCurrentUser(loggedIn)
+            // console.log(currentUser)
+        }
+        if (loggedIn === 3) {
+            setCurrentUser(loggedIn)
+            // console.log(currentUser)
+        }
+        if (loggedIn === 4) {
+            setCurrentUser(loggedIn)
+            // console.log(currentUser)
+        }
     },[])
 
     const value = {

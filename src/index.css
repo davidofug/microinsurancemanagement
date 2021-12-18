@@ -33,6 +33,26 @@ body{
     display: none;
 }
 
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    padding: 50px 20px;
+    background-color: #fff;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    border-radius: 5px; 
+    margin: 20px;
+}
+
+.login button{
+    margin-top: 20px;
+}
+
 
 .working-here:hover > ul {
     display: block;

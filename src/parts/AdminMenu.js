@@ -2,23 +2,23 @@ import menuData from './menuData'
 import '../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import profile from '../assets/imgs/image 2.png'
 import logo from '../assets/imgs/britam-logo.png'
-import profile from '../assets/imgs/anyuru.jpg'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 
 
-function SupervisorMenu() {
+function AdminMenu() {
 
-    const { SuperVisor } = menuData
+    const { Admin } = menuData
 
-    const [ selected, setSelected ] = useState({ activeObject: null, SuperVisor })
+    const [ selected, setSelected ] = useState({ activeObject: null, Admin })
     const [ toggleMenu, setToggeMenu ] = useState(true)
 
-    useEffect(() => setSelected({...selected, activeObject: selected.SuperVisor[0]}), [])
+    useEffect(() => setSelected({...selected, activeObject: selected.Admin[0]}), [])
     
-    const toggleActive = index => setSelected({...selected, activeObject: selected.SuperVisor[index]})
+    const toggleActive = index => setSelected({...selected, activeObject: selected.Admin[index]})
 
-    const toggleActiveIdStyle = index => selected.SuperVisor[index] === selected.activeObject ? "nav-link-active" : "nav-link"
+    const toggleActiveIdStyle = index => selected.Admin[index] === selected.activeObject ? "nav-link-active" : "nav-link"
 
     return (
         <div>
@@ -33,14 +33,14 @@ function SupervisorMenu() {
                     </div>
                 
                     <section id="menu_section">
-                            { selected.SuperVisor.map((object, index) => (
-                                                <li key={index}>
+                            { selected.Admin.map((object, index) => (
+                                                <li>
                                                     <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
                                                         <i className='icon'>{object.icon}</i> <span>{object.name}</span>
                                                         {object?.subMenu &&
                                                             (<ul>
                                                                 {object.subMenu.map((sub, index) => (
-                                                                    <li key={index}>
+                                                                    <li>
                                                                         <Link to={sub.link} key={index} style={{color: "black"}}>
                                                                             {sub.name}
                                                                         </Link>
@@ -58,12 +58,12 @@ function SupervisorMenu() {
                     
                     <footer>
                             <ul>
-                                <li><Link to="/supervisor-settings">My Profile</Link></li>
+                                <li><Link to="/admin-settings">My Profile</Link></li>
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
-                        <Link to={'/supervisor-settings'}>
+                        <Link to={'/admin-settings'}>
                             <img src={profile} alt="profile image" />
-                            <p>Anyuru David Derrick</p>
+                            <p>Charles Kasasira</p>
                             <div id="eclipse"><div></div><div></div><div></div></div>
                         </Link>
                     </footer>
@@ -80,8 +80,8 @@ function SupervisorMenu() {
                 
                     <section id="menu_section_m">
                             {
-                                selected.SuperVisor.map((object, index) => (
-                                        <li key={index}>
+                                selected.Admin.map((object, index) => (
+                                        <li>
                                             <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
                                                 <i className='icon'>{object.icon}</i>
                                                 
@@ -104,10 +104,10 @@ function SupervisorMenu() {
                 
                     <footer>
                             <ul>
-                                <li><Link to="/supervisor-settings">Settings</Link></li>
+                                <li><Link to="/admin-settings">Settings</Link></li>
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
-                        <Link to={'/settings'} id="account">
+                        <Link to={'/admin-settings'} id="account">
                             <img src={profile} alt="profile image" />
                         </Link>
                     </footer>
@@ -118,4 +118,4 @@ function SupervisorMenu() {
     )
 }
 
-export default SupervisorMenu
+export default AdminMenu

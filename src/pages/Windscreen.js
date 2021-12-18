@@ -1,5 +1,6 @@
 import {useEffect} from 'react'
 import generatedData from '../helpers/generatedClients';
+import { Link } from 'react-router-dom'
 
 function Windscreen() {
 
@@ -15,7 +16,7 @@ function Windscreen() {
             </div>
             <div id="add_client_group">
                 <div></div>
-                <button className="btn btn-primary cta">Add MTP</button>
+                <Link to="admin-policies"><button className="btn btn-primary cta">Add POLICY</button></Link>
             </div>
 
             <div className="table-card">   

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import generatedData from '../helpers/generatedClients';
+import { Link } from 'react-router-dom'
 
 function Claims() {
 
@@ -15,7 +16,7 @@ function Claims() {
             </div>
             <div id="add_client_group">
                 <div></div>
-                <button className="btn btn-primary cta">Add Claim</button>
+                <Link to="/add-claim"><button className="btn btn-primary cta">Add Claim</button></Link>
             </div>
 
             <div className="table-card">   
