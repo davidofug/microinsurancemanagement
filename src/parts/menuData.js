@@ -4,7 +4,8 @@ const menuData = [
     {
         name: "Dashboard",
         icon: <MdAccountBalance />,
-        link: "dashboard"
+        link: "dashboard",
+        head: "Britam - Dashboard"
     },
     {
         name: "Organisations",

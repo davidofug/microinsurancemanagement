@@ -9,6 +9,7 @@ function Logout() {
         localStorage.setItem('loggedIn', null)
         localStorage.setItem('user', null)
         setCurrentUser(null)
+        document.title = 'Britam - With you every step of the way'
     })
 
     return (
