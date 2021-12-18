@@ -22,6 +22,8 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Logs from '../pages/Logs.js'
 import Supervisors from '../pages/Supervisors'
 import Agents from '../pages/Agents'
+import AddAgents from '../pages/AddAgents'
+import AddSupervisors from '../pages/AddSupervisors'
 
 function MyRouter() {
 
@@ -50,8 +52,14 @@ function MyRouter() {
                         <PrivateRoute path="/supervisor" >
                             <Supervisors />
                         </PrivateRoute>
+                        <PrivateRoute path="/add-supervisors" >
+                            <AddSupervisors />
+                        </PrivateRoute>
                         <PrivateRoute path="/agents" >
                             <Agents />
+                        </PrivateRoute>
+                        <PrivateRoute path="/add-agents" >
+                            <AddAgents />
                         </PrivateRoute>
                         <PrivateRoute path="/clients" >
                             <Clients />
