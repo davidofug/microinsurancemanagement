@@ -25,6 +25,9 @@ import Agents from '../pages/Agents'
 import AddAgents from '../pages/AddAgents'
 import AddSupervisors from '../pages/AddSupervisors'
 
+//different user roles routes
+import AdminRoutes from './AdminRoutes'
+
 function MyRouter() {
 
     const { currentUser } = useAuth()
@@ -43,9 +46,6 @@ function MyRouter() {
                         <Route path="/" exact component={Login} />
                         <Route path="/not-logged-in" component={NotLoggedIn} />
                         <Route path="/login" component={Login} />
-                        <PrivateRoute path="/organisations" >
-                            <Organisations />
-                        </PrivateRoute>
                         <PrivateRoute path="/view-log-trail" >
                             <Logs />
                         </PrivateRoute>
@@ -94,9 +94,7 @@ function MyRouter() {
                         <PrivateRoute path="/add-clients" >
                             <AddClients />
                         </PrivateRoute>
-                        <PrivateRoute path="/dashboard" >
-                            <Dashboard />
-                        </PrivateRoute>
+                        <AdminRoutes />
                         <Route path="*" component={NotFound} />
                     </Switch>
                 </div>
