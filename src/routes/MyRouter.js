@@ -42,7 +42,7 @@ function MyRouter() {
                         <PrivateRoute path="/organisations" >
                             <Organisations />
                         </PrivateRoute>
-                        <PrivateRoute path="/logs" >
+                        <PrivateRoute path="/view-log-trail" >
                             <Logs />
                         </PrivateRoute>
                         <PrivateRoute path="/clients" >
