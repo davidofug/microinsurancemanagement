@@ -22,17 +22,20 @@
     border-bottom: 1px solid #c6c7c8;
     padding: 10px;
 }
-#options ul li button{
+/* #options ul li button{
     color: #646464;
     text-decoration: none;
     cursor: pointer;
     background-color: transparent;
     border: none;
-}
+} */
 
-#options ul li button:hover{
+/* #options ul li button:hover{
     color: #000;
 }
+#options ul li .active{
+    color: #000;
+} */
 
 #options{
     height: 100%;
@@ -63,4 +66,39 @@
 .first_last{
     display: flex;
     flex-direction: row;
+}
+
+
+
+
+
+
+
+
+
+
+.tabs{
+    color: #646464; 
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.tabs:hover{
+    color: #000;
+}
+
+.active-tabs  {
+    color: #000;
+    font-weight: bold;
+}
+
+
+.content{
+    display: none;
+}
+
+.active-content{
+    display: block;
 }
