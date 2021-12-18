@@ -20,6 +20,8 @@ import Organisations from '../pages/Organisations'
 import NotAuthorized from '../pages/NotAuthorized'
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Logs from '../pages/Logs.js'
+import Supervisors from '../pages/Supervisors'
+import Agents from '../pages/Agents'
 
 function MyRouter() {
 
@@ -44,6 +46,12 @@ function MyRouter() {
                         </PrivateRoute>
                         <PrivateRoute path="/view-log-trail" >
                             <Logs />
+                        </PrivateRoute>
+                        <PrivateRoute path="/supervisor" >
+                            <Supervisors />
+                        </PrivateRoute>
+                        <PrivateRoute path="/agents" >
+                            <Agents />
                         </PrivateRoute>
                         <PrivateRoute path="/clients" >
                             <Clients />
