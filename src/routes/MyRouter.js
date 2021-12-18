@@ -1,23 +1,18 @@
-import Mtp from '../pages/Mtp'
-import Menu from '../parts/Menu'
-import Users from '../pages/Users'
-import Login from '../pages/Login'
-import Claims from '../pages/Claims'
-import Logout from '../pages/Logout'
-import Reports from '../pages/Reports'
-import Clients from '../pages/Clients'
 import NotFound from '../pages/NotFound'
-import Policies from '../pages/Policies'
-import Settings from '../pages/Settings'
 import { useAuth } from '../contexts/Auth'
-import PrivateRoute  from './PrivateRoute'
-import Dashboard from '../pages/Dashboard'
-import AddClients from '../pages/AddClients'
-import Windscreen from '../pages/Windscreen'
 import NotLoggedIn from '../pages/NotLoggedIn'
-import Comprehensive from '../pages/Comprehensive'
-import Organisations from '../pages/Organisations'
-import NotAuthorized from '../pages/NotAuthorized'
+import Login from '../pages/Login'
+import Logout from '../pages/Logout'
+
+//different user roles routes
+import SuperAdminRoutes from './AdminRoutes'
+import AdminRoutes from './AdminRoutes'
+import SupervisorRoutes from './AdminRoutes'
+import AgentsRoutes from './AdminRoutes'
+
+
+import Menu from '../parts/Menu'
+import SupervisorMenu from '../parts/SupervisorMenu'
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 function MyRouter() {
@@ -27,56 +22,42 @@ function MyRouter() {
     return (
         <Router>
             <div className='top-container' >
-                {currentUser && (
+                {currentUser === 1 && (
                     <div className='menuSide'>
                         <Menu />
                     </div>
                     )
                 }
+
+                {currentUser === 2 && (
+                    <div className='menuSide'>
+                        <SupervisorMenu />
+                    </div>
+                    )
+                }
+
                 <div className="displayContainer">
                     <Switch>
+                        {currentUser === 1 && (
+                                <AgentsRoutes />
+                            )
+                        }
+                        {currentUser === 2 && (
+                                <SupervisorRoutes />
+                            )
+                        }
+                        {currentUser === 2 && (
+                                <AdminRoutes />
+                            )
+                        }
+                        {currentUser === 4 && (
+                                <SuperAdminRoutes />
+                            )
+                        }
                         <Route path="/" exact component={Login} />
                         <Route path="/not-logged-in" component={NotLoggedIn} />
                         <Route path="/login" component={Login} />
-                        <PrivateRoute path="/organisations" >
-                            <Organisations />
-                        </PrivateRoute>
-                        <PrivateRoute path="/clients" >
-                            <Clients />
-                        </PrivateRoute>
-                        <PrivateRoute path="/user" >
-                            <Users />
-                        </PrivateRoute>
-                        <PrivateRoute path="/policies" >
-                            <Policies />
-                        </PrivateRoute>
-                        <PrivateRoute path="/claims" >
-                            <Claims />
-                        </PrivateRoute>
-                        <PrivateRoute path="/reports" >
-                            <Reports />
-                        </PrivateRoute>
-                        <PrivateRoute path="/settings" >
-                            <Settings />
-                        </PrivateRoute>
-                        <PrivateRoute path="/logout" >
-                            <Logout />
-                        </PrivateRoute>
-                        <PrivateRoute path="/motor-third-party" >
-                            <Mtp />
-                        </PrivateRoute>
-                        <PrivateRoute path="/windscreen" >
-                            <Windscreen />
-                        </PrivateRoute>
-                        <PrivateRoute path="/comprehensive" >
-                            <Comprehensive />
-                        </PrivateRoute>
-                        <PrivateRoute path="/add-clients" >
-                            <Clients />
-                        </PrivateRoute>
-                        <PrivateRoute path="/dashboard" >
-                            <Dashboard />
-                        </PrivateRoute>
+                        <Route path="/logout" component={Logout} />
                         <Route path="*" component={NotFound} />
                     </Switch>
                 </div>

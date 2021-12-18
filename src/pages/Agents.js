@@ -2,29 +2,29 @@ import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 
-function Clients() {
+function Agents() {
 
     useEffect(() => {
-        document.title = 'Britam - Clients'
+        document.title = 'Britam - Agents'
     }, [])
 
     return (
         <div className='components'>
             <div className='heading'>
-                <h1 className='title'>Clients</h1>
-                <p className="subtitle">MANAGING CLIENTS</p>
+                <h1 className='title'>Agents</h1>
+                <p className="subtitle">MANAGING AGENTS</p>
             </div>
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-clients">
-                    <button className="btn btn-primary cta">Add Client</button>
+                <Link to="/add-Agents">
+                    <button className="btn btn-primary cta">Add Agent</button>
                 </Link>
                 
             </div>
 
             <div className="table-card">   
                 <div id="search">
-                    <input type="text" placeholder='Search for client...' id='searchInput' />
+                    <input type="text" placeholder='Search for an agent...' id='searchInput' />
                     <button className='btn btn-primary cta'>Search</button>
                     <button className='btn btn-primary cta'>Export </button>
                 </div>
@@ -71,4 +71,4 @@ function Clients() {
     )
 }
 
-export default Clients
+export default Agents
