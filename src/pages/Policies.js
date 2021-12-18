@@ -65,8 +65,13 @@ function Policies() {
     }
 
     const removeStickerMotorDetails = (index) => {
-        const filteredStickers = stickers.filter(sticker => sticker !== stickers[index])
-        setStickers(filteredStickers)
+
+        const stickersDetails = [...stickers]
+        stickersDetails.splice(index, 1)
+        setStickers(stickersDetails)
+
+        // const filteredStickers = stickers.filter(sticker => sticker !== stickers[index])
+        // setStickers(filteredStickers)
     }
 
 
