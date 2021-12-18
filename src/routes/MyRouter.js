@@ -72,7 +72,7 @@ function MyRouter() {
                             <Comprehensive />
                         </PrivateRoute>
                         <PrivateRoute path="/add-clients" >
-                            <Clients />
+                            <AddClients />
                         </PrivateRoute>
                         <PrivateRoute path="/dashboard" >
                             <Dashboard />
