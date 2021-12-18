@@ -83,6 +83,18 @@ body, ul, p, *{
     padding: 10px;
 }
 
+#nav-link-active{
+    background-color: #1475cf;
+}
+
+#nav-link-active span{
+    color: #fff;
+}
+
+#nav-link-active i{
+    color: #fff;
+}
+
 
 #menu_section li a .icon {
     margin: 0 20px;
@@ -101,10 +113,7 @@ body, ul, p, *{
 
 
 
-#nav-link-active{
-    color: white;
-    background-color: #1475cf;
-}
+
 
 
 
@@ -181,6 +190,8 @@ body, ul, p, *{
     border-radius: 5px; 
     box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
 }
+
+
 
 
 
