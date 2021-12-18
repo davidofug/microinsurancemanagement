@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Form,Row, Col, Table, Button } from 'react-bootstrap';
+
+import { useState, useEffect } from 'react'
+import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import '../styles/Policies.css'
 
 // import moment from 'moment'
@@ -7,6 +8,11 @@ import '../styles/Policies.css'
 // import AddClient from '../parts/AddClient'
 
 function Policies() {
+
+    useEffect(() => {
+        document.title = 'Britam - Policies'
+    }, [])
+
     const [ clientDetails, setClientDetails ] = useState({}) 
 
     // const [ referenceNo, setReferenceNo ] = useState('')

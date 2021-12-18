@@ -1,7 +1,13 @@
 import generatedData from '../helpers/generatedClients';
 import '../assets/styles/addClients.css'
+import { useEffect } from 'react'
 
 function AddClients() {
+
+    useEffect(() => {
+        document.title = 'Britam - Add Clients'
+    }, [])
+
     return (
         <div className='components'>
             <div>

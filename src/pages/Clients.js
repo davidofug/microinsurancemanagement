@@ -1,7 +1,13 @@
 import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
 function Clients() {
+
+    useEffect(() => {
+        document.title = 'Britam - Clients'
+    }, [])
+
     return (
         <div className='components'>
             <div className='heading'>

@@ -18,6 +18,7 @@ function NotLoggedIn() {
         } else {
             setLoading(false)
         }
+        document.title = 'Britam - With you every step of the way'
     })
 
     if (isLogin)

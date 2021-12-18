@@ -1,7 +1,12 @@
-import React from 'react'
+import {useEffect} from 'react'
 import generatedData from '../helpers/generatedClients';
 
 function Windscreen() {
+
+    useEffect(() => {
+        document.title = 'Britam - Windscreen'
+    }, [])
+
     return (
         <div className='components'>
             <div>

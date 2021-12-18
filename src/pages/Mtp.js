@@ -1,6 +1,12 @@
 import generatedData from '../helpers/generatedClients';
+import { useEffect } from 'react'
 
 function Mtp() {
+
+    useEffect(() => {
+        document.title = 'Britam - Motor Third Party'
+    }, [])
+
     return (
         <div className='components'>
             <div>
