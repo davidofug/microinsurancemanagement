@@ -1,7 +1,12 @@
-import React from 'react'
+import { useEffect } from 'react'
 import generatedData from '../helpers/generatedClients';
 
 function Claims() {
+
+    useEffect(() => {
+        document.title = 'Britam - Claims'
+    }, [])
+
     return (
         <div className='components'>
             <div>
