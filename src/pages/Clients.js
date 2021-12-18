@@ -1,12 +1,109 @@
 import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState, Fragment } from 'react'
+import data from '../helpers/mock-data.json'
+import EditableRow from '../helpers/EditableRow';
+import ReadOnlyRow from '../helpers/ReadOnlyRow';
 
 function Clients() {
 
     useEffect(() => {
         document.title = 'Britam - Clients'
     }, [])
+
+    const [contacts, setContacts] = useState(data);
+    const [addFormData, setAddFormData] = useState({
+        name: "",
+        gender: "",
+        email: "",
+        contact: "",
+        address: ""
+      });
+
+    const [editFormData, setEditFormData] = useState({
+        name: "",
+        gender: "",
+        email: "",
+        contact: "",
+        address: ""
+      });
+
+      const [editContactId, setEditContactId] = useState(null);
+
+      const handleAddFormChange = (event) => {
+        event.preventDefault();
+    
+        const fieldName = event.target.getAttribute("name");
+        const fieldValue = event.target.value;
+    
+        const newFormData = { ...addFormData };
+        newFormData[fieldName] = fieldValue;
+    
+        setAddFormData(newFormData);
+      };
+
+      const handleEditFormChange = (event) => {
+        event.preventDefault();
+    
+        const fieldName = event.target.getAttribute("name");
+        const fieldValue = event.target.value;
+    
+        const newFormData = { ...editFormData };
+        newFormData[fieldName] = fieldValue;
+    
+        setEditFormData(newFormData);
+      };
+
+      const handleEditFormSubmit = (event) => {
+        event.preventDefault();
+    
+        const editedContact = {
+          id: editContactId,
+          name: editFormData.name,
+          gender: editFormData.gender,
+          email: editFormData.email,
+          contact: editFormData.contact,
+          address: editFormData.address
+        };
+    
+        const newContacts = [...contacts];
+    
+        const index = contacts.findIndex((contact) => contact.id === editContactId);
+    
+        newContacts[index] = editedContact;
+    
+        setContacts(newContacts);
+        setEditContactId(null);
+      };
+
+      const handleEditClick = (event, contact) => {
+        event.preventDefault();
+        setEditContactId(contact.id);
+    
+        const formValues = {
+          name: contact.name,
+          gender: contact.gender,
+          email: contact.email,
+          contact: contact.contact,
+          address: contact.address
+        };
+    
+        setEditFormData(formValues);
+      };
+    
+      const handleCancelClick = () => {
+        setEditContactId(null);
+      };
+
+      const handleDeleteClick = (contactId) => {
+        const newContacts = [...contacts];
+    
+        const index = contacts.findIndex((contact) => contact.id === contactId);
+    
+        newContacts.splice(index, 1);
+    
+        setContacts(newContacts);
+      };
 
     return (
         <div className='components'>
@@ -22,51 +119,42 @@ function Clients() {
                 
             </div>
 
-            <div className="table-card">   
-                <div id="search">
-                    <input type="text" placeholder='Search for client...' id='searchInput' />
-                    <button className='btn btn-primary cta'>Search</button>
-                    <button className='btn btn-primary cta'>Export </button>
+                <div className="table-card">
+                    <div id="search">
+                        <input type="text" placeholder='Search for client...' id='searchInput' />
+                        <button className='btn btn-primary cta'>Search</button>
+                        <button className='btn btn-primary cta'>Export </button>
+                    </div>
+            <form action="" onSubmit={handleEditFormSubmit}>
+                    <table class="table table-striped" style={{border: "1px solid black"}}>
+                        <thead>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                        </thead>
+                        <tbody>
+                        {contacts.map((contact) => (
+                            <Fragment>
+                                {editContactId === contact.id ? (
+                                <EditableRow
+                                    editFormData={editFormData}
+                                    handleEditFormChange={handleEditFormChange}
+                                    handleCancelClick={handleCancelClick}
+                                />
+                                ): (
+                                    <ReadOnlyRow
+                                      contact={contact}
+                                      handleEditClick={handleEditClick}
+                                      handleDeleteClick={handleDeleteClick}
+                                    />
+                                  )}
+                            </Fragment>
+                        ))}
+                        </tbody>
+                        <tfoot>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                        </tfoot>
+                    </table>
+            </form>
                 </div>
-
-                <table class="table table-striped" style={{border: "1px solid black"}}>
-                    <thead>
-                        <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
-                    </thead>
-
-                    <tbody>
-                        
-                            
-                                {generatedData[1].map((generatedClient, index) => (
-                                    <tr key={index}>
-                                        <td>{index+1}</td>
-                                        <td>{generatedClient.name}</td>
-                                        <td>{generatedClient.gender}</td>
-                                        <td>{generatedClient.email}</td>
-                                        <td>{generatedClient.contact}</td>
-                                        <td>{generatedClient.address}</td>
-                                        <td className='working-here'>
-                                                <ul id="action_context">
-                                                    <li><button onClick={() => {
-                                                        console.log(`user ${index} successfully edited`)
-                                                    }}>edit</button></li>
-                                                    <li><button onClick={() => {
-                                                        console.log(`user ${index} successfully deleted`)
-                                                    }}>Delete</button></li>
-                                                </ul>
-                                            <div id="action" onClick={() => {
-                                            console.log(`clicked the three dots on ${index}`)
-                                        }}><div></div><div></div><div></div></div></td>
-                                    </tr>
-                                ))}
-                    </tbody>
-
-                    <tfoot>
-                        <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
         </div>
     )
 }
