@@ -35,21 +35,32 @@ function Policies() {
             vehicleUse:'',
             totalPremium:'',
             policyStartDate: ''
-        }, 
-        {
-            referenceNo: '',
-            seatingCapacity: '',
-            ccPower: '',
-            grossWeight: '',
-            category:'',
-            motorClass:'',
-            chasisNo:'',
-            motorMake:'',
-            vehicleUse:'',
-            totalPremium:'',
-            policyStartDate: ''
-        }
+        }     
     ])
+
+    const addStickerMotorDetails = () => {
+        setStickers([
+            ...stickers,
+            {
+                referenceNo: '',
+                seatingCapacity: '',
+                ccPower: '',
+                grossWeight: '',
+                category:'',
+                motorClass:'',
+                chasisNo:'',
+                motorMake:'',
+                vehicleUse:'',
+                totalPremium:'',
+                policyStartDate: ''
+            } 
+        ])
+        console.log(stickers)
+    }
+
+    const removeStickerMotorDetails = () => {
+
+    }
 
 
     const renderStickerDetails = (singleSticker, index) => {
@@ -147,12 +158,14 @@ function Policies() {
                         </tbody>
                     </Table>
                     <div style={{display:"flex", flexDirection:"column", gap:"5px", justifyContent:"flex-end", paddingBottom:"40px"}}>
-                        <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}>-</button>
+                        <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
+                            onClick={() => removeStickerMotorDetails(index)}
+                            type="button"
+                        >-</button>
                         <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} 
-                            onClick={() => {
-                                 setStickers(addEmptyStickerForm)
-                            }
-                        }>+</button>
+                            onClick={() => addStickerMotorDetails()}
+                            type="button"
+                        >+</button>
                     </div>
                 </div>
             </React.Fragment>           
@@ -175,24 +188,7 @@ function Policies() {
 
     // }
 
-    const addEmptyStickerForm = () => {
-        stickers.push(
-            {
-                referenceNo: '',
-                seatingCapacity: '',
-                ccPower: '',
-                grossWeight: '',
-                category:'',
-                motorClass:'',
-                chasisNo:'',
-                motorMake:'',
-                vehicleUse:'',
-                totalPremium:'',
-                policyStartDate: ''
-            }
-        )
-        return stickers
-    }
+    
 
     return (
         <div className='components'> 
