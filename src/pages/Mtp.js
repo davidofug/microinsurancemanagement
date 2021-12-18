@@ -1,5 +1,6 @@
 import generatedData from '../helpers/generatedClients';
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 function Mtp() {
 
@@ -15,7 +16,7 @@ function Mtp() {
             </div>
             <div id="add_client_group">
                 <div></div>
-                <button className="btn btn-primary cta">Add MTP</button>
+                <Link to="/admin-policies"><button className="btn btn-primary cta">Add MTP</button></Link>
             </div>
 
             <div className="table-card">   

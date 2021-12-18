@@ -16,26 +16,59 @@ function Login() {
             setCurrentUser(loggedIn)
             setLogin(loggedIn)
         }
+        if (loggedIn === 3) {
+            setCurrentUser(loggedIn)
+            setLogin(loggedIn)
+        }
+        if (loggedIn === 4) {
+            setCurrentUser(loggedIn)
+            setLogin(loggedIn)
+        }
         document.title = 'Britam - With you every step of the way'
     })
 
     if (isLogin)
-        return <Redirect to={{ pathname: '/dashboard' }} />
+        return <Redirect to={{ pathname: '/supervisor-dashboard' }} />
 
     return (
-        <div>
-            <button onClick={() => {
-                setCurrentUser(1)
-                localStorage.setItem('loggedIn', 1)
-                history.push('/dashboard')
-            }}
-            >Login Admin</button>
-            <button onClick={() => {
-                setCurrentUser(2)
-                localStorage.setItem('loggedIn', 2)
-                history.push('/dashboard')
-            }}
-            >Login Supervisor</button>
+        <div className='components login-container'>
+            <div className="login">
+                <h3>Enter Email and Password to sign in</h3>
+                <label htmlFor="">Email</label>
+                <input type="email" name="" id="" />
+                <label htmlFor="">Password</label>
+                <input type="password" name="" id="" />
+                <div>
+                    <input type="checkbox" name="signedIn" id="" />
+                    <label htmlFor="signedIn">Keep me signed in</label>
+                </div>
+                <div>
+                    <button className='btn btn-primary cta' onClick={() => {
+                        setCurrentUser(1)
+                        localStorage.setItem('loggedIn', 1)
+                        history.push('admin-dashboard')
+                    }}
+                    >Login Admin</button>
+                    <button className='btn btn-primary cta' onClick={() => {
+                        setCurrentUser(2)
+                        localStorage.setItem('loggedIn', 2)
+                        history.push('supervisor-dashboard')
+                    }}
+                    >Login Supervisor</button>
+                    <button className='btn btn-primary cta' onClick={() => {
+                        setCurrentUser(3)
+                        localStorage.setItem('loggedIn', 3)
+                        history.push('agent-dashboard')
+                    }}
+                    >Login Agent</button>
+                    <button className='btn btn-primary cta' onClick={() => {
+                        setCurrentUser(4)
+                        localStorage.setItem('loggedIn', 4)
+                        history.push('super-admin-dashboard')
+                    }}
+                    >Login Super Admin</button>
+                </div>
+            </div>
         </div>
     )
 }

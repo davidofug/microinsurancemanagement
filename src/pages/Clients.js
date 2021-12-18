@@ -38,7 +38,7 @@ function Clients() {
                         
                             
                                 {generatedData[1].map((generatedClient, index) => (
-                                    <tr>
+                                    <tr key={index}>
                                         <td>{index+1}</td>
                                         <td>{generatedClient.name}</td>
                                         <td>{generatedClient.gender}</td>

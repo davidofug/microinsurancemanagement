@@ -7,20 +7,18 @@ import logo from '../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 
 
-function Menu() {
+function AgentMenu() {
 
-    const { Admin } = menuData
+    const { Agent } = menuData
 
-    console.log(Admin)
-
-    const [ selected, setSelected ] = useState({ activeObject: null, Admin })
+    const [ selected, setSelected ] = useState({ activeObject: null, Agent })
     const [ toggleMenu, setToggeMenu ] = useState(true)
 
-    useEffect(() => setSelected({...selected, activeObject: selected.Admin[0]}), [])
+    useEffect(() => setSelected({...selected, activeObject: selected.Agent[0]}), [])
     
-    const toggleActive = index => setSelected({...selected, activeObject: selected.Admin[index]})
+    const toggleActive = index => setSelected({...selected, activeObject: selected.Agent[index]})
 
-    const toggleActiveIdStyle = index => selected.Admin[index] === selected.activeObject ? "nav-link-active" : "nav-link"
+    const toggleActiveIdStyle = index => selected.Agent[index] === selected.activeObject ? "nav-link-active" : "nav-link"
 
     return (
         <div>
@@ -35,7 +33,7 @@ function Menu() {
                     </div>
                 
                     <section id="menu_section">
-                            { selected.Admin.map((object, index) => (
+                            { selected.Agent.map((object, index) => (
                                                 <li>
                                                     <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
                                                         <i className='icon'>{object.icon}</i> <span>{object.name}</span>
@@ -60,10 +58,10 @@ function Menu() {
                     
                     <footer>
                             <ul>
-                                <li><Link to="/settings">My Profile</Link></li>
+                                <li><Link to="/agent-settings">My Profile</Link></li>
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
-                        <Link to={'/settings'}>
+                        <Link to={'/agent-settings'}>
                             <img src={profile} alt="profile image" />
                             <p>Charles Kasasira</p>
                             <div id="eclipse"><div></div><div></div><div></div></div>
@@ -82,7 +80,7 @@ function Menu() {
                 
                     <section id="menu_section_m">
                             {
-                                selected.menuData.map((object, index) => (
+                                selected.Agent.map((object, index) => (
                                         <li>
                                             <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
                                                 <i className='icon'>{object.icon}</i>
@@ -106,10 +104,10 @@ function Menu() {
                 
                     <footer>
                             <ul>
-                                <li><Link to="/settings">Settings</Link></li>
+                                <li><Link to="/agent-settings">Settings</Link></li>
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
-                        <Link to={'/settings'} id="account">
+                        <Link to={'/agent-settings'} id="account">
                             <img src={profile} alt="profile image" />
                         </Link>
                     </footer>
@@ -120,4 +118,4 @@ function Menu() {
     )
 }
 
-export default Menu
+export default AgentMenu

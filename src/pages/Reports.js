@@ -13,8 +13,7 @@ function Reports() {
                 <p className="subtitle">MANAGING REPORTS</p>
             </div>
 
-            <div style={{"padding": "20px", "border":"1px solid red"}}>
-                <h2>Striped Rows</h2>          
+            <div className="table-card">         
                 <table class="table table-striped" style={{border: "1px solid black"}}>
                     <thead>
                     <tr>
