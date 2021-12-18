@@ -12,9 +12,7 @@ import '../styles/Policies.css'
 
 function Policies() {
     const [field, handleFieldChange] = useForm({})
-    const handleStickerChange =(index)=>{
-
-    }
+    
 
     useEffect(() => {
         document.title = 'Britam - Policies'
@@ -38,6 +36,13 @@ function Policies() {
             totalPremium:''
         }
     ])
+
+    const handleInputChange = (index, event) => {
+        const values = [...stickers]
+        values[index][event.target.name] = event.target.value
+        // console.log(event.name, event.target.value)
+        setStickers(values)
+    }
 
     const addStickerMotorDetails = () => {
         setStickers([
@@ -82,22 +87,22 @@ function Policies() {
                             <td style={{verticalAlign:"top"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
                             <td>
                                 <Form.Group controlId="referenceNo">
-                                    <Form.Control type="text" id={`reference_no_${index}`} placeholder="Reference No" value={singleSticker.referenceNo} onChange={handleFieldChange}/>
+                                    <Form.Control type="text" name="referenceNo" placeholder="Reference No" value={singleSticker.referenceNo} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </td>
                             <td>
                                 <Form.Group controlId="plateNo">
-                                    <Form.Control type="text" id={`plate_no_${index}`} placeholder="Plate No" value={singleSticker.plateNo} onChange={handleFieldChange}/>
+                                    <Form.Control type="text" name="plateNo" placeholder="Plate No" value={singleSticker.plateNo} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </td>
                             <td>
                                 <Form.Group controlId="seatingCapacity">
-                                    <Form.Control type="text" id={`seating_capacity_${index}`} placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={handleFieldChange}/>
+                                    <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </td>
                             <td>
                                 <Form.Group controlId="ccPower">
-                                    <Form.Control id={`cc_power_${index}`} type="text" placeholder="CC Power" value={singleSticker.ccPower} onChange={handleFieldChange}/>
+                                    <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </td>
                         </tr>
@@ -105,12 +110,12 @@ function Policies() {
                             <td></td>
                             <td>
                                 <Form.Group controlId="grossWeight">
-                                    <Form.Control type="text" id={`gross_weight_${index}`} placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={handleFieldChange} />
+                                    <Form.Control type="text" name="grossWeight" placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={event => handleInputChange(index, event)} />
                                 </Form.Group>
                             </td>
                             <td>
                                 <Form.Group controlId="category" > 
-                                    <Form.Select aria-label="category" value={singleSticker.category} id={`category_${index}`}  onchange={handleFieldChange}>
+                                    <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} onChange={event => handleInputChange(index, event)}>
                                         <option>-Select Category-</option>
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
@@ -120,7 +125,7 @@ function Policies() {
                             </td>
                             <td>
                                 <Form.Group controlId="motorClass" >
-                                    <Form.Select aria-label="Motor Class" value={singleSticker.motorClass} id={`motor_class_${index}`} onChange={handleFieldChange}>
+                                    <Form.Select type="text" name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
                                         <option>Class</option>
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
@@ -130,7 +135,7 @@ function Policies() {
                             </td>
                             <td>
                                 <Form.Group controlId="chasisNo" aria-label="chasisNo">
-                                    <Form.Control type="text" id={`chasis_no_${index}`} placeholder="Chasis No" value={singleSticker.chasisNo} onChange={handleFieldChange}/>
+                                    <Form.Control type="text" name="chasisNo" placeholder="Chasis No" value={singleSticker.chasisNo} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </td>
                         </tr>
@@ -138,7 +143,7 @@ function Policies() {
                             <td></td>
                             <td>
                                 <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
-                                    <Form.Select aria-label="Motor Make" id={`motor_make_${index}`} onChange={handleFieldChange}>
+                                    <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)}>
                                         <option>Motor make</option>
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
@@ -148,7 +153,7 @@ function Policies() {
                             </td>
                             <td>
                                 <Form.Group controlId="vehicleUse">
-                                    <Form.Select aria-label="Vehicle Use" id={`vehicle_use_${index}`} value={singleSticker.vehicleUse} onChange={handleFieldChange}>
+                                    <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
                                         <option>Vehicle use</option>
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
@@ -158,7 +163,7 @@ function Policies() {
                             </td>
                             <td>
                                 <Form.Group controlId="totalPremium" >
-                                    <Form.Control type="text" placeholder="Total Premium" id={`total_premium_${index}`} value={singleSticker.totalPremium} />
+                                    <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} />
                                 </Form.Group>
                             </td>
                             <td></td>
@@ -255,8 +260,6 @@ function Policies() {
                     </div> 
                 </Form>
             </div>
-            
-
         </div>
     )
 }
