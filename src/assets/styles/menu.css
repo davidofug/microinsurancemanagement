@@ -83,17 +83,6 @@ body, ul, p, *{
     padding: 10px;
 }
 
-#nav-link-active{
-    background-color: #1475cf;
-}
-
-#nav-link-active span{
-    color: #fff;
-}
-
-#nav-link-active i{
-    color: #fff;
-}
 
 
 #menu_section li a .icon {
@@ -106,12 +95,27 @@ body, ul, p, *{
     
 }
 
-#menu_section li a:hover{
+#nav-link:hover{
     background-color: #F4F4F4;
     color: black;
 }
 
 
+#nav-link-active{
+    background-color: #1475cf;
+}
+
+#nav-link-active:hover{
+    background-color: #1475cf;
+}
+
+#nav-link-active span{
+    color: #fff;
+}
+
+#nav-link-active i{
+    color: #fff;
+}
 
 
 
@@ -167,6 +171,9 @@ body, ul, p, *{
 #menu_section  li a ul li a{
     border-radius: 20px;
     display: inline-block;
+}
+#menu_section  li a ul li a:hover{
+    background-color: #fafafa;
 }
 
 #nav-link-acive ul li{
