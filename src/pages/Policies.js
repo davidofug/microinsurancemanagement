@@ -70,7 +70,21 @@ function Policies() {
             stickersDetails.splice(index, 1)
             setStickers(stickersDetails)
         }
-        return
+        setStickers(
+            {
+                referenceNo:'',
+                plateNo:'',
+                seatingCapacity:'',
+                ccPower:'',
+                grossWeight:'',
+                category:'', 
+                motorClass:'',
+                chasisNo:'',
+                motorMake:'',
+                vehicleUse:'',
+                totalPremium:''
+            }
+        )
         // const filteredStickers = stickers.filter(sticker => sticker !== stickers[index])
         // setStickers(filteredStickers)
     }
