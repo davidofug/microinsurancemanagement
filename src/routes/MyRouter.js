@@ -36,20 +36,44 @@ function MyRouter() {
                 <div className="displayContainer">
                     <Switch>
                         <Route path="/" exact component={Login} />
-                        <Route path="/organisations" exact component={Organisations} />
-                        <Route path="/clients" exact component={Clients} />
                         <Route path="/not-logged-in" component={NotLoggedIn} />
                         <Route path="/login" component={Login} />
-                        <Route path="/user" component={Users} />
-                        <Route path="/policies" component={Policies} />
-                        <Route path="/claims" component={Claims} />
-                        <Route path="/reports" component={Reports} />
-                        <Route path="/settings" component={Settings} />
-                        <Route path="/logout" component={Logout} />
-                        <Route path="/motor-third-party" component={Mtp} />
-                        <Route path="/windscreen" component={Windscreen} />
-                        <Route path="/comprehensive" component={Comprehensive} />
-                        <Route path="/add-clients" component={AddClients} />
+                        <PrivateRoute path="/organisations" >
+                            <Organisations />
+                        </PrivateRoute>
+                        <PrivateRoute path="/clients" >
+                            <Clients />
+                        </PrivateRoute>
+                        <PrivateRoute path="/user" >
+                            <Users />
+                        </PrivateRoute>
+                        <PrivateRoute path="/policies" >
+                            <Policies />
+                        </PrivateRoute>
+                        <PrivateRoute path="/claims" >
+                            <Claims />
+                        </PrivateRoute>
+                        <PrivateRoute path="/reports" >
+                            <Reports />
+                        </PrivateRoute>
+                        <PrivateRoute path="/settings" >
+                            <Settings />
+                        </PrivateRoute>
+                        <PrivateRoute path="/logout" >
+                            <Logout />
+                        </PrivateRoute>
+                        <PrivateRoute path="/motor-third-party" >
+                            <Mtp />
+                        </PrivateRoute>
+                        <PrivateRoute path="/windscreen" >
+                            <Windscreen />
+                        </PrivateRoute>
+                        <PrivateRoute path="/comprehensive" >
+                            <Comprehensive />
+                        </PrivateRoute>
+                        <PrivateRoute path="/add-clients" >
+                            <Clients />
+                        </PrivateRoute>
                         <PrivateRoute path="/dashboard" >
                             <Dashboard />
                         </PrivateRoute>
