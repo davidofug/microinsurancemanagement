@@ -56,7 +56,7 @@ function Menu() {
                     
                     <footer>
                             <ul>
-                                <li><Link to="/settings">Settings</Link></li>
+                                <li><Link to="/settings">My Profile</Link></li>
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
                         <Link to={'/settings'}>

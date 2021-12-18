@@ -9,8 +9,7 @@ function Reports() {
             </div>
 
             <div style={{"padding": "20px", "border":"1px solid red"}}>
-                <h2>Striped Rows</h2>
-                <p>The .table-striped class adds zebra-stripes to a table:</p>            
+                <h2>Striped Rows</h2>          
                 <table class="table table-striped" style={{border: "1px solid black"}}>
                     <thead>
                     <tr>
