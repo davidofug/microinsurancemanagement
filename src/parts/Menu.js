@@ -55,6 +55,10 @@ function Menu() {
 
                     
                     <footer>
+                            <ul>
+                                <li><Link to="/settings">Settings</Link></li>
+                                <li><Link to="/logout">Logout</Link></li>
+                            </ul>
                         <Link to={'/settings'}>
                             <img src={profile} alt="profile image" />
                             <p>Charles Kasasira</p>
@@ -97,6 +101,10 @@ function Menu() {
                     </section>
                 
                     <footer>
+                            <ul>
+                                <li><Link to="/settings">Settings</Link></li>
+                                <li><Link to="/logout">Logout</Link></li>
+                            </ul>
                         <Link to={'/settings'} id="account">
                             <img src={profile} alt="profile image" />
                         </Link>
