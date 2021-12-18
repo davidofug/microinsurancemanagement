@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import '../styles/Policies.css'
 
