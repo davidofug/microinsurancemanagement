@@ -35,7 +35,7 @@ function Policies() {
             vehicleUse:'',
             totalPremium:'',
             policyStartDate: ''
-        },
+        }, 
         {
             referenceNo: '',
             seatingCapacity: '',
@@ -55,91 +55,106 @@ function Policies() {
     const renderStickerDetails = (singleSticker, index) => {
         return (
             <React.Fragment key={index}>
-                <tr>
-                    <td style={{verticalAlign:"top"}}>01</td>
-                    <td>
-                        <Form.Group controlId="referenceNo">
-                            <Form.Control type="text" placeholder="Reference No" value={singleSticker.referenceNo}/>
-                        </Form.Group>
-                    </td>
-                    <td>
-                        <Form.Group controlId="plateNo">
-                            <Form.Control type="text" placeholder="Plate No" value={singleSticker.plateNo}/>
-                        </Form.Group>
-                    </td>
-                    <td>
-                        <Form.Group controlId="seatingCapacity">
-                            <Form.Control type="text" placeholder="Seating Capacity" value={singleSticker.seatingCapacity}/>
-                        </Form.Group>
-                    </td>
-                    <td>
-                        <Form.Group controlId="ccPower">
-                            <Form.Control type="text" placeholder="CC Power" value={singleSticker.ccPower} />
-                        </Form.Group>
-                    </td>
-                </tr>
-                <tr style={{backgroundColor:"#FFFFFF"}}>
-                    <td></td>
-                    <td>
-                        <Form.Group controlId="grossWeight">
-                            <Form.Control type="text" placeholder="Gross Weight" value={singleSticker.grossWeight} />
-                        </Form.Group>
-                    </td>
-                    <td>
-                        <Form.Group controlId="category" value={singleSticker.category}> 
-                            <Form.Select aria-label="category">
-                                <option>-Select Category-</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </td>
-                    <td>
-                        <Form.Group controlId="motorClass" value={singleSticker.motorClass}>
-                            <Form.Select aria-label="Motor Class">
-                                <option>Class</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </td>
-                    <td>
-                        <Form.Group controlId="chasisNo" aria-label="chasisNo">
-                            <Form.Control type="text" placeholder="Chasis No" value={singleSticker.chasisNo}/>
-                        </Form.Group>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
-                            <Form.Select aria-label="Motor Make">
-                                <option>Motor make</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Select>
-                        </Form.Group >
-                    </td>
-                    <td>
-                        <Form.Group controlId="vehicleUse">
-                            <Form.Select aria-label="Vehicle Use" value={singleSticker.vehicleUse}>
-                                <option>Vehicle use</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </td>
-                    <td>
-                        <Form.Group controlId="totalPremium" value={singleSticker.totalPremium}>
-                            <Form.Control type="text" placeholder="Total Premium"/>
-                        </Form.Group>
-                    </td>
-                    <td></td>
-                </tr>
+                <div style={{display:"flex", gap: "20px"}}>
+                {/* {addAnotherSticker} */}
+                    <Table striped bordered>
+                        <tbody> 
+                            <tr>
+                                <td style={{verticalAlign:"top"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
+                                <td>
+                                    <Form.Group controlId="referenceNo">
+                                        <Form.Control type="text" placeholder="Reference No" value={singleSticker.referenceNo}/>
+                                    </Form.Group>
+                                </td>
+                                <td>
+                                    <Form.Group controlId="plateNo">
+                                        <Form.Control type="text" placeholder="Plate No" value={singleSticker.plateNo}/>
+                                    </Form.Group>
+                                </td>
+                                <td>
+                                    <Form.Group controlId="seatingCapacity">
+                                        <Form.Control type="text" placeholder="Seating Capacity" value={singleSticker.seatingCapacity}/>
+                                    </Form.Group>
+                                </td>
+                                <td>
+                                    <Form.Group controlId="ccPower">
+                                        <Form.Control type="text" placeholder="CC Power" value={singleSticker.ccPower} />
+                                    </Form.Group>
+                                </td>
+                            </tr>
+                            <tr style={{backgroundColor:"#FFFFFF"}}>
+                                <td></td>
+                                <td>
+                                    <Form.Group controlId="grossWeight">
+                                        <Form.Control type="text" placeholder="Gross Weight" value={singleSticker.grossWeight} />
+                                    </Form.Group>
+                                </td>
+                                <td>
+                                    <Form.Group controlId="category" value={singleSticker.category}> 
+                                        <Form.Select aria-label="category">
+                                            <option>-Select Category-</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </Form.Select>
+                                    </Form.Group>
+                                </td>
+                                <td>
+                                    <Form.Group controlId="motorClass" value={singleSticker.motorClass}>
+                                        <Form.Select aria-label="Motor Class">
+                                            <option>Class</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </Form.Select>
+                                    </Form.Group>
+                                </td>
+                                <td>
+                                    <Form.Group controlId="chasisNo" aria-label="chasisNo">
+                                        <Form.Control type="text" placeholder="Chasis No" value={singleSticker.chasisNo}/>
+                                    </Form.Group>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
+                                        <Form.Select aria-label="Motor Make">
+                                            <option>Motor make</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </Form.Select>
+                                    </Form.Group >
+                                </td>
+                                <td>
+                                    <Form.Group controlId="vehicleUse">
+                                        <Form.Select aria-label="Vehicle Use" value={singleSticker.vehicleUse}>
+                                            <option>Vehicle use</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </Form.Select>
+                                    </Form.Group>
+                                </td>
+                                <td>
+                                    <Form.Group controlId="totalPremium" value={singleSticker.totalPremium}>
+                                        <Form.Control type="text" placeholder="Total Premium"/>
+                                    </Form.Group>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    <div style={{display:"flex", flexDirection:"column", gap:"5px", justifyContent:"flex-end", paddingBottom:"40px"}}>
+                        <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}>-</button>
+                        <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} 
+                            onClick={() => {
+                                 setStickers(addEmptyStickerForm)
+                            }
+                        }>+</button>
+                    </div>
+                </div>
             </React.Fragment>           
         )
     }
@@ -161,8 +176,22 @@ function Policies() {
     // }
 
     const addEmptyStickerForm = () => {
-        return "boom"
-
+        stickers.push(
+            {
+                referenceNo: '',
+                seatingCapacity: '',
+                ccPower: '',
+                grossWeight: '',
+                category:'',
+                motorClass:'',
+                chasisNo:'',
+                motorMake:'',
+                vehicleUse:'',
+                totalPremium:'',
+                policyStartDate: ''
+            }
+        )
+        return stickers
     }
 
     return (
@@ -200,19 +229,9 @@ function Policies() {
                     </div>
                     
                     {/*Sticker form details container.*/}
-                    <div style={{display:"flex", gap: "20px"}}>
-                        {/* {addAnotherSticker} */}
-                        <Table striped bordered>
-                            <tbody>
-                                {stickers.map(renderStickerDetails)}
-                                
-                            </tbody>
-                        </Table>
-                        <div style={{display:"flex", flexDirection:"column", gap:"5px", justifyContent:"flex-end", paddingBottom:"40px"}}>
-                            <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}>-</button>
-                            <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} onClick={addEmptyStickerForm}>+</button>
-                        </div>
-                    </div>
+                    {stickers.map(renderStickerDetails)}
+                    
+                    
                     <div>
                         <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                             <Col xs="3">
