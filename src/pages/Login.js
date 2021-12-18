@@ -12,6 +12,7 @@ function Login() {
             setCurrentUser(loggedIn)
             setLogin(loggedIn)
         }
+        document.title = 'Britam - With you every step of the way'
     })
 
     if (isLogin)
