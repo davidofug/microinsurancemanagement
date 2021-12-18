@@ -18,32 +18,6 @@ function Policies() {
 
     
     const [ clientDetails, setClientDetails ] = useState({}) 
- /*   const [fields, {
-        referenceNo,
-        seatingCapacity,
-        ccPower,
-        grossWeight,
-        category,
-        motorClass,
-        chasisNo,
-        motorMake,
-        vehicleUse,
-        totalPremium,
-        policyStartDate
-    }] = useForm("")
-    */
-    // const [ referenceNo, setReferenceNo ] = useState('')
-    // const [ plateNo, setPlateNo ] = useState('')
-    // const [ seatingCapacity, setSeatingCapacity ] = useState('')
-    // const [ ccPower, setccPower ] = useState('')
-    // const [ grossWeight, setGrossWeight ] = useState('')
-    // const [ category, setCategory ] = useState('')
-    // const [ motorClass, setMotorClass ] = useState('')
-    // const [ chasisNumber, setChasisNumber ] = useState('')
-    // const [ motorMake, setMotorMake ] = useState('')
-    // const [ vehicleUse, setVehicleUse ] = useState('')
-    // const [ totalPremium, setTotalPremium ] = useState(0)
-    // const [ policyStartDate, setPolicyStartDate ] = useState(moment())
 
     const [ stickers, setStickers ] = useState([
         {
