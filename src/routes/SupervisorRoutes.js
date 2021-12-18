@@ -1,6 +1,6 @@
 import Mtp from '../pages/Mtp'
 import Users from '../pages/Users'
-import Claims from '../pages/Claims'
+import Claims from '../pages/supervisor/Claims'
 import Reports from '../pages/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
@@ -15,6 +15,7 @@ import Logs from '../pages/Logs.js'
 import Agents from '../pages/Agents'
 import AddAgents from '../pages/AddAgents'
 import Logout from '../pages/Logout'
+import AddClaims from '../pages/AddClaims'
 
 
 function SupervisorRoutes() {
@@ -43,6 +44,9 @@ function SupervisorRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/supervisor-claims" >
                 <Claims />
+            </PrivateRoute>
+            <PrivateRoute path="/supervisor-add-claims" >
+                <AddClaims />
             </PrivateRoute>
             <PrivateRoute path="/supervisor-reports" >
                 <Reports />
