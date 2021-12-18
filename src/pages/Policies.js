@@ -58,8 +58,8 @@ function Policies() {
         console.log(stickers)
     }
 
-    const removeStickerMotorDetails = () => {
-
+    const removeStickerMotorDetails = (index) => {
+        setStickers([...stickers].splice(index, 1))
     }
 
 
