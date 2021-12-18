@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function Reports() {
+
+    useEffect(() => {
+        document.title = 'Britam - Reports'
+    }, [])
+
     return (
         <div className='components'>
             <div>

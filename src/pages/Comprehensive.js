@@ -1,7 +1,12 @@
-import React from 'react'
+import { useEffect } from 'react'
 import generatedData from '../helpers/generatedClients';
 
 function Comprehensive() {
+
+    useEffect(() => {
+        document.title = 'Britam - Comprehensive'
+    }, [])
+
     return (
         <div className='components'>
             <div>
