@@ -12,6 +12,10 @@ import '../styles/Policies.css'
 
 function Policies() {
     const [field, handleFieldChange] = useForm({})
+    const handleStickerChange =(index)=>{
+
+    }
+
     useEffect(() => {
         document.title = 'Britam - Policies'
     }, [])
@@ -21,46 +25,47 @@ function Policies() {
 
     const [ stickers, setStickers ] = useState([
         {
-            referenceNo: '',
-            seatingCapacity: '',
-            ccPower: '',
-            grossWeight: '',
-            category:'',
+            referenceNo:'',
+            plateNo:'',
+            seatingCapacity:'',
+            ccPower:'',
+            grossWeight:'',
+            category:'', 
             motorClass:'',
             chasisNo:'',
             motorMake:'',
             vehicleUse:'',
-            totalPremium:'',
-            policyStartDate: ''
-        }     
+            totalPremium:''
+        }
     ])
 
     const addStickerMotorDetails = () => {
         setStickers([
             ...stickers,
             {
-                referenceNo: '',
-                seatingCapacity: '',
-                ccPower: '',
-                grossWeight: '',
-                category:'',
+                referenceNo:'',
+                plateNo:'',
+                seatingCapacity:'',
+                ccPower:'',
+                grossWeight:'',
+                category:'', 
                 motorClass:'',
                 chasisNo:'',
                 motorMake:'',
                 vehicleUse:'',
-                totalPremium:'',
-                policyStartDate: ''
-            } 
+                totalPremium:''
+            }
         ])
-        console.log(stickers)
+        // console.log(stickers)
     }
 
     const removeStickerMotorDetails = (index) => {
-
-        const stickersDetails = [...stickers]
-        stickersDetails.splice(index, 1)
-        setStickers(stickersDetails)
-
+        if(stickers.length > 1){
+            const stickersDetails = [...stickers]
+            stickersDetails.splice(index, 1)
+            setStickers(stickersDetails)
+        }
+        return
         // const filteredStickers = stickers.filter(sticker => sticker !== stickers[index])
         // setStickers(filteredStickers)
     }
@@ -92,7 +97,7 @@ function Policies() {
                             </td>
                             <td>
                                 <Form.Group controlId="ccPower">
-                                    <Form.Control id={`cc_power_${index}`}type="text" placeholder="CC Power" value={singleSticker.ccPower} onChange={handleFieldChange}/>
+                                    <Form.Control id={`cc_power_${index}`} type="text" placeholder="CC Power" value={singleSticker.ccPower} onChange={handleFieldChange}/>
                                 </Form.Group>
                             </td>
                         </tr>
@@ -246,7 +251,7 @@ function Policies() {
                                 </Button>
                             </div>
                         </div>
-                        {console.log(field)}  
+                        {console.log(stickers)}  
                     </div> 
                 </Form>
             </div>
