@@ -1,7 +1,12 @@
 import { useAuth } from '../contexts/Auth'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
 function Organisations() {
+
+    useEffect(() => {
+        document.title = 'Britam - Organisations'
+    }, [])
 
     return (
         <div className='components'>

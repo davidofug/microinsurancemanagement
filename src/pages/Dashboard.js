@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/Auth'
 import {Link} from 'react-router-dom'
 import Menu from '../parts/Menu'
@@ -13,6 +13,10 @@ function Dashboard() {
     const [stickers, setStickers] = useState(13)
     const [policies, setPolicies] = useState(2)
     const [claimNotifications, setClaimNotifications] = useState(27)
+
+    useEffect(() => {
+        document.title = 'Britam - Welcome'
+    }, [])
 
     return (
 

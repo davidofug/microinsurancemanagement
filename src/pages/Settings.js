@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../styles/Settings.css'
 import profile from '../assets/imgs/image 2.png'
 
 function Settings() {
+
+    useEffect(() => {
+        document.title = 'Britam - User Profile'
+    }, [])
+
     return (
         <div className='components'>
             <h1 className='title'>My Profile</h1>
