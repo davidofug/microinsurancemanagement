@@ -3,20 +3,7 @@ body, ul, p, *{
     margin: 0;
 }
 
-/* SideBar */
 
-/* Navigation menu */
-
-/* using flex
- .navbar{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    width: 250px;
-    border: 1px solid red;
-    height: 100vh;
-} */
 
 
 .sidebar{
@@ -66,8 +53,6 @@ body, ul, p, *{
     align-items: center;
     height: 82vh;
     width: 260px;
-    /* border: 1px solid red; */
-    /* background: red; */
 }
 
 #menu_section li{
@@ -316,7 +301,11 @@ footer a img{
     
 }
 
-#menu_section_m li a:hover{
+#menu_section_m  li a:hover{
+    background-color: #fafafa;
+}
+
+#nav-link:hover{
     background-color: #F4F4F4;
     color: black;
 }
