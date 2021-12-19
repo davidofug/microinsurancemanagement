@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import Menu from '../parts/Menu'
 import { Card, Container } from 'react-bootstrap'
 
-import '../styles/Dashboard.css'
+import '../styles/dashboard.css'
 
 
 function Dashboard() {
