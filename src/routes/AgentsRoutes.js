@@ -13,6 +13,7 @@ import Comprehensive from '../pages/Comprehensive'
 import {Route} from 'react-router-dom'
 import Logs from '../pages/Logs.js'
 import Logout from '../pages/Logout'
+import NotFound from '../pages/NotFound'
 
 
 function AdminRoutes() {
@@ -57,6 +58,7 @@ function AdminRoutes() {
             <PrivateRoute path="/agent-add-clients" >
                 <AddClients />
             </PrivateRoute>
+            {/* <Route path="*" component={NotFound} /> */}
         </>
         
     )
