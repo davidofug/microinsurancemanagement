@@ -13,33 +13,42 @@ function Reports() {
                 <p className="subtitle">MANAGING REPORTS</p>
             </div>
 
-            <div className="table-card">         
-                <table class="table table-striped" style={{border: "1px solid black"}}>
-                    <thead>
-                    <tr>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                    </tr>
-                    <tr>
-                        <td>Mary</td>
-                        <td>Moe</td>
-                        <td>mary@example.com</td>
-                    </tr>
-                    <tr>
-                        <td>July</td>
-                        <td>Dooley</td>
-                        <td>july@example.com</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div className="componentsData">
+                <div className="table-card">
+                    <table class="table table-striped" style={{border: "1px solid black"}}>
+                        <thead>
+                        <tr>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>John</td>
+                            <td>Doe</td>
+                            <td>john@example.com</td>
+                        </tr>
+                        <tr>
+                            <td>Mary</td>
+                            <td>Moe</td>
+                            <td>mary@example.com</td>
+                        </tr>
+                        <tr>
+                            <td>July</td>
+                            <td>Dooley</td>
+                            <td>july@example.com</td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Email</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
     )

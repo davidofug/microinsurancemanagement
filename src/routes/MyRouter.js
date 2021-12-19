@@ -34,7 +34,7 @@ function MyRouter() {
                 </Switch>
             ): (
                 <div className='top-container'>
-                <div className='menuSide'>
+                <div>
                     {currentUser === 1 && (
                             <AdminMenu />
                             )
@@ -56,7 +56,7 @@ function MyRouter() {
                     }
                 </div>
 
-                <main className='displayContainer'>
+                <main>
                     <Switch>
                         {currentUser === 1 && (
                                 <AdminRoutes />
