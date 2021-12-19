@@ -36,7 +36,7 @@ function AdminMenu() {
     const toggleActiveClassStyle = index => selected.Admin[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
 
     return (
-        <div>
+        <div className='menuSide'>
             <nav className='mobile-sidebar'>
                         <section id='brand_m'>
                                 {/* <i onClick={() => setToggeMenu(!toggleMenu)}>
