@@ -77,9 +77,7 @@
     list-style-type: none;
 }
 
-#nav-linked ul li a{
-    color: red;
-}
+
 
 
 
@@ -92,21 +90,6 @@
     width: 25px;
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* End Menu CSS */
@@ -131,9 +114,8 @@
     box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
     border-radius: 5px; 
 }
+
 #menu_section li a:hover > ul{
-    /* display: flex;
-    flex-direction: column; */
     display: block;
     position: absolute; 
     top: -50px;
@@ -246,29 +228,22 @@ footer a img{
     left: 0;
     display: grid; 
     grid-template-rows: 1fr 3fr 1fr;
-    /* width: 10vw; */
     border-right: 1px solid #c6c7c8;
     align-items: stretch;
     width: 80px;
     height: 100vh;
     background-color: #fff;
-    /* border-right: 1px solid #c6c7c8; */
 }
 
 #menu_section_m {
     align-items: center;
     height: 82vh;
     width: 85px;
-    /* border: 1px solid red; */
-    /* background: red; */
 }
 
 #menu_section {
     align-items: center;
     height: 82vh;
-    width: 260px;
-    /* border: 1px solid red; */
-    /* background: red; */
 }
 
 #menu_section_m li{
@@ -293,17 +268,8 @@ footer a img{
 #menu_section_m li a i {
     height: 25px;
     width: 25px;
-    
 }
 
-#menu_section_m  li a:hover{
-    background-color: #fafafa;
-}
-
-#nav-link:hover{
-    background-color: #F4F4F4;
-    color: black;
-}
 
 
 
@@ -345,8 +311,6 @@ footer a img{
 }
 
 #menu_section_m li a:hover > ul{
-    /* display: flex;
-    flex-direction: column; */
     display: block;
     position: absolute; 
     top: -50px;
