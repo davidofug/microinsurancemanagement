@@ -87,18 +87,18 @@ function SupervisorMenu() {
                 </nav> 
             : 
                 <nav className='sidebar-m'>
-                    <section id='brand_m'>
+                    <div id='brand_m'>
                             <i onClick={() => setToggeMenu(!toggleMenu)}>
                             <HiOutlineChevronRight />
                                 </i>
-                    </section>
+                    </div>
                 
-                    <section id="menu_section_m">
-                            {
-                                selected.SuperVisor.map((object, index) => (
-                                        <li key={index}>
+                    <section className='position-sticky pt-3' id="menu_section_m">
+                        <ul className="nav flex-column">
+                            { selected.SuperVisor.map((object, index) => (
+                                        <li className='nav-item' key={index}>
                                             <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                <i className='icon'>{object.icon}</i>
+                                                <span>{object.icon}</span>
                                                 
                                                     {object?.subMenu &&
                                                             (<ul>
@@ -115,6 +115,7 @@ function SupervisorMenu() {
                                     )
                                 )
                             }
+                        </ul>
                     </section>
                 
                     <footer>
