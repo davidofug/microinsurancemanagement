@@ -51,11 +51,11 @@ body{
 }
 
 /* sidebar position */
-/* .menuSide{
+.menuSide{
     position: fixed;
     top: 0;
     left: 0;
-} */
+}
 
 .displayContainer{
     position: relative;
