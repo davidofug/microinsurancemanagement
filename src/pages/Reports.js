@@ -8,7 +8,7 @@ function Reports() {
 
     return (
         <div className='components'>
-            <div>
+            <div className='heading'>
                 <h1 className='title'>Reports</h1>
                 <p className="subtitle">MANAGING REPORTS</p>
             </div>

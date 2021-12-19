@@ -1,10 +1,9 @@
-import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
 import { useEffect, useState, Fragment } from 'react'
-import data from '../helpers/mock-data.json'
-import EditableRow from '../helpers/EditableRow';
-import ReadOnlyRow from '../helpers/ReadOnlyRow';
-import Search from '../helpers/Search';
+import data from '../../helpers/mock-data.json'
+import EditableRow from '../../helpers/EditableRow';
+import ReadOnlyRow from '../../helpers/ReadOnlyRow';
+import Search from '../../helpers/Search';
 
 function Clients() {
 
@@ -117,7 +116,7 @@ function Clients() {
             </div>
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-clients">
+                <Link to="/agent-add-clients">
                     <button className="btn btn-primary cta">Add Client</button>
                 </Link>
                 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/Auth'
 import {Link} from 'react-router-dom'
-import Menu from '../parts/AdminMenu'
+import Menu from './admin/AdminMenu'
 import { Card, Container } from 'react-bootstrap'
 
 import '../styles/dashboard.css'

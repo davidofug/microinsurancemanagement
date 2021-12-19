@@ -8,24 +8,15 @@ function Login() {
     const history = useHistory()
     useEffect(() => {
         const loggedIn = Number(localStorage.getItem('loggedIn'))
-        if (loggedIn === 1) {
+
+        if(loggedIn === 1 || loggedIn === 2 || loggedIn === 3|| loggedIn === 4){
             setCurrentUser(loggedIn)
             setLogin(loggedIn)
         }
-        if (loggedIn === 2) {
-            setCurrentUser(loggedIn)
-            setLogin(loggedIn)
-        }
-        if (loggedIn === 3) {
-            setCurrentUser(loggedIn)
-            setLogin(loggedIn)
-        }
-        if (loggedIn === 4) {
-            setCurrentUser(loggedIn)
-            setLogin(loggedIn)
-        }
+
         document.title = 'Britam - With you every step of the way'
     })
+        
 
     if (isLogin)
         return <Redirect to={{ pathname: '/supervisor-dashboard' }} />
