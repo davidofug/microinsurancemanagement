@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import profile from '../../assets/imgs/image 2.png'
 import logo from '../../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
-import { index } from 'd3'
 
 
 function AdminMenu() {
@@ -38,6 +37,48 @@ function AdminMenu() {
 
     return (
         <div>
+            <nav className='mobile-sidebar'>
+                        <section id='brand_m'>
+                                {/* <i onClick={() => setToggeMenu(!toggleMenu)}>
+                                <HiOutlineChevronRight />
+                                    </i> */}
+                        </section>
+                    
+                        <section className='position-sticky pt-3' id="menu_section">
+                                    <ul className="nav flex-column">
+                                        { selected.Admin.map((object, index) => (
+                                                            <li className='nav-item' key={index}>
+                                                                <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                                    <span>{object.icon}</span>
+                                                                    {object?.subMenu &&
+                                                                        (<ul>
+                                                                            {object.subMenu.map((sub, index) => (
+                                                                                <li>
+                                                                                    <Link to={sub.link} key={index} style={{color: "black"}}>
+                                                                                        {sub.name}
+                                                                                    </Link>
+                                                                                </li>
+                                                                            ))}
+                                                                        </ul>)
+                                                                    }
+                                                                </Link>
+                                                            </li>
+                                                )
+                                            )
+                                        }
+                                    </ul>
+                            </section>
+                    
+                        <footer>
+                                <ul>
+                                    <li><Link to="/admin-settings">Settings</Link></li>
+                                    <li><Link to="/logout">Logout</Link></li>
+                                </ul>
+                            <Link to={'/admin-settings'} id="account">
+                                <img src={profile} alt="profile image" />
+                            </Link>
+                        </footer>
+                    </nav>
             {toggleMenu === true 
             ?
                 <>
@@ -52,7 +93,7 @@ function AdminMenu() {
                             <section className='position-sticky pt-3' id="menu_section">
                                     <ul className="nav flex-column">
                                         { selected.Admin.map((object, index) => (
-                                                            <li className='nav-item'>
+                                                            <li className='nav-item' key={index}>
                                                                 <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
                                                                     <span>{object.icon}</span>{object.name}
                                                                     {object?.subMenu &&
@@ -101,30 +142,30 @@ function AdminMenu() {
                                     </i>
                         </section>
                     
-                        <section className='position-sticky pt-3' id="menu_section_m">
-                                <ul className="nav flex-column">
-                                { selected.Admin.map((object, index) => (
-                                        <li className='nav-item' key={index}>
-                                                <Link to={object.link} className={toggleActiveClassStyle(index)}  onClick={() => toggleActive(index)} key={index} >
-                                                    <span>{object.icon}</span>
-                    
-                                                        {object?.subMenu &&
-                                                                (<ul>
-                                                                    {object.subMenu.map((sub, index) => (
-                                                                        <Link to={sub.link} className='sub-link' key={index} style={{color: "black"}}>
-                                                                            {sub.name}
-                                                                        </Link>
-                                                                    ))}
-                                                                </ul>)
-                                                            }
-                    
-                                                </Link>
-                                            </li>
-                                        )
-                                    )
-                                }
-                                </ul>
-                        </section>
+                        <section className='position-sticky pt-3' id="menu_section">
+                                    <ul className="nav flex-column">
+                                        { selected.Admin.map((object, index) => (
+                                                            <li className='nav-item' key={index}>
+                                                                <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                                    <span>{object.icon}</span>
+                                                                    {object?.subMenu &&
+                                                                        (<ul>
+                                                                            {object.subMenu.map((sub, index) => (
+                                                                                <li>
+                                                                                    <Link to={sub.link} key={index} style={{color: "black"}}>
+                                                                                        {sub.name}
+                                                                                    </Link>
+                                                                                </li>
+                                                                            ))}
+                                                                        </ul>)
+                                                                    }
+                                                                </Link>
+                                                            </li>
+                                                )
+                                            )
+                                        }
+                                    </ul>
+                            </section>
                     
                         <footer>
                                 <ul>

@@ -45,26 +45,37 @@ body{
 /* root container */
 .top-container{
     display: grid;
-    grid-template-columns: .5fr 1.5fr;
-    border: 2px solid red;
+    grid-template-columns: 2fr 10fr;
     min-height: 100vh;
     width: 100vw;
-    overflow-x: hidden;
 }
 
 /* sidebar position */
-.menuSide{
+/* .menuSide{
     position: fixed;
     top: 0;
     left: 0;
-}
+} */
 
 .displayContainer{
     position: relative;
-    margin-left: 260px;
+    /* margin-left: 260px; */
     min-width: 800px;
     max-width: 1200px;
     overflow: hidden;
+}
+
+.components{
+    max-width: 100vw;
+    min-height: 100vh;
+}
+
+.componentsData{
+    margin: 0 50px;
+}
+
+.heading{
+    margin-left: 20px;
 }
 
 
@@ -225,13 +236,6 @@ tbody, td, tfoot, th, thead, tr{
 
 
 
-.bd-placeholder-img{
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-}
 
 
 
@@ -252,15 +256,18 @@ tbody, td, tfoot, th, thead, tr{
     .top-container{
         display: grid;
         grid-template-columns: .5fr 1.5fr;
-        border: 2px solid green;
         min-height: 100vh;
         width: 100vw;
         overflow-x: hidden;
     }
 
+    .componentsData{
+        margin: 0 2px;
+    }
+
     .displayContainer{
         position: relative;
-        margin-left: 260px;
+        margin-left: 80px;
         max-width: 800px;
         overflow: hidden;
     }

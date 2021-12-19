@@ -123,45 +123,47 @@ function Clients() {
                 
             </div>
 
-                <div className="table-card">
-                    <div id="search">
-                        {/* <input type="text" placeholder='Search for client...' id='searchInput' /> */}
-                        <Search handleSearchNote={setSearchText} />
-                        <button className='btn btn-primary cta'>Search</button>
-                        <button className='btn btn-primary cta'>Export </button>
-                    </div>
-            <form action="" onSubmit={handleEditFormSubmit}>
-                    <table class="table table-striped" style={{border: "1px solid black"}}>
-                        <thead>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
-                        </thead>
-                        <tbody>
-                        {contacts.map((contact) => (
-                            <Fragment>
-                                {editContactId === contact.id ? (
-                                <EditableRow
-                                    editFormData={editFormData}
-                                    handleEditFormChange={handleEditFormChange}
-                                    handleCancelClick={handleCancelClick}
-                                />
-                                ): (
-                                    <ReadOnlyRow
-                                      contacts={contacts.filter((contact) =>
-                                        contact.name.toLowerCase().includes(searchText)
-                                      )}
-                                      contact={contact}
-                                      handleEditClick={handleEditClick}
-                                      handleDeleteClick={handleDeleteClick}
-                                    />
-                                  )}
-                            </Fragment>
-                        ))}
-                        </tbody>
-                        <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
-                        </tfoot>
-                    </table>
-            </form>
+                <div class="componentsData">
+                  <div className="table-card">
+                      <div id="search">
+                          {/* <input type="text" placeholder='Search for client...' id='searchInput' /> */}
+                          <Search handleSearchNote={setSearchText} />
+                          <button className='btn btn-primary cta'>Search</button>
+                          <button className='btn btn-primary cta'>Export </button>
+                      </div>
+                              <form action="" onSubmit={handleEditFormSubmit}>
+                      <table class="table table-striped" style={{border: "1px solid black"}}>
+                          <thead>
+                              <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                          </thead>
+                          <tbody>
+                          {contacts.map((contact) => (
+                              <Fragment>
+                                  {editContactId === contact.id ? (
+                                  <EditableRow
+                                      editFormData={editFormData}
+                                      handleEditFormChange={handleEditFormChange}
+                                      handleCancelClick={handleCancelClick}
+                                  />
+                                  ): (
+                                      <ReadOnlyRow
+                                        contacts={contacts.filter((contact) =>
+                                          contact.name.toLowerCase().includes(searchText)
+                                        )}
+                                        contact={contact}
+                                        handleEditClick={handleEditClick}
+                                        handleDeleteClick={handleDeleteClick}
+                                      />
+                                    )}
+                              </Fragment>
+                          ))}
+                          </tbody>
+                          <tfoot>
+                              <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                          </tfoot>
+                      </table>
+                              </form>
+                </div>
                 </div>
         </div>
     )
