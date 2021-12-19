@@ -19,13 +19,13 @@ function Claims() {
                 <Link to="/add-claim"><button className="btn btn-primary cta">Add Claim</button></Link>
             </div>
 
-            <div className="table-card">   
+            <div className="table-card table-responsive">   
                 <div id="search">
                 <input type="text" placeholder='filter by Dates..' id='searchInput' />
                     <input type="text" placeholder='Search for client...' id='searchInput' />
                 </div>
 
-                <table class="table table-striped" style={{border: "1px solid black"}}>
+                <table class="table table-striped table-sm" style={{border: "1px solid black"}}>
                     <thead>
                         <tr><th>Notification Ref No.</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker No.</th><th>Claim Estimate</th><th>Status</th><th></th></tr>
                     </thead>

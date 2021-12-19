@@ -10,6 +10,7 @@ body, html{
 
 body{
     background-color: #fafafa;
+    font-size: .875rem;
 }
 
 
@@ -100,9 +101,9 @@ body{
     overflow: hidden;
 }
 
-.components{
+/* .components{
     width: 95%;
-}
+} */
 
 .title{
     margin-bottom: 5px;
@@ -185,3 +186,66 @@ tbody, td, tfoot, th, thead, tr{
 .place-items-center {
     place-items: center;
 }
+
+
+
+
+
+
+
+
+.bd-placeholder-img{
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+
+
+/* .sidebar{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+} */
+
+
+@media (min-width: 780px) {
+    
+
+
+
+    .bd-placeholder-img-lg{
+        font-size: 3.5rem;
+    }
+    
+}
+
+@media (max-width: 767/98px) {
+    .sidebar{
+        top:5rem;
+    }
+}
+
+
+
+.sidebar-sticky{
+    position: relative;
+    top:0;
+    height: calc(100vh-48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+
+
+
+
+

@@ -11,10 +11,10 @@ import SupervisorRoutes from './SupervisorRoutes'
 import AgentsRoutes from './AgentsRoutes'
 
 //different menus for different roles
-import AdminMenu from '../parts/AdminMenu'
-import SupervisorMenu from '../parts/SupervisorMenu'
-import AgentMenu from '../parts/AgentMenu'
-import SuperAdminMenu from '../parts/SuperAdminMenu'
+import AdminMenu from '../pages/admin/AdminMenu'
+import SupervisorMenu from '../pages/supervisor/SupervisorMenu'
+import AgentMenu from '../pages/agent/AgentMenu'
+import SuperAdminMenu from '../pages/superAdmin/SuperAdminMenu'
 
 
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
@@ -25,19 +25,21 @@ function MyRouter() {
 
     return (
         <Router>
-            <div className='top-container' >
+            <div className='top-container'>
                 {currentUser === 2 && (
                     <div className='menuSide'>
                         <SupervisorMenu />
                     </div>
                     )
                 }
-                {currentUser === 1 && (
-                    <div className='menuSide'>
-                        <AdminMenu />
-                    </div>
-                    )
-                }
+                <div className='menuSide'>
+                    {currentUser === 1 && (
+                        <div>
+                            <AdminMenu />
+                        </div>
+                        )
+                    }
+                </div>
 
 
                 {currentUser === 3 && (
@@ -53,7 +55,7 @@ function MyRouter() {
                     )
                 }
 
-                <div className="displayContainer">
+                <main className='displayContainer'>
                     <Switch>
                         {currentUser === 2 && (
                                 <SupervisorRoutes />
@@ -77,7 +79,7 @@ function MyRouter() {
                         <Route path="/logout" component={Logout} />
                         <Route path="*" component={NotFound} />
                     </Switch>
-                </div>
+                </main>
             </div>
         </Router>
     )

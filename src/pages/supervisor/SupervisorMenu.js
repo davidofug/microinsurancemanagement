@@ -1,24 +1,34 @@
-import menuData from './menuData'
-import '../assets/styles/menu.css'
+import menuData from '../../parts/menuData'
+import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import profile from '../assets/imgs/image 2.png'
-import logo from '../assets/imgs/britam-logo.png'
+import logo from '../../assets/imgs/britam-logo.png'
+import profile from '../../assets/imgs/anyuru.jpg'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 
 
-function AgentMenu() {
+function SupervisorMenu() {
 
-    const { Agent } = menuData
+    const { SuperVisor } = menuData
 
-    const [ selected, setSelected ] = useState({ activeObject: null, Agent })
+    const [ selected, setSelected ] = useState({ activeObject: null, SuperVisor })
     const [ toggleMenu, setToggeMenu ] = useState(true)
 
-    useEffect(() => setSelected({...selected, activeObject: selected.Agent[0]}), [])
-    
-    const toggleActive = index => setSelected({...selected, activeObject: selected.Agent[index]})
+    useEffect(() => {
+        if(sessionStorage.getItem('session1')){
+            setSelected({...selected, activeObject: selected.SuperVisor[sessionStorage.getItem('session1')-1]})
+        }else{
+            setSelected({...selected, activeObject: selected.SuperVisor[0]})
+        }
+        
+    }, [])
 
-    const toggleActiveIdStyle = index => selected.Agent[index] === selected.activeObject ? "nav-link-active" : "nav-link"
+    const toggleActive = index => {
+        setSelected({...selected, activeObject: selected.SuperVisor[index]})
+        sessionStorage.setItem('session1', selected.SuperVisor[index]["number"])
+    }
+
+    const toggleActiveClassStyle = index => selected.SuperVisor[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
 
     return (
         <div>
@@ -32,15 +42,16 @@ function AgentMenu() {
                             </i>
                     </div>
                 
-                    <section id="menu_section">
-                            { selected.Agent.map((object, index) => (
-                                                <li>
-                                                    <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                        <i className='icon'>{object.icon}</i> <span>{object.name}</span>
+                    <section className='position-sticky pt-3' id="menu_section">
+                    <ul className="nav flex-column">
+                            { selected.SuperVisor.map((object, index) => (
+                                                <li className='nav-item' key={index}>
+                                                    <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                        <span>{object.icon}</span>{object.name}
                                                         {object?.subMenu &&
                                                             (<ul>
                                                                 {object.subMenu.map((sub, index) => (
-                                                                    <li>
+                                                                    <li key={index}>
                                                                         <Link to={sub.link} key={index} style={{color: "black"}}>
                                                                             {sub.name}
                                                                         </Link>
@@ -53,17 +64,21 @@ function AgentMenu() {
                                     )
                                 )
                             }
+                            </ul>
                     </section>
 
                     
                     <footer>
                             <ul>
-                                <li><Link to="/agent-settings">My Profile</Link></li>
+                                <li><Link to="/supervisor-settings">My Profile</Link></li>
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
-                        <Link to={'/agent-settings'}>
+                        <Link to={'/supervisor-settings'}>
                             <img src={profile} alt="profile image" />
-                            <p>Charles Kasasira</p>
+                            <div>
+                                <p>Anyuru David Derrick</p>
+                                <p style={{"color": "#646464"}}>Supervisor</p>
+                            </div>
                             <div id="eclipse"><div></div><div></div><div></div></div>
                         </Link>
                     </footer>
@@ -80,9 +95,9 @@ function AgentMenu() {
                 
                     <section id="menu_section_m">
                             {
-                                selected.Agent.map((object, index) => (
-                                        <li>
-                                            <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                selected.SuperVisor.map((object, index) => (
+                                        <li key={index}>
+                                            <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
                                                 <i className='icon'>{object.icon}</i>
                                                 
                                                     {object?.subMenu &&
@@ -104,10 +119,10 @@ function AgentMenu() {
                 
                     <footer>
                             <ul>
-                                <li><Link to="/agent-settings">Settings</Link></li>
+                                <li><Link to="/supervisor-settings">Settings</Link></li>
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
-                        <Link to={'/agent-settings'} id="account">
+                        <Link to={'/settings'} id="account">
                             <img src={profile} alt="profile image" />
                         </Link>
                     </footer>
@@ -118,4 +133,4 @@ function AgentMenu() {
     )
 }
 
-export default AgentMenu
+export default SupervisorMenu
