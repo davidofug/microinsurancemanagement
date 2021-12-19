@@ -25,44 +25,45 @@ function MyRouter() {
 
     return (
         <Router>
-            <div className='top-container'>
-                {currentUser === 2 && (
-                    <div className='menuSide'>
-                        <SupervisorMenu />
-                    </div>
-                    )
-                }
+            {!currentUser ? (
+                <Switch>
+                    <Route path="/" exact component={Login} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/logout" component={Logout} />
+                    <Route path="/not-logged-in" component={NotLoggedIn} />
+                </Switch>
+            ): (
+                <div className='top-container'>
                 <div className='menuSide'>
                     {currentUser === 1 && (
-                        <div>
                             <AdminMenu />
-                        </div>
+                            )
+                    }
+
+                    {currentUser === 2 && (
+                            <SupervisorMenu />
+                        )
+                    }
+                    
+                    {currentUser === 3 && (
+                            <AgentMenu />
+                        )
+                    }
+                    
+                    {currentUser === 4 && (
+                            <SuperAdminMenu />
                         )
                     }
                 </div>
 
-
-                {currentUser === 3 && (
-                    <div className='menuSide'>
-                        <AgentMenu />
-                    </div>
-                    )
-                }
-                {currentUser === 4 && (
-                    <div className='menuSide'>
-                        <SuperAdminMenu />
-                    </div>
-                    )
-                }
-
                 <main className='displayContainer'>
                     <Switch>
-                        {currentUser === 2 && (
-                                <SupervisorRoutes />
+                        {currentUser === 1 && (
+                                <AdminRoutes />
                             )
                         }
-                        {currentUser === 1 && (
-                            <AdminRoutes />
+                        {currentUser === 2 && (
+                                <SupervisorRoutes />
                             )
                         }
                         {currentUser === 3 && (
@@ -73,14 +74,13 @@ function MyRouter() {
                                 <SuperAdminRoutes />
                             )
                         }
-                        <Route path="/" exact component={Login} />
-                        <Route path="/not-logged-in" component={NotLoggedIn} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/logout" component={Logout} />
-                        <Route path="*" component={NotFound} />
+                        
                     </Switch>
                 </main>
             </div>
+            )}
+                
+            
         </Router>
     )
 }

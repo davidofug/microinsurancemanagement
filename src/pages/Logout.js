@@ -13,11 +13,11 @@ function Logout() {
     })
 
     return (
-        <div className='components'>
-            <h1 style={{"margin-top": "60px"}}>
-                You've logged out
-            </h1>
-            <Link to="/login"><button className='btn btn-primary cta'>Login</button></Link>
+        <div className='logout'>
+                <h1>
+                    You've logged out
+                </h1>
+                <Link to="/login"><button className='btn btn-primary cta'>Login</button></Link>
         </div>
     )
 }

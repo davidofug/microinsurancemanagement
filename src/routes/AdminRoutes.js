@@ -19,6 +19,7 @@ import AddAgents from '../pages/AddAgents'
 import AddSupervisors from '../pages/admin/AddSupervisors'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
+import NotFound from '../pages/NotFound'
 
 
 function AdminRoutes() {
@@ -79,6 +80,7 @@ function AdminRoutes() {
                 <AddClaims />
             </PrivateRoute>
             <Route path="/logout" component={Logout} />
+            {/* <Route path="*" component={NotFound} /> */}
         </>
         
     )
