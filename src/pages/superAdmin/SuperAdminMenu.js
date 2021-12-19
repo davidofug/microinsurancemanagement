@@ -98,12 +98,13 @@ function SuperAdminMenu() {
                                 </i>
                     </section>
                 
-                    <section id="menu_section_m">
+                    <section className='position-sticky pt-3' id="menu_section_m">
+                        <ul className="nav flex-column">
                             {
                                 selected.SuperAdmin.map((object, index) => (
-                                        <li>
+                                    <li className='nav-item' key={index}>
                                             <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                <i className='icon'>{object.icon}</i>
+                                                <span>{object.icon}</span>
                                                 
                                                     {object?.subMenu &&
                                                             (<ul>
@@ -120,6 +121,7 @@ function SuperAdminMenu() {
                                     )
                                 )
                             }
+                            </ul>
                     </section>
                 
                     <footer>
