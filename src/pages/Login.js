@@ -5,6 +5,8 @@ import logo from '../assets/imgs/britam-logo.png'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 
+import '../assets/styles/login.css'
+
 function Login() {
     const [ password, setPassword ] = useState("password")
     let [isLogin, setLogin] = useState(false)
