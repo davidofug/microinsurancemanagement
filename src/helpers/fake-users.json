@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Charles Kasasira",
+        "password": "superadmin",
+        "email": "superadmin@gmail.com",
+        "profile-image": "",
+        "role": "SuperAdmin"
+    },
+    {
+        "name": "Anyuru David",
+        "password": "admin",
+        "email": "admin@gmail.com",
+        "profile-image": "",
+        "role": "Admin"
+    },
+    {
+        "name": "Ayikosi Innocent",
+        "password": "supervisor",
+        "email": "supervisor@gmail.com",
+        "profile-image": "",
+        "role": "Supervisor"
+    },
+    {
+        "name": "Nassali Just",
+        "password": "agent",
+        "email": "agent@gmail.com",
+        "profile-image": "",
+        "role": "Agent"
+    }
+]

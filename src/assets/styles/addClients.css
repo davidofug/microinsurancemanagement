@@ -8,6 +8,10 @@ form{
     padding: 30px 30px;
 }
 
+#row{
+    display: flex;
+}
+
 #client_name{
     display: flex;
     flex-direction: column;

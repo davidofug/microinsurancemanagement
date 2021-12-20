@@ -18,66 +18,62 @@ import Agents from '../pages/Agents'
 import AddAgents from '../pages/AddAgents'
 import AddSupervisors from '../pages/admin/AddSupervisors'
 import Logout from '../pages/Logout'
-import AddClaims from '../pages/AddClaims'
 import NotFound from '../pages/NotFound'
 
 
-function AdminRoutes() {
+function SuperAdminRoutes() {
     return (
         <>
-            <PrivateRoute path="/admin-dashboard" >
+            <PrivateRoute path="/super-admin-dashboard" >
                 <Dashboard />
             </PrivateRoute>
-            <PrivateRoute path="/admin-organisations" >
+            <PrivateRoute path="/super-admin-organisations" >
                 <Organisations />
             </PrivateRoute>
-            <PrivateRoute path="/admin-view-log-trail" >
+            <PrivateRoute path="/super-admin-view-log-trail" >
                 <Logs />
             </PrivateRoute>
-            <PrivateRoute path="/admin-supervisor" >
+            <PrivateRoute path="/super-admin-supervisor" >
                 <Supervisors />
             </PrivateRoute>
-            <PrivateRoute path="/add-supervisors" >
+            <PrivateRoute path="/super-add-supervisors" >
                 <AddSupervisors />
             </PrivateRoute>
-            <PrivateRoute path="/admin-agents" >
+            <PrivateRoute path="/super-admin-agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/add-agents" >
+            <PrivateRoute path="/super-add-agents" >
                 <AddAgents />
             </PrivateRoute>
-            <PrivateRoute path="/admin-clients" >
+            <PrivateRoute path="/super-admin-clients" >
                 <Clients />
             </PrivateRoute>
-            <PrivateRoute path="/admin-user-management" >
+            <PrivateRoute path="/super-admin-user-management" >
                 <Users />
             </PrivateRoute>
-            <PrivateRoute path="/admin-policies" >
+            <PrivateRoute path="/super-admin-policies" >
                 <Policies />
             </PrivateRoute>
-            <PrivateRoute path="/admin-claims" >
+            <PrivateRoute path="/super-admin-claims" >
                 <Claims />
             </PrivateRoute>
-            <PrivateRoute path="/admin-reports" >
+            <PrivateRoute path="/super-admin-reports" >
                 <Reports />
             </PrivateRoute>
-            <PrivateRoute path="/admin-settings" >
+            <PrivateRoute path="/super-admin-settings" >
                 <Settings />
             </PrivateRoute>
-            <PrivateRoute path="/admin-motor-third-party" >
+            <PrivateRoute path="/super-admin-motor-third-party" >
                 <Mtp />
             </PrivateRoute>
-            <PrivateRoute path="/admin-windscreen" >
+            <PrivateRoute path="/super-admin-windscreen" >
                 <Windscreen />
             </PrivateRoute>
-            <PrivateRoute path="/admin-comprehensive" >
+            <PrivateRoute path="/super-admin-comprehensive" >
                 <Comprehensive />
             </PrivateRoute>
-            <PrivateRoute path="/add-clients" >
+            <PrivateRoute path="/super-add-clients" >
                 <AddClients />
-            </PrivateRoute>
-            <PrivateRoute path="/add-claim" >
-                <AddClaims />
             </PrivateRoute>
             <Route path="/logout" component={Logout} />
             {/* <Route path="*" component={NotFound} /> */}
@@ -86,4 +82,4 @@ function AdminRoutes() {
     )
 }
 
-export default AdminRoutes
+export default SuperAdminRoutes

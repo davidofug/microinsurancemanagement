@@ -1,22 +1,22 @@
 import { useEffect } from 'react'
-import generatedData from '../helpers/generatedClients';
+import generatedData from '../../helpers/generatedClients';
 import { Link } from 'react-router-dom'
 
-function Comprehensive() {
+function Claims() {
 
     useEffect(() => {
-        document.title = 'Britam - Comprehensive'
+        document.title = 'Britam - Claims'
     }, [])
 
     return (
         <div className='components'>
             <div>
-                <h1 className='title'>Comprehensive Policy</h1>
-                <p className="subtitle">COMPREHENSIVE POLICIES</p>
+                <h1 className='title'>Claims</h1>
+                <p className="subtitle">MANAGING CLAIMS</p>
             </div>
             <div id="add_client_group">
                 <div></div>
-                <Link to="admin-policies"><button className="btn btn-primary cta">Add COMPREHENSIVE</button></Link>
+                <Link to="/supervisor-add-claims"><button className="btn btn-primary cta">Add Claim</button></Link>
             </div>
 
             <div className="table-card">   
@@ -56,4 +56,4 @@ function Comprehensive() {
     )
 }
 
-export default Comprehensive
+export default Claims

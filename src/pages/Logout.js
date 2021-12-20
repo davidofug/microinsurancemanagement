@@ -13,11 +13,11 @@ function Logout() {
     })
 
     return (
-        <div>
-            <h1>
-                You've logged out
-            </h1>
-            <p><Link to="/login">Login</Link></p>
+        <div className='logout'>
+                <h1>
+                    You've logged out
+                </h1>
+                <Link to="/login"><button className='btn btn-primary cta'>Login</button></Link>
         </div>
     )
 }
