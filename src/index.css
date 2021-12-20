@@ -26,6 +26,12 @@ body{
     min-height: 100vh;
     width: 100vw;
 }
+.top-container-large{
+    display: grid;
+    grid-template-columns: 80px auto;
+    min-height: 100vh;
+    width: 100vw;
+}
 
 
 

@@ -8,6 +8,9 @@ const EditableRow = ({
   return (
     <tr>
       <td>
+        <label>{editFormData.index}</label>
+      </td>
+      <td>
         <input
           type="text"
           required="required"
