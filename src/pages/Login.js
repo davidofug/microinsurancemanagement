@@ -42,11 +42,17 @@ function Login() {
                         <label  htmlFor="">Password</label>
                         <div style={{"display": "flex", "align-items": "center", "justify-content": "space-between"}} id="password">
                             <input style={{"border": "none"}}  type={password} placeholder='Enter password' name="" id="password_input" />
-                            <span onClick={() => setIsVisible(!isVisible)}>
+                            <span>
                                 { isVisible ? (
-                                    <MdVisibility style={{"color": "black", "float": "right", "margin-right": "5px", "margin-top": "auto", "position": "relative", "z-index": "2"}} onClick={() => setPassword("text")}/>
+                                    <MdVisibility style={{"color": "black", "float": "right", "margin-right": "5px", "margin-top": "auto", "position": "relative", "z-index": "2"}} onClick={() => {
+                                        setPassword("password")
+                                        setIsVisible(false)
+                                    }}/>
                                 ): (
-                                    <MdVisibilityOff style={{"color": "black", "float": "right", "margin-right": "5px", "margin-top": "auto", "position": "relative", "z-index": "2"}}  onClick={() => setPassword("password")}/>
+                                    <MdVisibilityOff style={{"color": "black", "float": "right", "margin-right": "5px", "margin-top": "auto", "position": "relative", "z-index": "2"}}  onClick={() => {
+                                        setPassword("text")
+                                        setIsVisible(true)
+                                    }}/>
                                 )
 
                                 }
