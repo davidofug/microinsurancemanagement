@@ -210,7 +210,7 @@ function Policies() {
                 <h1 className='title'>Policies</h1>
                 <p>MANAGING POLICIES</p>
             </div>
-            <div className="table-card" style={{paddingBottom:"10vh"}}>
+            <div className="table-card componentsData" style={{paddingBottom:"10vh"}}>
                 <Form>
                     <div style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                         <Row style={{paddingTop:"2vh"}}>

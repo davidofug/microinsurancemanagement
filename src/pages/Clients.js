@@ -5,6 +5,7 @@ import data from '../helpers/mock-data.json'
 import EditableRow from '../helpers/EditableRow';
 import ReadOnlyRow from '../helpers/ReadOnlyRow';
 import Search from '../helpers/Search';
+import { MdDownload } from 'react-icons/md'
 
 function Clients() {
 
@@ -126,10 +127,9 @@ function Clients() {
                 <div class="componentsData">
                   <div className="table-card">
                       <div id="search">
-                          {/* <input type="text" placeholder='Search for client...' id='searchInput' /> */}
-                          <Search handleSearchNote={setSearchText} />
+                          <input type="text" placeholder='Search for client...' id='searchInput' />
                           <button className='btn btn-primary cta'>Search</button>
-                          <button className='btn btn-primary cta'>Export </button>
+                          <button className='btn btn-primary cta'>Export <MdDownload /></button>
                       </div>
                               <form action="" onSubmit={handleEditFormSubmit}>
                       <table class="table table-striped" style={{border: "1px solid black"}}>

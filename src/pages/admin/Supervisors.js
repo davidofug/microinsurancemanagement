@@ -22,7 +22,7 @@ function Supervisors() {
                 
             </div>
 
-            <div className="table-card">   
+            <div className="table-card componentsData">   
                 <div id="search">
                     <input type="text" placeholder='Search for supervisor...' id='searchInput' />
                     <button className='btn btn-primary cta'>Search</button>
