@@ -1,6 +1,7 @@
 import generatedData from '../../helpers/generatedClients';
 import '../../assets/styles/addClients.css'
 import { useEffect } from 'react'
+import { Form } from 'react-bootstrap'
 
 function AddOrganisation() {
 
@@ -18,23 +19,29 @@ function AddOrganisation() {
             <div class="componentsData" style={{"display": "flex", justifyContent: "center", "background-color": "#fff", "margin-top": "60px", "border-radius": "10px"}}>
             {/* <div className="table-card" >   */}
                 <form action="">
-                    <div className="client_name">
-                        <label htmlFor="" >Name <span className='required'>*</span></label>
-                        <input type="text"name="" id="" placeholder="Enter organisation's name"/>
-                    </div>
-                    <div className="client_name">
-                        <label htmlFor="">Contact email</label>
-                        <input type="text"name="" id="" placeholder='Enter Email' />
-                    </div>
-                    <div className="client_name">
-                        <label htmlFor="">Contact telephone Number <span className='required'>*</span></label>
-                        <input type="tel"name="" id="" placeholder='Enter Telephone Number' />
-                    </div>
-                    <div className='client_name' id="address">
-                        <label htmlFor="">Address</label>
-                        <textarea name="" id="" cols="30" rows="10" placeholder='Enter Address'></textarea>
-                    </div >
+                <Form>
+                    <Form.Group className="mb-3" controlId="formGridAddress1">
+                            <Form.Label>Organisations Name</Form.Label>
+                            <Form.Control type="text" placeholder="Enter organisation's email" />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGridAddress1">
+                            <Form.Label>Contact Email</Form.Label>
+                            <Form.Control type="email" placeholder="Enter organisation email" />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGridAddress1">
+                            <Form.Label>Contact telephone Number <span className='required'>*</span></Form.Label>
+                            <Form.Control type="tel" placeholder="Enter phone Number" />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGridAddress1">
+                            <Form.Label>Address</Form.Label>
+                            <Form.Control placeholder="Enter your address" />
+                    </Form.Group>
+                    <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>upload Organisation Logo</Form.Label>
+                            <Form.Control type="file" />
+                    </Form.Group>
                     <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
+                    </Form>
                 </form>
             </div>
             {/* </div> */}
