@@ -10,7 +10,7 @@ function Comprehensive() {
 
     return (
         <div className='components'>
-            <div>
+            <div className='heading'>
                 <h1 className='title'>Comprehensive Policy</h1>
                 <p className="subtitle">COMPREHENSIVE POLICIES</p>
             </div>

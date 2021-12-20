@@ -10,7 +10,7 @@ function Windscreen() {
 
     return (
         <div className='components'>
-            <div>
+            <div className='heading'>
                 <h1 className='title'>Windscreen Policy</h1>
                 <p className="subtitle">MANAGING WINDSCREEN POLICIES</p>
             </div>
