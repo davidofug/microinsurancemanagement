@@ -7,7 +7,7 @@ const generatedClients = [
         address: "Busenga",
         currency: "UGX",
         createdAt: "02-12-2021",
-        status: "Active",
+        status: "Paid",
         agentName: "charles Kasasira",
         paymentMethod: "Mobile Money",
         amount: "34,000"
@@ -20,7 +20,7 @@ const generatedClients = [
         address: "Busenga",
         currency: "UGX",
         createdAt: "02-10-2018",
-        status: "Active",
+        status: "New",
         agentName: "charles Kasasira",
         paymentMethod: "Cash",
         amount: "23,000",
@@ -34,7 +34,7 @@ const generatedClients = [
         currency: "USD",
         paymentMethod: "Cash",
         amount: "23,000",
-        status: "Active",
+        status: "Cancelled",
         createdAt: "31-12-2021",
         agentName: "charles Kasasira"
     },
@@ -48,7 +48,7 @@ const generatedClients = [
         paymentMethod: "Bank",
         currency: "UGX",
         createdAt: "02-12-2021",
-        status: "Active",
+        status: "Paid",
         agentName: "charles Kasasira"
     },
     {
@@ -59,7 +59,7 @@ const generatedClients = [
         contact: "077123456",
         address: "Busenga",
         currency: "USD",
-        status: "Active",
+        status: "Paid",
         paymentMethod: "Cash",
         createdAt: "02-12-2021",
         agentName: "charles Kasasira"
@@ -73,7 +73,7 @@ const generatedClients = [
         currency: "UGX",
         amount: "23,000",
         paymentMethod: "Cash",
-        status: "Active",
+        status: "Paid",
         createdAt: "02-12-2021",
         agentName: "charles Kasasira"
     },
@@ -86,7 +86,7 @@ const generatedClients = [
         amount: "23,000",
         address: "Busenga",
         currency: "UGX",
-        status: "Active",
+        status: "Paid",
         createdAt: "02-12-2021",
         agentName: "charles Kasasira"
     },
@@ -99,7 +99,7 @@ const generatedClients = [
         contact: "077123456",
         address: "Busenga",
         currency: "UGX",
-        status: "Active",
+        status: "Paid",
         createdAt: "02-12-2021",
         agentName: "charles Kasasira"
     },
@@ -112,7 +112,7 @@ const generatedClients = [
         address: "Busenga",
         currency: "UGX",
         amount: "23,000",
-        status: "Active",
+        status: "Paid",
         createdAt: "02-12-2021",
         agentName: "charles Kasasira"
     },
@@ -125,7 +125,7 @@ const generatedClients = [
         currency: "UGX",
         amount: "23,000",
         paymentMethod: "Cash",
-        status: "Active",
+        status: "Cancelled",
         createdAt: "02-12-2021",
         agentName: "charles Kasasira"
     },
@@ -138,7 +138,7 @@ const generatedClients = [
         paymentMethod: "Cash",
         currency: "UGX",
         amount: "23,000",
-        status: "Active",
+        status: "Paid",
         createdAt: "02-12-2021",
         agentName: "charles Kasasira"
     },
@@ -151,7 +151,7 @@ const generatedClients = [
         contact: "077123456",
         address: "Busenga",
         currency: "UGX",
-        status: "Active",
+        status: "Cancelled",
         createdAt: "02-12-2021",
         agentName: "charles Kasasira"
     }

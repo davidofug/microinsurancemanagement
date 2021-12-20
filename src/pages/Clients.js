@@ -4,7 +4,6 @@ import { useEffect, useState, Fragment } from 'react'
 import data from '../helpers/mock-data.json'
 import EditableRow from '../helpers/EditableRow';
 import ReadOnlyRow from '../helpers/ReadOnlyRow';
-import Search from '../helpers/Search';
 import { MdDownload } from 'react-icons/md'
 
 function Clients() {
