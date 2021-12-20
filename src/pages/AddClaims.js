@@ -1,6 +1,7 @@
 import generatedData from '../helpers/generatedClients';
 import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
+import { Form, Row, Col } from 'react-bootstrap'
 
 function AddClaims() {
 
@@ -17,58 +18,71 @@ function AddClaims() {
 
             <div className="table-card componentsData">  
                 <form action="">
-                    <div id="row">      
-                         <div id="client_name">
-                            <label htmlFor="" >Date Reported</label>
-                            <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                         <div id="client_name">
-                            <label htmlFor="" >Policy</label>
-                            <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                         <div id="client_name">
-                            <label htmlFor="" >Plate No.</label>
-                            <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                         <div id="client_name">
-                            <label htmlFor="" >Sticker No.</label>
-                            <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                    </div>
-                    <h3>Claimant Details</h3>
-                    <div id="row">      
-                         <div id="client_name">
-                            <label htmlFor="" >Name</label>
-                            <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                         <div id="client_name">
-                            <label htmlFor="" >Email Address</label>
-                            <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                         <div id="client_name">
-                            <label htmlFor="" >Telephone</label>
-                            <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                         <div id="client_name">
-                            <label htmlFor="" >Date of Incident</label>
-                            <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                    </div>
-                    <div id="row">      
-                         <div id="client_name">
-                            <label htmlFor="" >Claim Estimate</label>
-                            <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                    </div>
-                    <div id="row">      
-                         <div id="client_name">
-                            <label htmlFor="" >Details of Incident</label>
-                            <textarea type="text" name="" id="" placeholder="Enter Client's name"/>
-                        </div>
-                    </div>
-    
-                    <div id="upload">image goes here</div>
-                    <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
+                    <Form>
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Date Reported</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Policy</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Plate No.</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Sticker No.</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                            </Form.Group>
+                        </Row>
+                        <h3>Claimant Details</h3>
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Email Address</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Phone Number</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Date of Incident</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Claim Estimate</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                
+                            </Form.Group>
+                        </Row>
+                        <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Details of Incident</Form.Label>
+                                <Form.Control type="text" name="" id="" placeholder="Enter Client's name"/>
+                        </Form.Group>
+                        
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>upload profile image</Form.Label>
+                            <Form.Control type="file" />
+                        </Form.Group>
+                        
+                        <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
+                    </Form>
                 </form>
             </div>
         </div>
