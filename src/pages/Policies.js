@@ -1,9 +1,10 @@
-
 import React, { useState, useEffect } from 'react'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
+import dynamicFields from '../helpers/multipleChoice'
 
 import '../styles/Policies.css'
+import { Collapse } from 'bootstrap'
 
 
 // import moment from 'moment'
@@ -14,7 +15,10 @@ import '../styles/Policies.css'
 
 function Policies() {
     const [field, handleFieldChange] = useForm({})
-    
+    const [ classes, setClasses ] = useState([])
+    const [ vehicleUses, setVehicleUses ] = useState([])
+
+    const { currencies, make, categories } = dynamicFields
 
     useEffect(() => {
         document.title = 'Britam - Policies'
@@ -42,6 +46,8 @@ function Policies() {
     const handleInputChange = (index, event) => {
         const values = [...stickers]
         values[index][event.target.name] = event.target.value
+        
+                                        
         // console.log(event.name, event.target.value)
         setStickers(values)
     }
@@ -77,6 +83,7 @@ function Policies() {
         // setStickers(filteredStickers)
     }
 
+    
 
     const renderStickerDetails = (singleSticker, index) => {
         return (
@@ -117,11 +124,30 @@ function Policies() {
                             </td>
                             <td>
                                 <Form.Group controlId="category" > 
-                                    <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} onChange={event => handleInputChange(index, event)}>
+                                    <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} onChange={event => {
+                                        handleInputChange(index, event)
+                                        
+                                        const result = categories.filter(category => category.label === event.target.value)
+                                        const [ category ] = result
+                                        // eslint-disable-next-line no-lone-blocks
+                                        {
+                                            if(category?.classes?.length > 0) {
+                                                const [ {classes} ] = result
+                                                setClasses(classes)
+                                            } else {
+                                                setClasses([])
+                                            }
+                                            
+                                            if(category?.vehicle_use?.length > 0) {
+                                                const [ {vehicle_use} ] = result
+                                                setVehicleUses(vehicle_use)
+                                            } else { 
+                                                setVehicleUses([])
+                                            }   
+                                        }
+                                    }}>
                                         <option>-Select Category-</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        {categories.map((category, index) => <option key={index} value={category["label"]}>{category["label"]}</option>)}
                                     </Form.Select>
                                 </Form.Group>
                             </td>
@@ -129,9 +155,7 @@ function Policies() {
                                 <Form.Group controlId="motorClass" >
                                     <Form.Select type="text" name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
                                         <option>Class</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        {classes.map((item, index) => <option key={index} value={item}>{item}</option>)}
                                     </Form.Select>
                                 </Form.Group>
                             </td>
@@ -146,10 +170,8 @@ function Policies() {
                             <td>
                                 <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
                                     <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)}>
-                                        <option>Motor make</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        <option>Motor Make</option>
+                                        {make.map((motorMake, index) => <option key={index} value={motorMake[0]}>{motorMake[1]}</option>)}
                                     </Form.Select>
                                 </Form.Group >
                             </td>
@@ -157,12 +179,11 @@ function Policies() {
                                 <Form.Group controlId="vehicleUse">
                                     <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
                                         <option>Vehicle use</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        {vehicleUses.map((item, index) => <option key={index} value={item}>{item}</option>)}
                                     </Form.Select>
                                 </Form.Group>
                             </td>
+                            
                             <td>
                                 <Form.Group controlId="totalPremium" >
                                     <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} />
@@ -233,6 +254,16 @@ function Policies() {
                             </Col>
                         </Row>
                     </div>
+                    <Row style={{paddingBottom:"6vh"}}>
+                        <Col xs="3">
+                            <Form.Group classname="mb-3" controlId="currency">
+                                <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use">
+                                    <option>Currency</option>
+                                    {currencies.map((currency, index) => <option value={currencies[index]}>{currency["code"]}</option>)}  
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                    </Row>
                     
                     {/*Sticker form details container.*/}
                     {stickers.map(renderStickerDetails)}
@@ -263,3 +294,4 @@ function Policies() {
 }
 
 export default Policies
+
