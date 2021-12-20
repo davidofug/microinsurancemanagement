@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import '../styles/Settings.css'
-import profile from '../assets/imgs/image 2.png'
-import { Link } from 'react-router-dom'
+import '../../styles/Settings.css'
+import profile from '../../assets/imgs/anyuru.jpg'
 
 function Settings() {
 

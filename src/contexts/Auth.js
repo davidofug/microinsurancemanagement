@@ -18,9 +18,8 @@ function AuthProvider({ children }) {
 
     useEffect(() => {
         const loggedIn = parseInt(localStorage.getItem('loggedIn'))
-        if (loggedIn === 1) {
+        if(loggedIn === 1 || loggedIn === 2 || loggedIn === 3 || loggedIn === 4) {
             setCurrentUser(loggedIn)
-            // console.log(currentUser)
         }
     },[])
 

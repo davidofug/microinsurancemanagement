@@ -11,6 +11,8 @@ import { Collapse } from 'bootstrap'
 
 // import AddClient from '../parts/AddClient'
 
+// enlarging the size of + and -
+
 function Policies() {
     const [field, handleFieldChange] = useForm({})
     const [ classes, setClasses ] = useState([])
@@ -225,7 +227,7 @@ function Policies() {
 
     return (
         <div className='components'> 
-            <div>
+            <div className='heading'>
                 <h1 className='title'>Policies</h1>
                 <p>MANAGING POLICIES</p>
             </div>

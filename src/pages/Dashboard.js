@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/Auth'
 import {Link} from 'react-router-dom'
-import Menu from '../parts/Menu'
+import Menu from './admin/AdminMenu'
 import { Card, Container } from 'react-bootstrap'
 
 import '../styles/dashboard.css'
@@ -19,16 +19,13 @@ function Dashboard() {
     }, [])
 
     return (
-
-            <div>
-                <div>
-                    <h1 className='title'>Welcome, Charles</h1>
+            <div className='components'>
+                <div className='heading'>
+                    <h1 className='title'>Welcome to Britam</h1>
                     <p className="subtitle">With you every step of the way</p>
                 </div>
-                        <div className="main">
-                {/* <Link to="/account">Account</Link>   */}
-                
-                
+
+                <div className="main componentsData">
                 <div id="main-container">
                     <div style={{display:"flex", gap:"2.5vw"}}>
                         <div className="shadow-sm p-3 mb-5 bg-body rounded" id="first-container">

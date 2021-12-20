@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/Auth'
 
+import '../assets/styles/login.css'
+
 function Logout() {
 
     const { setCurrentUser } = useAuth()
@@ -13,11 +15,11 @@ function Logout() {
     })
 
     return (
-        <div>
-            <h1>
-                You've logged out
-            </h1>
-            <p><Link to="/login">Login</Link></p>
+        <div className='logout'>
+                <h1>
+                    You've logged out
+                </h1>
+                <Link to="/login"><button className='btn btn-primary cta'>Login</button></Link>
         </div>
     )
 }
