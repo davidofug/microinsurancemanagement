@@ -1,5 +1,5 @@
-import generatedData from '../helpers/generatedClients';
-import '../assets/styles/addClients.css'
+import generatedData from '../../helpers/generatedClients';
+import '../../assets/styles/addClients.css'
 import { useEffect } from 'react'
 
 function AddSupervisors() {
