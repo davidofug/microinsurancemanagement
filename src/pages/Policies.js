@@ -4,6 +4,7 @@ import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
 
 import '../styles/Policies.css'
+import { Collapse } from 'bootstrap'
 
 
 // import moment from 'moment'
@@ -12,7 +13,8 @@ import '../styles/Policies.css'
 
 function Policies() {
     const [field, handleFieldChange] = useForm({})
-    const [selectedCategory, setSelectedCategory ] = useState('')
+    const [ classes, setClasses ] = useState([])
+    const [ vehicleUses, setVehicleUses ] = useState([])
 
     const { currencies, make, categories } = dynamicFields
 
@@ -42,6 +44,8 @@ function Policies() {
     const handleInputChange = (index, event) => {
         const values = [...stickers]
         values[index][event.target.name] = event.target.value
+        
+                                        
         // console.log(event.name, event.target.value)
         setStickers(values)
     }
@@ -77,6 +81,7 @@ function Policies() {
         // setStickers(filteredStickers)
     }
 
+    
 
     const renderStickerDetails = (singleSticker, index) => {
         return (
@@ -119,7 +124,25 @@ function Policies() {
                                 <Form.Group controlId="category" > 
                                     <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} onChange={event => {
                                         handleInputChange(index, event)
-                                        setSelectedCategory(event.target.value)
+                                        
+                                        const result = categories.filter(category => category.label === event.target.value)
+                                        const [ category ] = result
+                                        // eslint-disable-next-line no-lone-blocks
+                                        {
+                                            if(category?.classes?.length > 0) {
+                                                const [ {classes} ] = result
+                                                setClasses(classes)
+                                            } else {
+                                                setClasses([])
+                                            }
+                                            
+                                            if(category?.vehicle_use?.length > 0) {
+                                                const [ {vehicle_use} ] = result
+                                                setVehicleUses(vehicle_use)
+                                            } else { 
+                                                setVehicleUses([])
+                                            }   
+                                        }
                                     }}>
                                         <option>-Select Category-</option>
                                         {categories.map((category, index) => <option key={index} value={category["label"]}>{category["label"]}</option>)}
@@ -130,9 +153,7 @@ function Policies() {
                                 <Form.Group controlId="motorClass" >
                                     <Form.Select type="text" name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
                                         <option>Class</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        {classes.map((item, index) => <option key={index} value={item}>{item}</option>)}
                                     </Form.Select>
                                 </Form.Group>
                             </td>
@@ -156,9 +177,7 @@ function Policies() {
                                 <Form.Group controlId="vehicleUse">
                                     <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
                                         <option>Vehicle use</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        {vehicleUses.map((item, index) => <option key={index} value={item}>{item}</option>)}
                                     </Form.Select>
                                 </Form.Group>
                             </td>
