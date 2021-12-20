@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/Auth'
 import { useHistory, Redirect} from 'react-router-dom'
 import logo from '../assets/imgs/britam-logo.png'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
+import { Link } from 'react-router-dom'
 
 function Login() {
     const [ password, setPassword ] = useState("password")
@@ -64,7 +65,7 @@ function Login() {
                             history.push('admin-dashboard')
                         }}
                          value="Login"/>
-                         <a href=""><p>Forgot Password?</p></a>
+                         <Link to="/forgot-password"><p>Forgot Password?</p></Link>
                     </div>
                 </form>
         </div>
