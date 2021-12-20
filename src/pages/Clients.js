@@ -25,6 +25,7 @@ function Clients() {
       });
 
     const [editFormData, setEditFormData] = useState({
+        index: "",
         name: "",
         gender: "",
         email: "",
@@ -85,6 +86,7 @@ function Clients() {
         setEditContactId(contact.id);
     
         const formValues = {
+          index: contact.id,
           name: contact.name,
           gender: contact.gender,
           email: contact.email,
@@ -133,7 +135,7 @@ function Clients() {
                               <form action="" onSubmit={handleEditFormSubmit}>
                       <table class="table table-striped" style={{border: "1px solid black"}}>
                           <thead>
-                              <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                              <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th></th></tr>
                           </thead>
                           <tbody>
                           {contacts.map((contact) => (
@@ -158,7 +160,7 @@ function Clients() {
                           ))}
                           </tbody>
                           <tfoot>
-                              <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                              <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th></th></tr>
                           </tfoot>
                       </table>
                               </form>

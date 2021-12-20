@@ -70,8 +70,11 @@ function Dashboard() {
                         <div className="shadow-sm p-3 bg-body rounded summaries " className="first-container" >
                             {/* Are these supposed to be links or just mere words? */}
                             <div style={{padding:"7vh 5vh", display:"flex", flexDirection:"column", gap:"20px"}}>
-                                <div>Agent issued reports</div>
-                                <div>Grand totals</div>
+                                <h3>Agent issued reports</h3>
+                                <h5>Grand totals</h5>
+                                <p>Daily <span style={{"font-weight": "bold", "margin-left": "40px"}}>UGX 1000000000</span></p>
+                                <p>Weekly <span style={{"font-weight": "bold", "margin-left": "40px"}}>UGX 1000000000</span></p>
+                                <p>Monthly <span style={{"font-weight": "bold", "margin-left": "40px"}}>UGX 1000000000</span></p>
                             </div>
                 
                         </div>
