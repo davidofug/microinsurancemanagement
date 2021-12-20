@@ -181,6 +181,7 @@ function Policies() {
                                     </Form.Select>
                                 </Form.Group>
                             </td>
+                            
                             <td>
                                 <Form.Group controlId="totalPremium" >
                                     <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} />
