@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/Auth'
 import { useHistory, Redirect} from 'react-router-dom'
 import logo from '../assets/imgs/britam-logo.png'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
+import { Link } from 'react-router-dom'
 
 function ForgotPassword() {
     const [ password, setPassword ] = useState("password")
@@ -32,39 +33,22 @@ function ForgotPassword() {
         <div className='logout'>
                 <img src={logo} alt='Britam'style={{"margin-bottom": "40px"}}/>
                 <form action="" >
-                    <p style={{"font-size": "1.1rem"}}>Enter Email and Password to sign in</p>
+                    <p style={{"font-size": "1.1rem"}}>Forgot Password?</p>
+                    <p style={{"font-size": ".9rem"}}>Enter your e-mail address to reset your password</p>
                     <div className='login-inputs'>
                         <label htmlFor="">Email</label>
                         <input type="email" placeholder='Enter email' name="" id="" />
                     </div>
-                    <div className='login-inputs'>
-                        <label  htmlFor="">Password</label>
-                        <div style={{"display": "flex", "align-items": "center", "justify-content": "space-between"}} id="password">
-                            <input style={{"border": "none"}}  type={password} placeholder='Enter password' name="" id="password_input" />
-                            <span onClick={() => setIsVisible(!isVisible)}>
-                                { isVisible ? (
-                                    <MdVisibility style={{"color": "black", "float": "right", "margin-right": "5px", "margin-top": "auto", "position": "relative", "z-index": "2"}} onClick={() => setPassword("text")}/>
-                                ): (
-                                    <MdVisibilityOff style={{"color": "black", "float": "right", "margin-right": "5px", "margin-top": "auto", "position": "relative", "z-index": "2"}}  onClick={() => setPassword("password")}/>
-                                )
-
-                                }
-                                
-                            </span>
-                        </div>
-                    </div>
-                    <div>
-                        <input style={{"margin-right": "5px"}} type="checkbox" name="signedIn" id="" />
-                        <label htmlFor="signedIn">Keep me signed in</label>
-                    </div>
+                    
                     <div id="submit_login">
-                        <input  type="submit" className='btn btn-primary cta' onClick={() => {
+                        <Link to="/login"><p>Remember password?Login</p></Link>
+
+                        <input  type="submit" style={{"margin-left": "10px"}} className='btn btn-primary cta' onClick={() => {
                             setCurrentUser(1)
                             localStorage.setItem('loggedIn', 1)
                             history.push('admin-dashboard')
                         }}
-                         value="Login"/>
-                         <a href=""><p>Forgot Password?</p></a>
+                         value="Submit"/>
                     </div>
                 </form>
         </div>

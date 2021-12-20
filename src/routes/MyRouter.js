@@ -2,6 +2,7 @@ import { useAuth } from '../contexts/Auth'
 import NotLoggedIn from '../pages/NotLoggedIn'
 import Login from '../pages/Login'
 import Logout from '../pages/Logout'
+import ForgotPassword from '../pages/ForgotPassword'
 
 //different user roles routes
 import SuperAdminRoutes from './SuperAdminRoutes'
@@ -28,6 +29,7 @@ function MyRouter() {
                 <Switch>
                     <Route path="/" exact component={Login} />
                     <Route path="/login" component={Login} />
+                    <Route path="/forgot-password" component={ForgotPassword} />
                     <Route path="/logout" component={Logout} />
                     <Route path="/not-logged-in" component={NotLoggedIn} />
                 </Switch>
