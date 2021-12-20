@@ -10,12 +10,12 @@ function AddAgents() {
 
     return (
         <div className='components'>
-            <div>
+            <div className='heading'>
                 <h1 className='title'>Add Agents</h1>
                 <p className="subtitle">ADD A NEW Agents</p>
             </div>
 
-            <div className="table-card">  
+            <div className="table-card componentsData" >  
                 <form action="">
                     <div id="client_name">
                         <label htmlFor="" >Name <span className='required'>*</span></label>

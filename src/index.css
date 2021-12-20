@@ -42,7 +42,7 @@ body{
 }
 
 .componentsData{
-    margin: 0 50px;
+    margin: 0 20px;
 }
 
 .heading{
@@ -173,8 +173,8 @@ tbody, td, tfoot, th, thead, tr{
 }
 
 .cta{
-    height: 40px;
-    width: 120px;
+    /* height: 40px; */
+    /* width: 120px; */
     background-color: #1475CF;
 }
 
