@@ -1,12 +1,12 @@
-.main {
+/* .main {
     display: flex; 
     height: 100%;
-}
+} */
 
-#menu {
+/* #menu {
     width:20vw; 
     background-color:#FFFFFF;
-}
+} */
 
 #main-container {
     padding-top:5vh;
@@ -14,14 +14,15 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    width:80vw;
+    width:100%;
     
     /* debuging purposes */
     /* overflow:hidden; */
 }
 
-#first-container{
-    width:27.688rem; 
+.first-container{
+    /* width:27.688rem;  */
+    width:50%; 
     height:21.875rem; 
     display:flex;
     justify-content:center; 
@@ -29,6 +30,9 @@
     background-color:#FFFFFF;
     border-radius:0.4rem;
 }
+
+
+
 
 #row-container {
     display:flex;
@@ -72,7 +76,7 @@
 
 .graph-container {
     height:400px;
-    width:920px;
+    width:100%;
     background-color:#FFFFFF;
     border-radius:0.4rem;
 }

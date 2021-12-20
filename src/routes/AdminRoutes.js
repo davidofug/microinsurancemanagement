@@ -19,7 +19,7 @@ import AddAgents from '../pages/AddAgents'
 import AddSupervisors from '../pages/admin/AddSupervisors'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
-import NotFound from '../pages/NotFound'
+import AddOrganisation from '../pages/admin/AddOrganisation'
 
 
 function AdminRoutes() {
@@ -30,6 +30,9 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin-organisations" >
                 <Organisations />
+            </PrivateRoute>
+            <PrivateRoute path="/admin-add-organisations" >
+                <AddOrganisation />
             </PrivateRoute>
             <PrivateRoute path="/admin-view-log-trail" >
                 <Logs />
