@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
@@ -11,21 +10,18 @@ import '../styles/Policies.css'
 
 // import AddClient from '../parts/AddClient'
 
-
 function Policies() {
     const [field, handleFieldChange] = useForm({})
-    const [ clientDetails, setClientDetails ] = useState({}) 
-    const [selectedClass, setSelectedClass] = useState('')
-    const [ selectedCategory, setSelectedCategory ] = useState('')
+    const [selectedCategory, setSelectedCategory ] = useState('')
 
     const { currencies, make, categories } = dynamicFields
-    
 
     useEffect(() => {
         document.title = 'Britam - Policies'
     }, [])
 
     
+    const [ clientDetails, setClientDetails ] = useState({}) 
 
     const [ stickers, setStickers ] = useState([
         {
@@ -48,7 +44,6 @@ function Policies() {
         values[index][event.target.name] = event.target.value
         // console.log(event.name, event.target.value)
         setStickers(values)
-        
     }
 
     const addStickerMotorDetails = () => {
@@ -77,44 +72,11 @@ function Policies() {
             stickersDetails.splice(index, 1)
             setStickers(stickersDetails)
         }
-        setStickers(
-            {
-                referenceNo:'',
-                plateNo:'',
-                seatingCapacity:'',
-                ccPower:'',
-                grossWeight:'',
-                category:'', 
-                motorClass:'',
-                chasisNo:'',
-                motorMake:'',
-                vehicleUse:'',
-                totalPremium:''
-            }
-        )
+        return
         // const filteredStickers = stickers.filter(sticker => sticker !== stickers[index])
         // setStickers(filteredStickers)
     }
-    const boom = [
-        {
-            "code":"UGX",
-            "name":"Ugandan shilling",
-            "symbol":"/="
-        },
-        {
-            "code":"USD",
-            "name":"United States dollar",
-            "symbol":"$"
-        }
-    ]
 
-    
-    
-    const getClassesOption= (option) => {
-        const category = categories.filter(option => option["label"] === category)
-        return category["classes"]
-    }
-    
 
     const renderStickerDetails = (singleSticker, index) => {
         return (
@@ -167,7 +129,10 @@ function Policies() {
                             <td>
                                 <Form.Group controlId="motorClass" >
                                     <Form.Select type="text" name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
-                                        <option>Class</option> 
+                                        <option>Class</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
                                     </Form.Select>
                                 </Form.Group>
                             </td>
@@ -183,7 +148,7 @@ function Policies() {
                                 <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
                                     <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)}>
                                         <option>Motor Make</option>
-                                        {make.map((motorMake, index) => <option key={index} value={motorMake}>{motorMake[1]}</option>)}
+                                        {make.map((motorMake, index) => <option key={index} value={motorMake[0]}>{motorMake[1]}</option>)}
                                     </Form.Select>
                                 </Form.Group >
                             </td>
@@ -242,11 +207,7 @@ function Policies() {
         <div className='components'> 
             <div>
                 <h1 className='title'>Policies</h1>
-                <p>MANAGINE POLICIES</p>
-            </div>
-            <div id="add_client_group">
-                <div></div>
-                <button className="btn btn-primary cta">Add policy</button>
+                <p>MANAGING POLICIES</p>
             </div>
             <div className="table-card" style={{paddingBottom:"10vh"}}>
                 <Form>
@@ -256,14 +217,12 @@ function Policies() {
                                 Client
                             </h1>    
                         </Row>
-                        <Row style={{paddingBottom:"2vh"}}>
+                        <Row style={{paddingBottom:"4vh"}}>
                             <Col xs="2">
                                 <Form.Group className="mb-3" controlId="clientDetails">
                                     <Form.Control type="text" placeholder="Existing" onChange={event => {
                                         const existingClientDetails = getExistingClient(event.target.value)
                                         // console.log(existingClientDetails)
-                                        // console.log(currencies)
-
                                         setClientDetails(existingClientDetails)
                                     }}/>
                                 </Form.Group>
@@ -293,7 +252,7 @@ function Policies() {
                             <Col xs="3">
                                 <Form.Group controlId="policyStartDate" >
                                     <Form.Label><h5>Policy Start Date</h5></Form.Label>
-                                    <Form.Control type="date" placeholder="" id="policy_start_date" onChange={handleFieldChange}/>
+                                    <Form.Control type="date" placeholder=""/>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -304,6 +263,7 @@ function Policies() {
                                 </Button>
                             </div>
                         </div>
+                        {console.log(stickers)}  
                     </div> 
                 </Form>
             </div>
@@ -312,3 +272,4 @@ function Policies() {
 }
 
 export default Policies
+
