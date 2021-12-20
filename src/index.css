@@ -17,6 +17,9 @@ body{
     font-size: .875rem;
 }
 
+
+
+
 .logout{
     display: flex;
     flex-direction: column;
@@ -29,17 +32,41 @@ body{
 .logout form{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center; */
+    /* align-items: center; */
     background: #fff; 
     border-radius: 5px; 
+    color: #8E8E93;
+    padding: 20 50px;
     box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
 }
 
 .logout .login-inputs{
     display: flex;
     flex-direction: column;
-    padding: 10px 30px;
+    /* padding: 10px 30px; */
+    margin-bottom: 20px;
+}
+
+.login-inputs input{
+    border-radius: 5px;
+    padding: 5px 18px;
+    border: 1px solid #9A9A9A;
+}
+
+.login-inputs input:focus{
+    outline: none;
+}
+
+#password{
+    border-radius: 5px;
+    border: 1px solid #9A9A9A;
+}
+
+
+
+#password_input:focus{
+    outline: none;
 }
 
 /* root container */
@@ -48,6 +75,42 @@ body{
     grid-template-columns: 2fr 10fr;
     min-height: 100vh;
     width: 100vw;
+}
+
+/* positioning the visibility */
+#password{
+    position: relative;
+}
+
+#visible{
+    position: absolute;
+    left: 60%;
+    top: 57%;
+    color: #000;
+    border: 1px solid red;
+}
+
+
+#submit_login{
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#submit_login input{
+    margin: 0;
+    padding: 0;
+}
+#submit_login p{
+    text-align: center;
+    color: #1475cf;
+    margin: 0;
+    margin-left: 10px;
+}
+#submit_login a{
+    text-decoration: none;
 }
 
 /* sidebar position */
@@ -273,6 +336,10 @@ tbody, td, tfoot, th, thead, tr{
     }
     
 }
+
+
+
+
 
 
 

@@ -13,7 +13,7 @@ function Organisations() {
                 <p className="subtitle">Manage Organsations</p>
             </div>
 
-            <div class="componentsData">
+            <div class="componentsData table">
                 <div className="table-card">
                     <div id="search">
                         <input type="text" placeholder='Search for client...' id='searchInput' />
