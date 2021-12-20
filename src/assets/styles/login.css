@@ -15,7 +15,7 @@
     background: #fff; 
     border-radius: 5px; 
     color: #8E8E93;
-    padding: 20 50px;
+    padding: 25px 50px;
     box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
 }
 
@@ -28,7 +28,7 @@
 
 .login-inputs input{
     border-radius: 5px;
-    padding: 5px 18px;
+    padding: 5px 5px;
     border: 1px solid #9A9A9A;
 }
 
@@ -40,6 +40,7 @@
     border-radius: 5px;
     border: 1px solid #9A9A9A;
 }
+
 
 
 
