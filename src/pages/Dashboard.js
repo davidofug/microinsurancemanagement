@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/Auth'
-import {Link} from 'react-router-dom'
-import Menu from './admin/AdminMenu'
 import { Card, Container } from 'react-bootstrap'
 
 import '../styles/dashboard.css'
@@ -22,15 +20,15 @@ function Dashboard() {
             <div className='components'>
                 <div className='heading'>
                     <h1 className='title'>Welcome to Britam</h1>
-                    <p className="subtitle">With you every step of the way</p>
+                    <p className="subtitle">WITH YOU EVERY STEP OF THE WAY</p>
                 </div>
 
-                <div className="main componentsData">
+                <div className="componentsData" >
                 <div id="main-container">
-                    <div style={{display:"flex", gap:"2.5vw"}}>
-                        <div className="shadow-sm p-3 mb-5 bg-body rounded" id="first-container">
+                    <div className='mb-5' style={{display:"flex", gap:"2.5vw", width: "100%", justifyContent: "space-between"}}>
+                        <div className="shadow-sm p-3 bg-body rounded" className="first-container">
                             <Container id="row-container">
-                                <div style={{display:"flex", gap:"20px"}}>
+                                <div style={{display:"flex", gap:"30px"}}>
                                     <div className="col">
                                         <Card className="card" style={{"background-color":"#804C75"}}>
                                             <Card.Body className="card-body">
@@ -48,7 +46,7 @@ function Dashboard() {
                                         </Card>
                                     </div>
                                 </div>
-                                <div style={{display:"flex", gap:"20px"}}>
+                                <div style={{display:"flex", gap:"30px"}}>
                                     <div className="col">
                                         <Card className="card" style={{"background-color":"#FFB848"}}>
                                             <Card.Body className="card-body">
@@ -68,7 +66,8 @@ function Dashboard() {
                                 </div>
                             </Container>
                         </div>
-                        <div className="shadow-sm p-3 mb-5 bg-body rounded summaries">
+
+                        <div className="shadow-sm p-3 bg-body rounded summaries " className="first-container" >
                             {/* Are these supposed to be links or just mere words? */}
                             <div style={{padding:"7vh 5vh", display:"flex", flexDirection:"column", gap:"20px"}}>
                                 <div>Agent issued reports</div>
@@ -77,11 +76,12 @@ function Dashboard() {
                 
                         </div>
                     </div>
-                    <div id="title">
-                        <div style={{alignItems:"bottom"}}>Monthly Stickers</div>
-                    </div>
+
                     {/* Graph div  */}
-                    <div className="shadow-sm p-3 mb-5 bg-body rounded graph-container">
+                    <div className="shadow-sm p-3 mb-5 bg-body rounded graph-container" >
+                    <h5 style={{"display":"flex", "gap": "10px"}}><span>
+                        <div style={{"width": "20px", "height": "20px", "background-color": "#E0E7EC"}}></div>
+                    </span>Monthly Stickers Issued</h5>
                     </div>
                 </div>            
                         </div>
