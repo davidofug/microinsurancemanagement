@@ -1,9 +1,11 @@
 /* sidebar position */
-/* .menuSide{
+.menuSide{
     position: fixed;
     top: 0;
     left: 0;
-} */
+    bottom: 0;
+    width: 260px;
+}
 
 .sidebar{
     display: grid; 
@@ -12,6 +14,10 @@
     border-right: 1px solid #c6c7c8;
     align-items: stretch;
     height: 100vh;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
 }
 
 /* Brand CSS */
