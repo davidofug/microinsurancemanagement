@@ -22,7 +22,7 @@ function Dashboard() {
 
             <div className='components'>
                 <div className='heading'>
-                    <h1 className='title'>Welcome, Charles</h1>
+                    <h1 className='title'>Welcome to Britam</h1>
                     <p className="subtitle">With you every step of the way</p>
                 </div>
 

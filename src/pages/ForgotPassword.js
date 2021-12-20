@@ -2,13 +2,12 @@ import {useState,useEffect} from 'react'
 import { useAuth } from '../contexts/Auth'
 import { useHistory, Redirect} from 'react-router-dom'
 import logo from '../assets/imgs/britam-logo.png'
-import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 
+import '../assets/styles/login.css'
+
 function ForgotPassword() {
-    const [ password, setPassword ] = useState("password")
     let [isLogin, setLogin] = useState(false)
-    const [ isVisible, setIsVisible ] = useState(false)
 
     let { setCurrentUser } = useAuth()
 
@@ -40,16 +39,15 @@ function ForgotPassword() {
                         <input type="email" placeholder='Enter email' name="" id="" />
                     </div>
                     
-                    <div id="submit_login">
-                        <Link to="/login"><p>Remember password?Login</p></Link>
+                    <input type="submit" style={{"width": "100%", "margin": "0"}} className='btn btn-primary cta' onClick={() => {
+                        setCurrentUser(1)
+                        localStorage.setItem('loggedIn', 1)
+                        history.push('admin-dashboard')
+                    }}
+                        value="Submit"/>
+                        
+                    <Link to="/login" style={{"text-decoration": "none",  "margin-top": "10px", "margin-bottom": "0"}}><p style={{"text-align": "center", "color": "#1475CF", "margin": "0"}}>Remember password? Login</p></Link>
 
-                        <input  type="submit" style={{"margin-left": "10px"}} className='btn btn-primary cta' onClick={() => {
-                            setCurrentUser(1)
-                            localStorage.setItem('loggedIn', 1)
-                            history.push('admin-dashboard')
-                        }}
-                         value="Submit"/>
-                    </div>
                 </form>
         </div>
     )
