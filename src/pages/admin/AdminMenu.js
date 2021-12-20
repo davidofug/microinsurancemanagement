@@ -7,12 +7,13 @@ import logo from '../../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 
 
-function AdminMenu() {
+function AdminMenu({setLargeContentClass, largeContentClass}) {
 
     const { Admin } = menuData
 
     const [ selected, setSelected ] = useState({ activeObject: null, Admin })
     const [ toggleMenu, setToggeMenu ] = useState(true)
+    const [ sidebarClass, setSidebarClass ] = useState()
 
     useEffect(() => {
         if(sessionStorage.getItem('session1')){
@@ -86,7 +87,10 @@ function AdminMenu() {
                         <nav >
                         <div id='brand'>
                                     <img src={logo} alt="Britam" />
-                                    <i onClick={() => setToggeMenu(!toggleMenu)}>
+                                    <i onClick={() => {
+                                        setToggeMenu(!toggleMenu)
+                                        setLargeContentClass(!largeContentClass)
+                                        }}>
                                     <HiOutlineChevronLeft />
                                     </i>
                             </div>
@@ -137,7 +141,10 @@ function AdminMenu() {
                                 :
                     <nav className='sidebar-m'>
                         <section id='brand_m'>
-                                <i onClick={() => setToggeMenu(!toggleMenu)}>
+                                <i onClick={() => {
+                                    setToggeMenu(!toggleMenu)
+                                    setLargeContentClass(!largeContentClass)
+                                    }}>
                                 <HiOutlineChevronRight />
                                     </i>
                         </section>
