@@ -10,12 +10,12 @@ function AddClaims() {
 
     return (
         <div className='components'>
-            <div>
+            <div className='heading'>
                 <h1 className='title'>Add Claim</h1>
                 <p className="subtitle">ADD A NEW CLAIM</p>
             </div>
 
-            <div className="table-card">  
+            <div className="table-card componentsData">  
                 <form action="">
                     <div id="row">      
                          <div id="client_name">
