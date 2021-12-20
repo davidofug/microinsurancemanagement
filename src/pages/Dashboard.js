@@ -19,16 +19,13 @@ function Dashboard() {
     }, [])
 
     return (
-
             <div className='components'>
                 <div className='heading'>
                     <h1 className='title'>Welcome to Britam</h1>
                     <p className="subtitle">With you every step of the way</p>
                 </div>
 
-                        <div className="main componentsData">
-                
-                
+                <div className="main componentsData">
                 <div id="main-container">
                     <div style={{display:"flex", gap:"2.5vw"}}>
                         <div className="shadow-sm p-3 mb-5 bg-body rounded" id="first-container">
