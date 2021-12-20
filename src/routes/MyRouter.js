@@ -1,4 +1,3 @@
-import NotFound from '../pages/NotFound'
 import { useAuth } from '../contexts/Auth'
 import NotLoggedIn from '../pages/NotLoggedIn'
 import Login from '../pages/Login'
