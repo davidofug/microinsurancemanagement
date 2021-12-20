@@ -89,39 +89,42 @@ function Policies() {
 
     const renderStickerDetails = (singleSticker, index) => {
         return (
-            <React.Fragment key={index}>
-                <tr>
-                    <td style={{verticalAlign:"middle", paddingLeft:"1vh", paddingRight:"1vh"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
-                        <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
+            
+            <div style={{display:"flex", gap: "20px"}} key={index}>
+            {/* {addAnotherSticker} */}
+                <Table striped bordered>
+                    <tbody> 
+                        <tr>
+                            <td style={{verticalAlign:"top"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
+                            <td>
                                 <Form.Group controlId="referenceNo">
                                     <Form.Control type="text" name="referenceNo" placeholder="Reference No" value={singleSticker.referenceNo} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
-                            </div>
-                            <div>
-                                <Form.Group controlId="grossWeight">
-                                    <Form.Control type="text" name="grossWeight" placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={event => handleInputChange(index, event)} />
-                                </Form.Group>
-                            </div>
-                            <div>
-                                <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
-                                    <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)}>
-                                        <option>Motor Make</option>
-                                        {make.map((motorMake, index) => <option key={index} value={motorMake[0]}>{motorMake[1]}</option>)}
-                                    </Form.Select>
-                                </Form.Group >
-                            </div>
-                        </div> 
-                    </td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
-                        <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
+                            </td>
+                            <td>
                                 <Form.Group controlId="plateNo">
                                     <Form.Control type="text" name="plateNo" placeholder="Plate No" value={singleSticker.plateNo} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
-                            </div>
-                            <div>
+                            </td>
+                            <td>
+                                <Form.Group controlId="seatingCapacity">
+                                    <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)}/>
+                                </Form.Group>
+                            </td>
+                            <td>
+                                <Form.Group controlId="ccPower">
+                                    <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)}/>
+                                </Form.Group>
+                            </td>
+                        </tr>
+                        <tr style={{backgroundColor:"#FFFFFF"}}>
+                            <td></td>
+                            <td>
+                                <Form.Group controlId="grossWeight">
+                                    <Form.Control type="text" name="grossWeight" placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={event => handleInputChange(index, event)} />
+                                </Form.Group>
+                            </td>
+                            <td>
                                 <Form.Group controlId="category" > 
                                     <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} onChange={event => {
                                         handleInputChange(index, event)
@@ -150,70 +153,60 @@ function Policies() {
                                         {categories.map((category, index) => <option key={index} value={category["label"]}>{category["label"]}</option>)}
                                     </Form.Select>
                                 </Form.Group>
-                            </div>
-                            <div>
-                                <Form.Group controlId="vehicleUse">
-                                    <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
-                                        <option>Vehicle use</option>
-                                        {vehicleUses.map((item, index) => <option key={index} value={item}>{item}</option>)}
-                                    </Form.Select>
-                                </Form.Group>
-                            </div>
-                        </div>
-                    </td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
-                        <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
-                                <Form.Group controlId="seatingCapacity">
-                                    <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)}/>
-                                </Form.Group>
-                            </div>
-                            <div>
+                            </td>
+                            <td>
                                 <Form.Group controlId="motorClass" >
                                     <Form.Select type="text" name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
                                         <option>Class</option>
                                         {classes.map((item, index) => <option key={index} value={item}>{item}</option>)}
                                     </Form.Select>
                                 </Form.Group>
-                            </div>
-                            <div>
-                                <Form.Group controlId="totalPremium" >
-                                    <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} />
-                                </Form.Group>
-                            </div>
-                        </div>
-                    </td>
-                    <td style={{verticalAlign:"top", paddingLeft:"1vh", paddingRight:"1vh"}}>
-                        <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
-                                <Form.Group controlId="ccPower">
-                                    <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)}/>
-                                </Form.Group>
-                            </div>
-                            <div>
+                            </td>
+                            <td>
                                 <Form.Group controlId="chasisNo" aria-label="chasisNo">
                                     <Form.Control type="text" name="chasisNo" placeholder="Chasis No" value={singleSticker.chasisNo} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
-                            </div>
-                            <div>
-                                
-                            </div>
-                        </div>
-                    </td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
-                        <div style={{display:"flex", flexDirection:"column", gap:"5px", justifyContent:"flex-end"}}>
-                            <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
-                                onClick={() => removeStickerMotorDetails(index)}
-                                type="button"
-                            >-</button>
-                            <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} 
-                                onClick={() => addStickerMotorDetails()}
-                                type="button"
-                            >+</button>
-                        </div>
-                    </td>
-                </tr>
-            </React.Fragment>      
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
+                                    <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)}>
+                                        <option>Motor Make</option>
+                                        {make.map((motorMake, index) => <option key={index} value={motorMake[0]}>{motorMake[1]}</option>)}
+                                    </Form.Select>
+                                </Form.Group >
+                            </td>
+                            <td>
+                                <Form.Group controlId="vehicleUse">
+                                    <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
+                                        <option>Vehicle use</option>
+                                        {vehicleUses.map((item, index) => <option key={index} value={item}>{item}</option>)}
+                                    </Form.Select>
+                                </Form.Group>
+                            </td>
+                            
+                            <td>
+                                <Form.Group controlId="totalPremium" >
+                                    <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} />
+                                </Form.Group>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </Table>
+                <div style={{display:"flex", flexDirection:"column", gap:"5px", justifyContent:"flex-end", paddingBottom:"40px"}}>
+                    <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
+                        onClick={() => removeStickerMotorDetails(index)}
+                        type="button"
+                    >-</button>
+                    <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} 
+                        onClick={() => addStickerMotorDetails()}
+                        type="button"
+                    >+</button>
+                </div>
+            </div>          
         )
     }
 
@@ -275,12 +268,8 @@ function Policies() {
                         </Col>
                     </Row>
                     
-                    <Table striped bordered>
-                        <tbody>
-                            {stickers.map(renderStickerDetails)}
-                        </tbody>
-                    </Table>
                     {/*Sticker form details container.*/}
+                    {stickers.map(renderStickerDetails)}
                     
                     
                     <div>
