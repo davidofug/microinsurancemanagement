@@ -14,7 +14,7 @@ function Logs() {
                 <p className="subtitle">VIEW YOUR LOG TRAILS</p>
             </div>
 
-            <div className="table-card"> 
+            <div className="table-card componentsData"> 
 
                 <table class="table table-striped" style={{border: "1px solid black"}}>
                     <thead>

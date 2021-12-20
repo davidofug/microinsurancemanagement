@@ -12,8 +12,7 @@ function Users() {
                 <p className="subtitle">MANAGING USERS</p>
             </div>
 
-            <div className="table-card">   
-
+            <div className="table-card componentsData">   
                 <div id="search">
                     <input type="text" placeholder='Search for client...' id='searchInput' />
                     <button className='btn btn-primary'>Search</button>
