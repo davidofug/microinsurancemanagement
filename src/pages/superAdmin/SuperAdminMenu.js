@@ -1,25 +1,39 @@
-import menuData from './menuData'
-import '../assets/styles/menu.css'
+import menuData from '../../parts/menuData'
+import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import logo from '../assets/imgs/britam-logo.png'
+import logo from '../../assets/imgs/britam-logo.png'
+import profile from '../../assets/imgs/anyuru.jpg'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 
 
-function SupervisorMenu() {
+function SuperAdminMenu() {
 
-    const { superAdmin } = menuData
+    const { SuperAdmin } = menuData
 
-    console.log(superAdmin)
-
-    const [ selected, setSelected ] = useState({ activeObject: null, superAdmin })
+    const [ selected, setSelected ] = useState({ activeObject: null, SuperAdmin })
     const [ toggleMenu, setToggeMenu ] = useState(true)
 
-    useEffect(() => setSelected({...selected, activeObject: selected.superAdmin[0]}), [])
+    useEffect(() => {
+        if(sessionStorage.getItem('session1')){
+            setSelected({...selected, activeObject: selected.SuperAdmin[sessionStorage.getItem('session1')-1]})
+        }else{
+            setSelected({...selected, activeObject: selected.SuperAdmin[0]})
+        }
+        
+    }, [])
     
-    const toggleActive = index => setSelected({...selected, activeObject: selected.superAdmin[index]})
+    const toggleActive = index => {
+        setSelected({...selected, activeObject: selected.SuperAdmin[index]})
+        sessionStorage.setItem('session1', selected.SuperAdmin[index]["number"])
+    }
 
-    const toggleActiveIdStyle = index => selected.superAdmin[index] === selected.activeObject ? "nav-link-active" : "nav-link"
+    
+
+
+
+    
+    const toggleActiveClassStyle = index => selected.SuperAdmin[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
 
     return (
         <div>
@@ -33,11 +47,12 @@ function SupervisorMenu() {
                             </i>
                     </div>
                 
-                    <section id="menu_section">
-                            { selected.superAdmin.map((object, index) => (
-                                                <li>
-                                                    <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                        <i className='icon'>{object.icon}</i> <span>{object.name}</span>
+                    <section className='position-sticky pt-3' id="menu_section">
+                        <ul className="nav flex-column">
+                            { selected.SuperAdmin.map((object, index) => (
+                                                <li className='nav-item'>
+                                                    <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                        <span>{object.icon}</span>{object.name}
                                                         {object?.subMenu &&
                                                             (<ul>
                                                                 {object.subMenu.map((sub, index) => (
@@ -54,17 +69,21 @@ function SupervisorMenu() {
                                     )
                                 )
                             }
+                            </ul>
                     </section>
 
                     
                     <footer>
                             <ul>
-                                <li><Link to="/settings">My Profile</Link></li>
+                                <li><Link to="/super-admin-settings">My Profile</Link></li>
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
-                        <Link to={'/settings'}>
-                            <img src="" alt="profile image" />
-                            <p>Anyuru David Derrick</p>
+                        <Link to={'/super-admin-settings'}>
+                            <img src={profile} alt="profile image" />
+                            <div>
+                                <p>Anyuru David Derrick</p>
+                                <p style={{"color": "#646464"}}>Super Admin</p>
+                            </div>
                             <div id="eclipse"><div></div><div></div><div></div></div>
                         </Link>
                     </footer>
@@ -79,12 +98,13 @@ function SupervisorMenu() {
                                 </i>
                     </section>
                 
-                    <section id="menu_section_m">
+                    <section className='position-sticky pt-3' id="menu_section_m">
+                        <ul className="nav flex-column">
                             {
-                                selected.menuData.map((object, index) => (
-                                        <li>
-                                            <Link to={object.link} id={toggleActiveIdStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                <i className='icon'>{object.icon}</i>
+                                selected.SuperAdmin.map((object, index) => (
+                                    <li className='nav-item' key={index}>
+                                            <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                <span>{object.icon}</span>
                                                 
                                                     {object?.subMenu &&
                                                             (<ul>
@@ -101,15 +121,16 @@ function SupervisorMenu() {
                                     )
                                 )
                             }
+                            </ul>
                     </section>
                 
                     <footer>
                             <ul>
-                                <li><Link to="/settings">Settings</Link></li>
+                                <li><Link to="/super-admin-settings">Settings</Link></li>
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
-                        <Link to={'/settings'} id="account">
-                            <img src='' alt="profile image" />
+                        <Link to={'/super-admin-settings'} id="account">
+                            <img src={profile} alt="profile image" />
                         </Link>
                     </footer>
 
@@ -119,4 +140,4 @@ function SupervisorMenu() {
     )
 }
 
-export default SupervisorMenu
+export default SuperAdminMenu

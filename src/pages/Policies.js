@@ -206,11 +206,7 @@ function Policies() {
         <div className='components'> 
             <div>
                 <h1 className='title'>Policies</h1>
-                <p>MANAGINE POLICIES</p>
-            </div>
-            <div id="add_client_group">
-                <div></div>
-                <button className="btn btn-primary cta">Add policy</button>
+                <p>MANAGING POLICIES</p>
             </div>
             <div className="table-card" style={{paddingBottom:"10vh"}}>
                 <Form>

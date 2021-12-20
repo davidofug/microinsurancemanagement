@@ -1,10 +1,9 @@
-import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
 import { useEffect, useState, Fragment } from 'react'
-import data from '../helpers/mock-data.json'
-import EditableRow from '../helpers/EditableRow';
-import ReadOnlyRow from '../helpers/ReadOnlyRow';
-import Search from '../helpers/Search';
+import data from '../../helpers/mock-data.json'
+import EditableRow from '../../helpers/EditableRow';
+import ReadOnlyRow from '../../helpers/ReadOnlyRow';
+import Search from '../../helpers/Search';
 
 function Clients() {
 
@@ -117,53 +116,51 @@ function Clients() {
             </div>
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-clients">
+                <Link to="/agent-add-clients">
                     <button className="btn btn-primary cta">Add Client</button>
                 </Link>
                 
             </div>
 
-                <div class="componentsData">
-                  <div className="table-card">
-                      <div id="search">
-                          {/* <input type="text" placeholder='Search for client...' id='searchInput' /> */}
-                          <Search handleSearchNote={setSearchText} />
-                          <button className='btn btn-primary cta'>Search</button>
-                          <button className='btn btn-primary cta'>Export </button>
-                      </div>
-                              <form action="" onSubmit={handleEditFormSubmit}>
-                      <table class="table table-striped" style={{border: "1px solid black"}}>
-                          <thead>
-                              <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
-                          </thead>
-                          <tbody>
-                          {contacts.map((contact) => (
-                              <Fragment>
-                                  {editContactId === contact.id ? (
-                                  <EditableRow
-                                      editFormData={editFormData}
-                                      handleEditFormChange={handleEditFormChange}
-                                      handleCancelClick={handleCancelClick}
-                                  />
-                                  ): (
-                                      <ReadOnlyRow
-                                        contacts={contacts.filter((contact) =>
-                                          contact.name.toLowerCase().includes(searchText)
-                                        )}
-                                        contact={contact}
-                                        handleEditClick={handleEditClick}
-                                        handleDeleteClick={handleDeleteClick}
-                                      />
-                                    )}
-                              </Fragment>
-                          ))}
-                          </tbody>
-                          <tfoot>
-                              <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
-                          </tfoot>
-                      </table>
-                              </form>
-                </div>
+                <div className="table-card">
+                    <div id="search">
+                        {/* <input type="text" placeholder='Search for client...' id='searchInput' /> */}
+                        <Search handleSearchNote={setSearchText} />
+                        <button className='btn btn-primary cta'>Search</button>
+                        <button className='btn btn-primary cta'>Export </button>
+                    </div>
+            <form action="" onSubmit={handleEditFormSubmit}>
+                    <table class="table table-striped" style={{border: "1px solid black"}}>
+                        <thead>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                        </thead>
+                        <tbody>
+                        {contacts.map((contact) => (
+                            <Fragment>
+                                {editContactId === contact.id ? (
+                                <EditableRow
+                                    editFormData={editFormData}
+                                    handleEditFormChange={handleEditFormChange}
+                                    handleCancelClick={handleCancelClick}
+                                />
+                                ): (
+                                    <ReadOnlyRow
+                                      contacts={contacts.filter((contact) =>
+                                        contact.name.toLowerCase().includes(searchText)
+                                      )}
+                                      contact={contact}
+                                      handleEditClick={handleEditClick}
+                                      handleDeleteClick={handleDeleteClick}
+                                    />
+                                  )}
+                            </Fragment>
+                        ))}
+                        </tbody>
+                        <tfoot>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                        </tfoot>
+                    </table>
+            </form>
                 </div>
         </div>
     )
