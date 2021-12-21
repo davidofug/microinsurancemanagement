@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
@@ -23,6 +24,7 @@ function Policies() {
     // console.log(date)
     const [ policyStartDate, setPolicyStartDate ] = useState(null)
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
+    const [ currency, setCurrency ] = useState({})
     // console.log(policyStartDate)
 
     const { currencies, make, categories } = dynamicFields
@@ -336,7 +338,15 @@ function Policies() {
 
                         <div style={{display:"flex", justifyContent:"flex-end"}}>
                             <div>
-                                <Button variant="primary" type="submit" >
+                                <Button variant="primary" type="submit" onSubmit={
+                                    setFormData({
+                                        clientDetails,
+                                        stickers,
+                                        field,
+                                        policyStartDate: policyStartDate,
+                                        policyEndDate: policyEndDate
+                                    })
+                                }>
                                     Process 3rd Party
                                 </Button>
                             </div>
@@ -350,4 +360,3 @@ function Policies() {
 }
 
 export default Policies
-
