@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 function Claims() {
 
@@ -25,7 +26,7 @@ function Claims() {
                         <input type="text" placeholder='filter by Dates..' id='searchInput' />
                         <input type="text" placeholder='Search for client...' id='searchInput' />
                     </div>
-                    <table class="table table-striped" style={{border: "1px solid black"}}>
+                    <Table striped hover responsive bordered style={{border: "1px solid black"}}>
                         <thead>
                             <tr><th>Notification Ref No.</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker No.</th><th>Claim Estimate</th><th>Status</th><th></th></tr>
                         </thead>
@@ -48,7 +49,7 @@ function Claims() {
                         <tfoot>
                         <tr><th>Notification Ref No.</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker No.</th><th>Claim Estimate</th><th>Status</th><th></th></tr>
                         </tfoot>
-                    </table>
+                    </Table>
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import generatedData from '../helpers/generatedClients';
 import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
+import { Form, Row, Col, Button } from 'react-bootstrap';
 
 function AddClients() {
 
@@ -17,48 +18,55 @@ function AddClients() {
 
             <div class="componentsData" style={{"display": "flex", justifyContent: "center", "background-color": "#fff", "margin-top": "60px", "border-radius": "10px"}}>
             {/* <div className="table-card">   */}
-                <form action="">
-                    <div className="client_name">
-                        <label htmlFor="" >Name <span className='required'>*</span></label>
-                        <input type="text" name="" id="" placeholder="Enter Client's name"/>
-                    </div>
-                    <div id="contact" style={{"border": "1px solid red"}}>
-                        <div id="dob" >
-                            <div id='date'>
-                                <label htmlFor="">Date Of Birth</label>
-                                <input type="date" name="" id="" />
-                            </div>
-                        </div>
-                        <div style={{"border": "1px solid green"}}>
-                            <label>Gender <span className='required'>*</span></label>
-                            <div id='gender' style={{"display": "flex", "gap": "20px"}} >
-                                <div>
-                                    <input type="radio" name="gender" id=""/>
-                                    <label htmlFor="gender">Male</label>
+
+
+            <form action="">
+                    <Form>
+                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control placeholder="Enter name" />
+                        </Form.Group>
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Date of birth</Form.Label>
+                                <Form.Control type="date" />
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Gender</Form.Label>
+                                <div style={{"display": "flex", "gap": "10px"}}>
+                                    <div>
+                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
+                                        <label htmlFor="gender">Male</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
+                                        <label htmlFor="gender">Female</label>
+                                    </div>
                                 </div>
-                                <div>
-                                    <input type="radio" name="gender" id="" />
-                                    <label htmlFor="gender">Female</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="contact" style={{"border": "1px solid red"}}>
-                        <div>
-                            <label htmlFor="" >email</label>
-                            <input type="text" name="" id="" />
-                        </div>
-                        <div>
-                            <label htmlFor="">telephone Number <span className='required'>*</span></label>
-                            <input type="tel" name="" id="" />
-                        </div>
-                    </div>
-                    <div id='address' className="client_name">
-                        <label htmlFor="">Address</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
-                    </div >
-                    <div id="upload" className="client_name">image goes here</div>
+                            </Form.Group>
+                        </Row>
+                        
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control type="email" placeholder="Enter email" />
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label>Phone Number</Form.Label>
+                                <Form.Control type="tel" placeholder="Enter phone number" />
+                            </Form.Group>
+                        </Row>
+                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                            <Form.Label>Address</Form.Label>
+                            <Form.Control placeholder="Enter your address" />
+                        </Form.Group>
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>upload profile image</Form.Label>
+                            <Form.Control type="file" />
+                        </Form.Group>
                     <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
+                    </Form>
+
                 </form>
             </div>
         </div>

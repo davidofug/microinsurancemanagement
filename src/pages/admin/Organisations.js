@@ -159,7 +159,7 @@ function Clients() {
                           ))}
                           </tbody>
                           <tfoot>
-                              <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                              <tr><th>#</th><th>Code</th><th>Name</th><th>Address</th><th>Contact Name</th><th>Contact Email</th><th>Contact Telephone</th></tr>
                           </tfoot>
                       </table>
                               </form>
