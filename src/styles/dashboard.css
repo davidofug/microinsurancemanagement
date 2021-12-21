@@ -34,7 +34,7 @@
 
 
 
-#row-container {
+.row-container {
     display:flex;
     flex-direction:column;
     gap: 43px;
@@ -103,7 +103,40 @@
 }
 
 
+.card-groups{
+    display:"flex";
+    gap: "30px";
+}
+
+#short_stats{
+    padding: 7vh 5vh;
+    display:"flex";
+    flex-Direction:"column";
+    gap:"20px"
+}
 
 
+@media (max-width: 780px) {
+    .first-container{
+        width: 48%;
+        height: auto;
+    }
+
+    #short_stats{
+        padding: 5px;
+        display:"flex";
+        flex-Direction:"column";
+        gap:"20px"
+    }
+
+    .row-container{
+        gap: 10px;
+    }
+
+    .card {
+        width:6rem;
+        height:6rem; 
+    }
+}
 
 

@@ -232,22 +232,33 @@ tbody, td, tfoot, th, thead, tr{
 
 @media (max-width: 780px) {
     .top-container{
-        display: grid;
-        grid-template-columns: .5fr 1.5fr;
+        /* display: grid; */
+        /* grid-template-rows: .5fr 1.5fr; */
         min-height: 100vh;
         width: 100vw;
         overflow-x: hidden;
     }
 
     .componentsData{
-        margin: 0 2px;
+        margin: 0 10px;
+        overflow-x: hidden;
     }
 
     .displayContainer{
-        position: relative;
-        margin-left: 80px;
-        max-width: 800px;
-        overflow: hidden;
+        margin-left: 0;
+    }
+
+    .top-container{
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        width: 100vw;
+    }
+    .top-container-large{
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        width: 100vw;
     }
     
 }
