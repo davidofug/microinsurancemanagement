@@ -287,22 +287,22 @@ function Policies() {
                                     <Form>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
                                             <Form.Label>Name</Form.Label>
-                                            <Form.Control placeholder="Enter name" />
+                                            <Form.Control placeholder="Enter name" id="name" onChange={handleFieldChange}/>
                                         </Form.Group>
                                         <Row className="mb-3">
                                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Date of birth</Form.Label>
-                                                <Form.Control type="date" />
+                                                <Form.Control type="date" id="date" onChange={handleFieldChange}/>
                                             </Form.Group>
                                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Gender</Form.Label>
                                                 <div style={{"display": "flex", "gap": "10px"}}>
                                                     <div>
-                                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
+                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
                                                         <label htmlFor="gender">Male</label>
                                                     </div>
                                                     <div>
-                                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
+                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
                                                         <label htmlFor="gender">Female</label>
                                                     </div>
                                                 </div>
@@ -312,20 +312,16 @@ function Policies() {
                                         <Row className="mb-3">
                                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Email</Form.Label>
-                                                <Form.Control type="email" placeholder="Enter email" />
+                                                <Form.Control type="email" placeholder="Enter email" id="email"  onChange={handleFieldChange}/>
                                             </Form.Group>
                                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Phone Number</Form.Label>
-                                                <Form.Control type="tel" placeholder="Enter phone number" />
+                                                <Form.Control type="tel" placeholder="Enter phone number" id="phone_number" onChange={handleFieldChange}/>
                                             </Form.Group>
                                         </Row>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
                                             <Form.Label>Address</Form.Label>
-                                            <Form.Control placeholder="Enter your address" />
-                                        </Form.Group>
-                                        <Form.Group controlId="formFile" className="mb-3">
-                                            <Form.Label>upload profile image</Form.Label>
-                                            <Form.Control type="file" />
+                                            <Form.Control placeholder="Enter your address" id="address" onChange={handleFieldChange}/>
                                         </Form.Group>
                                     </Form>
                                 </Modal.Body>
