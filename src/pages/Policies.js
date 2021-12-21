@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
+import AddClient from '../parts/AddClient'
 
 import '../styles/Policies.css'
 
@@ -17,6 +18,11 @@ import moment from 'moment'
 function Policies() {
     const [ formData, setFormData ] = useState({})
 
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const [ field, handleFieldChange ] = useForm({})
     const [ classes, setClasses ] = useState([])
     const [ vehicleUses, setVehicleUses ] = useState([])
@@ -25,6 +31,10 @@ function Policies() {
     const [ policyStartDate, setPolicyStartDate ] = useState(null)
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
+
+
+    
+
     // console.log(policyStartDate)
 
     const { currencies, make, categories } = dynamicFields
@@ -267,8 +277,64 @@ function Policies() {
                                 </Form.Group>
                             </Col>
                             <Col xs="3">
-                                <button className="btn btn-primary"> Add New Client </button> 
+                                <button className="btn btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button> 
                             </Col>
+                            <Modal show={show} onHide={handleClose}>
+                                <Modal.Header closeButton>
+                                <Modal.Title>Add New Client</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <Form>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label>Name</Form.Label>
+                                            <Form.Control placeholder="Enter name" />
+                                        </Form.Group>
+                                        <Row className="mb-3">
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Date of birth</Form.Label>
+                                                <Form.Control type="date" />
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Gender</Form.Label>
+                                                <div style={{"display": "flex", "gap": "10px"}}>
+                                                    <div>
+                                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
+                                                        <label htmlFor="gender">Male</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
+                                                        <label htmlFor="gender">Female</label>
+                                                    </div>
+                                                </div>
+                                            </Form.Group>
+                                        </Row>
+                                        
+                                        <Row className="mb-3">
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Email</Form.Label>
+                                                <Form.Control type="email" placeholder="Enter email" />
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Phone Number</Form.Label>
+                                                <Form.Control type="tel" placeholder="Enter phone number" />
+                                            </Form.Group>
+                                        </Row>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label>Address</Form.Label>
+                                            <Form.Control placeholder="Enter your address" />
+                                        </Form.Group>
+                                        <Form.Group controlId="formFile" className="mb-3">
+                                            <Form.Label>upload profile image</Form.Label>
+                                            <Form.Control type="file" />
+                                        </Form.Group>
+                                    </Form>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="primary" onClick={handleClose} id="submit">
+                                        Submit
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
                         </Row>
                     </div>
                     <Row style={{paddingBottom:"6vh"}}>
@@ -338,15 +404,7 @@ function Policies() {
 
                         <div style={{display:"flex", justifyContent:"flex-end"}}>
                             <div>
-                                <Button variant="primary" type="submit" onSubmit={
-                                    setFormData({
-                                        clientDetails,
-                                        stickers,
-                                        field,
-                                        policyStartDate: policyStartDate,
-                                        policyEndDate: policyEndDate
-                                    })
-                                }>
+                                <Button variant="primary" type="submit">
                                     Process 3rd Party
                                 </Button>
                             </div>
