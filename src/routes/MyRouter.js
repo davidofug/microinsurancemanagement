@@ -37,7 +37,7 @@ function MyRouter() {
                     <Route path="/not-logged-in" component={NotLoggedIn} />
                 </Switch>
             ): (
-                <div className={largeContentClass ? 'top-container-large': `top-container`}>
+                <div className={largeContentClass ? 'top-container-large': `top-container` }>
                 <div className='MenuSide'>
                     {currentUser === 1 && (
                             <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass}/>
