@@ -6,12 +6,63 @@ import EditableRow from '../../helpers/EditableRow';
 import ReadOnlyRow from '../../helpers/ReadOnlyRow';
 import Search from '../../helpers/Search';
 import { MdDownload } from 'react-icons/md'
+import { MDBDataTable } from 'mdbreact'
+import stickerData from '../../helpers/Sticker-fake-data';
+import { organisationData } from '../../helpers/Sticker-fake-data'
+import Datatable from '../../helpers/DataTable';
+import { Form } from 'react-bootstrap'
 
-function Clients() {
+
+//
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
+//
+
+
+
+function Organisations() {
+
+
+  //
+  // const [data, setData] = useState([]);
+  const [q, setQ] = useState('');
+  const [searchColumns, setSearchColumns] = useState([
+    'name',
+    'birth_year',
+  ]);
+
+  //
+
+  const { client } = data
+  console.log(client)
 
     useEffect(() => {
         document.title = 'Britam - Clients'
     }, [])
+
+    const columns = data[0] && Object.keys(data[0]);
+    //
+
+    function search(rows) {
+      return rows.filter((row) =>
+        columns.some(
+          (column) =>
+            row[column]
+              .toString()
+              .toLowerCase()
+              .indexOf(q.toLowerCase()) > -1,
+        ),
+      );
+    }
+
+    
+  
+
+    //
+
+
+
 
     const [searchText, setSearchText] = useState('');
 
@@ -126,47 +177,60 @@ function Clients() {
 
                 <div class="componentsData">
                   <div className="table-card">
-                      <div id="search">
-                          <input type="text" placeholder='Search for client...' id='searchInput' />
-                          <button className='btn btn-primary cta'>Search</button>
+
+                  <div id="search">
+                          <Form.Control type="text" placeholder="Search for organisation"
+                            type='text'
+                            value={q}
+                            onChange={(e) => setQ(e.target.value)} 
+                            style={{"margin-bottom": "10px"}}
+                          />
+                          <div></div>
                           <button className='btn btn-primary cta'>Export <MdDownload /></button>
                       </div>
-                              <form action="" onSubmit={handleEditFormSubmit} >
-                      <table class="table table-striped" style={{border: "1px solid black"}}>
-                          <thead>
-                              <tr><th>#</th><th>Code</th><th>Name</th><th>Address</th><th>Contact Name</th><th>Contact Email</th><th>Contact Telephone</th></tr>
-                          </thead>
-                          <tbody>
-                          {contacts.map((contact) => (
-                              <Fragment>
-                                  {editContactId === contact.id ? (
-                                  <EditableRow
-                                      editFormData={editFormData}
-                                      handleEditFormChange={handleEditFormChange}
-                                      handleCancelClick={handleCancelClick}
-                                  />
-                                  ): (
-                                      <ReadOnlyRow
-                                        contacts={contacts.filter((contact) =>
-                                          contact.name.toLowerCase().includes(searchText)
-                                        )}
-                                        contact={contact}
-                                        handleEditClick={handleEditClick}
-                                        handleDeleteClick={handleDeleteClick}
-                                      />
-                                    )}
-                              </Fragment>
-                          ))}
-                          </tbody>
-                          <tfoot>
-                              <tr><th>#</th><th>Code</th><th>Name</th><th>Address</th><th>Contact Name</th><th>Contact Email</th><th>Contact Telephone</th></tr>
-                          </tfoot>
-                      </table>
-                              </form>
+                   <div>
+
+      <div>
+      
+
+        {/* {columns &&
+          columns.map((column) => (
+            <label>
+              <input
+                type='checkbox'
+                checked={searchColumns.includes(column)}
+                onChange={(e) => {
+                  const checked = searchColumns.includes(column);
+                  setSearchColumns((prev) =>
+                    checked
+                      ? prev.filter((sc) => sc !== column)
+                      : [...prev, column],
+                  );
+                }}
+              />
+              {column}
+            </label>
+          ))} */}
+      </div>
+      <div>
+        <Datatable data={search(data)} />
+      </div>
+    </div>
+
+    
+                  <MDBDataTable
+                            striped
+                            bordered
+                            responsive
+                            hover
+                            data={organisationData}
+                        />
+
+                      
                 </div>
                 </div>
         </div>
     )
 }
 
-export default Clients
+export default Organisations
