@@ -1,4 +1,7 @@
 import {useEffect} from 'react'
+import { MDBDataTable } from 'mdbreact'
+import stickerData from '../helpers/Sticker-fake-data'
+import { MdDownload } from 'react-icons/md'
 
 function Users() {
 
@@ -14,99 +17,21 @@ function Users() {
 
             <div className="table-card componentsData">   
                 <div id="search">
-                    <input type="text" placeholder='Search for client...' id='searchInput' />
-                    <button className='btn btn-primary'>Search</button>
-                    <button className='btn btn-primary'>Export</button>
+                    <div></div>
+                    <div></div>
+                    <button className='btn btn-primary'>Export <MdDownload /></button>
                 </div>
 
-                <table class="table table-striped" style={{border: "1px solid black"}}>
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Address</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>David Anyuru</td>
-                        <td>M</td>
-                        <td>davidderrick@gmail.com</td>
-                        <td>077123456</td>
-                        <td>Busenga</td>
-                    </tr>
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Address</th>
-                    </tr>
-                    </tfoot>
-                </table>
+                <div class="componentsData">
+                <div className="table-card">
+                    <MDBDataTable
+                            striped
+                            bordered
+                            responsive
+                            data={stickerData}
+                        />
+                </div>
+            </div>
             </div>
         </div>
         
