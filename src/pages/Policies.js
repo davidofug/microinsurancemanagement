@@ -14,11 +14,16 @@ import moment from 'moment'
 // enlarging the size of + and -
 
 function Policies() {
-    const [field, handleFieldChange] = useForm({})
+    const [ formData, setFormData ] = useState({})
+
+    const [ field, handleFieldChange ] = useForm({})
     const [ classes, setClasses ] = useState([])
     const [ vehicleUses, setVehicleUses ] = useState([])
     let date = moment().format("l")
-    const [ policyStartDate, setPolicyStartDate ] = useState('')
+    // console.log(date)
+    const [ policyStartDate, setPolicyStartDate ] = useState(null)
+    const [ policyEndDate, setPolicyEndDate ] = useState(null)
+    // console.log(policyStartDate)
 
     const { currencies, make, categories } = dynamicFields
 
@@ -267,13 +272,14 @@ function Policies() {
                     <Row style={{paddingBottom:"6vh"}}>
                         <Col xs="3">
                             <Form.Group classname="mb-3" controlId="currency">
-                                <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use">
+                                <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={handleFieldChange}>
                                     <option>Currency</option>
                                     {currencies.map((currency, index) => <option value={currencies[index]}>{currency["code"]}</option>)}  
                                 </Form.Select>
                             </Form.Group>
                         </Col>
                     </Row>
+                    {}
                     
                     <Table striped bordered>
                         <tbody>
@@ -284,14 +290,50 @@ function Policies() {
                     
                     
                     <div>
-                        <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
-                            <Col xs="3">
-                                <Form.Group controlId="policyStartDate" >
-                                    <Form.Label><h5>Policy Start Date</h5></Form.Label>
-                                    <Form.Control type="date" id="policy_start_date" onchange={(event) => setPolicyStartDate(event.target.value)}/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
+                        {
+                            moment(policyEndDate).isValid() === true ? 
+                                <>
+                                    <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
+                                        <Col xs="3">
+                                            <Form.Group controlId="policyStartDate" >
+                                                <Form.Label><h5>Policy Start Date</h5></Form.Label>
+                                                <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
+                                                    setPolicyStartDate(event.target.value)
+                                                    setPolicyEndDate(moment(event.target.value).add(1, 'years').calendar())
+                                                    console.log(`end ${policyEndDate}`)
+                                                    // console.log(policyStartDate)
+                                                }}/>   
+                                            </Form.Group>
+                                        </Col>
+                                    </Row> 
+                                    <Row>
+                                        <Col xs="3">
+                                            <Form.Group controlId="policyEndDate" >
+                                                <Form.Label><h5>Policy End Date</h5></Form.Label>
+                                                <Form.Control type="text" name="policy_start_date" value={policyEndDate} readOnly/>   
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                </>    
+                                : 
+                                <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
+                                    <Col xs="3">
+                                        <Form.Group controlId="policyStartDate" >
+                                            <Form.Label><h5>Policy Start Date</h5></Form.Label>
+                                            <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
+                                                setPolicyStartDate(event.target.value)
+                                                setPolicyEndDate(moment(event.target.value).add(1, 'years').calendar())
+                                                console.log(`end ${policyEndDate}`)
+                                                // console.log(policyStartDate)
+                                            }}/>   
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                
+                        }
+
+                        
+
                         <div style={{display:"flex", justifyContent:"flex-end"}}>
                             <div>
                                 <Button variant="primary" type="submit" >
