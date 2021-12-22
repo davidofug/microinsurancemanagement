@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/Auth'
-import { Card, Container } from 'react-bootstrap'
+import { Card, Container, Row, Col } from 'react-bootstrap'
 // import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
@@ -86,9 +86,17 @@ function Dashboard() {
                         <h5 style={{"display":"flex", "gap": "10px"}}><span>
                             <div style={{"width": "20px", "height": "20px", "background-color": "#E0E7EC"}}></div>
                         </span>Monthly Stickers Issued</h5>
-                        <div style={{border:"1px solid red", paddingLeft:"5vh", paddingRight:"5vh"}}>
-                            <BarChart />
-                        </div>
+                        <Row style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
+                            <Col xs="1" style={{display:"flex", flexDirection:"column", justifyContent:"center",}}>
+                                <span>Sticker sales</span>    
+                            </Col>
+                            <Col>
+                                <BarChart />
+                            </Col>
+                        </Row>
+                        <Row style={{diplay:"flex", justifyContent:"center"}}>
+                            <Col>Months</Col>
+                        </Row>
                     </div>
                 </div>    
             </div>        
