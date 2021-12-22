@@ -1,6 +1,6 @@
 import '../styles/dashboard.css'
 import { useState, useEffect } from 'react'
-import { Card, Container } from 'react-bootstrap'
+import { Card, Container, Table } from 'react-bootstrap'
 
 
 
@@ -34,20 +34,20 @@ function Dashboard() {
                                         </Card>
                                     </div>
                                     <div className="col">
-                                        <Card className="card" style={{"background-color":"#C82E29"}}>
+                                        <Card className="card" style={{"background-color":"#FFB848"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${stickers}`}</div>
-                                                <div className="card-text">Stickers</div>
+                                                <div className="statistics">{`${policies}`}</div>
+                                                <div className="card-text">Policies</div>
                                             </Card.Body>
                                         </Card>
                                     </div>
                             </Container>
                             <Container className="row-container">
                                     <div className="col">
-                                        <Card className="card" style={{"background-color":"#FFB848"}}>
+                                        <Card className="card" style={{"background-color":"#C82E29"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${policies}`}</div>
-                                                <div className="card-text">Policies</div>
+                                                <div className="statistics">{`${stickers}`}</div>
+                                                <div className="card-text">Stickers</div>
                                             </Card.Body>
                                         </Card>
                                     </div>
@@ -66,10 +66,20 @@ function Dashboard() {
                             {/* Are these supposed to be links or just mere words? */}
                             <div id="short_stats">
                                 <h3>Agent issued reports</h3>
-                                <h5>Grand totals</h5>
-                                <p>Daily <span style={{"font-weight": "bold", "margin-left": "40px"}}>UGX 1000000000</span></p>
-                                <p>Weekly <span style={{"font-weight": "bold", "margin-left": "40px"}}>UGX 1000000000</span></p>
-                                <p>Monthly <span style={{"font-weight": "bold", "margin-left": "40px"}}>UGX 1000000000</span></p>
+                                <Table responsive borderless>
+                                    <thead><th></th><th>Grand totals</th></thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Daily</td><td>UGX 10,000,001</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Weekly</td><td>UGX 13,000,001</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Monthly</td><td>UGX 21,000,001</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
                             </div>
                 
                         </div>
