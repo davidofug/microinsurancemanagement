@@ -34,6 +34,15 @@ function BarChart () {
                 text: 'Monthly  Motor Third Party Stickers',
             },
         },
+        scales: {
+            x: {
+                beginAtZero: true,
+                grid: {
+                    display: false
+                }
+            }
+            
+        }
     };
       
     
