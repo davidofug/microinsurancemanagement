@@ -8,13 +8,12 @@ import {
     Title,
     Tooltip,
     Legend,
-  } from 'chart.js';
+} from 'chart.js';
 
-import faker from 'faker';
-
+import graphData from '../helpers/GraphData';
 
 function BarChart () {
-    
+    const { sales, labels } = graphData;
     ChartJS.register (
         CategoryScale,
         LinearScale,
@@ -37,15 +36,16 @@ function BarChart () {
         },
     };
       
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
     
     const data = {
         labels,
         datasets: [
             {
                 label: 'Total monthly Sales',
-                data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 200],
+                data: [...sales],
                 backgroundColor: '#E0E7EC',
+                hoverBackgroundColor:"#1475CF"
             },
         ],
     };
