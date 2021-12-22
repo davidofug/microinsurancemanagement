@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
-import AddClient from '../parts/AddClient'
 
 import '../styles/Policies.css'
 
@@ -296,7 +295,7 @@ function Policies() {
                                             </Form.Group>
                                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Gender</Form.Label>
-                                                <div style={{"display": "flex", "gap": "10px"}}>
+                                                {/* <div style={{"display": "flex", "gap": "10px"}}>
                                                     <div>
                                                         <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
                                                         <label htmlFor="gender">Male</label>
@@ -305,7 +304,32 @@ function Policies() {
                                                         <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
                                                         <label htmlFor="gender">Female</label>
                                                     </div>
-                                                </div>
+                                                </div> */}
+                                                <Row>
+                                                    <Col sm="4">
+                                                        <Form.Check
+                                                        type="radio"
+                                                        label="Male"
+                                                        name="gender"
+                                                        id="gender"
+                                                        onChange={
+                                                            handleFieldChange
+                                                        }
+                                                        />
+                                                    </Col>
+                                                    <Col sm="4">
+                                                        <Form.Check
+                                                        type="radio"
+                                                        label="Female"
+                                                        name="gender"
+                                                        id="gender"
+                                                        onChange={
+                                                            handleFieldChange
+                                                        }
+                                                        />
+                                                    </Col>
+                                                </Row>    
+                                                
                                             </Form.Group>
                                         </Row>
                                         
