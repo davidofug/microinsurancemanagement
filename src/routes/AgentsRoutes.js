@@ -1,22 +1,21 @@
 import Mtp from '../pages/Mtp'
 import Users from '../pages/Users'
+import Logs from '../pages/Logs.js'
 import Claims from '../pages/Claims'
+import Logout from '../pages/Logout'
 import Reports from '../pages/Reports'
-import Clients from '../pages/agent/Clients'
+import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
-import Settings from '../pages/agent/Settings'
 import PrivateRoute  from './PrivateRoute'
 import Dashboard from '../pages/Dashboard'
-import AddClients from '../pages/AddClients'
 import Windscreen from '../pages/Windscreen'
+import AddClients from '../pages/AddClients'
+import Settings from '../pages/agent/Settings'
 import Comprehensive from '../pages/Comprehensive'
-import {Route} from 'react-router-dom'
-import Logs from '../pages/Logs.js'
-import Logout from '../pages/Logout'
-import NotFound from '../pages/NotFound'
+import { Route } from 'react-router-dom'
 
 
-function AdminRoutes() {
+function AgentsRoutes() {
     return (
         <>
             <PrivateRoute path="/agent-dashboard" >
@@ -58,10 +57,10 @@ function AdminRoutes() {
             <PrivateRoute path="/agent-add-clients" >
                 <AddClients />
             </PrivateRoute>
-            {/* <Route path="*" component={NotFound} /> */}
+            <Route path="/logout" component={Logout} />
         </>
         
     )
 }
 
-export default AdminRoutes
+export default AgentsRoutes

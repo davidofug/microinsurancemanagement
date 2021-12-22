@@ -1,56 +1,46 @@
-import { useEffect } from 'react'
-import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
-import { Table } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import data from '../helpers/mock-data.json'
+import Datatable from '../helpers/DataTable';
+import { Form } from 'react-bootstrap'
 
 function Claims() {
 
-    useEffect(() => {
-        document.title = 'Britam - Claims'
-    }, [])
+    useEffect(() => {document.title = 'Britam - Claims'}, [])
+
+    const [q, setQ] = useState('');
+
+    const columnHeading = ["Ref Number", "Claimant Details", "Date of Incident", "Number Plate", "Sticker Number", "Claim Estimate", "Status"]
+    const columns = ["contact", "name", "createdAt", "contact", "contact", "amount", "status"]
+    const search = rows => rows.filter(row =>
+        columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
     return (
         <div className='components'>
-            <div className='heading'>
+            <header className='heading'>
                 <h1 className='title'>Claims</h1>
                 <p className="subtitle">MANAGING CLAIMS</p>
+            </header>
+            <div id="add_client_group">
+                <div></div>
+                <Link to="/add-agent">
+                    <button className="btn btn-primary cta">Add Claim</button>
+                </Link>
+                
             </div>
 
-            <div className="componentsData">
-                <div id="add_client_group">
-                    <div></div>
-                    <Link to="/add-claim"><button className="btn btn-primary cta">Add Claim</button></Link>
-                </div>
-                <div className="table-card">
-                    <div id="search">
-                        <input type="text" placeholder='filter by Dates..' id='searchInput' />
-                        <input type="text" placeholder='Search for client...' id='searchInput' />
-                    </div>
-                    <Table striped hover responsive bordered style={{border: "1px solid black"}}>
-                        <thead>
-                            <tr><th>Notification Ref No.</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker No.</th><th>Claim Estimate</th><th>Status</th><th></th></tr>
-                        </thead>
-                        <tbody>
-                
-                
-                                    {generatedData[0].map((generatedClient, index) => (
-                                        <tr>
-                                            <td>{generatedClient.refNumber}</td>
-                                            <td>{generatedClient.email}</td>
-                                            <td>{generatedClient.date}</td>
-                                            <td>{generatedClient.plateNumber}</td>
-                                            <td>{generatedClient.stickerNumber}</td>
-                                            <td>{generatedClient.estimate}</td>
-                                            <td>{generatedClient.status}</td>
-                                            <td><div id="action"><div></div><div></div><div></div></div></td>
-                                        </tr>
-                                    ))}
-                        </tbody>
-                        <tfoot>
-                        <tr><th>Notification Ref No.</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker No.</th><th>Claim Estimate</th><th>Status</th><th></th></tr>
-                        </tfoot>
-                    </Table>
-                </div>
+            <div className="table-card componentsData">   
+                <div id="search">
+                            <div></div>
+                            <div></div>
+                            <Form.Control type="text" className='mb-3' placeholder="Search for policy"
+                              value={q} onChange={({target}) => setQ(target.value)} 
+                            />
+                      </div>
+
+                <Datatable data={search(data)} columnHeading={columnHeading} columns={columns}/>
+
+               
             </div>
         </div>
     )

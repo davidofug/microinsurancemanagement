@@ -1,4 +1,3 @@
-import generatedData from '../helpers/generatedClients';
 import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form, Row, Col, Button } from 'react-bootstrap';

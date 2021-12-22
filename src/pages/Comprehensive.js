@@ -1,37 +1,46 @@
-import { useEffect } from 'react'
-import generatedData from '../helpers/generatedClients';
 import { Link } from 'react-router-dom'
-import { Table } from 'react-bootstrap'
-import { MDBDataTable } from 'mdbreact'
-import stickerData from '../helpers/Sticker-fake-data';
+import { useEffect, useState } from 'react'
+import data from '../helpers/mock-data.json'
+import Datatable from '../helpers/DataTable';
+import { Form } from 'react-bootstrap'
 
 function Comprehensive() {
 
-    useEffect(() => {
-        document.title = 'Britam - Comprehensive'
-    }, [])
+    useEffect(() => {document.title = 'Britam - Comprehensive'}, [])
 
+    const [q, setQ] = useState('');
+
+    const columnHeading = ["Client", "Category", "Amount", "Payment Method", "Currency", "Agent", "Status", "CreatedAt"]
+    const columns = ["name", "contact", "amount", "paymentMethod", "currency", "agentName", "status", "createdAt"]
+    const search = rows => rows.filter(row =>
+        columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
     return (
         <div className='components'>
-            <div className='heading'>
-                <h1 className='title'>Comprehensive Policy</h1>
-                <p className="subtitle">COMPREHENSIVE POLICIES</p>
-            </div>
+            <header className='heading'>
+                <h1 className='title'>Comprehensive</h1>
+                <p className="subtitle">MANAGING COMPREHENSIVE</p>
+            </header>
             <div id="add_client_group">
                 <div></div>
-                <Link to="admin-policies"><button className="btn btn-primary cta">Add</button></Link>
+                <Link to="/add-agent">
+                    <button className="btn btn-primary cta">Add</button>
+                </Link>
+                
             </div>
 
-            <div class="componentsData">
-                <div className="table-card">
-                    <MDBDataTable
-                        striped
-                        bordered
-                        responsive
-                        data={stickerData}
-                    />
-                </div>
+            <div className="table-card componentsData">   
+                <div id="search">
+                            <div></div>
+                            <div></div>
+                            <Form.Control type="text" className='mb-3' placeholder="Search for policy"
+                              value={q} onChange={({target}) => setQ(target.value)} 
+                            />
+                      </div>
+
+                <Datatable data={search(data)} columnHeading={columnHeading} columns={columns}/>
+
+               
             </div>
         </div>
     )
