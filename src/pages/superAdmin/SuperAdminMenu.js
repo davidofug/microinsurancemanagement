@@ -15,11 +15,8 @@ function SuperAdminMenu() {
     const [ toggleMenu, setToggeMenu ] = useState(true)
 
     useEffect(() => {
-        if(sessionStorage.getItem('session1')){
-            setSelected({...selected, activeObject: selected.SuperAdmin[sessionStorage.getItem('session1')-1]})
-        }else{
-            setSelected({...selected, activeObject: selected.SuperAdmin[0]})
-        }
+        if(sessionStorage.getItem('session1')) setSelected({...selected, activeObject: selected.SuperAdmin[sessionStorage.getItem('session1')-1]})
+        else setSelected({...selected, activeObject: selected.SuperAdmin[0]})
         
     }, [])
     

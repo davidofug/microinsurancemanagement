@@ -4,16 +4,14 @@ import { Form, Row, Col } from 'react-bootstrap'
 
 function AddAgents() {
 
-    useEffect(() => {
-        document.title = 'Britam - Add Agents'
-    }, [])
+    useEffect(() => document.title = 'Britam - Add Agents', [])
 
     return (
         <div className='components'>
-            <div className='heading'>
+            <header className='heading'>
                 <h1 className='title'>Add Agents</h1>
                 <p className="subtitle">ADD A NEW Agents</p>
-            </div>
+            </header>
 
             <div class="componentsData" style={{"display": "flex", justifyContent: "center", "background-color": "#fff", "margin-top": "60px", "border-radius": "10px"}}>
                 <form action="">
