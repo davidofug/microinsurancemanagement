@@ -6,15 +6,13 @@ function Settings() {
 
     const [ selectedTab, setSelectedTab ] = useState(1)
 
-    useEffect(() => {document.title = 'Britam - User Profile'}, [])
+    useEffect(() => document.title = 'Britam - User Profile', [])
 
-    const toggleTab = (index) => {
-        setSelectedTab(index);
-      };
+    const toggleTab = (index) => setSelectedTab(index);
 
     return (
         <div className='components'>
-            <header class="heading">
+            <header className="heading">
                 <h1 className='title'>My Profile</h1>
                 <p className='subtitle'>MANAGE YOUR ACCOUNT</p>
             </header>

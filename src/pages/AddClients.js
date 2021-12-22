@@ -1,19 +1,17 @@
 import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col} from 'react-bootstrap';
 
 function AddClients() {
 
-    useEffect(() => {
-        document.title = 'Britam - Add Clients'
-    }, [])
+    useEffect(() => document.title = 'Britam - Add Clients', [])
 
     return (
         <div className='components'>
-            <div className='heading'>
+            <header className='heading'>
                 <h1 className='title'>Add Clients</h1>
                 <p className="subtitle">ADD A NEW CLIENTS</p>
-            </div>
+            </header>
 
             <div class="componentsData" style={{"display": "flex", justifyContent: "center", "background-color": "#fff", "margin-top": "60px", "border-radius": "10px"}}>
             {/* <div className="table-card">   */}

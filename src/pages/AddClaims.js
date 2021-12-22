@@ -4,16 +4,14 @@ import { Form, Row, Col } from 'react-bootstrap'
 
 function AddClaims() {
 
-    useEffect(() => {
-        document.title = 'Britam - Add Clients'
-    }, [])
+    useEffect(() => document.title = 'Britam - Add Claims', [])
 
     return (
         <div className='components'>
-            <div className='heading'>
+            <header className='heading'>
                 <h1 className='title'>Add Claim</h1>
                 <p className="subtitle">ADD A NEW CLAIM</p>
-            </div>
+            </header>
 
             <div className="table-card componentsData">  
                 <form action="">

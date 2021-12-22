@@ -1,12 +1,10 @@
+import '../styles/dashboard.css'
 import { useState, useEffect } from 'react'
-import { useAuth } from '../contexts/Auth'
 import { Card, Container } from 'react-bootstrap'
 
-import '../styles/dashboard.css'
 
 
 function Dashboard() {
-    const {currentUser} = useAuth()
     const [claims, setClaims] = useState(0)
     const [stickers, setStickers] = useState(13)
     const [policies, setPolicies] = useState(2)
@@ -18,10 +16,10 @@ function Dashboard() {
 
     return (
             <div className='components'>
-                <div className='heading'>
+                <header className='heading'>
                     <h1 className='title'>Welcome to Britam</h1>
                     <p className="subtitle">WITH YOU EVERY STEP OF THE WAY</p>
-                </div>
+                </header>
 
                 <div className="componentsData" >
                     <div className='mb-5' style={{display:"flex", gap:"2.5vw", width: "100%", justifyContent: "space-between"}}>
