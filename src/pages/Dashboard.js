@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/Auth'
 import { Card, Container } from 'react-bootstrap'
-
+// import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
+import BarChart from '../figures/BarChart'
 
+  
 
 function Dashboard() {
     const {currentUser} = useAuth()
@@ -11,6 +13,8 @@ function Dashboard() {
     const [stickers, setStickers] = useState(13)
     const [policies, setPolicies] = useState(2)
     const [claimNotifications, setClaimNotifications] = useState(27)
+
+    
 
     useEffect(() => {
         document.title = 'Britam - Welcome'
@@ -79,9 +83,12 @@ function Dashboard() {
 
                     {/* Graph div  */}
                     <div className="shadow-sm p-3 mb-5 bg-body rounded graph-container" >
-                    <h5 style={{"display":"flex", "gap": "10px"}}><span>
-                        <div style={{"width": "20px", "height": "20px", "background-color": "#E0E7EC"}}></div>
-                    </span>Monthly Stickers Issued</h5>
+                        <h5 style={{"display":"flex", "gap": "10px"}}><span>
+                            <div style={{"width": "20px", "height": "20px", "background-color": "#E0E7EC"}}></div>
+                        </span>Monthly Stickers Issued</h5>
+                        <div style={{border:"1px solid red", paddingLeft:"5vh", paddingRight:"5vh"}}>
+                            <BarChart />
+                        </div>
                     </div>
                 </div>    
             </div>        
