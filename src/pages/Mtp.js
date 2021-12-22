@@ -1,39 +1,49 @@
-import generatedData from '../helpers/generatedClients';
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Alert } from 'react-bootstrap'
-import { MDBDataTable } from 'mdbreact'
-import stickerData from '../helpers/Sticker-fake-data';
+import { useEffect, useState } from 'react'
+import data from '../helpers/mock-data.json'
+import Datatable from '../helpers/DataTable';
+import { Form } from 'react-bootstrap'
 
-function Mtp() {
+function Agents() {
 
-    useEffect(() => {
-        document.title = 'Britam - Motor Third Party'
-    }, [])
+    useEffect(() => {document.title = 'Britam - Motor Third Party'}, [])
+
+    const [q, setQ] = useState('');
+
+    const columnHeading = ["Client", "Category", "Amount", "Payment Method", "Currency", "Agent", "Status", "CreatedAt"]
+    const columns = ["name", "contact", "amount", "paymentMethod", "currency", "agentName", "status", "createdAt"]
+    const search = rows => rows.filter(row =>
+        columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
     return (
         <div className='components'>
-            <div className='heading'>
-                <h1 className='title'>MTP Policy</h1>
-                <p className="subtitle">MANAGING MOTOR THIRD PARTY POLICIES</p>
-            </div>
+            <header className='heading'>
+                <h1 className='title'>Motor Third Party</h1>
+                <p className="subtitle">MANAGING THIRD PARTY POLICIES</p>
+            </header>
             <div id="add_client_group">
                 <div></div>
-                <Link to="/admin-policies"><button className="btn btn-primary cta">Add MTP</button></Link>
+                <Link to="/add-agent">
+                    <button className="btn btn-primary cta">Add MTP</button>
+                </Link>
+                
             </div>
 
-            <div class="componentsData">
-                <div className="table-card">
-                    <MDBDataTable
-                            striped
-                            bordered
-                            responsive
-                            data={stickerData}
-                        />
-                </div>
+            <div className="table-card componentsData">   
+                <div id="search">
+                            <div></div>
+                            <div></div>
+                            <Form.Control type="text" className='mb-3' placeholder="Search for policy"
+                              value={q} onChange={({target}) => setQ(target.value)} 
+                            />
+                      </div>
+
+                <Datatable data={search(data)} columnHeading={columnHeading} columns={columns}/>
+
+               
             </div>
         </div>
     )
 }
 
-export default Mtp
+export default Agents
