@@ -74,7 +74,7 @@ function AddClaims() {
                         </Form.Group>
                         
                         <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label>upload profile image</Form.Label>
+                            <Form.Label>upload support documents</Form.Label>
                             <Form.Control type="file" />
                         </Form.Group>
                         

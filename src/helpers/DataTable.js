@@ -1,4 +1,5 @@
 import { Table} from 'react-bootstrap'
+import { useForm } from '../hooks/useForm';
 
 export default function Datatable({ data, columns, columnHeading }) {
   return (
@@ -17,8 +18,9 @@ export default function Datatable({ data, columns, columnHeading }) {
 }
 
 
-export function EditableDatable({ data, handleDeleteClick, handleEditClick }){
-  const columns = ["name", "gender", "email", "contact", "address"]
+export function EditableDatable({ handleDeleteClick, handleEditClick, currentClients }){
+
+  const columns = ["id", "name", "gender", "email", "contact", "address"]
 
   return (
     <Table bordered hover striped responsive style={{"border": "1px solid #000"}} cellPadding={0} cellSpacing={0}>
@@ -26,18 +28,17 @@ export function EditableDatable({ data, handleDeleteClick, handleEditClick }){
           <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th></th></tr>
       </thead>
       <tbody>
-        {data.map((row, index) => (
+        {currentClients.map((row, index) => (
           <tr key={index}>
-            <td>{index+1}</td>
             {columns.map((column, index) => (<td key={index}>{row[column]}</td>))}
             <td className='working-here'>
               <ul id="action_context">
-                  <li><button onClick={() => handleEditClick(row.id)}>edit</button></li>
+                  <li><button onClick={() => {}}>edit</button></li>
                   <li><button onClick={() => handleDeleteClick(row.id)}>Delete</button></li>
               </ul>
               <div id="action"><div></div><div></div><div></div></div>
             </td>
-          </tr>
+          </tr>   
         ))}
       </tbody>
       <tfoot>

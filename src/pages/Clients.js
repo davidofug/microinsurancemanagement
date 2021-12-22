@@ -3,9 +3,22 @@ import { useEffect, useState } from 'react'
 import data from '../helpers/mock-data.json'
 import { EditableDatable } from '../helpers/DataTable';
 import { MdDownload } from 'react-icons/md'
-import { Form } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
+import Pagination from '../helpers/Pagination';
+
 
 function Clients() {
+
+    //
+    const [ currentPage, setCurrentPage ] = useState(1)
+    const [employeesPerPage] = useState(10)
+
+    const indexOfLastEmployee = currentPage * employeesPerPage
+    const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
+    const currentClients = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
+    const totalPagesNum = Math.ceil(data.length / employeesPerPage)
+
+    //
 
     useEffect(() => {document.title = 'Britam - Clients'}, [])
 
@@ -31,10 +44,10 @@ function Clients() {
     
     const columns = ["name", "gender", "email", "contact", "address"]
 
-    const search = rows => rows.filter((row) =>
-        columns.some( column =>
-            row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,), );
- 
+    const search = rows => rows.filter(row =>
+      columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
+
+     
 
     return (
         <div className='components'>
@@ -45,7 +58,7 @@ function Clients() {
             <div id="add_client_group">
                 <div></div>
                 <Link to="/add-clients">
-                    <button className="btn btn-primary cta">Add Client</button>
+                    <Button className='btn btn-primary cta'>Add Client</Button>
                 </Link>
             </div>
 
@@ -60,10 +73,17 @@ function Clients() {
                   </div>
 
                   <EditableDatable 
-                    data={search(clients)}
+                    currentClients={search(currentClients)}
                     handleDeleteClick={handleDeleteClick}
                     handleEditClick={handleEditClick}
                   /> 
+
+                <Pagination 
+                  pages={totalPagesNum}
+                  setCurrentPage={setCurrentPage}
+                  currentClients={currentClients}
+                  sortedEmployees={data}
+                  entries={'Clients'} />
               </div>
             </div>
         </div>
