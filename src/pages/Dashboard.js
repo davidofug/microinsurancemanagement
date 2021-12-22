@@ -87,7 +87,7 @@ function Dashboard() {
                             <div style={{"width": "20px", "height": "20px", "background-color": "#E0E7EC"}}></div>
                         </span>Monthly Stickers Issued</h5>
                         <Row style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
-                            <Col xs="1" style={{display:"flex", flexDirection:"column", justifyContent:"center",}}>
+                            <Col xs="1" style={{display:"flex", justifyContent:"center", writingMode:"tb-rl", transform:"rotate(-180deg)", alignItems:"End"}}>
                                 <span>Sticker sales</span>    
                             </Col>
                             <Col>
