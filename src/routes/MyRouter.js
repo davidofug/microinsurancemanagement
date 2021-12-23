@@ -1,4 +1,4 @@
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../contexts/Auth'
 import NotLoggedIn from '../pages/NotLoggedIn'
 import Login from '../pages/Login'
 import Logout from '../pages/Logout'
@@ -24,7 +24,7 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 function MyRouter() {
 
     const { currentUser } = useAuth()
-    const [ largeContentClass, setLargeContentClass ] = useState(false) 
+    const [ largeContentClass, setLargeContentClass ] = useState(false)
 
     return (
         <Router>
@@ -48,12 +48,12 @@ function MyRouter() {
                             <SupervisorMenu />
                         )
                     }
-                    
+
                     {currentUser === 3 && (
                             <AgentMenu />
                         )
                     }
-                    
+
                     {currentUser === 4 && (
                             <SuperAdminMenu />
                         )
@@ -78,13 +78,13 @@ function MyRouter() {
                                 <SuperAdminRoutes />
                             )
                         }
-                        
+
                     </Switch>
                 </main>
             </div>
             )}
-                
-            
+
+
         </Router>
     )
 }

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../contexts/Auth'
 import { Link, Redirect, useHistory} from 'react-router-dom'
 import Loader from '../parts/Loader'
 function NotLoggedIn() {
