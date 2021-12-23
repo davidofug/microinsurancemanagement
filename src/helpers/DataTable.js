@@ -58,13 +58,3 @@ export function EditableDatable({ editContactId, handleDeleteClick, handleEditCl
     </Table>
   )
 }
-
-
-// {columns.map((column, index) => (<td key={index}>{row[column]}</td>))}
-//             <td className='working-here'>
-//               <ul id="action_context">
-//                   <li><button onClick={() => {}}>edit</button></li>
-//                   <li><button onClick={() => handleDeleteClick(row.id)}>Delete</button></li>
-//               </ul>
-//               <div id="action"><div></div><div></div><div></div></div>
-//             </td>

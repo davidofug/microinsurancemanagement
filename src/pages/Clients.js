@@ -11,7 +11,6 @@ function Clients() {
 
 
   const [clients, setClients] = useState(data);
-
   //
   const [editFormData, setEditFormData] = useState({
     name: "",
@@ -82,7 +81,7 @@ function Clients() {
 
     const indexOfLastEmployee = currentPage * employeesPerPage
     const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
-    const currentClients = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
+    const currentClients = clients.slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(data.length / employeesPerPage)
 
     //
@@ -96,6 +95,7 @@ function Clients() {
       const newClients = [...clients];
       const index = clients.findIndex((client) => client.id === clientId);
       newClients.splice(index, 1);
+      console.log(newClients)
       setClients(newClients);
     };
 
