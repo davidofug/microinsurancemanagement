@@ -56,19 +56,19 @@ function Login() {
 
     return (
         <div className='logout'>
-                <img src={logo} alt='Britam'style={{"marginBottom": "40px"}}/>
+                <img src={logo} alt='Britam' style={{"marginBottom": "40px"}}/>
                 <form action="" >
                     <p style={{"fontSize": "1.1rem"}}>Enter Email and Password to sign in</p>
                     <div className='login-inputs'>
                         <label htmlFor="">Email</label>
-                    <input
-                        type="email"
-                        placeholder='Enter email' name="" id=""
-                    	onChange={ event => setUser({...user, email: event.target.value} )}
-                    />
+                        <input
+                            type="email"
+                            placeholder='Enter email' name="" id=""
+                            onChange={ event => setUser({...user, email: event.target.value} )}
+                        />
                     </div>
                     <div className='login-inputs'>
-                        <label  htmlFor="">Password</label>
+                        <label htmlFor="">Password</label>
                         <div style={{"display": "flex", "alignItems": "center", "justifyContent": "space-between"}} id="password">
                         <input
                             style={{ "border": "none" }}
