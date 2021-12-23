@@ -52,7 +52,7 @@ function Comprehensive() {
                     <tfoot>
                     <tr><th>Notification Ref No.</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker No.</th><th>Claim Estimate</th><th>Status</th>CreatedAt<th><th></th></th></tr>
                     </tfoot>
-                </table>
+                </Table>
             </div>
         </div>
     )

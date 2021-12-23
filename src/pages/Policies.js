@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
@@ -14,11 +15,26 @@ import moment from 'moment'
 // enlarging the size of + and -
 
 function Policies() {
-    const [field, handleFieldChange] = useForm({})
+    const [ formData, setFormData ] = useState({})
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const [ field, handleFieldChange ] = useForm({})
     const [ classes, setClasses ] = useState([])
     const [ vehicleUses, setVehicleUses ] = useState([])
     let date = moment().format("l")
-    const [ policyStartDate, setPolicyStartDate ] = useState('')
+    // console.log(date)
+    const [ policyStartDate, setPolicyStartDate ] = useState(null)
+    const [ policyEndDate, setPolicyEndDate ] = useState(null)
+    const [ currency, setCurrency ] = useState({})
+
+
+    
+
+    // console.log(policyStartDate)
 
     const { currencies, make, categories } = dynamicFields
 
@@ -260,20 +276,98 @@ function Policies() {
                                 </Form.Group>
                             </Col>
                             <Col xs="3">
-                                <button className="btn btn-primary"> Add New Client </button> 
+                                <button className="btn btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button> 
                             </Col>
+                            <Modal show={show} onHide={handleClose}>
+                                <Modal.Header closeButton>
+                                <Modal.Title>Add New Client</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <Form>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label>Name</Form.Label>
+                                            <Form.Control placeholder="Enter name" id="name" onChange={handleFieldChange}/>
+                                        </Form.Group>
+                                        <Row className="mb-3">
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Date of birth</Form.Label>
+                                                <Form.Control type="date" id="date" onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Gender</Form.Label>
+                                                {/* <div style={{"display": "flex", "gap": "10px"}}>
+                                                    <div>
+                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
+                                                        <label htmlFor="gender">Male</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
+                                                        <label htmlFor="gender">Female</label>
+                                                    </div>
+                                                </div> */}
+                                                <Row>
+                                                    <Col sm="4">
+                                                        <Form.Check
+                                                        type="radio"
+                                                        label="Male"
+                                                        name="gender"
+                                                        id="gender"
+                                                        onChange={
+                                                            handleFieldChange
+                                                        }
+                                                        />
+                                                    </Col>
+                                                    <Col sm="4">
+                                                        <Form.Check
+                                                        type="radio"
+                                                        label="Female"
+                                                        name="gender"
+                                                        id="gender"
+                                                        onChange={
+                                                            handleFieldChange
+                                                        }
+                                                        />
+                                                    </Col>
+                                                </Row>    
+                                                
+                                            </Form.Group>
+                                        </Row>
+                                        
+                                        <Row className="mb-3">
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Email</Form.Label>
+                                                <Form.Control type="email" placeholder="Enter email" id="email"  onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Phone Number</Form.Label>
+                                                <Form.Control type="tel" placeholder="Enter phone number" id="phone_number" onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                        </Row>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label>Address</Form.Label>
+                                            <Form.Control placeholder="Enter your address" id="address" onChange={handleFieldChange}/>
+                                        </Form.Group>
+                                    </Form>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="primary" onClick={handleClose} id="submit">
+                                        Submit
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
                         </Row>
                     </div>
                     <Row style={{paddingBottom:"6vh"}}>
                         <Col xs="3">
                             <Form.Group classname="mb-3" controlId="currency">
-                                <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use">
+                                <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={handleFieldChange}>
                                     <option>Currency</option>
                                     {currencies.map((currency, index) => <option value={currencies[index]}>{currency["code"]}</option>)}  
                                 </Form.Select>
                             </Form.Group>
                         </Col>
                     </Row>
+                    {}
                     
                     <Table striped bordered>
                         <tbody>
@@ -284,17 +378,53 @@ function Policies() {
                     
                     
                     <div>
-                        <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
-                            <Col xs="3">
-                                <Form.Group controlId="policyStartDate" >
-                                    <Form.Label><h5>Policy Start Date</h5></Form.Label>
-                                    <Form.Control type="date" id="policy_start_date" onchange={(event) => setPolicyStartDate(event.target.value)}/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
+                        {
+                            moment(policyEndDate).isValid() === true ? 
+                                <>
+                                    <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
+                                        <Col xs="3">
+                                            <Form.Group controlId="policyStartDate" >
+                                                <Form.Label><h5>Policy Start Date</h5></Form.Label>
+                                                <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
+                                                    setPolicyStartDate(event.target.value)
+                                                    setPolicyEndDate(moment(event.target.value).add(1, 'years').calendar())
+                                                    console.log(`end ${policyEndDate}`)
+                                                    // console.log(policyStartDate)
+                                                }}/>   
+                                            </Form.Group>
+                                        </Col>
+                                    </Row> 
+                                    <Row>
+                                        <Col xs="3">
+                                            <Form.Group controlId="policyEndDate" >
+                                                <Form.Label><h5>Policy End Date</h5></Form.Label>
+                                                <Form.Control type="text" name="policy_start_date" value={policyEndDate} readOnly/>   
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                </>    
+                                : 
+                                <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
+                                    <Col xs="3">
+                                        <Form.Group controlId="policyStartDate" >
+                                            <Form.Label><h5>Policy Start Date</h5></Form.Label>
+                                            <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
+                                                setPolicyStartDate(event.target.value)
+                                                setPolicyEndDate(moment(event.target.value).add(1, 'years').calendar())
+                                                console.log(`end ${policyEndDate}`)
+                                                // console.log(policyStartDate)
+                                            }}/>   
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                
+                        }
+
+                        
+
                         <div style={{display:"flex", justifyContent:"flex-end"}}>
                             <div>
-                                <Button variant="primary" type="submit" >
+                                <Button variant="primary" type="submit">
                                     Process 3rd Party
                                 </Button>
                             </div>
@@ -308,4 +438,3 @@ function Policies() {
 }
 
 export default Policies
-
