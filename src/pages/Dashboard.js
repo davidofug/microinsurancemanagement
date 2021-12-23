@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import useAuth from '../contexts/Auth'
-import { Card, Container, Row, Col } from 'react-bootstrap'
+import { Card, Container, Row, Col, Table} from 'react-bootstrap'
 // import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
-
-
 
 function Dashboard() {
     const [claims, setClaims] = useState(0)
