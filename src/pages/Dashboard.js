@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../contexts/Auth'
 import { Card, Container, Row, Col } from 'react-bootstrap'
 // import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
 
-  
+
 
 function Dashboard() {
     const {currentUser} = useAuth()
@@ -14,7 +14,7 @@ function Dashboard() {
     const [policies, setPolicies] = useState(2)
     const [claimNotifications, setClaimNotifications] = useState(27)
 
-    
+
 
     useEffect(() => {
         document.title = 'Britam - Welcome'
@@ -77,7 +77,7 @@ function Dashboard() {
                                 <p>Weekly <span style={{"font-weight": "bold", "margin-left": "40px"}}>UGX 1000000000</span></p>
                                 <p>Monthly <span style={{"font-weight": "bold", "margin-left": "40px"}}>UGX 1000000000</span></p>
                             </div>
-                
+
                         </div>
                     </div>
 
@@ -88,7 +88,7 @@ function Dashboard() {
                         </span>Monthly Stickers Issued</h5>
                         <Row style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
                             <Col xs="1" style={{display:"flex", justifyContent:"center", writingMode:"tb-rl", transform:"rotate(-180deg)", alignItems:"End"}}>
-                                <span>Sticker sales</span>    
+                                <span>Sticker sales</span>
                             </Col>
                             <Col>
                                 <BarChart />
@@ -98,8 +98,8 @@ function Dashboard() {
                             <Col>Months</Col>
                         </Row>
                     </div>
-                </div>    
-            </div>        
+                </div>
+            </div>
     )
 }
 

@@ -1,5 +1,5 @@
 import {useState,useEffect} from 'react'
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../contexts/Auth'
 import { useHistory, Redirect} from 'react-router-dom'
 import logo from '../assets/imgs/britam-logo.png'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
@@ -25,8 +25,8 @@ function Login() {
 
         document.title = 'Britam - With you every step of the way'
     })
-        
-    
+
+
 
     // if (isLogin)
     //     return <Redirect to={{ pathname: '/supervisor-dashboard' }} />
@@ -58,7 +58,7 @@ function Login() {
                                 )
 
                                 }
-                                
+
                             </span>
                         </div>
                     </div>
