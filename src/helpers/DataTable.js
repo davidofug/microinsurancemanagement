@@ -21,16 +21,19 @@ export default function Datatable({ data, columns, columnHeading }) {
 }
 
 
-export function EditableDatable({ editContactId, handleDeleteClick, handleEditClick, currentClients, editFormData, handleEditFormChange, handleCancelClick }){
+export function EditableDatable({ columns, columnHeading, editContactId, handleDeleteClick, handleEditClick, currentClients, editFormData, handleEditFormChange, handleCancelClick }){
 
   const [ editClient, setEditClient ] = useState(false)
 
-  const columns = ["id", "name", "gender", "email", "contact", "address"]
+  // const columns = ["id", "name", "gender", "email", "contact", "address"]
 
   return (
     <Table bordered hover striped responsive style={{"border": "1px solid #000"}} cellPadding={0} cellSpacing={0}>
       <thead>
-          <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th></th></tr>
+          {/* <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th></th></tr> */}
+          <tr>{columnHeading.map(heading => (
+            <th>{heading}</th>
+          ))}</tr>
       </thead>
       <tbody>
         {currentClients.map((row) => (
@@ -44,6 +47,7 @@ export function EditableDatable({ editContactId, handleDeleteClick, handleEditCl
             />
             ) : (
               <ReadOnlyRow
+                    columns={columns}
                     row={row}
                     handleEditClick={handleEditClick}
                     handleDeleteClick={handleDeleteClick}
