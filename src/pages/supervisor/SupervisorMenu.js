@@ -74,7 +74,7 @@ function SupervisorMenu() {
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
                         <Link to={'/supervisor-settings'}>
-                            <img src={profile} alt="profile image" />
+                            <img src={profile} alt="profile" />
                             <div>
                                 <p>Anyuru David Derrick</p>
                                 <p style={{"color": "#646464"}}>Supervisor</p>
@@ -124,7 +124,7 @@ function SupervisorMenu() {
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
                         <Link to={'/settings'} id="account">
-                            <img src={profile} alt="profile image" />
+                            <img src={profile} alt="profile" />
                         </Link>
                     </footer>
 

@@ -1,20 +1,17 @@
-import generatedData from '../helpers/generatedClients';
 import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 
 function AddClaims() {
 
-    useEffect(() => {
-        document.title = 'Britam - Add Clients'
-    }, [])
+    useEffect(() => document.title = 'Britam - Add Claims', [])
 
     return (
         <div className='components'>
-            <div className='heading'>
+            <header className='heading'>
                 <h1 className='title'>Add Claim</h1>
                 <p className="subtitle">ADD A NEW CLAIM</p>
-            </div>
+            </header>
 
             <div className="table-card componentsData">  
                 <form action="">
@@ -77,7 +74,7 @@ function AddClaims() {
                         </Form.Group>
                         
                         <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label>upload profile image</Form.Label>
+                            <Form.Label>upload support documents</Form.Label>
                             <Form.Control type="file" />
                         </Form.Group>
                         

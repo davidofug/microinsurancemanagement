@@ -1,11 +1,8 @@
-import generatedData from '../helpers/generatedClients';
 import { useEffect } from 'react'
 
 function Logs() {
 
-    useEffect(() => {
-        document.title = 'Britam - Logs Trails'
-    }, [])
+    useEffect(() => document.title = 'Britam - Logs Trails', [])
 
     return (
         <div className='components'>
@@ -22,13 +19,32 @@ function Logs() {
                     </thead>
 
                     <tbody>
-                                {generatedData[1].map((generatedClient, index) => (
-                                    <tr>
-                                        <td>07-12-2021 07:59;22</td>
-                                        <td>07-12-2021 07:59:22</td>
-                                        <td>2 hours</td>
-                                    </tr>
-                                ))}
+                        <tr>
+                            <td>07-12-2021 07:59:22</td>
+                            <td>07-12-2021 07:59:22</td>
+                            <td>2 hours</td>
+                        </tr>
+                        <tr>
+                            <td>07-12-2021 07:59:22</td>
+                            <td>07-12-2021 07:59:22</td>
+                            <td>2 hours</td>
+                        </tr>
+                        <tr>
+                            <td>07-12-2021 07:07:22</td>
+                            <td>07-12-2021 07:59:22</td>
+                            <td>2 hours</td>
+                        </tr>
+                        <tr>
+                            <td>07-12-2021 07:59:22</td>
+                            <td>07-12-2021 07:59:22</td>
+                            <td>2 hours</td>
+                        </tr>
+                        <tr>
+                            <td>07-12-2021 07:59:22</td>
+                            <td>07-12-2021 07:59:22</td>
+                            <td>2 hours</td>
+                        </tr>
+                                
                     </tbody>
 
                     <tfoot>

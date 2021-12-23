@@ -1,18 +1,18 @@
+import { Link } from 'react-router-dom'
 import {useState,useEffect} from 'react'
 import { useAuth } from '../contexts/Auth'
-import { useHistory, Redirect} from 'react-router-dom'
 import logo from '../assets/imgs/britam-logo.png'
+import { useHistory, Redirect } from 'react-router-dom'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
-import { Link } from 'react-router-dom'
 
 import '../assets/styles/login.css'
 
 function Login() {
     const [ password, setPassword ] = useState("password")
-    let [isLogin, setLogin] = useState(false)
+    const [isLogin, setLogin] = useState(false)
     const [ isVisible, setIsVisible ] = useState(false)
 
-    let { setCurrentUser } = useAuth()
+    const { setCurrentUser } = useAuth()
 
     const history = useHistory()
     useEffect(() => {
@@ -24,12 +24,12 @@ function Login() {
         }
 
         document.title = 'Britam - With you every step of the way'
-    })
+    }, [])
         
     
 
-    // if (isLogin)
-    //     return <Redirect to={{ pathname: '/supervisor-dashboard' }} />
+    if (isLogin)
+        return <Redirect to={{ pathname: '/admin-dashboard' }} />
 
     return (
         <div className='logout'>

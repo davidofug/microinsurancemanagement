@@ -29,7 +29,7 @@
     },
     {
         "id": 3,
-        "name": "David Anyuru Three",
+        "name": "Edward Mutessa",
         "gender": "F",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -43,7 +43,7 @@
     },
     {
         "id": 4,
-        "name": "David Anyuru Four",
+        "name": "Milton Obote",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -57,7 +57,7 @@
     },
     {
         "id": 5,
-        "name": "David Anyuru Five",
+        "name": "Idi Amin",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "amount": "23,000",
@@ -71,7 +71,7 @@
     },
     {
         "id": 6,
-        "name": "David Anyuru Six",
+        "name": "Yusuf Lule",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -85,7 +85,7 @@
     },
     {
         "id": 7,
-        "name": "David Anyuru Seven",
+        "name": "Godfrey Binaisa",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -99,7 +99,7 @@
     },
     {
         "id": 8,
-        "name": "David Anyuru Eight",
+        "name": "Paulo Mawanga",
         "gender": "M",
         "paymentMethod": "Cash",
         "email": "davidderrick@gmail.com",
@@ -113,7 +113,7 @@
     },
     {
         "id": 9,
-        "name": "David Anyuru Nine",
+        "name": "Tito Okello",
         "gender": "F",
         "email": "davidderrick@gmail.com",
         "paymentMethod": "Cash",
@@ -127,7 +127,7 @@
     },
     {
         "id": 10,
-        "name": "David Anyuru Ten",
+        "name": "Yoweri Museveni",
         "gender": "F",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
