@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import '../../styles/Settings.css'
 import profile from '../../assets/imgs/image 2.png'
+import { Form, Row, Col, Alert } from 'react-bootstrap'
+import { MdCheckCircle } from 'react-icons/md'
 
 function Settings() {
 
@@ -23,90 +25,93 @@ function Settings() {
                             <ul>
                                 <li><button onClick={() => toggleTab(1)} className={selectedTab === 1 ? "tabs active-tabs" : "tabs"}>Edit Profile</button></li>
                                 <li><button onClick={() => toggleTab(2)} className={selectedTab === 2 ? "tabs active-tabs" : "tabs"}>Notifications</button></li>
-                                <li><button onClick={() => toggleTab(3)} className={selectedTab === 3 ? "tabs active-tabs" : "tabs"}>Password & security</button></li>
+                                <li><button onClick={() => toggleTab(3)} className={selectedTab === 3 ? "tabs active-tabs" : "tabs"}>Edit Password</button></li>
                             </ul>
                         </div>
                                 <form action="">
                         <div className="tabs-content">
                             <div className={selectedTab === 1 ? "content  active-content" : "content"}>
                                 <div id="edit_profile">
-                                    <h2>Edit Profile</h2>
-                                    <hr />
-                                    <img src={profile} alt="profile image" />
-                                    <div className="first_last">
-                                        <div className="names">
-                                            <label htmlFor="">First Name</label>
-                                            <input type="text" name="" id="" value="Charles" />
-                                        </div >
-                                        <div className="names">
-                                            <label htmlFor="">Last Name</label>
-                                            <input type="text" name="" id="" value="Kasasira" />
-                                        </div>
-                                    </div>
-                                    <div className="first_last">
-                                        <div className="names">
-                                            <label htmlFor="">phone Number</label>
-                                            <input type="tel" name="" id="" value="0770123456" />
-                                        </div>
-                                        <div className="names">
-                                            <label htmlFor="gender">Gender</label>
-                                            <div className='first_last'>
-                                                <div>
-                                                    <input type="radio" name="gender" id="" checked  />
-                                                    <label htmlFor="">Male</label>
+                                    <Form>
+                                        <h2>Edit Profile</h2>
+                                        <hr />
+                                        <img src={profile} alt="profile image" />
+                                        <Row className="mb-3">
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Name</Form.Label>
+                                                <Form.Control value="Charles Kasasira" />
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Phone Number</Form.Label>
+                                                <Form.Control type="tel" value="077123456" />
+                                            </Form.Group>
+                                        </Row>
+                                        <Row className="mb-3">
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Date of birth</Form.Label>
+                                                <Form.Control type="date" value="09/10/1962"/>
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Gender</Form.Label>
+                                                <div style={{"display": "flex", "gap": "10px"}}>
+                                                    <div>
+                                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}} checked/>
+                                                        <label htmlFor="gender">Male</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
+                                                        <label htmlFor="gender">Female</label>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <input type="radio" name="gender" id=""  />
-                                                    <label htmlFor="">Female</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="names">
-                                        <label htmlFor="">email</label>
-                                        <input type="email" name="" id="" value="charleskasasira01@gmail.com" />
-                                    </div>
-                                    <div className="names">
-                                        <label htmlFor="">Address</label>
-                                        <input type="text" name="" id="" value="Namuwongo" />
-                                    </div>
-                                    <div className="names">
-                                        <label htmlFor="">Branch Name</label>
-                                        <input type="text" name="" id="" value="Kampala" />
-                                    </div>
-                                    <div className="names">
-                                        <label htmlFor="">Enter password to confirm</label>
-                                        <input type="password" name="" id="" />
-                                    </div>
-                                    <input type="submit" value="Update Profile" className="btn btn-primary cta" />
+                                            </Form.Group>
+                                        </Row>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label>Email</Form.Label>
+                                            <Form.Control value="charleskasasira01@gmail.com" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label>Address</Form.Label>
+                                            <Form.Control value="Namuwongo" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label>Branch Name</Form.Label>
+                                            <Form.Control value="Kampala" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label>Enter Password to confirm</Form.Label>
+                                            <Form.Control placeholder='Password' />
+                                        </Form.Group>
+                                        <input type="submit" value="Update Profile" className="btn btn-primary cta" />
+                                        
+                                    </Form>
                                 </div>
                             </div>
                             <div className={selectedTab === 2 ? "content  active-content" : "content"}>
                                 <h2>Notifications</h2>
                                 <hr />
                                 <p>
-                                    You don't have any notifications yets
+                                    <Alert variant='success'> <MdCheckCircle /> You don't have any notifications</Alert>
                                 </p>
                             </div>
                             <div className={selectedTab === 3 ? "content  active-content" : "content"}
                                 >
-                                <h2>Password and Security</h2>
+                                <h2>Edit Password</h2>
                                 <hr />
-                                <form action="">
-                                        <div className="names">
-                                            <label htmlFor="">Enter old password</label>
-                                            <input type="password" name="" id="" />
-                                        </div>
-                                        <div className="names">
-                                            <label htmlFor="">Enter new password</label>
-                                            <input type="password" name="" id="" />
-                                        </div>
-                                        <div className="names">
-                                            <label htmlFor="">Confirm Password</label>
-                                            <input type="password" name="" id="" />
-                                        </div>
-                                        <input type="submit" value="Submit" className="btn btn-primary cta" />
-                                </form>
+                                <Form>                            
+                                    <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Label>Old Password</Form.Label>
+                                        <Form.Control type="password" placeholder="Enter old password" />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Label>New Password</Form.Label>
+                                        <Form.Control type="password" placeholder="Enter new password" />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Label>Confirm Password</Form.Label>
+                                        <Form.Control placeholder="Match password" type="password" />
+                                    </Form.Group>
+                                    <input type="submit" value="Update Password" className="btn btn-primary cta" />                              
+                            </Form>
                             </div>
                         </div>
                                 </form>
