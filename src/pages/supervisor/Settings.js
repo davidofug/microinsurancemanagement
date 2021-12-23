@@ -6,9 +6,7 @@ function Settings() {
 
     const [ selectedTab, setSelectedTab ] = useState(1)
 
-    useEffect(() => {
-        document.title = 'Britam - User Profile'
-    }, [])
+    useEffect(() => document.title = 'Britam - User Profile', [])
 
     const toggleTab = (index) => {
         setSelectedTab(index);
@@ -16,8 +14,10 @@ function Settings() {
 
     return (
         <div className='components'>
-            <h1 className='title'>My Profile</h1>
-            <p className='subtitle'>MANAGE YOUR ACCOUNT</p>
+            <header class="heading">
+                <h1 className='title'>My Profile</h1>
+                <p className='subtitle'>MANAGE YOUR ACCOUNT</p>
+            </header>
 
                 <div id='settings_columns'>
                     <div id="options">
@@ -33,7 +33,7 @@ function Settings() {
                             <div id="edit_profile">
                                 <h2>Edit Profile</h2>
                                 <hr />
-                                <img src={profile} alt="profile image" />
+                                <img src={profile} alt="profile" />
                                 <div className="first_last">
                                     <div className="names">
                                         <label htmlFor="">First Name</label>
