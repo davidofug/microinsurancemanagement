@@ -89,7 +89,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                             </Offcanvas.Body>
                             <footer>
                                         <ul>
-                                            <li><Link to="/admin-settings">My Profile</Link></li>
+                                            <li><Link to="/admin/settings">My Profile</Link></li>
                                             <li><Link to="/logout">Logout</Link></li>
                                         </ul>
                                     <Link to={'/admin-settings'}>
@@ -147,7 +147,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                         
                             <footer>
                                     <ul>
-                                        <li><Link to="/admin-settings">My Profile</Link></li>
+                                        <li><Link to="/admin/settings">My Profile</Link></li>
                                         <li><Link to="/logout">Logout</Link></li>
                                     </ul>
                                 <Link to={'/admin-settings'}>
@@ -202,7 +202,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                     
                         <footer>
                                 <ul>
-                                    <li><Link to="/admin-settings">Settings</Link></li>
+                                    <li><Link to="/admin/settings">Settings</Link></li>
                                     <li><Link to="/logout">Logout</Link></li>
                                 </ul>
                             <Link to={'/admin-settings'} id="account">

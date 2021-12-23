@@ -29,7 +29,7 @@ function Login() {
     
 
     if (isLogin)
-        return <Redirect to={{ pathname: '/admin-dashboard' }} />
+        return <Redirect to={{ pathname: '/admin/dashboard' }} />
 
     return (
         <div className='logout'>
@@ -70,7 +70,7 @@ function Login() {
                         <input  type="submit" className='btn btn-primary cta' onClick={() => {
                             setCurrentUser(1)
                             localStorage.setItem('loggedIn', 1)
-                            history.push('admin-dashboard')
+                            history.push('/admin/dashboard')
                         }}
                          value="Login"/>
                          <Link to="/forgot-password"><p>Forgot Password?</p></Link>
