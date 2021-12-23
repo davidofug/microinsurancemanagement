@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../../styles/Settings.css'
 import profile from '../../assets/imgs/image 2.png'
 
@@ -6,20 +6,16 @@ function Settings() {
 
     const [ selectedTab, setSelectedTab ] = useState(1)
 
-    useEffect(() => {
-        document.title = 'Britam - User Profile'
-    }, [])
+    useEffect(() => document.title = 'Britam - User Profile', [])
 
-    const toggleTab = (index) => {
-        setSelectedTab(index);
-      };
+    const toggleTab = (index) => setSelectedTab(index);
 
     return (
         <div className='components'>
-            <div class="heading">
+            <header className="heading">
                 <h1 className='title'>My Profile</h1>
                 <p className='subtitle'>MANAGE YOUR ACCOUNT</p>
-            </div>
+            </header>
 
                 <div class="componentsData">
                     <div id='settings_columns'>
