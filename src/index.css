@@ -208,7 +208,13 @@ tbody, td, tfoot, th, thead, tr{
 }
 
 
-
+/* form action buttons */
+.action-buttons{
+    border: none;
+    background-color: transparent;
+    margin: 2px;
+    font-size: 20px;
+}
 
 
 
