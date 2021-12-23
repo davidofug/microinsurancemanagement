@@ -76,37 +76,37 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "admin-dashboard"
+            link: "/admin/dashboard"
         },
         {
             number: 2,
             name: "Organisations",
             icon: <MdBusinessCenter />,
-            link: "admin-organisations"
+            link: "/admin/organisations"
         },
         {
             number: 3,
             name: "Clients",
             icon: <MdPerson />,
-            link: "admin-clients"
+            link: "/admin/clients"
         },
         {
             number: 4,
             name: "User Management",
             icon: <MdPeople />,
-            link: "admin-user-management",
+            link: "/admin/user-management",
             subMenu: [
                 {
                     name: "Agents",
-                    link: "admin-agents"
+                    link: "/admin/agents"
                 },
                 {
                     name: "Supervisor",
-                    link: "admin-supervisor"
+                    link: "/admin/supervisor"
                 },
                 {
                     name: "View Log Trail",
-                    link: "admin-view-log-trail"
+                    link: "/admin/view-log-trail"
                 }
             ]
         },
@@ -114,19 +114,19 @@ const menuData = {
             number: 5,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: "admin-policies",
+            link: "/admin/policies",
             subMenu: [
                 {
                     name: "MTP",
-                    link: "admin-motor-third-party"
+                    link: "/admin/motor-third-party"
                 },
                 {
                     name: "Windscreen",
-                    link: "admin-windscreen"
+                    link: "/admin/windscreen"
                 },
                 {
                     name: "Comprehensive",
-                    link: "admin-comprehensive"
+                    link: "/admin/comprehensive"
                 }
             ]
         },
@@ -134,13 +134,13 @@ const menuData = {
             number: 6,
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
-            link: "admin-claims"
+            link: "/admin/claims"
         },
         {
             number: 7,
             name: "Reports",
             icon: <MdAssessment />,
-            link: "admin-reports"
+            link: "/admin/reports"
         }
     ],
     SuperVisor: [
