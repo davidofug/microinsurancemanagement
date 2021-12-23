@@ -3,10 +3,100 @@ import { useEffect, useState } from 'react'
 import data from '../helpers/mock-data.json'
 import Datatable from '../helpers/DataTable';
 import { Form } from 'react-bootstrap'
+import Pagination from '../helpers/Pagination';
+import { EditableDatable } from '../helpers/DataTable'
 
 function Claims() {
 
     useEffect(() => {document.title = 'Britam - Claims'}, [])
+
+
+    const [claims, setClaims] = useState(data);
+  //
+    const [editFormData, setEditFormData] = useState({
+        name: "",
+        gender: "",
+        email: "",
+        contact: "",
+        address: "",
+    });
+
+  const [editContactId, setEditContactId] = useState(null);
+
+  const handleEditFormChange = (event) => {
+    event.preventDefault();
+
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newFormData = { ...editFormData };
+    newFormData[fieldName] = fieldValue;
+
+    setEditFormData(newFormData);
+  };
+
+
+  const handleEditFormSubmit = (event) => {
+    event.preventDefault();
+
+    const editedContact = {
+      id: editContactId,
+      name: editFormData.name,
+      gender: editFormData.gender,
+      email: editFormData.email,
+      contact: editFormData.contact,
+      address: editFormData.address,
+    };
+    
+    const newClaims = [...claims];
+
+    const index = claims.findIndex(claim => claim.id === editContactId);
+
+    newClaims[index] = editedContact;
+
+    setClaims(newClaims);
+    setEditContactId(null);
+  };
+
+  const handleEditClick = (event, contact) => {
+    event.preventDefault();
+    setEditContactId(contact.id);
+
+    const formValues = {
+      name: contact.name,
+      gender: contact.gender,
+      email: contact.email,
+      contact: contact.contact,
+      address: contact.address,
+    };
+
+    setEditFormData(formValues);
+  };
+
+  //
+
+    //
+    const [ currentPage, setCurrentPage ] = useState(1)
+    const [employeesPerPage] = useState(10)
+
+    const indexOfLastEmployee = currentPage * employeesPerPage
+    const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
+    const currentClaims = claims.slice(indexOfFirstEmployee, indexOfLastEmployee)
+    const totalPagesNum = Math.ceil(data.length / employeesPerPage)
+
+
+
+    const handleDeleteClick = (claimId) => {
+        const newClaims = [...claims];
+        const index = claims.findIndex((claim) => claim.id === claimId);
+        newClaims.splice(index, 1);
+        setClaims(newClaims);
+      };
+  
+      const handleCancelClick = () => {
+        setEditContactId(null);
+      };
+
 
     const [clients, setClients] = useState(data);
     const [q, setQ] = useState('');
@@ -41,7 +131,26 @@ function Claims() {
                             />
                       </div>
 
-                <Datatable data={search(clients)} columnHeading={columnHeading} columns={columns}/>
+                      <form onSubmit={handleEditFormSubmit}>
+                        <EditableDatable 
+                            columns={columns}
+                            columnHeading={columnHeading}
+                            editContactId={editContactId}
+                            currentClients={search(currentClaims)}
+                            handleDeleteClick={handleDeleteClick}
+                            handleEditClick={handleEditClick}
+                            editFormData={editFormData}
+                            handleEditFormChange={handleEditFormChange}
+                            handleCancelClick={handleCancelClick}
+                        /> 
+                  </form>
+
+                  <Pagination 
+                    pages={totalPagesNum}
+                    setCurrentPage={setCurrentPage}
+                    currentClients={currentClaims}
+                    sortedEmployees={data}
+                    entries={'claims'} />
 
                
             </div>

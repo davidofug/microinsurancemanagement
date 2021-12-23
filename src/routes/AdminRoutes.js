@@ -25,7 +25,6 @@ import AddSupervisors from '../pages/admin/AddSupervisors'
 function AdminRoutes() {
     return (
         <>
-            <Redirect exact from="/" to="/admin/dashboard" />
             <PrivateRoute path="/admin/dashboard" >
                 <Dashboard />
             </PrivateRoute>
@@ -47,7 +46,7 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/add/agents" >
+            <PrivateRoute path="/add-agents" >
                 <AddAgents />
             </PrivateRoute>
             <PrivateRoute path="/admin/clients" >
@@ -77,10 +76,10 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/comprehensive" >
                 <Comprehensive />
             </PrivateRoute>
-            <PrivateRoute path="/add/clients" >
+            <PrivateRoute path="/add-clients" >
                 <AddClients />
             </PrivateRoute>
-            <PrivateRoute path="/add/claim" >
+            <PrivateRoute path="/add-claim" >
                 <AddClaims />
             </PrivateRoute>
             <Route path="/logout" component={Logout} />
