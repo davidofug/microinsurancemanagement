@@ -46,7 +46,7 @@ function Login() {
     }
 
     if (isLogin)
-        return <Redirect to={{ pathname: '/admin-dashboard' }} />
+        return <Redirect to={{ pathname: '/admin/dashboard' }} />
 
     return (
         <div className='logout'>
