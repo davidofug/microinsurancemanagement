@@ -1,11 +1,10 @@
-import React from 'react'
-
-function AddClient() {
+function AddClient(){ 
+    
     return (
-        <div>
-            Please add me
-        </div>
-    )
+        <>
+            haha it worked 
+        </>
+);
 }
 
 export default AddClient

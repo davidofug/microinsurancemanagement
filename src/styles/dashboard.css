@@ -75,7 +75,7 @@
 }
 
 .graph-container {
-    height:400px;
+    /* height:400px; */
     width:100%;
     background-color:#FFFFFF;
     border-radius:0.4rem;
