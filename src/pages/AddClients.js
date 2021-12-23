@@ -45,7 +45,7 @@ function AddClients() {
                         
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label>Email</Form.Label>
+                                <Form.Label>Email Address</Form.Label>
                                 <Form.Control type="email" placeholder="Enter email" />
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>

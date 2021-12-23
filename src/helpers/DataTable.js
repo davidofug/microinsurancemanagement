@@ -22,11 +22,6 @@ export default function Datatable({ data, columns, columnHeading }) {
 
 
 export function EditableDatable({ columns, columnHeading, editContactId, handleDeleteClick, handleEditClick, currentClients, editFormData, handleEditFormChange, handleCancelClick }){
-
-  const [ editClient, setEditClient ] = useState(false)
-
-  // const columns = ["id", "name", "gender", "email", "contact", "address"]
-
   return (
     <Table bordered hover striped responsive style={{"border": "1px solid #000"}} cellPadding={0} cellSpacing={0}>
       <thead>

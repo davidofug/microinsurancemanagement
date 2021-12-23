@@ -96,17 +96,17 @@ function Settings() {
                             <form action="">                            
                                     <div className="names">
                                         <label htmlFor="">Enter old password</label>
-                                        <input type="password" name="" id="" />
+                                        <input type="password" name="" id="" placeholder='Old Password' />
                                     </div>
                                     <div className="names">
                                         <label htmlFor="">Enter new password</label>
-                                        <input type="password" name="" id="" />
+                                        <input type="password" name="" id="" placeholder='New Password' />
                                     </div>
                                     <div className="names">
                                         <label htmlFor="">Confirm Password</label>
-                                        <input type="password" name="" id="" />
+                                        <input type="password" name="" id="" placeholder='Match Password' />
                                     </div>
-                                    <input type="submit" value="Submit" className="btn btn-primary cta" />                              
+                                    <input type="submit" value="Update Password" className="btn btn-primary cta" />                              
                             </form>
                         </div>
 

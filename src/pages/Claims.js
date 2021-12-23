@@ -101,7 +101,7 @@ function Claims() {
     const [clients, setClients] = useState(data);
     const [q, setQ] = useState('');
 
-    const columnHeading = ["Ref Number", "Claimant Details", "Date of Incident", "Number Plate", "Sticker Number", "Claim Estimate", "Status"]
+    const columnHeading = ["Ref Number", "Claimant Details", "Date of Incident", "Number Plate", "Sticker Number", "Claim Estimate", "Status", ""]
     const columns = ["contact", "name", "createdAt", "contact", "contact", "amount", "status"]
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
@@ -124,11 +124,11 @@ function Claims() {
 
             <div className="table-card componentsData">   
                 <div id="search">
-                            <div></div>
-                            <div></div>
                             <Form.Control type="text" className='mb-3' placeholder="Search for policy"
-                              value={q} onChange={({target}) => setQ(target.value)} 
+                                value={q} onChange={({target}) => setQ(target.value)} 
                             />
+                            <div></div>
+                            <div></div>
                       </div>
 
                       <form onSubmit={handleEditFormSubmit}>
