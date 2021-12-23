@@ -11,11 +11,14 @@ function Logs() {
                 <p className="subtitle">VIEW YOUR LOG TRAILS</p>
             </div>
 
+            <button className="btn btn-primary cta">Check in</button>
+
+
             <div className="table-card componentsData"> 
 
                 <table class="table table-striped" style={{border: "1px solid black"}}>
                     <thead>
-                        <tr><th>Login</th><th>Logout</th><th>Duration</th></tr>
+                        <tr><th>Check in</th><th>Check out</th><th>Duration</th></tr>
                     </thead>
 
                     <tbody>
