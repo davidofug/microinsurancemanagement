@@ -16,10 +16,10 @@ import Logs from '../pages/Logs.js'
 import Supervisors from '../pages/admin/Supervisors'
 import Agents from '../pages/Agents'
 import AddAgents from '../pages/AddAgents'
-import AddSupervisors from '../pages/admin/AddSupervisors'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddOrganisation from '../pages/admin/AddOrganisation'
+import AddSupervisors from '../pages/admin/AddSupervisors'
 
 
 function AdminRoutes() {
@@ -83,7 +83,6 @@ function AdminRoutes() {
                 <AddClaims />
             </PrivateRoute>
             <Route path="/logout" component={Logout} />
-            {/* <Route path="*" component={NotFound} /> */}
         </>
         
     )

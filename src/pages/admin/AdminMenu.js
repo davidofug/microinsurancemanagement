@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import profile from '../../assets/imgs/image 2.png'
 import logo from '../../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
-import { Navbar, Offcanvas, Container, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Navbar, Offcanvas, Container, Nav, NavDropdown} from 'react-bootstrap'
 
 
 function AdminMenu({setLargeContentClass, largeContentClass}) {
@@ -14,7 +14,6 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
 
     const [ selected, setSelected ] = useState({ activeObject: null, Admin })
     const [ toggleMenu, setToggeMenu ] = useState(true)
-    const [ sidebarClass, setSidebarClass ] = useState()
 
     useEffect(() => {
         if(sessionStorage.getItem('session1')){
@@ -39,7 +38,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
 
     return (
         <div className='menuSide'>
-                <div class="mobile-sidebar">
+                <div className="mobile-sidebar">
                     <Navbar expand={false} >
                         <Container fluid>
                             <div>
@@ -65,13 +64,13 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                                 <ul className="nav flex-column">
                                             { selected.Admin.map((object, index) => (
                                                                 <li className='nav-item' key={index}>
-                                                                    <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                                    <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} >
                                                                         <span>{object.icon}</span>{object.name}
                                                                         {object?.subMenu &&
                                                                             (
                                                                                 <NavDropdown style={{"color": "#fff"}} id="offcanvasNavbarDropdown">
                                                                                 {object.subMenu.map((sub, index) => (
-                                                                                            <Link to={sub.link}>
+                                                                                            <Link to={sub.link} key={index}>
                                                                                                 <NavDropdown.Item href="#action3">{sub.name}</NavDropdown.Item>
                                                                                             </Link>
                     
@@ -94,7 +93,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                                             <li><Link to="/logout">Logout</Link></li>
                                         </ul>
                                     <Link to={'/admin-settings'}>
-                                        <img src={profile} alt="profile image" />
+                                        <img src={profile} alt="profile" />
                                         <div>
                                             <p>Charles Kasasira</p>
                                             <p style={{"color": "#646464"}}>Admin</p>
@@ -125,13 +124,13 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                                     <ul className="nav flex-column">
                                         { selected.Admin.map((object, index) => (
                                                             <li className='nav-item' key={index}>
-                                                                <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                                <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} >
                                                                     <span>{object.icon}</span>{object.name}
                                                                     {object?.subMenu &&
                                                                         (<ul>
                                                                             {object.subMenu.map((sub, index) => (
-                                                                                <li>
-                                                                                    <Link to={sub.link} key={index} style={{color: "black"}}>
+                                                                                <li key={index}>
+                                                                                    <Link to={sub.link} style={{color: "black"}}>
                                                                                         {sub.name}
                                                                                     </Link>
                                                                                 </li>
@@ -152,7 +151,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                                         <li><Link to="/logout">Logout</Link></li>
                                     </ul>
                                 <Link to={'/admin-settings'}>
-                                    <img src={profile} alt="profile image" />
+                                    <img src={profile} alt="profile" />
                                     <div>
                                         <p>Charles Kasasira</p>
                                         <p style={{"color": "#646464"}}>Admin</p>
@@ -180,7 +179,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                                     <ul className="nav flex-column">
                                         { selected.Admin.map((object, index) => (
                                                             <li className='nav-item' key={index}>
-                                                                <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
+                                                                <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)}>
                                                                     <span>{object.icon}</span>
                                                                     {object?.subMenu &&
                                                                         (<ul>
@@ -207,7 +206,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                                     <li><Link to="/logout">Logout</Link></li>
                                 </ul>
                             <Link to={'/admin-settings'} id="account">
-                                <img src={profile} alt="profile image" />
+                                <img src={profile} alt="profile" />
                             </Link>
                         </footer>
                     </nav>

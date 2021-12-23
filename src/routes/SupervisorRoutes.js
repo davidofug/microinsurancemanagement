@@ -1,6 +1,6 @@
 import Mtp from '../pages/Mtp'
 import Users from '../pages/Users'
-import Claims from '../pages/supervisor/Claims'
+import Claims from '../pages/Claims'
 import Reports from '../pages/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
@@ -16,7 +16,6 @@ import Agents from '../pages/Agents'
 import AddAgents from '../pages/AddAgents'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
-import NotFound from '../pages/NotFound'
 
 
 function SupervisorRoutes() {
@@ -68,7 +67,6 @@ function SupervisorRoutes() {
                 <AddClients />
             </PrivateRoute>
             <Route path="/logout" component={Logout} />
-            {/* <Route path="*" component={NotFound} /> */}
         </>
         
     )

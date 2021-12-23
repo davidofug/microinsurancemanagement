@@ -14,14 +14,14 @@
         "role": "Admin"
     },
     {
-        "name": "Ayikosi Innocent",
+        "name": "Super name",
         "password": "supervisor",
         "email": "supervisor@gmail.com",
         "profile-image": "",
         "role": "Supervisor"
     },
     {
-        "name": "Nassali Just",
+        "name": "Agent name",
         "password": "agent",
         "email": "agent@gmail.com",
         "profile-image": "",
