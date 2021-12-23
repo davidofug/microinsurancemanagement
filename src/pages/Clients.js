@@ -9,6 +9,73 @@ import Pagination from '../helpers/Pagination';
 
 function Clients() {
 
+
+  const [clients, setClients] = useState(data);
+
+  //
+  const [editFormData, setEditFormData] = useState({
+    name: "",
+    gender: "",
+    email: "",
+    contact: "",
+    address: "",
+  });
+
+  const [editContactId, setEditContactId] = useState(null);
+
+  const handleEditFormChange = (event) => {
+    event.preventDefault();
+
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newFormData = { ...editFormData };
+    newFormData[fieldName] = fieldValue;
+
+    setEditFormData(newFormData);
+  };
+
+
+  const handleEditFormSubmit = (event) => {
+    event.preventDefault();
+
+    const editedContact = {
+      id: editContactId,
+      name: editFormData.name,
+      gender: editFormData.gender,
+      email: editFormData.email,
+      contact: editFormData.contact,
+      address: editFormData.address,
+    };
+
+    console.log("submitted succesfully")
+    const newClients = [...clients];
+
+    const index = clients.findIndex((client) => client.id === editContactId);
+
+    newClients[index] = editedContact;
+
+    setClients(newClients);
+    setEditContactId(null);
+  };
+
+  const handleEditClick = (event, contact) => {
+    event.preventDefault();
+    setEditContactId(contact.id);
+
+    const formValues = {
+      name: contact.name,
+      gender: contact.gender,
+      email: contact.email,
+      contact: contact.contact,
+      address: contact.address,
+    };
+
+    setEditFormData(formValues);
+  };
+
+  //
+
     //
     const [ currentPage, setCurrentPage ] = useState(1)
     const [employeesPerPage] = useState(10)
@@ -23,9 +90,7 @@ function Clients() {
     useEffect(() => {document.title = 'Britam - Clients'}, [])
 
 
-    const [clients, setClients] = useState(data);
     const [q, setQ] = useState('');
-    const [edits, setEdits] = useState({name: "Charles", address: "Namuwongo", gender: "M", contact: "077123456", email: "charles@alliswell.com"})
 
     const handleDeleteClick = (clientId) => {
       const newClients = [...clients];
@@ -34,13 +99,9 @@ function Clients() {
       setClients(newClients);
     };
 
-    const handleEditClick = (clientId) => {
-      const newClients = [...clients];
-      const index = clients.findIndex(client => client.id === clientId)
-      // newClients.splice(index + 1)
-      newClients[index] = edits
-      setClients(newClients)
-    }
+    const handleCancelClick = () => {
+      setEditContactId(null);
+    };
     
     const columns = ["name", "gender", "email", "contact", "address"]
 
@@ -63,6 +124,7 @@ function Clients() {
             </div>
 
             <div className="componentsData">
+            
               <div className="table-card">
                   <div id="search">
                       <Form.Control type="text" className='mb-3' placeholder="Search for client"
@@ -71,12 +133,17 @@ function Clients() {
                       <div></div>
                       <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                   </div>
-
+                  <form onSubmit={handleEditFormSubmit}>
                   <EditableDatable 
+                    editContactId={editContactId}
                     currentClients={search(currentClients)}
                     handleDeleteClick={handleDeleteClick}
                     handleEditClick={handleEditClick}
+                    editFormData={editFormData}
+                    handleEditFormChange={handleEditFormChange}
+                    handleCancelClick={handleCancelClick}
                   /> 
+                  </form>
 
                 <Pagination 
                   pages={totalPagesNum}
@@ -85,6 +152,7 @@ function Clients() {
                   sortedEmployees={data}
                   entries={'Clients'} />
               </div>
+             
             </div>
         </div>
     )
