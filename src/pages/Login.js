@@ -25,15 +25,7 @@ function Login() {
         }
 
         document.title = 'Britam - With you every step of the way'
-<<<<<<< HEAD
     })
-
-
-=======
-    }, [])
-
-
->>>>>>> afe851dbd6c4a541b98be48b0a64dbef80dd3199
 
     if (isLogin)
         return <Redirect to={{ pathname: '/admin-dashboard' }} />

@@ -20,17 +20,12 @@ function ForgotPassword() {
         }
 
         document.title = 'Britam - With you every step of the way'
-<<<<<<< HEAD
     })
 
 
 
     // if (isLogin)
     //     return <Redirect to={{ pathname: '/supervisor-dashboard' }} />
-=======
-    }, [])
-
->>>>>>> afe851dbd6c4a541b98be48b0a64dbef80dd3199
 
     return (
         <div className='logout'>
