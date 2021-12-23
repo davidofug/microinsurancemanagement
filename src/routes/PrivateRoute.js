@@ -3,7 +3,7 @@ import {
     Redirect
 } from 'react-router-dom'
 
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../contexts/Auth'
 
 function PrivateRoute({children, ...rest}) {
     const { currentUser } = useAuth()

@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
-import { useAuth } from '../contexts/Auth'
-import { Card, Container, Row, Col, Table } from 'react-bootstrap'
+import useAuth from '../contexts/Auth'
+import { Card, Container, Row, Col, Table} from 'react-bootstrap'
 // import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
-
-  
 
 function Dashboard() {
     const [claims, setClaims] = useState(0)
@@ -13,7 +11,7 @@ function Dashboard() {
     const [policies, setPolicies] = useState(2)
     const [claimNotifications, setClaimNotifications] = useState(27)
 
-    
+
 
     useEffect(() => {
         document.title = 'Britam - Welcome'
@@ -86,7 +84,7 @@ function Dashboard() {
                                     </tbody>
                                 </Table>
                             </div>
-                
+
                         </div>
                     </div>
 
@@ -97,7 +95,7 @@ function Dashboard() {
                         </span>Monthly Stickers Issued</h5>
                         <Row style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
                             <Col xs="1" style={{display:"flex", justifyContent:"center", writingMode:"tb-rl", transform:"rotate(-180deg)", alignItems:"End"}}>
-                                <span>Sticker sales</span>    
+                                <span>Sticker sales</span>
                             </Col>
                             <Col>
                                 <BarChart />
@@ -107,8 +105,8 @@ function Dashboard() {
                             <Col>Months</Col>
                         </Row>
                     </div>
-                </div>    
-            </div>        
+                </div>
+            </div>
     )
 }
 

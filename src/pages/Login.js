@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import {useState,useEffect} from 'react'
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../contexts/Auth'
+import { useHistory, Redirect} from 'react-router-dom'
 import logo from '../assets/imgs/britam-logo.png'
-import { useHistory, Redirect } from 'react-router-dom'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 
 import '../assets/styles/login.css'
@@ -24,9 +24,7 @@ function Login() {
         }
 
         document.title = 'Britam - With you every step of the way'
-    }, [])
-        
-    
+    })
 
     if (isLogin)
         return <Redirect to={{ pathname: '/admin/dashboard' }} />
@@ -58,7 +56,7 @@ function Login() {
                                 )
 
                                 }
-                                
+
                             </span>
                         </div>
                     </div>
