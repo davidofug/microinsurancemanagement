@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
-import {useState,useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import useAuth from '../contexts/Auth'
 import { useHistory, Redirect} from 'react-router-dom'
 import logo from '../assets/imgs/britam-logo.png'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
+
+import { authentication } from '../helpers/firebase'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth'
 
 import '../assets/styles/login.css'
 
@@ -25,6 +28,22 @@ function Login() {
 
         document.title = 'Britam - With you every step of the way'
     })
+
+	const handleSignIn = async () => {
+		const { email, password } = user
+		try {
+			const result = await signInWithEmailAndPassword(authentication, email, password)
+			// console.log(result)
+			if (result) {
+                setCurrentUser(1)
+                localStorage.setItem('loggedIn', 1)
+                history.push('admin-dashboard')
+            }
+
+		} catch (error) {
+			console.error(error)
+		}
+    }
 
     if (isLogin)
         return <Redirect to={{ pathname: '/admin-dashboard' }} />
@@ -65,12 +84,7 @@ function Login() {
                         <label htmlFor="signedIn">Keep me signed in</label>
                     </div>
                     <div id="submit_login">
-                        <input  type="submit" className='btn btn-primary cta' onClick={() => {
-                            setCurrentUser(1)
-                            localStorage.setItem('loggedIn', 1)
-                            history.push('admin-dashboard')
-                        }}
-                         value="Login"/>
+                        <input  type="submit" className='btn btn-primary cta' onClick={handleSignIn} value="Sign in" value="Login"/>
                          <Link to="/forgot-password"><p>Forgot Password?</p></Link>
                     </div>
                 </form>
