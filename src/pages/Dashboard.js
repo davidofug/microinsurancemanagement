@@ -27,7 +27,7 @@ function Dashboard() {
                 </header>
 
                 <div className="componentsData" >
-                    <div className='mb-5 first-row' style={{display:"flex", gap:"6vh", width: "100%", justifyContent: "space-between"}}>
+                    <div id="first-row" className='mb-5 first-row' style={{display:"flex", width: "100%", justifyContent: "space-between"}}>
                         <div className="shadow-sm p-3 bg-body rounded" className="first-container">
                             <Container className="row-container">
                                     <div className="col">
@@ -95,10 +95,7 @@ function Dashboard() {
                         <h5 style={{"display":"flex", "gap": "10px"}}><span>
                             <div style={{"width": "20px", "height": "20px", "background-color": "#E0E7EC"}}></div>
                         </span>Monthly Stickers Issued</h5>
-                        <Row id="graph" style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
-                            {/* <Col xs="1" id="vertical-scale-name" style={{display:"flex", justifyContent:"center", writingMode:"tb-rl", transform:"rotate(-180deg)", alignItems:"End"}}>
-                                <span>Sticker sales</span>    
-                            </Col> */}
+                        <Row style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
                             <Col style={{height:"35vh"}}>
                                     <BarChart />
                             </Col>
