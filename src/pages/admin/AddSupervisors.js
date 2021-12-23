@@ -1,20 +1,17 @@
-import generatedData from '../../helpers/generatedClients';
 import '../../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 
 function AddSupervisors() {
 
-    useEffect(() => {
-        document.title = 'Britam - Add Supervisors'
-    }, [])
+    useEffect(() => {document.title = 'Britam - Add Supervisors'}, [])
 
     return (
         <div className='components'>
-            <div className='heading'>
+            <header className='heading'>
                 <h1 className='title'>Add Supervisors</h1>
                 <p className="subtitle">ADD A NEW Supervisors</p>
-            </div>
+            </header>
 
             <div class="componentsData" style={{"display": "flex", justifyContent: "center", "background-color": "#fff", "margin-top": "60px", "border-radius": "10px"}}>
                 <form action="">
