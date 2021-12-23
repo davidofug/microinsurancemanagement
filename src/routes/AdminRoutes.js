@@ -6,7 +6,7 @@ import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
 import Settings from '../pages/admin/Settings'
 import PrivateRoute  from './PrivateRoute'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
 import AddClients from '../pages/AddClients'
 import Windscreen from '../pages/Windscreen'
@@ -25,61 +25,62 @@ import AddSupervisors from '../pages/admin/AddSupervisors'
 function AdminRoutes() {
     return (
         <>
-            <PrivateRoute path="/admin-dashboard" >
+            <Redirect exact from="/" to="/admin/dashboard" />
+            <PrivateRoute path="/admin/dashboard" >
                 <Dashboard />
             </PrivateRoute>
-            <PrivateRoute path="/admin-organisations" >
+            <PrivateRoute path="/admin/organisations" >
                 <Organisations />
             </PrivateRoute>
-            <PrivateRoute path="/admin-add-organisations" >
+            <PrivateRoute path="/admin/add-organisations" >
                 <AddOrganisation />
             </PrivateRoute>
-            <PrivateRoute path="/admin-view-log-trail" >
+            <PrivateRoute path="/admin/view-log-trail" >
                 <Logs />
             </PrivateRoute>
-            <PrivateRoute path="/admin-supervisor" >
+            <PrivateRoute path="/admin/supervisor" >
                 <Supervisors />
             </PrivateRoute>
-            <PrivateRoute path="/add-supervisors" >
+            <PrivateRoute path="/add/supervisors" >
                 <AddSupervisors />
             </PrivateRoute>
-            <PrivateRoute path="/admin-agents" >
+            <PrivateRoute path="/admin/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/add-agents" >
+            <PrivateRoute path="/add/agents" >
                 <AddAgents />
             </PrivateRoute>
-            <PrivateRoute path="/admin-clients" >
+            <PrivateRoute path="/admin/clients" >
                 <Clients />
             </PrivateRoute>
-            <PrivateRoute path="/admin-user-management" >
+            <PrivateRoute path="/admin/user-management" >
                 <Users />
             </PrivateRoute>
-            <PrivateRoute path="/admin-policies" >
+            <PrivateRoute path="/admin/policies" >
                 <Policies />
             </PrivateRoute>
-            <PrivateRoute path="/admin-claims" >
+            <PrivateRoute path="/admin/claims" >
                 <Claims />
             </PrivateRoute>
-            <PrivateRoute path="/admin-reports" >
+            <PrivateRoute path="/admin/reports" >
                 <Reports />
             </PrivateRoute>
-            <PrivateRoute path="/admin-settings" >
+            <PrivateRoute path="/admin/settings" >
                 <Settings />
             </PrivateRoute>
-            <PrivateRoute path="/admin-motor-third-party" >
+            <PrivateRoute path="/admin/motor-third-party" >
                 <Mtp />
             </PrivateRoute>
-            <PrivateRoute path="/admin-windscreen" >
+            <PrivateRoute path="/admin/windscreen" >
                 <Windscreen />
             </PrivateRoute>
-            <PrivateRoute path="/admin-comprehensive" >
+            <PrivateRoute path="/admin/comprehensive" >
                 <Comprehensive />
             </PrivateRoute>
-            <PrivateRoute path="/add-clients" >
+            <PrivateRoute path="/add/clients" >
                 <AddClients />
             </PrivateRoute>
-            <PrivateRoute path="/add-claim" >
+            <PrivateRoute path="/add/claim" >
                 <AddClaims />
             </PrivateRoute>
             <Route path="/logout" component={Logout} />
