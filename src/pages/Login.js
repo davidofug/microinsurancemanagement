@@ -11,6 +11,10 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthState
 import '../assets/styles/login.css'
 
 function Login() {
+    const [user, setUser] = useState({
+        email: '',
+        password: '',
+    })
     const [ password, setPassword ] = useState("password")
     const [isLogin, setLogin] = useState(false)
     const [ isVisible, setIsVisible ] = useState(false)
@@ -55,12 +59,23 @@ function Login() {
                     <p style={{"font-size": "1.1rem"}}>Enter Email and Password to sign in</p>
                     <div className='login-inputs'>
                         <label htmlFor="">Email</label>
-                        <input type="email" placeholder='Enter email' name="" id="" />
+                    <input
+                        type="email"
+                        placeholder='Enter email' name="" id=""
+                    	onChange={ event => setUser({...user, email: event.target.value} )}
+                    />
                     </div>
                     <div className='login-inputs'>
                         <label  htmlFor="">Password</label>
                         <div style={{"display": "flex", "align-items": "center", "justify-content": "space-between"}} id="password">
-                            <input style={{"border": "none"}}  type={password} placeholder='Enter password' name="" id="password_input" />
+                        <input
+                            style={{ "border": "none" }}
+                            type={password}
+                            placeholder='Enter password'
+                            name=""
+                            id="password_input"
+                            onChange={ event => setUser({...user, password: event.target.value} )}
+                        />
                             <span>
                                 { isVisible ? (
                                     <MdVisibility style={{"color": "black", "float": "right", "margin-right": "5px", "margin-top": "auto", "position": "relative", "z-index": "2"}} onClick={() => {
@@ -68,7 +83,8 @@ function Login() {
                                         setIsVisible(false)
                                     }}/>
                                 ): (
-                                    <MdVisibilityOff style={{"color": "black", "float": "right", "margin-right": "5px", "margin-top": "auto", "position": "relative", "z-index": "2"}}  onClick={() => {
+                                    <MdVisibilityOff
+                                        style={{ "color": "black", "float": "right", "margin-right": "5px", "margin-top": "auto", "position": "relative", "z-index": "2" }} onClick={() => {
                                         setPassword("text")
                                         setIsVisible(true)
                                     }}/>
