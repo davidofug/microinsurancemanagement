@@ -1,6 +1,5 @@
 import {useState,useEffect} from 'react'
 import { useAuth } from '../contexts/Auth'
-import { useHistory, Redirect} from 'react-router-dom'
 import logo from '../assets/imgs/britam-logo.png'
 import { Link } from 'react-router-dom'
 
@@ -11,7 +10,6 @@ function ForgotPassword() {
 
     let { setCurrentUser } = useAuth()
 
-    const history = useHistory()
     useEffect(() => {
         const loggedIn = Number(localStorage.getItem('loggedIn'))
 
@@ -21,12 +19,8 @@ function ForgotPassword() {
         }
 
         document.title = 'Britam - With you every step of the way'
-    })
+    }, [])
         
-    
-
-    // if (isLogin)
-    //     return <Redirect to={{ pathname: '/supervisor-dashboard' }} />
 
     return (
         <div className='logout'>

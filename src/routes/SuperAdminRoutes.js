@@ -18,7 +18,6 @@ import Agents from '../pages/Agents'
 import AddAgents from '../pages/AddAgents'
 import AddSupervisors from '../pages/admin/AddSupervisors'
 import Logout from '../pages/Logout'
-import NotFound from '../pages/NotFound'
 
 
 function SuperAdminRoutes() {
@@ -76,7 +75,6 @@ function SuperAdminRoutes() {
                 <AddClients />
             </PrivateRoute>
             <Route path="/logout" component={Logout} />
-            {/* <Route path="*" component={NotFound} /> */}
         </>
         
     )
