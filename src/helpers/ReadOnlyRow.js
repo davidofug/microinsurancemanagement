@@ -12,7 +12,7 @@ const ReadOnlyRow = ({columns, row, handleEditClick, handleDeleteClick }) => {
                     handleDeleteClick(row.id)
                   }}>Delete</button></li>
               </ul>
-              <div id="action"><div></div><div></div><div></div></div>
+              <FaEllipsisV />
             </td>
           </tr>
   );
