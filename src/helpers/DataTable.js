@@ -30,10 +30,7 @@ export function EditableDatable({ columns, columnHeading, editContactId, handleD
   return (
     <Table bordered hover striped responsive style={{"border": "1px solid #000"}} cellPadding={0} cellSpacing={0}>
       <thead>
-          {/* <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th></th></tr> */}
-          <tr>{columnHeading.map(heading => (
-            <th>{heading}</th>
-          ))}</tr>
+          <tr>{columnHeading.map(heading => (<th>{heading}</th>))}</tr>
       </thead>
       <tbody>
         {currentClients.map((row) => (
@@ -57,7 +54,7 @@ export function EditableDatable({ columns, columnHeading, editContactId, handleD
         ))}
       </tbody>
       <tfoot>
-          <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th></th></tr>
+        <tr>{columnHeading.map(heading => (<th>{heading}</th>))}</tr>
        </tfoot>
     </Table>
   )

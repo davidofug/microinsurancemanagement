@@ -99,7 +99,7 @@ function Agents() {
 
     const [q, setQ] = useState('');
 
-    const columnHeading = ["#", "License No.", "National ID", "Name", "Gender", "Phone No.", "Email", "CreatedAt"]
+    const columnHeading = ["#", "License No.", "National ID", "Name", "Gender", "Phone No.", "Email", "CreatedAt", ""]
     const columns = ["id", "contact", "contact", "name", "gender", "contact", "email", "createdAt"]
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
