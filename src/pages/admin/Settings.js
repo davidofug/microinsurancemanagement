@@ -3,6 +3,7 @@ import '../../styles/Settings.css'
 import profile from '../../assets/imgs/image 2.png'
 import { Form, Row, Col, Alert } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
+import { FaRegUserCircle } from 'react-icons/fa'
 
 function Settings() {
 
