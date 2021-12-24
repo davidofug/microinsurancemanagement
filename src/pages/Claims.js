@@ -101,7 +101,7 @@ function Claims() {
     const [clients, setClients] = useState(data);
     const [q, setQ] = useState('');
 
-    const columnHeading = ["Ref Number", "Claimant Details", "Date of Incident", "Number Plate", "Sticker Number", "Claim Estimate", "Status", ""]
+    const columnHeading = ["Ref Number", "Claimant Details", "Date of Incident", "Number Plate", "Sticker Number", "Claim Estimate", "Status", "Action"]
     const columns = ["contact", "name", "createdAt", "contact", "contact", "amount", "status"]
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
