@@ -1,14 +1,53 @@
-import React from 'react'
-import {Form} from 'react-bootstrap'
+import { useState } from 'react'
+import '../assets/styles/upload.css'
+import { MdCloudUpload  } from 'react-icons/md'
+import { FaFileAlt } from 'react-icons/fa'
+import { MdCheck, MdDelete } from 'react-icons/md'
 
 export default function Upload() {
+
+    const [ fileName, setFileName ] = useState("No selected File")
+
     return (
-        <div className='upload-container'>
+        <div className='upload-wrapper'>
             {/* <Form.Group controlId="formFile" className="mb-3">
                 <Form.Label>upload profile image</Form.Label>
                 <Form.Control type="file" />
             </Form.Group> */}
-            <input type="file" className='file-upload' />
+            <header id="upload_heading">Upload Profile Image</header>
+            <form action="" onClick={({ target }) => {
+                document.querySelector(".input-file").click()
+            }}>
+                <input type="file" className='input-file' hidden onChange={({target}) => {
+                    let file = target.files[0]
+                    file && setFileName(file.name)
+                }}/>
+                <MdCloudUpload id='upload-icon'/>
+                <p>Browse files to upload</p>
+            </form>
+            <section className="progress-area">
+                <li className="uploaded-row">
+                    <FaFileAlt className='uploaded-icon' />
+                    <div className='upload-content'>
+                        <div id="details">
+                            <span className="name">{fileName} - <MdDelete onClick={() => setFileName("No selected File")}/></span>
+                        </div>
+                        <div id="progress-bar">
+                            <div id="progress"></div>
+                        </div>
+                    </div>
+                </li>
+            </section>
+                <li className="uploaded-area">
+                    <FaFileAlt />
+                    <div className='content'>
+                        <div id="details">
+                            <span className="name">image_001.png . uploaded</span>
+                            <span className="size">256kb</span>
+                        </div>
+                    </div>
+                </li>
+                <MdCheck />
         </div>
     )
 }
