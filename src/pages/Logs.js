@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Table } from 'react-bootstrap'
 
 function Logs() {
 
@@ -16,7 +17,7 @@ function Logs() {
 
             <div className="table-card componentsData"> 
 
-                <table class="table table-striped" style={{border: "1px solid black"}}>
+                <Table striped hover responsive>
                     <thead>
                         <tr><th>Check in</th><th>Check out</th><th>Duration</th></tr>
                     </thead>
@@ -53,7 +54,7 @@ function Logs() {
                     <tfoot>
                     <tr><th>Login</th><th>Logout</th><th>Duration</th></tr>
                     </tfoot>
-                </table>
+                </Table>
             </div>
         </div>
     )
