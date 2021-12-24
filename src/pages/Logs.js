@@ -52,7 +52,7 @@ function Logs() {
                     </tbody>
 
                     <tfoot>
-                    <tr><th>Login</th><th>Logout</th><th>Duration</th></tr>
+                    <tr><th>Check in</th><th>Check out</th><th>Duration</th></tr>
                     </tfoot>
                 </Table>
             </div>
