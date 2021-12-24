@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import '../assets/styles/upload.css'
+import './upload.css'
 import { MdCloudUpload  } from 'react-icons/md'
 import { FaFileAlt } from 'react-icons/fa'
 import { MdCheck, MdDelete } from 'react-icons/md'
@@ -38,16 +38,6 @@ export default function Upload() {
                     </div>
                 </li>
             </section>
-                <li className="uploaded-area">
-                    <FaFileAlt />
-                    <div className='content'>
-                        <div id="details">
-                            <span className="name">image_001.png . uploaded</span>
-                            <span className="size">256kb</span>
-                        </div>
-                    </div>
-                </li>
-                <MdCheck />
         </div>
     )
 }
