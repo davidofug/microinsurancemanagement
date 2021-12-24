@@ -1,8 +1,7 @@
 import { Table} from 'react-bootstrap'
-import { useForm } from '../hooks/useForm';
-import { useState } from 'react';
 import EditableRow from './EditableRow';
 import ReadOnlyRow from './ReadOnlyRow';
+import { Fragment } from 'react';
 
 export default function Datatable({ data, columns, columnHeading }) {
   return (
@@ -10,8 +9,8 @@ export default function Datatable({ data, columns, columnHeading }) {
       <thead><tr>{data[0] && columnHeading.map(heading => <th>{heading}</th>)}</tr></thead>
 
       <tbody>
-        {data.map((row, index) => (
-          <tr key={index}>{columns.map((column, index) => (<td key={index}>{row[column]}</td>))}</tr>
+        {data.map((row) => (
+          <tr key={row.id}>{columns.map((column, index) => (<td key={index}>{row[column]}</td>))}</tr>
         ))}
       </tbody>
 
@@ -29,7 +28,7 @@ export function EditableDatable({ columns, columnHeading, editContactId, handleD
       </thead>
       <tbody>
         {currentClients.map((row) => (
-          <>
+          <Fragment key={row.id}>
             {editContactId === row.id ? (
             <EditableRow
               row={row}
@@ -45,7 +44,7 @@ export function EditableDatable({ columns, columnHeading, editContactId, handleD
                     handleDeleteClick={handleDeleteClick}
                   />
             )}
-          </>
+          </Fragment>
         ))}
       </tbody>
       <tfoot>
