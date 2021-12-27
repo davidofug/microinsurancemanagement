@@ -26,7 +26,7 @@ function StickerMgt() {
     const [q, setQ] = useState('');
 
   const columnHeading = ["#", "Category", "Sticker Nos", "Total No Received", "Status"]
-  const columns = ["id", "name", "contact", "contact", "status"]
+  const columns = ["id", "category", "contact", "contact", "status"]
   const search = rows => rows.filter(row =>
     columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
