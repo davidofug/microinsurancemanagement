@@ -261,19 +261,6 @@ tbody, td, tfoot, th, thead, tr{
         min-height: 100vh;
         width: 100vw;
     }
-
-    #settings_columns{
-        overflow-x: hidden;
-        display: flex;
-        flex-direction: column;
-    }
-
-    #options ul{
-        display: flex;
-        flex-direction: row;
-        margin: 0;
-        padding: 0;
-    }
     
 }
 
