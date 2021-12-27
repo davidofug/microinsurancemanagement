@@ -10,11 +10,7 @@ export default function Upload() {
 
     return (
         <div className='upload-wrapper'>
-            {/* <Form.Group controlId="formFile" className="mb-3">
-                <Form.Label>upload profile image</Form.Label>
-                <Form.Control type="file" />
-            </Form.Group> */}
-            <form action="" onClick={({ target }) => {
+            <div id="form" onClick={({ target }) => {
                 document.querySelector(".input-file").click()
             }}>
                 <input type="file" className='input-file' hidden onChange={({target}) => {
@@ -23,7 +19,7 @@ export default function Upload() {
                 }}/>
                 <MdCloudUpload id='upload-icon'/>
                 <p>Browse files to upload</p>
-            </form>
+            </div>
             <section className="progress-area">
                 <li className="uploaded-row">
                     <FaFileAlt className='uploaded-icon' />
