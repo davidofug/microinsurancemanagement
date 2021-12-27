@@ -1,5 +1,6 @@
 import {useState,useEffect} from 'react'
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../contexts/Auth'
+import { useHistory, Redirect} from 'react-router-dom'
 import logo from '../assets/imgs/britam-logo.png'
 import { Link } from 'react-router-dom'
 
@@ -19,8 +20,12 @@ function ForgotPassword() {
         }
 
         document.title = 'Britam - With you every step of the way'
-    }, [])
-        
+    })
+
+
+
+    // if (isLogin)
+    //     return <Redirect to={{ pathname: '/supervisor-dashboard' }} />
 
     return (
         <div className='logout'>
@@ -32,9 +37,9 @@ function ForgotPassword() {
                         <label htmlFor="">Email</label>
                         <input type="email" placeholder='Enter email' name="" id="" />
                     </div>
-                    
+
                     <input type="submit" style={{"width": "100%", "margin": "0"}} className='btn btn-primary cta' value="Submit"/>
-                        
+
                     <Link to="/login" style={{"text-decoration": "none",  "margin-top": "10px", "margin-bottom": "0"}}><p style={{"text-align": "center", "color": "#1475CF", "margin": "0"}}>Remember password? Login</p></Link>
 
                 </form>
