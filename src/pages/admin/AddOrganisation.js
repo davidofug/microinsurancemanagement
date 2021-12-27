@@ -1,6 +1,7 @@
 import '../../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
+import Header from '../../parts/header/Header'
 
 function AddOrganisation() {
 
@@ -8,10 +9,7 @@ function AddOrganisation() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Add Organisations</h1>
-                <p className="subtitle">ADD A NEW ORGANISATIONS</p>
-            </header>
+            <Header title="Add Organisations" subtitle="ADD A NEW ORGANISATION" />
 
             <div class="componentsData" style={{"display": "flex", justifyContent: "center", "background-color": "#fff", "margin-top": "60px", "border-radius": "10px"}}>
                 <Form>

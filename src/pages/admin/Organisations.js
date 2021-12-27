@@ -7,6 +7,7 @@ import { Form, Button } from 'react-bootstrap'
 import Pagination from '../../helpers/Pagination';
 import { CSVLink } from "react-csv";
 import SearchBar from '../../parts/searchBar/SearchBar';
+import Header from '../../parts/header/Header';
 
 function Organisations() {
 
@@ -25,7 +26,7 @@ function Organisations() {
 
   const [q, setQ] = useState('');
 
-  const columnHeading = ["Logo", "Name", "Email", "Phone No.", "Contact Name", "Role", "Phone No.", "email"]
+  const columnHeading = ["Logo", "Name", "Email", "Phone No.", "Contact Name", "Role", "Phone No.", "Email"]
   const columns = ["id", "name", "email", "contact", "agentName", "agentName", "contact", "email"]
   const search = rows => rows.filter(row =>
     columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
@@ -34,10 +35,7 @@ function Organisations() {
 
   return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Organisations</h1>
-                <p className="subtitle">MANAGING ORGANISATIONS</p>
-            </header>
+            <Header title="Organisations" subtitle="MANAGE ORGANISATIONS" />
             <div id="add_client_group">
                 <div></div>
                 <Link to="/admin/add-organisations">

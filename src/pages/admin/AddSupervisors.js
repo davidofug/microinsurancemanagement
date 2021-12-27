@@ -2,6 +2,7 @@ import '../../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import Upload from '../../parts/uploader/Upload'
+import Header from '../../parts/header/Header'
 
 function AddSupervisors() {
 
@@ -9,10 +10,7 @@ function AddSupervisors() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Add Supervisors</h1>
-                <p className="subtitle">ADD A NEW Supervisors</p>
-            </header>
+            <Header title="Add Supervisors" subtitle="ADD A NEW SUPERVISOR" />
 
             <div class="componentsData" style={{"display": "flex", justifyContent: "center", "background-color": "#fff", "margin-top": "60px", "border-radius": "10px"}}>
                 <form action="">

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import data from '../helpers/mock-data.json'
 import Datatable from '../helpers/DataTable';
 import { Form } from 'react-bootstrap'
+import Header from '../parts/header/Header';
 
 function Comprehensive() {
 
@@ -17,10 +18,8 @@ function Comprehensive() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Comprehensive</h1>
-                <p className="subtitle">MANAGING COMPREHENSIVE</p>
-            </header>
+            <Header title="Comprehensive" subtitle="MANAGING COMPREHENSIVE" />
+
             <div id="add_client_group">
                 <div></div>
                 <Link to="/add-agent">

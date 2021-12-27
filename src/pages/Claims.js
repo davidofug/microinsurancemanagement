@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
 import { EditableDatable } from '../helpers/DataTable'
 import SearchBar from '../parts/searchBar/SearchBar';
+import Header from '../parts/header/Header';
 
 function Claims() {
 
@@ -112,10 +113,8 @@ function Claims() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Claims</h1>
-                <p className="subtitle">MANAGING CLAIMS</p>
-            </header>
+            <Header title="Claims" subtitle="MANAGING CLAIMS" />
+
             <div id="add_client_group">
                 <div></div>
                 <Link to="/add-claim">

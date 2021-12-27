@@ -55,9 +55,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                             >
                             <Offcanvas.Header closeButton>
                                 <Offcanvas.Title id="offcanvasNavbarLabel">
-                    
                                         <img src={logo} alt="Britam" />
-                    
                                 </Offcanvas.Title>
                             </Offcanvas.Header>
                             <Offcanvas.Body>
