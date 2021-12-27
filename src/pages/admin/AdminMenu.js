@@ -62,7 +62,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
                                 <ul className="nav flex-column">
                                             { selected.Admin.map((object, index) => (
-                                                                <li className='nav-item' key={index}>
+                                                                <li className='nav-item' key={object.number}>
                                                                     <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} >
                                                                         <span>{object.icon}</span>{object.name}
                                                                         {object?.subMenu &&
