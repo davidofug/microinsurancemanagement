@@ -12,7 +12,8 @@
         "agentName": "charles Kasasira",
         "paymentMethod": "Mobile Money",
         "amount": "34,000",
-        "role": "Managing Director"
+        "role": "Managing Director",
+        "category": "Motor Private"
     },
     {
         "id": 2,
@@ -27,7 +28,8 @@
         "agentName": "Kasasira Charles",
         "paymentMethod": "Cash",
         "amount": "23,000",
-        "role": "Salesperson"
+        "role": "Salesperson",
+        "category": "Motor Private"
     },
     {
         "id": 3,
@@ -42,7 +44,8 @@
         "status": "Active",
         "createdAt": "31-12-2021",
         "agentName": "John Doe",
-        "role": "Manager"
+        "role": "Manager",
+        "category": "Motor Commercial"
     },
     {
         "id": 4,
@@ -57,7 +60,8 @@
         "createdAt": "02-12-2021",
         "status": "Active",
         "agentName": "charles Kasasira",
-        "role": "Branch Manager"
+        "role": "Branch Manager",
+        "category": "Motor Transit"
     },
     {
         "id": 5,
@@ -72,7 +76,8 @@
         "paymentMethod": "Cash",
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
-        "role": "Officer"
+        "role": "Officer",
+        "category": "Motor Transit"
     },
     {
         "id": 6,
@@ -87,7 +92,8 @@
         "status": "Active",
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
-        "role": "Managing Director"
+        "role": "Managing Director",
+        "category": "Motor Private"
     },
     {
         "id": 7,
@@ -102,7 +108,8 @@
         "status": "Active",
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
-        "role": "Execute Director"
+        "role": "Execute Director",
+        "category": "Motor Private"
     },
     {
         "id": 8,
@@ -117,7 +124,8 @@
         "status": "Active",
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
-        "role": "Managing Director"
+        "role": "Managing Director",
+        "category": "Motor Bike"
     },
     {
         "id": 9,
@@ -132,7 +140,8 @@
         "status": "Active",
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
-        "role": "Managing Director"
+        "role": "Managing Director",
+        "category": "Motor Private"
     },
     {
         "id": 10,
@@ -147,7 +156,8 @@
         "status": "Active",
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
-        "role": "Managing Director"
+        "role": "Managing Director",
+        "category": "Motor Private"
     },
     {
         "id": 11,
@@ -162,7 +172,8 @@
         "status": "Active",
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
-        "role": "Managing Director"
+        "role": "Managing Director",
+        "category": "Motor Private"
     },
     {
         "id": 12,
@@ -177,6 +188,7 @@
         "status": "Active",
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
-        "role": "Managing Director"
+        "role": "Managing Director",
+        "category": "Motor Private"
     }
 ]
