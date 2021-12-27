@@ -5,13 +5,13 @@ import { EditableDatable } from '../helpers/DataTable';
 import { MdDownload } from 'react-icons/md'
 import { Form, Button } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
+import { CSVLink } from 'react-csv'
 
 
 function Clients() {
 
 
   const [clients, setClients] = useState(data);
-
   //
   const [editFormData, setEditFormData] = useState({
     name: "",
@@ -48,7 +48,6 @@ function Clients() {
       address: editFormData.address,
     };
 
-    console.log("submitted succesfully")
     const newClients = [...clients];
 
     const index = clients.findIndex((client) => client.id === editContactId);
@@ -82,7 +81,7 @@ function Clients() {
 
     const indexOfLastEmployee = currentPage * employeesPerPage
     const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
-    const currentClients = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
+    const currentClients = clients.slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(data.length / employeesPerPage)
 
     //
@@ -96,6 +95,7 @@ function Clients() {
       const newClients = [...clients];
       const index = clients.findIndex((client) => client.id === clientId);
       newClients.splice(index, 1);
+      console.log(newClients)
       setClients(newClients);
     };
 
@@ -103,7 +103,8 @@ function Clients() {
       setEditContactId(null);
     };
     
-    const columns = ["name", "gender", "email", "contact", "address"]
+    const columns = ["id", "name", "gender", "email", "contact", "address"]
+    const columnHeading = ["#", "Name", "Gender", "Email", "Contact", "Address"]
 
     const search = rows => rows.filter(row =>
       columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
@@ -131,10 +132,19 @@ function Clients() {
                         value={q} onChange={({target}) => setQ(target.value)} 
                       />
                       <div></div>
-                      <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
+                      <CSVLink
+                                data={data}
+                                filename={"Britam-Clients.csv"}
+                                className="btn btn-primary cta"
+                                target="_blank"
+                              >
+                                Export <MdDownload />
+                            </CSVLink>
                   </div>
                   <form onSubmit={handleEditFormSubmit}>
                   <EditableDatable 
+                    columns={columns}
+                    columnHeading={columnHeading}
                     editContactId={editContactId}
                     currentClients={search(currentClients)}
                     handleDeleteClick={handleDeleteClick}

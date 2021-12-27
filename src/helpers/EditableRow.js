@@ -1,4 +1,5 @@
 import React from "react";
+import { MdCancel, MdCheckCircle } from 'react-icons/md'
 
 const EditableRow = ({
   row,
@@ -11,6 +12,7 @@ const EditableRow = ({
       <td>{row.id}</td>
       <td>
         <input
+          style={{"width": "100px"}}
           type="text"
           required="required"
           placeholder="Enter an name..."
@@ -21,6 +23,8 @@ const EditableRow = ({
       </td>
       <td>
         <input
+          style={{"width": "50px"}}
+          className="sm"
           type="text"
           required="required"
           placeholder="Enter a gender..."
@@ -31,6 +35,7 @@ const EditableRow = ({
       </td>
       <td>
         <input
+          style={{"width": "180px"}}
           type="email"
           required="required"
           placeholder="Enter an email..."
@@ -41,6 +46,7 @@ const EditableRow = ({
       </td>
       <td>
         <input
+          style={{"width": "100px"}}
           type="text"
           required="required"
           placeholder="Enter an contact..."
@@ -51,6 +57,7 @@ const EditableRow = ({
       </td>
       <td>
         <input
+          style={{"width": "100px"}}
           type="text"
           required="required"
           placeholder="Enter an address..."
@@ -60,9 +67,11 @@ const EditableRow = ({
         ></input>
       </td>
       <td>
-        <button type="submit">Save</button>
-        <button type="button" onClick={handleCancelClick}>
-          Cancel
+        <button className="action-buttons" type="submit">
+          <MdCheckCircle style={{color: "#1475cf"}} />
+        </button>
+        <button className="action-buttons" type="button" onClick={handleCancelClick}>
+          <MdCancel style={{color: "red"}}/>
         </button>
       </td>
     </tr>

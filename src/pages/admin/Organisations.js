@@ -5,6 +5,7 @@ import { MdDownload } from 'react-icons/md'
 import Datatable from '../../helpers/DataTable';
 import { Form, Button } from 'react-bootstrap'
 import Pagination from '../../helpers/Pagination';
+import { CSVLink } from "react-csv";
 
 
 function Organisations() {
@@ -38,7 +39,7 @@ function Organisations() {
             </header>
             <div id="add_client_group">
                 <div></div>
-                <Link to="/admin-add-organisations">
+                <Link to="/admin/add-organisations">
                     <Button className='btn btn-primary cta'>Add Organisation</Button>
                 </Link>
               </div>
@@ -49,8 +50,16 @@ function Organisations() {
                             <Form.Control type="text" className='mb-3' placeholder="Search for organisation"
                               value={q} onChange={({target}) => setQ(target.value)} 
                             />
-                            <div></div>
-                            <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
+                            <div>
+                            </div>
+                            <CSVLink
+                                data={data}
+                                filename={"Britam-Organisations.csv"}
+                                className="btn btn-primary cta"
+                                target="_blank"
+                              >
+                                Export <MdDownload />
+                            </CSVLink>
                       </div>
                       <Datatable data={search(currentOrganisations)} columnHeading={columnHeading} columns={columns}/>
 
