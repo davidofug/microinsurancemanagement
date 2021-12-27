@@ -10,7 +10,7 @@ import SearchBar from '../../parts/searchBar/SearchBar';
 
 export default function Organisations() {
 
-  useEffect(() => { document.title = 'Britam - Organisations'}, [])
+  useEffect(() => { document.title = 'Britam - Organisations'})
 
   const [ currentPage, setCurrentPage ] = useState(1)
   const [employeesPerPage] = useState(10)
