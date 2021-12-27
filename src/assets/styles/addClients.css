@@ -111,3 +111,16 @@ form{
     margin-right: 5px;
 }
 
+.organisation-columns{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 50px;
+}
+
+
+@media (max-width: 798px) {
+    .organisation-columns{
+        display: flex;
+        flex-direction: column;
+    }
+}
