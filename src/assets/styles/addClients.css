@@ -117,6 +117,12 @@ form{
     gap: 50px;
 }
 
+.gender-options{
+    display: flex;
+    gap: 10px;
+}
+
+
 
 @media (max-width: 798px) {
     .organisation-columns{

@@ -28,7 +28,7 @@ function AddClients() {
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridEmail" className='addFormGroups'>
                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
-                                <div style={{"display": "flex", "gap": "10px"}}>
+                                <div className='gender-options'>
                                     <div>
                                         <input type="radio" name="gender" id="male" className='addFormRadio'/>
                                         <label htmlFor="male">Male</label>
