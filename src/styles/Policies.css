@@ -10,9 +10,10 @@ Table {
         justify-content: center;
     }
 
-    .buttons {
+    .form-buttons {
+        display: flex;
+        gap: 5px;
         flex-direction: row;
-        padding-bottom: 1vh;
     }
 
     .add-new-client
@@ -30,6 +31,7 @@ Table {
         display: flex;
         justify-content: flex-start;
         margin-top: 2vh;
+        width: 20vw;
     }
 /* 
     .policy-start-date {
@@ -51,9 +53,20 @@ Table {
     
 }
 
-@media (min-width: 876px) {
+@media (max-width: 876px) {
     .buttons { 
         flex-direction: column;
         /* padding-bottom: 6vh; */
     }
+
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    
+
+
+    
 }
