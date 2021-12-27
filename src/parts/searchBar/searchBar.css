@@ -1,0 +1,36 @@
+
+
+.searchContainer{
+    display: flex;
+    justify-content: space-between;
+    border: 1.5px solid rgba(34, 36, 38, 0.15);
+    max-width: 400px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.searchContainer:hover{
+    border: 1.5px solid #1475CF;
+}
+
+.searchContainer input{
+    width: 80%;
+    padding: 8px;
+    border: none;
+}
+
+.searchContainer input:focus{
+    outline: none;
+}
+
+
+.searchIcon{
+    font-size: 1.5rem;
+    margin: 6px 7px;
+    cursor: pointer;
+}
+
+
+
+  
+  
