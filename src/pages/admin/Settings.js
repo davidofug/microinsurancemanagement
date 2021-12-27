@@ -4,6 +4,7 @@ import profile from '../../assets/imgs/image 2.png'
 import { Form, Row, Col, Alert } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
 import { FaRegUserCircle } from 'react-icons/fa'
+import Header from '../../parts/header/Header'
 
 function Settings() {
 
@@ -15,10 +16,7 @@ function Settings() {
 
     return (
         <div className='components'>
-            <header className="heading">
-                <h1 className='title'>My Profile</h1>
-                <p className='subtitle'>MANAGE YOUR ACCOUNT</p>
-            </header>
+            <Header title="My Profile" subtitle="MANAGE YOUR ACCOUNT" />
 
                 <div class="componentsData">
                     <div id='settings_columns'>

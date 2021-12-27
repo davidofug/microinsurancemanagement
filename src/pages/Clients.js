@@ -7,6 +7,7 @@ import { Form, Button } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
 import { CSVLink } from 'react-csv'
 import SearchBar from '../parts/searchBar/SearchBar';
+import Header from '../parts/header/Header';
 
 
 function Clients() {
@@ -114,10 +115,8 @@ function Clients() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Clients</h1>
-                <p className="subtitle">MANAGING CLIENTS</p>
-            </header>
+            <Header title="Clients" subtitle="MANAGING CLIENTS" />
+   
             <div id="add_client_group">
                 <div></div>
                 <Link to="/add-clients">

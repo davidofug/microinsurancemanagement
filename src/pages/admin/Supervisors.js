@@ -7,6 +7,7 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import { EditableDatable } from '../../helpers/DataTable'
 import SearchBar from '../../parts/searchBar/SearchBar';
+import Header from '../../parts/header/Header';
 
 function Supervisors() {
 
@@ -112,10 +113,8 @@ function Supervisors() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Supervisors</h1>
-                <p className="subtitle">MANAGING SUPERVISORS</p>
-            </header>
+          <Header title="Supervisors" subtitle="MANAGING SUPERVISORS" />
+
             <div id="add_client_group">
                 <div></div>
                 <Link to="/add-Supervisors">
@@ -130,8 +129,6 @@ function Supervisors() {
                             <div></div>
                             <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                       </div>
-
-                {/* <Datatable data={search(data)} columnHeading={columnHeading} columns={columns}/> */}
 
                 <form onSubmit={handleEditFormSubmit}>
                         <EditableDatable 

@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap'
 import { MdDownload } from 'react-icons/md'
 import { CSVLink } from "react-csv";
 import SearchBar from '../parts/searchBar/SearchBar';
+import Header from '../parts/header/Header';
 
 function Reports() {
 
@@ -22,10 +23,8 @@ function Reports() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Reports</h1>
-                <p className="subtitle">MANAGING REPORTS</p>
-            </header>
+            <Header title="Reports" subtitle="MANAGING REPORTS" />
+
                 <div id="add_client_group">
                     <div></div>
                     <Link to="/add-agent">

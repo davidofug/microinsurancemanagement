@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../parts/searchBar/SearchBar'
+import Header from '../parts/header/Header';
 
 function Agents() {
 
@@ -109,10 +110,8 @@ function Agents() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Agents</h1>
-                <p className="subtitle">MANAGING AGENTS</p>
-            </header>
+            <Header title="Agents" subtitle="MANAGING AGENTS" />
+   
             <div id="add_client_group">
                 <div></div>
                 <Link to="/add-agents">
