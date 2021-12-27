@@ -137,11 +137,6 @@ tbody > tr:hover {
 
 
 
-
-
-
-
-
 .title{
     margin-bottom: 5px;
 }
@@ -236,23 +231,6 @@ tbody, td, tfoot, th, thead, tr{
 
 
 
-
-
-
-
-/* .sidebar{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    padding: 48px 0 0;
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-} */
-
-
-
-
 @media (max-width: 780px) {
     .top-container{
         /* display: grid; */
@@ -282,6 +260,19 @@ tbody, td, tfoot, th, thead, tr{
         flex-direction: column;
         min-height: 100vh;
         width: 100vw;
+    }
+
+    #settings_columns{
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #options ul{
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
     }
     
 }
