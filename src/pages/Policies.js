@@ -107,7 +107,7 @@ function Policies() {
         return (
             <React.Fragment key={index}>
                 <tr className="table-row">
-                    <td style={{verticalAlign:"middle", paddingLeft:"1vh", paddingRight:"1vh"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
+                    <td style={{verticalAlign:"middle", paddingLeft:"1vw", paddingRight:"1vw"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
                     <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
@@ -265,8 +265,8 @@ function Policies() {
                                 Client
                             </h1>    
                         </Row>
-                        <Row style={{paddingBottom:"4vh"}}>
-                            <Col xs="2">
+                        <Row style={{gap:"2vw"}}>
+                            <Col className="client-details">
                                 <Form.Group className="mb-3" controlId="clientDetails">
                                     <Form.Control type="text" placeholder="Existing" onChange={event => {
                                         const existingClientDetails = getExistingClient(event.target.value)
@@ -275,8 +275,8 @@ function Policies() {
                                     }}/>
                                 </Form.Group>
                             </Col>
-                            <Col xs="3">
-                                <button className="btn btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button> 
+                            <Col className="add-new-client">
+                                <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button> 
                             </Col>
                             <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
@@ -357,15 +357,15 @@ function Policies() {
                             </Modal>
                         </Row>
                     </div>
-                    <Row style={{paddingBottom:"6vh"}}>
-                        <Col xs="3">
+                    <Row style={{paddingBottom:"6vh", display:"flex", justifyContent:"flex-start"}}>
+                        <div className="currency">
                             <Form.Group classname="mb-3" controlId="currency">
                                 <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={handleFieldChange}>
                                     <option>Currency</option>
                                     {currencies.map((currency, index) => <option value={currencies[index]}>{currency["code"]}</option>)}  
                                 </Form.Select>
                             </Form.Group>
-                        </Col>
+                        </div>
                     </Row>
                     {}
                     
@@ -377,26 +377,26 @@ function Policies() {
                     {/*Sticker form details container.*/}
                     
                     
-                    <div>
+                    <div className="dates">
                         {
                             moment(policyEndDate).isValid() === true ? 
                                 <>
-                                    <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
-                                        <Col xs="3">
+                                    <div  style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
+                                        <div>
                                             <Form.Group controlId="policyStartDate" >
                                                 <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                                 <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
                                                     setPolicyStartDate(event.target.value)
                                                     setPolicyEndDate(moment(event.target.value).add(1, 'years').calendar())
-                                                    console.log(`end ${policyEndDate}`)
+                                                    // console.log(`end ${policyEndDate}`)
                                                     // console.log(policyStartDate)
                                                 }}/>   
                                             </Form.Group>
-                                        </Col>
-                                    </Row> 
-                                    <Row>
-                                        <Col xs="3">
-                                            <Form.Group controlId="policyEndDate" >
+                                        </div>
+                                    </div> 
+                                    <Row style={{paddingBottom:"3vh"}}>
+                                        <Col> 
+                                            <Form.Group controlId="policyEndDate" id="policy-end-date" >
                                                 <Form.Label><h5>Policy End Date</h5></Form.Label>
                                                 <Form.Control type="text" name="policy_start_date" value={policyEndDate} readOnly/>   
                                             </Form.Group>
@@ -405,7 +405,7 @@ function Policies() {
                                 </>    
                                 : 
                                 <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
-                                    <Col xs="3">
+                                    <Col>
                                         <Form.Group controlId="policyStartDate" >
                                             <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                             <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {

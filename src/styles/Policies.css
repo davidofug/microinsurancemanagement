@@ -14,6 +14,40 @@ Table {
         flex-direction: row;
         padding-bottom: 1vh;
     }
+
+    .add-new-client
+    .client-details {
+        width: 50px;
+    }
+
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    .currency {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 2vh;
+    }
+/* 
+    .policy-start-date {
+        display: flex;
+        justify-content: flex-start;
+    } */
+
+    .dates {
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    #policy-end-date {
+        width: 38vw;
+    }
+
+    
     
 }
 
