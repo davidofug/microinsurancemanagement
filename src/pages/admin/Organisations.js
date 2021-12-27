@@ -6,7 +6,7 @@ import Datatable from '../../helpers/DataTable';
 import { Form, Button } from 'react-bootstrap'
 import Pagination from '../../helpers/Pagination';
 import { CSVLink } from "react-csv";
-
+import SearchBar from '../../parts/searchBar/SearchBar';
 
 function Organisations() {
 
@@ -30,6 +30,7 @@ function Organisations() {
   const search = rows => rows.filter(row =>
     columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
+    const handleSearch = ({target}) => setQ(target.value)
 
   return (
         <div className='components'>
@@ -47,9 +48,10 @@ function Organisations() {
                 <div class="componentsData">
                   <div className="table-card">
                     <div id="search">
-                            <Form.Control type="text" className='mb-3' placeholder="Search for organisation"
+                            {/* <Form.Control type="text" className='mb-3' placeholder="Search for organisation"
                               value={q} onChange={({target}) => setQ(target.value)} 
-                            />
+                            /> */}
+                            <SearchBar placeholder={"Search for organisation"} value={q} handleSearch={handleSearch}/>
                             <div>
                             </div>
                             <CSVLink
