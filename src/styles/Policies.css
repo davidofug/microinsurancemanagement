@@ -1,3 +1,25 @@
 Table {
     border: 1px solid black;
+
+}
+    
+
+@media (max-width: 428px) {
+    td {
+        display: flex;
+        justify-content: center;
+    }
+
+    .buttons {
+        flex-direction: row;
+        padding-bottom: 1vh;
+    }
+    
+}
+
+@media (min-width: 876px) {
+    .buttons { 
+        flex-direction: column;
+        /* padding-bottom: 6vh; */
+    }
 }

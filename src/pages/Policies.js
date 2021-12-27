@@ -106,7 +106,7 @@ function Policies() {
     const renderStickerDetails = (singleSticker, index) => {
         return (
             <React.Fragment key={index}>
-                <tr>
+                <tr className="table-row">
                     <td style={{verticalAlign:"middle", paddingLeft:"1vh", paddingRight:"1vh"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
                     <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
@@ -217,7 +217,7 @@ function Policies() {
                         </div>
                     </td>
                     <td style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
-                        <div style={{display:"flex", flexDirection:"column", gap:"5px", justifyContent:"flex-end"}}>
+                        <div className="buttons" style={{display:"flex", gap:"5px", justifyContent:"flex-end"}}>
                             <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
                                 onClick={() => removeStickerMotorDetails(index)}
                                 type="button"
