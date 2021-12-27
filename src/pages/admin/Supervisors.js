@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import { EditableDatable } from '../../helpers/DataTable'
+import SearchBar from '../../parts/searchBar/SearchBar';
 
 function Supervisors() {
 
@@ -107,6 +108,8 @@ function Supervisors() {
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
+        const handleSearch = ({target}) => setQ(target.value)
+
     return (
         <div className='components'>
             <header className='heading'>
@@ -123,9 +126,7 @@ function Supervisors() {
 
             <div className="table-card componentsData">   
                 <div id="search">
-                            <Form.Control type="text" className='mb-3' placeholder="Search for supervisor"
-                              value={q} onChange={({target}) => setQ(target.value)} 
-                            />
+                            <SearchBar placeholder={"Search for Supervisor"} value={q} handleSearch={handleSearch}/>
                             <div></div>
                             <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                       </div>
