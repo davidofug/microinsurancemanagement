@@ -30,7 +30,7 @@ function AddOrganisation() {
                             </Form.Group>
                             <Form.Group controlId="formFile" className="mb-3">
                                     <Form.Label>upload Organisation Logo</Form.Label>
-                                    <Upload />
+                                    <Form.Control type="file" />
                             </Form.Group>
                         </div>
                         <div>
