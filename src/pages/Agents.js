@@ -5,6 +5,7 @@ import { EditableDatable } from '../helpers/DataTable';
 import { Form } from 'react-bootstrap'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../helpers/Pagination';
+import SearchBar from '../parts/searchBar/SearchBar'
 
 function Agents() {
 
@@ -104,6 +105,8 @@ function Agents() {
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
+        const handleSearch = ({target}) => setQ(target.value)
+
     return (
         <div className='components'>
             <header className='heading'>
@@ -119,9 +122,7 @@ function Agents() {
 
             <div className="table-card componentsData">   
                 <div id="search">
-                    <Form.Control type="text" className='mb-3' placeholder="Search for agent"
-                        value={q} onChange={({target}) => setQ(target.value)} 
-                    />
+                <SearchBar placeholder={"Search for agent"} value={q} handleSearch={handleSearch}/>
                     <div></div>
                     <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>

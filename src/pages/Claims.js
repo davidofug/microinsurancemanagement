@@ -5,6 +5,7 @@ import Datatable from '../helpers/DataTable';
 import { Form } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
 import { EditableDatable } from '../helpers/DataTable'
+import SearchBar from '../parts/searchBar/SearchBar';
 
 function Claims() {
 
@@ -106,6 +107,7 @@ function Claims() {
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
+        const handleSearch = ({target}) => setQ(target.value)
 
 
     return (
@@ -124,9 +126,7 @@ function Claims() {
 
             <div className="table-card componentsData">   
                 <div id="search">
-                            <Form.Control type="text" className='mb-3' placeholder="Search for policy"
-                                value={q} onChange={({target}) => setQ(target.value)} 
-                            />
+                            <SearchBar placeholder={"Search for claim"} value={q} handleSearch={handleSearch}/>
                             <div></div>
                             <div></div>
                       </div>
