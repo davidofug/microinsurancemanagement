@@ -12,52 +12,52 @@ function AddClients() {
         <div className='components'>
             <Header title="Add Clients" subtitle="ADD A NEW CLIENT" />
 
-            <div class="componentsData" style={{"display": "flex", justifyContent: "center", "background-color": "#fff", "margin-top": "60px", "border-radius": "10px"}}>
-            {/* <div className="table-card">   */}
+            <div className="componentsData" >
 
 
-            <form action="">
+            <form action="" id="addForm">
                     <Form>
                         <Form.Group className="mb-3" controlId="formGridAddress1">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control placeholder="Enter name" />
+                            <Form.Label>Name <span className='required'>*</span></Form.Label>
+                            <Form.Control placeholder="Enter Client's name" />
                         </Form.Group>
                         <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                            <Form.Group as={Col} controlId="formGridEmail" className='addFormGroups'>
                                 <Form.Label>Date of birth</Form.Label>
                                 <Form.Control type="date" />
                             </Form.Group>
-                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label>Gender</Form.Label>
+                            <Form.Group as={Col} controlId="formGridEmail" className='addFormGroups'>
+                                <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
                                 <div style={{"display": "flex", "gap": "10px"}}>
                                     <div>
-                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
-                                        <label htmlFor="gender">Male</label>
+                                        <input type="radio" name="gender" id="male" className='addFormRadio'/>
+                                        <label htmlFor="male">Male</label>
                                     </div>
                                     <div>
-                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
-                                        <label htmlFor="gender">Female</label>
+                                        <input type="radio" name="gender" id="female" className='addFormRadio'/>
+                                        <label htmlFor="female">Female</label>
                                     </div>
                                 </div>
                             </Form.Group>
                         </Row>
                         
                         <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label>Email Address</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" />
+                            <Form.Group as={Col} controlId="formGridEmail" className='addFormGroups'>
+                                <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                <Form.Control type="email" id="email" placeholder="Enter email" />
                             </Form.Group>
-                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label>Phone Number</Form.Label>
-                                <Form.Control type="tel" placeholder="Enter phone number" />
+                            <Form.Group as={Col} controlId="formGridEmail" className='addFormGroups'>
+                                <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
+                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" />
                             </Form.Group>
                         </Row>
                         <Form.Group className="mb-3" controlId="formGridAddress1">
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control placeholder="Enter your address" />
+                            <Form.Label htmlFor='address'>Address</Form.Label>
+                            <Form.Control id="address" placeholder="Enter your address" />
                         </Form.Group>
+                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
                         <Upload />
-                    <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
+                    <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' /></div>
                     </Form>
 
                 </form>

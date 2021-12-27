@@ -195,6 +195,7 @@ tbody, td, tfoot, th, thead, tr{
     /* height: 40px; */
     /* width: 120px; */
     background-color: #1475CF;
+    margin: 0;
 }
 
 #add_client_group{
