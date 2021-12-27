@@ -1,6 +1,5 @@
 import Header from "../../parts/header/Header"
 import Badge from "../../parts/Badge"
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
@@ -9,10 +8,10 @@ import Pagination from '../../helpers/Pagination';
 import { CSVLink } from "react-csv";
 import SearchBar from '../../parts/searchBar/SearchBar';
 
-function StickerMgt() {
-    useEffect(() => { document.title = 'Britam - Stickers'}, [])
+export default function StickerMgt() {
+    useEffect(() => document.title = 'Britam - Stickers Management')
 
-    //
+    const [q, setQ] = useState('');
     const [ currentPage, setCurrentPage ] = useState(1)
     const [employeesPerPage] = useState(10)
 
@@ -20,10 +19,6 @@ function StickerMgt() {
     const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
     const currentOrganisations = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(data.length / employeesPerPage)
-
-    //
-
-    const [q, setQ] = useState('');
 
   const columnHeading = ["#", "Category", "Sticker Nos", "Total No Received", "Status"]
   const columns = ["id", "category", "contact", "contact", "status"]
@@ -71,5 +66,3 @@ function StickerMgt() {
         </div>
     )
 }
-
-export default StickerMgt
