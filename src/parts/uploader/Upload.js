@@ -14,7 +14,6 @@ export default function Upload() {
                 <Form.Label>upload profile image</Form.Label>
                 <Form.Control type="file" />
             </Form.Group> */}
-            <header id="upload_heading">Upload Profile Image</header>
             <form action="" onClick={({ target }) => {
                 document.querySelector(".input-file").click()
             }}>
