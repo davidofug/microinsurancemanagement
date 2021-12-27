@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './upload.css'
 import { MdCloudUpload  } from 'react-icons/md'
 import { FaFileAlt } from 'react-icons/fa'
-import { MdCheck, MdDelete } from 'react-icons/md'
+import { MdDelete } from 'react-icons/md'
 
 export default function Upload() {
 
