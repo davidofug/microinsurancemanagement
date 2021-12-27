@@ -6,6 +6,7 @@ import { MdDownload } from 'react-icons/md'
 import { Form, Button } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
 import { CSVLink } from 'react-csv'
+import SearchBar from '../parts/searchBar/SearchBar';
 
 
 function Clients() {
@@ -109,7 +110,7 @@ function Clients() {
     const search = rows => rows.filter(row =>
       columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
-     
+      const handleSearch = ({target}) => setQ(target.value)
 
     return (
         <div className='components'>
@@ -128,9 +129,7 @@ function Clients() {
             
               <div className="table-card">
                   <div id="search">
-                      <Form.Control type="text" className='mb-3' placeholder="Search for client"
-                        value={q} onChange={({target}) => setQ(target.value)} 
-                      />
+                  <SearchBar placeholder={"Search for client"} value={q} handleSearch={handleSearch}/>
                       <div></div>
                       <CSVLink
                                 data={data}

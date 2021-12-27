@@ -5,6 +5,7 @@ import Datatable from '../helpers/DataTable';
 import { Form } from 'react-bootstrap'
 import { MdDownload } from 'react-icons/md'
 import { CSVLink } from "react-csv";
+import SearchBar from '../parts/searchBar/SearchBar';
 
 function Reports() {
 
@@ -16,6 +17,8 @@ function Reports() {
     const columns = ["name", "contact", "createdAt", "id", "amount", "amount", "status", "paymentMethod", "createdAt", "createdAt", "status", "amount", "amount", "amount", "amount", "amount", "name", "address", "name", "currency"]
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
+
+        const handleSearch = ({target}) => setQ(target.value)
 
     return (
         <div className='components'>
@@ -32,9 +35,7 @@ function Reports() {
                 
                 <div className="table-card componentsData " style={{"max-width": "80vw", "margin": "auto"}}>
                     <div id="search">
-                                <Form.Control type="text" className='mb-3' placeholder="Search for report"
-                                  value={q} onChange={({target}) => setQ(target.value)}
-                                  />
+                                <SearchBar placeholder={"Search for organisation"} value={q} handleSearch={handleSearch}/>
                                   <div></div>
                                   <CSVLink
                                     data={data}
