@@ -22,7 +22,7 @@ function Windscreen() {
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-agent">
+                <Link to="/admin/add-windscreen">
                     <button className="btn btn-primary cta">Add MTP</button>
                 </Link>
                 

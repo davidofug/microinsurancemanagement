@@ -2,6 +2,7 @@ import '../../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 import Header from '../../parts/header/Header'
+import Upload from '../../parts/uploader/Upload'
 
 function AddOrganisation() {
 
@@ -29,7 +30,7 @@ function AddOrganisation() {
                             </Form.Group>
                             <Form.Group controlId="formFile" className="mb-3">
                                     <Form.Label>upload Organisation Logo</Form.Label>
-                                    <Form.Control type="file" />
+                                    <Upload />
                             </Form.Group>
                         </div>
                         <div>

@@ -58,6 +58,15 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/policies" >
                 <Policies />
             </PrivateRoute>
+            <PrivateRoute path="/admin/add-comprehensive" >
+                <Policies />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-windscreen" >
+                <Policies />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-mtp" >
+                <Policies />
+            </PrivateRoute>
             <PrivateRoute path="/admin/claims" >
                 <Claims />
             </PrivateRoute>
