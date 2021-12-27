@@ -217,15 +217,19 @@ function Policies() {
                         </div>
                     </td>
                     <td style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
-                        <div className="buttons" style={{display:"flex", gap:"5px", justifyContent:"flex-end"}}>
-                            <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
-                                onClick={() => removeStickerMotorDetails(index)}
-                                type="button"
-                            >-</button>
-                            <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} 
-                                onClick={() => addStickerMotorDetails()}
-                                type="button"
-                            >+</button>
+                        <div className="form-buttons">
+                            <div>
+                                <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
+                                    onClick={() => removeStickerMotorDetails(index)}
+                                    type="button"
+                                >-</button>
+                            </div>
+                            <div>
+                                <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} 
+                                    onClick={() => addStickerMotorDetails()}
+                                    type="button"
+                                >+</button>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -381,9 +385,9 @@ function Policies() {
                         {
                             moment(policyEndDate).isValid() === true ? 
                                 <>
-                                    <div  style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
-                                        <div>
-                                            <Form.Group controlId="policyStartDate" >
+                                    <div style={{display:"flex", justifyContent:"flex-start", paddingTop:"4vh", paddingBottom:"4vh"}}>
+                                        <div >
+                                            <Form.Group controlId="policyStartDate"  >
                                                 <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                                 <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
                                                     setPolicyStartDate(event.target.value)
@@ -420,9 +424,7 @@ function Policies() {
                                 
                         }
 
-                        
-
-                        <div style={{display:"flex", justifyContent:"flex-end"}}>
+                        <div style={{display:"flex", width:"100%", justifyContent:"flex-end"}}>
                             <div>
                                 <Button variant="primary" type="submit">
                                     Process 3rd Party
