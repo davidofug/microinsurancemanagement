@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
 import Datatable from '../../helpers/DataTable';
-import { Form, Button } from 'react-bootstrap'
 import Pagination from '../../helpers/Pagination';
 import { CSVLink } from "react-csv";
 import SearchBar from '../../parts/searchBar/SearchBar';
@@ -27,7 +26,7 @@ function Organisations() {
   const [q, setQ] = useState('');
 
   const columnHeading = ["Logo", "Name", "Email", "Phone No.", "Contact Name", "Role", "Phone No.", "Email"]
-  const columns = ["id", "name", "email", "contact", "agentName", "agentName", "contact", "email"]
+  const columns = ["id", "name", "email", "contact", "agentName", "role", "contact", "email"]
   const search = rows => rows.filter(row =>
     columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
@@ -39,11 +38,11 @@ function Organisations() {
             <div id="add_client_group">
                 <div></div>
                 <Link to="/admin/add-organisations">
-                    <Button className='btn btn-primary cta'>Add Organisation</Button>
+                    <button className='btn btn-primary cta'>Add Organisation</button>
                 </Link>
               </div>
 
-                <div class="componentsData">
+                <div className="componentsData">
                   <div className="table-card">
                     <div id="search">
                             <SearchBar placeholder={"Search for organisation"} value={q} handleSearch={handleSearch}/>
