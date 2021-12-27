@@ -28,7 +28,7 @@ function Dashboard() {
 
                 <div className="componentsData" >
                     <div id="first-row" className='mb-5 first-row' style={{display:"flex", width: "100%", justifyContent: "space-between"}}>
-                        <div className="shadow-sm p-3 bg-body rounded" className="first-container">
+                        <div id="bin" className="shadow-sm bg-body rounded first-container">
                             <Container className="row-container">
                                     <div className="col">
                                         <div className="custom-card" style={{"background-color":"#804C75"}}>
@@ -67,7 +67,7 @@ function Dashboard() {
                             </Container>
                         </div>
 
-                        <div className="shadow-sm p-3 bg-body rounded summaries " className="first-container" >
+                        <div className="shadow-sm bg-body rounded first-container" >
                             {/* Are these supposed to be links or just mere words? */}
                             <div id="short_stats">
                                 <h3 className="heading">Agent issued reports</h3>
@@ -96,7 +96,7 @@ function Dashboard() {
                             <div style={{"width": "20px", "height": "20px", "background-color": "#E0E7EC"}}></div>
                         </span>Monthly Stickers Issued</h5>
                         <Row style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
-                            <Col style={{height:"35vh"}}>
+                            <Col class="graph-space" style={{height:"35vh"}}>
                                     <BarChart />
                             </Col>
                         </Row>
