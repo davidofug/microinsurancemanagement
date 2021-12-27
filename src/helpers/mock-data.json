@@ -11,7 +11,8 @@
         "status": "Active",
         "agentName": "charles Kasasira",
         "paymentMethod": "Mobile Money",
-        "amount": "34,000"
+        "amount": "34,000",
+        "role": "Managing Director"
     },
     {
         "id": 2,
@@ -23,9 +24,10 @@
         "currency": "UGX",
         "createdAt": "02-10-2018",
         "status": "Active",
-        "agentName": "charles Kasasira",
+        "agentName": "Kasasira Charles",
         "paymentMethod": "Cash",
-        "amount": "23,000"
+        "amount": "23,000",
+        "role": "Salesperson"
     },
     {
         "id": 3,
@@ -39,7 +41,8 @@
         "amount": "23,000",
         "status": "Active",
         "createdAt": "31-12-2021",
-        "agentName": "charles Kasasira"
+        "agentName": "John Doe",
+        "role": "Manager"
     },
     {
         "id": 4,
@@ -53,7 +56,8 @@
         "currency": "UGX",
         "createdAt": "02-12-2021",
         "status": "Active",
-        "agentName": "charles Kasasira"
+        "agentName": "charles Kasasira",
+        "role": "Branch Manager"
     },
     {
         "id": 5,
@@ -67,7 +71,8 @@
         "status": "Active",
         "paymentMethod": "Cash",
         "createdAt": "02-12-2021",
-        "agentName": "charles Kasasira"
+        "agentName": "charles Kasasira",
+        "role": "Officer"
     },
     {
         "id": 6,
@@ -81,7 +86,8 @@
         "paymentMethod": "Cash",
         "status": "Active",
         "createdAt": "02-12-2021",
-        "agentName": "charles Kasasira"
+        "agentName": "charles Kasasira",
+        "role": "Managing Director"
     },
     {
         "id": 7,
@@ -95,7 +101,8 @@
         "currency": "UGX",
         "status": "Active",
         "createdAt": "02-12-2021",
-        "agentName": "charles Kasasira"
+        "agentName": "charles Kasasira",
+        "role": "Execute Director"
     },
     {
         "id": 8,
@@ -109,7 +116,8 @@
         "currency": "UGX",
         "status": "Active",
         "createdAt": "02-12-2021",
-        "agentName": "charles Kasasira"
+        "agentName": "charles Kasasira",
+        "role": "Managing Director"
     },
     {
         "id": 9,
@@ -123,7 +131,8 @@
         "amount": "23,000",
         "status": "Active",
         "createdAt": "02-12-2021",
-        "agentName": "charles Kasasira"
+        "agentName": "charles Kasasira",
+        "role": "Managing Director"
     },
     {
         "id": 10,
@@ -137,7 +146,8 @@
         "paymentMethod": "Cash",
         "status": "Active",
         "createdAt": "02-12-2021",
-        "agentName": "charles Kasasira"
+        "agentName": "charles Kasasira",
+        "role": "Managing Director"
     },
     {
         "id": 11,
@@ -151,7 +161,8 @@
         "amount": "23,000",
         "status": "Active",
         "createdAt": "02-12-2021",
-        "agentName": "charles Kasasira"
+        "agentName": "charles Kasasira",
+        "role": "Managing Director"
     },
     {
         "id": 12,
@@ -165,6 +176,7 @@
         "currency": "UGX",
         "status": "Active",
         "createdAt": "02-12-2021",
-        "agentName": "charles Kasasira"
+        "agentName": "charles Kasasira",
+        "role": "Managing Director"
     }
 ]

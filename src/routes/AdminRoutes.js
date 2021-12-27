@@ -20,6 +20,7 @@ import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddOrganisation from '../pages/admin/AddOrganisation'
 import AddSupervisors from '../pages/admin/AddSupervisors'
+import StickerMgt from '../pages/admin/StickerMgt'
 
 
 function AdminRoutes() {
@@ -51,6 +52,9 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/clients" >
                 <Clients />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/sticker-management" >
+                <StickerMgt />
             </PrivateRoute>
             <PrivateRoute path="/admin/user-management" >
                 <Users />

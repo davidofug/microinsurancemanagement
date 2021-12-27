@@ -92,6 +92,12 @@ const menuData = {
         },
         {
             number: 4,
+            name: "Sticker No. Management",
+            icon: <MdPerson />,
+            link: "/admin/sticker-management"
+        },
+        {
+            number: 5,
             name: "User Management",
             icon: <MdPeople />,
             link: "/admin/user-management",
@@ -111,7 +117,7 @@ const menuData = {
             ]
         },
         {
-            number: 5,
+            number: 6,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
             link: "/admin/policies",
@@ -131,13 +137,13 @@ const menuData = {
             ]
         },
         {
-            number: 6,
+            number: 7,
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
             link: "/admin/claims"
         },
         {
-            number: 7,
+            number: 8,
             name: "Reports",
             icon: <MdAssessment />,
             link: "/admin/reports"
