@@ -74,7 +74,7 @@ form{
 
 #submit{
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 #gender{
@@ -104,7 +104,7 @@ form{
 .addFormGroups {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
 }
 
 .addFormRadio{
