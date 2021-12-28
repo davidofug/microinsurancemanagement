@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import data from '../helpers/mock-data.json'
-import Datatable from '../helpers/DataTable';
-import { Form } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
 import { EditableDatable } from '../helpers/DataTable'
+import SearchBar from '../parts/searchBar/SearchBar';
+import Header from '../parts/header/Header';
 
 function Claims() {
 
@@ -98,7 +98,6 @@ function Claims() {
       };
 
 
-    const [clients, setClients] = useState(data);
     const [q, setQ] = useState('');
 
     const columnHeading = ["Ref Number", "Claimant Details", "Date of Incident", "Number Plate", "Sticker Number", "Claim Estimate", "Status", "Action"]
@@ -106,14 +105,13 @@ function Claims() {
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
+        const handleSearch = ({target}) => setQ(target.value)
 
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Claims</h1>
-                <p className="subtitle">MANAGING CLAIMS</p>
-            </header>
+            <Header title="Claims" subtitle="MANAGING CLAIMS" />
+
             <div id="add_client_group">
                 <div></div>
                 <Link to="/add-claim">
@@ -124,9 +122,7 @@ function Claims() {
 
             <div className="table-card componentsData">   
                 <div id="search">
-                            <Form.Control type="text" className='mb-3' placeholder="Search for policy"
-                                value={q} onChange={({target}) => setQ(target.value)} 
-                            />
+                            <SearchBar placeholder={"Search for claim"} value={q} handleSearch={handleSearch}/>
                             <div></div>
                             <div></div>
                       </div>

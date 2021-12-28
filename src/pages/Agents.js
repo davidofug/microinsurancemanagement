@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import data from '../helpers/mock-data.json'
 import { EditableDatable } from '../helpers/DataTable';
-import { Form } from 'react-bootstrap'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../helpers/Pagination';
+import SearchBar from '../parts/searchBar/SearchBar'
+import Header from '../parts/header/Header';
 
 function Agents() {
 
@@ -104,12 +105,12 @@ function Agents() {
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
+        const handleSearch = ({target}) => setQ(target.value)
+
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Agents</h1>
-                <p className="subtitle">MANAGING AGENTS</p>
-            </header>
+            <Header title="Agents" subtitle="MANAGING AGENTS" />
+   
             <div id="add_client_group">
                 <div></div>
                 <Link to="/add-agents">
@@ -119,9 +120,7 @@ function Agents() {
 
             <div className="table-card componentsData">   
                 <div id="search">
-                    <Form.Control type="text" className='mb-3' placeholder="Search for agent"
-                        value={q} onChange={({target}) => setQ(target.value)} 
-                    />
+                <SearchBar placeholder={"Search for agent"} value={q} handleSearch={handleSearch}/>
                     <div></div>
                     <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>

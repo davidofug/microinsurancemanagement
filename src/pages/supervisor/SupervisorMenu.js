@@ -21,7 +21,7 @@ function SupervisorMenu() {
             setSelected({...selected, activeObject: selected.SuperVisor[0]})
         }
         
-    }, [])
+    }, [selected])
 
     const toggleActive = index => {
         setSelected({...selected, activeObject: selected.SuperVisor[index]})

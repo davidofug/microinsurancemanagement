@@ -1,7 +1,8 @@
 import '../../assets/styles/addClients.css'
 import { useEffect } from 'react'
-import { Form, Row, Col } from 'react-bootstrap'
+import { Form, Row, Col, Dropdown, DropdownButton, ButtonGroup } from 'react-bootstrap'
 import Upload from '../../parts/uploader/Upload'
+import Header from '../../parts/header/Header'
 
 function AddSupervisors() {
 
@@ -9,56 +10,73 @@ function AddSupervisors() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Add Supervisors</h1>
-                <p className="subtitle">ADD A NEW Supervisors</p>
-            </header>
+            <Header title="Add Supervisors" subtitle="ADD A NEW SUPERVISOR" />
 
-            <div class="componentsData" style={{"display": "flex", justifyContent: "center", "background-color": "#fff", "margin-top": "60px", "border-radius": "10px"}}>
-                <form action="">
+            <div class="addComponentsData">
+                <div>
                 <Form>
-                        <Form.Group className="mb-3" controlId="formGridAddress1">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control placeholder="Enter name" />
+                        <Form.Group className="mb-3" >
+                            <Form.Label htmlFor='name'>Name <span className='required'>*</span></Form.Label>
+                            <Form.Control id="name" placeholder="supervisor's name" />
                         </Form.Group>
                         <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label>Date of birth</Form.Label>
-                                <Form.Control type="date" />
+                            <Form.Group as={Col} className='addFormGroups'>
+                                <Form.Label htmlFor='date'>Date of birth</Form.Label>
+                                <Form.Control type="date" id="date" />
                             </Form.Group>
-                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label>Gender</Form.Label>
-                                <div style={{"display": "flex", "gap": "10px"}}>
+                            <Form.Group as={Col} className='addFormGroups'>
+                                <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
+                                <div className='gender-options'>
                                     <div>
-                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
-                                        <label htmlFor="gender">Male</label>
+                                        <input type="radio" name="gender" id="male" className='addFormRadio'/>
+                                        <label htmlFor="male">Male</label>
                                     </div>
                                     <div>
-                                        <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
-                                        <label htmlFor="gender">Female</label>
+                                        <input type="radio" name="gender" id="female" className='addFormRadio'/>
+                                        <label htmlFor="female">Female</label>
                                     </div>
                                 </div>
                             </Form.Group>
                         </Row>
                         
                         <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" />
+                            <Form.Group as={Col} className='addFormGroups'>
+                                <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                <Form.Control type="email" id="email" placeholder="Enter email" />
                             </Form.Group>
-                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label>Phone Number</Form.Label>
-                                <Form.Control type="tel" placeholder="Enter phone number" />
+                            <Form.Group as={Col} className='addFormGroups'>
+                                <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
+                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" />
                             </Form.Group>
                         </Row>
-                        <Form.Group className="mb-3" controlId="formGridAddress1">
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control placeholder="Enter your address" />
+                        <Form.Group className="mb-3" >
+                            <Form.Label htmlFor='address'>Address</Form.Label>
+                            <Form.Control id="address" placeholder="Enter your address" />
                         </Form.Group>
+                        <Form.Group className="mb-3" >
+                            <Form.Label htmlFor='license'>License No.</Form.Label>
+                            <Form.Control id="license" placeholder="license No." />
+                        </Form.Group>
+                        <Form.Group className="mb-3" >
+                            <Form.Label htmlFor='nin'>NIN</Form.Label>
+                            <Form.Control id="nin" placeholder="NIN" />
+                        </Form.Group>
+                        <Form.Group className="mb-3" >
+                            <Form.Label htmlFor='access'>User Access Role</Form.Label>
+                            <div>
+                                <select name="stickerCategory" id="stickerCategory">
+                                    <option value="hide">--sticker category--</option>
+                                    <option value="MTP">MTP</option>
+                                    <option value="Comprehensive">Comprehensive</option>
+                                    <option value="Windscreen">Windscreen</option>
+                                </select>
+                            </div>
+                        </Form.Group>
+                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
                         <Upload />
-                    <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
+                    <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' /></div>
                     </Form>
-                </form>
+                </div>
             </div>
         </div>
     )

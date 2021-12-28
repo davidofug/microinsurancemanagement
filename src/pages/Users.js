@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
 import { MdDownload } from 'react-icons/md'
 import { Form } from 'react-bootstrap'
+import Header from '../parts/header/Header'
 
 function Users() {
 
@@ -13,10 +14,7 @@ function Users() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>User Management</h1>
-                <p className="subtitle">MANAGING USERS</p>
-            </header>
+            <Header title="User Management" subtitle="MANAGING USERS" />
 
             <div className="table-card componentsData">   
                 <div id="search">

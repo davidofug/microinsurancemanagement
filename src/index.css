@@ -69,6 +69,16 @@ tbody > tr:hover {
     margin: 0 20px;
 }
 
+.addComponentsData{
+    margin: 0 20px;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    margin-top: 60px;
+    border-radius: 10px;
+}
+
+
 .heading{
     margin-left: 20px;
 }
@@ -95,6 +105,10 @@ tbody > tr:hover {
     display: none;
 }
 
+.working-here:hover > ul {
+    display: block;
+}
+
 .login-container{
     display: flex;
     justify-content: center;
@@ -116,9 +130,7 @@ tbody > tr:hover {
 }
 
 
-.working-here:hover > ul {
-    display: block;
-}
+
 
 #action_context li{
     padding: 5px 10px;
@@ -134,11 +146,6 @@ tbody > tr:hover {
     border-radius: 20px;
     background-color: #fafafa;
 }
-
-
-
-
-
 
 
 
@@ -200,6 +207,7 @@ tbody, td, tfoot, th, thead, tr{
     /* height: 40px; */
     /* width: 120px; */
     background-color: #1475CF;
+    margin: 0;
 }
 
 #add_client_group{
@@ -233,27 +241,23 @@ tbody, td, tfoot, th, thead, tr{
     font-size: 20px;
 }
 
+.sticker-mgt{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+
+#stickerCategory{
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    padding: 10px;
+}
 
 
 
 
-
-
-
-/* .sidebar{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    padding: 48px 0 0;
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-} */
-
-
-
-
-@media (max-width: 780px) {
+@media screen and (max-width: 780px) {
     .top-container{
         /* display: grid; */
         /* grid-template-rows: .5fr 1.5fr; */
