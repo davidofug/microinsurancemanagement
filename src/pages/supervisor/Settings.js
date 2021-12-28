@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../../styles/Settings.css'
 import profile from '../../assets/imgs/anyuru.jpg'
+import { Form, Row, Col } from 'react-bootstrap'
 
 function Settings() {
 
@@ -95,21 +96,21 @@ function Settings() {
                             >
                             <h2>Password and Security</h2>
                             <hr />
-                            <form action="">                            
-                                    <div className="names">
-                                        <label htmlFor="">Enter old password</label>
-                                        <input type="password" name="" id="" />
-                                    </div>
+                            <Form action="">                            
+                                    <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Label>Name</Form.Label>
+                                        <Form.Control placeholder="Enter name" />
+                                    </Form.Group>
                                     <div className="names">
                                         <label htmlFor="">Enter new password</label>
-                                        <input type="password" name="" id="" />
+                                        <input type="password" name="" id="" placeholder='New Password' />
                                     </div>
                                     <div className="names">
                                         <label htmlFor="">Confirm Password</label>
-                                        <input type="password" name="" id="" />
+                                        <input type="password" name="" id="" placeholder='Match Password' />
                                     </div>
-                                    <input type="submit" value="Submit" className="btn btn-primary cta" />                              
-                            </form>
+                                    <input type="submit" value="Update Password" className="btn btn-primary cta" />                              
+                            </Form>
                         </div>
 
                     </div>

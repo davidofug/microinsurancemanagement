@@ -1,17 +1,16 @@
 import { Table} from 'react-bootstrap'
-import { useForm } from '../hooks/useForm';
-import { useState } from 'react';
 import EditableRow from './EditableRow';
 import ReadOnlyRow from './ReadOnlyRow';
+import { Fragment } from 'react';
 
 export default function Datatable({ data, columns, columnHeading }) {
   return (
-    <Table bordered hover striped responsive style={{"border": "1px solid #000"}} cellPadding={0} cellSpacing={0}>
+    <Table bordered hover striped responsive cellPadding={0} cellSpacing={0}>
       <thead><tr>{data[0] && columnHeading.map(heading => <th>{heading}</th>)}</tr></thead>
 
       <tbody>
-        {data.map((row, index) => (
-          <tr key={index}>{columns.map((column, index) => (<td key={index}>{row[column]}</td>))}</tr>
+        {data.map((row) => (
+          <tr key={row.id}>{columns.map((column, index) => (<td key={index}>{row[column]}</td>))}</tr>
         ))}
       </tbody>
 
@@ -22,22 +21,14 @@ export default function Datatable({ data, columns, columnHeading }) {
 
 
 export function EditableDatable({ columns, columnHeading, editContactId, handleDeleteClick, handleEditClick, currentClients, editFormData, handleEditFormChange, handleCancelClick }){
-
-  const [ editClient, setEditClient ] = useState(false)
-
-  // const columns = ["id", "name", "gender", "email", "contact", "address"]
-
   return (
-    <Table bordered hover striped responsive style={{"border": "1px solid #000"}} cellPadding={0} cellSpacing={0}>
+    <Table bordered hover striped responsivecellPadding={0} cellSpacing={0}>
       <thead>
-          {/* <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th></th></tr> */}
-          <tr>{columnHeading.map(heading => (
-            <th>{heading}</th>
-          ))}</tr>
+          <tr>{columnHeading.map(heading => (<th>{heading}</th>))}</tr>
       </thead>
       <tbody>
         {currentClients.map((row) => (
-          <>
+          <Fragment key={row.id}>
             {editContactId === row.id ? (
             <EditableRow
               row={row}
@@ -53,11 +44,11 @@ export function EditableDatable({ columns, columnHeading, editContactId, handleD
                     handleDeleteClick={handleDeleteClick}
                   />
             )}
-          </>
+          </Fragment>
         ))}
       </tbody>
       <tfoot>
-          <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th></th></tr>
+        <tr>{columnHeading.map(heading => (<th>{heading}</th>))}</tr>
        </tfoot>
     </Table>
   )

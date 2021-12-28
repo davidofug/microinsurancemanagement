@@ -1,6 +1,7 @@
 import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form, Row, Col} from 'react-bootstrap';
+import Upload from '../parts/uploader/Upload';
 
 function AddClients() {
 
@@ -45,7 +46,7 @@ function AddClients() {
                         
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label>Email</Form.Label>
+                                <Form.Label>Email Address</Form.Label>
                                 <Form.Control type="email" placeholder="Enter email" />
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
@@ -57,10 +58,7 @@ function AddClients() {
                             <Form.Label>Address</Form.Label>
                             <Form.Control placeholder="Enter your address" />
                         </Form.Group>
-                        <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label>upload profile image</Form.Label>
-                            <Form.Control type="file" />
-                        </Form.Group>
+                        <Upload />
                     <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
                     </Form>
 
