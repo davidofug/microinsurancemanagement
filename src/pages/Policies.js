@@ -270,7 +270,7 @@ function Policies() {
                             </h1>    
                         </Row>
                         <Row style={{gap:"2vw"}}>
-                            <Col className="client-details">
+                            <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
                                 <Form.Group className="mb-3" controlId="clientDetails">
                                     <Form.Control type="text" placeholder="Existing" onChange={event => {
                                         const existingClientDetails = getExistingClient(event.target.value)
@@ -279,7 +279,7 @@ function Policies() {
                                     }}/>
                                 </Form.Group>
                             </Col>
-                            <Col className="add-new-client">
+                            <Col className="add-new-client" style={{display:"flex", justifyContent:"flex-end"}}>
                                 <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button> 
                             </Col>
                             <Modal show={show} onHide={handleClose}>
