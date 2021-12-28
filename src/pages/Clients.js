@@ -104,7 +104,7 @@ function Clients() {
     };
     
     const columns = ["id", "name", "gender", "email", "contact", "address"]
-    const columnHeading = ["#", "Name", "Gender", "Email", "Contact", "Address"]
+    const columnHeading = ["#", "Name", "Gender", "Email", "Contact", "Address", ""]
 
     const search = rows => rows.filter(row =>
       columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));

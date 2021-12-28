@@ -6,6 +6,7 @@ import profile from '../../assets/imgs/image 2.png'
 import logo from '../../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import { Navbar, Offcanvas, Container, Nav, NavDropdown} from 'react-bootstrap'
+import { MdLogout  } from 'react-icons/md'
 
 
 function AdminMenu({setLargeContentClass, largeContentClass}) {
@@ -90,7 +91,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                             <footer>
                                         <ul>
                                             <li><Link to="/admin/settings">My Profile</Link></li>
-                                            <li><Link to="/logout">Logout</Link></li>
+                                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
                                         </ul>
                                     <Link to={'/admin-settings'}>
                                         <img src={profile} alt="profile" />
@@ -148,7 +149,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                             <footer>
                                     <ul>
                                         <li><Link to="/admin/settings">My Profile</Link></li>
-                                        <li><Link to="/logout">Logout</Link></li>
+                                        <li><Link to="/logout"><MdLogout /> Logout</Link></li>
                                     </ul>
                                 <Link to={'/admin-settings'}>
                                     <img src={profile} alt="profile" />
@@ -203,7 +204,7 @@ function AdminMenu({setLargeContentClass, largeContentClass}) {
                         <footer>
                                 <ul>
                                     <li><Link to="/admin/settings">Settings</Link></li>
-                                    <li><Link to="/logout">Logout</Link></li>
+                                    <li><Link to="/logout"><MdLogout /> Logout</Link></li>
                                 </ul>
                             <Link to={'/admin-settings'} id="account">
                                 <img src={profile} alt="profile" />
