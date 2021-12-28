@@ -57,7 +57,7 @@ export default function SideBar({role}){
                     <img src={profile} alt="profile" />
                     <div>
                         <p>Charles Kasasira</p>
-                        <p style={{"color": "#646464"}}>role</p>
+                        <p style={{"color": "#646464"}}>Admin</p>
                     </div>
                     <div id="eclipse"><div></div><div></div><div></div></div>
                 </Link>

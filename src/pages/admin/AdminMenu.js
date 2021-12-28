@@ -1,12 +1,9 @@
 import menuData from '../../parts/menuData'
 import '../../assets/styles/menu.css'
-import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import profile from '../../assets/imgs/image 2.png'
 import logo from '../../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import MobileNav from '../../parts/menu/MobileNav'
-import { MdLogout  } from 'react-icons/md'
 import SideBar from '../../parts/menu/SideBar'
 import MinimisedSideBar from '../../parts/menu/MinimisedSideBar'
 
@@ -47,20 +44,20 @@ export default function AdminMenu({setLargeContentClass, largeContentClass}) {
                                 <HiOutlineChevronLeft />
                             </i>
                         </div>
-                        <SideBar role={Admin} setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />
+                        <SideBar role={Admin} />
                     </nav>
                 </div>
             :
                     <nav className='sidebar-m'>
                         <section id='brand_m'>
-                                <i onClick={() => {
-                                    setToggeMenu(!toggleMenu)
-                                    setLargeContentClass(!largeContentClass)
-                                    }}>
-                                    <HiOutlineChevronRight />
-                                </i>
+                            <i onClick={() => {
+                                setToggeMenu(!toggleMenu)
+                                setLargeContentClass(!largeContentClass)
+                                }}>
+                                <HiOutlineChevronRight />
+                            </i>
                         </section>
-                        <MinimisedSideBar role={Admin} setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />
+                        <MinimisedSideBar role={Admin} />
                         
                     </nav>
                 
