@@ -1,7 +1,7 @@
 import {useState,useEffect} from 'react'
 import useAuth from '../contexts/Auth'
 import logo from '../assets/imgs/britam-logo.png'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import '../assets/styles/login.css'
 
@@ -23,8 +23,8 @@ function ForgotPassword() {
 
 
 
-    // if (isLogin)
-    //     return <Redirect to={{ pathname: '/supervisor-dashboard' }} />
+    if (isLogin)
+        return <Redirect to={{ pathname: '/supervisor-dashboard' }} />
 
     return (
         <div className='logout'>

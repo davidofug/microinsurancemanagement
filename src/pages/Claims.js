@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import data from '../helpers/mock-data.json'
-import Datatable from '../helpers/DataTable';
-import { Form } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
 import { EditableDatable } from '../helpers/DataTable'
 import SearchBar from '../parts/searchBar/SearchBar';
@@ -100,7 +98,6 @@ function Claims() {
       };
 
 
-    const [clients, setClients] = useState(data);
     const [q, setQ] = useState('');
 
     const columnHeading = ["Ref Number", "Claimant Details", "Date of Incident", "Number Plate", "Sticker Number", "Claim Estimate", "Status", "Action"]
