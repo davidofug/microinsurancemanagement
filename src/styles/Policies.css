@@ -85,7 +85,11 @@ Table {
 
     tr {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);    
+        grid-template-columns: repeat(2, 1fr); 
+        grid-template-areas: "sticker-no sticker-no" 
+                            "first second"
+                            "third fourth"
+                            "repeater-buttons repeater-buttons";   
     }
 
     td {
@@ -95,28 +99,41 @@ Table {
     .sticker-number {
         /* grid-column: span; */
         grid-row: 1;
-        width: 100%;
+        /* grid-column-start: 1;
+        grid-column-end: 2; */
+        grid-area: sticker-no;
         /* grid-area: sticker-number; */
     } 
 
     .first-cell {
-        grid-row: 2;  
+        grid-row: 2; 
+        grid-area: first; 
     }
 
     .second-cell {
         grid-row: 2;
+        grid-area: second;
     }
 
     .third-cell {
         grid-row: 3;
+        grid-area: third;
     }
 
     .fourth-cell {
         grid-row:3;
+        grid-area: fourth;
     }
 
     .fifth-cell {
         grid-row:4;
+        grid-area: repeater-buttons;
+        /* align-items: end; */
+    }
+
+    .form-buttons {
+        width: 100%;
+        justify-content: end;
     }
     
 }
