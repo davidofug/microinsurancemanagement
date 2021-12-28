@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import data from '../../helpers/mock-data.json'
-import Datatable from '../../helpers/DataTable';
-import { Form } from 'react-bootstrap'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import { EditableDatable } from '../../helpers/DataTable'

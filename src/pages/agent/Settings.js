@@ -29,7 +29,7 @@ function Settings() {
                             <div id="edit_profile">
                                 <h2>Edit Profile</h2>
                                 <hr />
-                                <img src={profile} alt="profile image" />
+                                <img src={profile} alt="profile" />
                                 <div className="first_last">
                                     <div className="names">
                                         <label htmlFor="">First Name</label>
