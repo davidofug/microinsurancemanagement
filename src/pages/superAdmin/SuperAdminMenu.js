@@ -18,18 +18,13 @@ function SuperAdminMenu() {
         if(sessionStorage.getItem('session1')) setSelected({...selected, activeObject: selected.SuperAdmin[sessionStorage.getItem('session1')-1]})
         else setSelected({...selected, activeObject: selected.SuperAdmin[0]})
         
-    }, [])
+    })
     
     const toggleActive = index => {
         setSelected({...selected, activeObject: selected.SuperAdmin[index]})
         sessionStorage.setItem('session1', selected.SuperAdmin[index]["number"])
     }
 
-    
-
-
-
-    
     const toggleActiveClassStyle = index => selected.SuperAdmin[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
 
     return (
@@ -76,7 +71,7 @@ function SuperAdminMenu() {
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
                         <Link to={'/super-admin-settings'}>
-                            <img src={profile} alt="profile image" />
+                            <img src={profile} alt="profile" />
                             <div>
                                 <p>Anyuru David Derrick</p>
                                 <p style={{"color": "#646464"}}>Super Admin</p>
@@ -127,7 +122,7 @@ function SuperAdminMenu() {
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
                         <Link to={'/super-admin-settings'} id="account">
-                            <img src={profile} alt="profile image" />
+                            <img src={profile} alt="profile" />
                         </Link>
                     </footer>
 

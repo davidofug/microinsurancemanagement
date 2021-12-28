@@ -74,7 +74,7 @@ function AgentMenu() {
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
                         <Link to={'/agent-settings'}>
-                            <img src={profile} alt="profile image" />
+                            <img src={profile} alt="profile" />
                             <div>
                                 <p>Charles Kasasira</p>
                                 <p style={{"color": "#646464"}}>Agent</p>
@@ -125,7 +125,7 @@ function AgentMenu() {
                                 <li><Link to="/logout">Logout</Link></li>
                             </ul>
                         <Link to={'/agent-settings'} id="account">
-                            <img src={profile} alt="profile image" />
+                            <img src={profile} alt="profile" />
                         </Link>
                     </footer>
 

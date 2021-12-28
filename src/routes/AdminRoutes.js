@@ -6,7 +6,7 @@ import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
 import Settings from '../pages/admin/Settings'
 import PrivateRoute  from './PrivateRoute'
-import { Route, Redirect } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
 import AddClients from '../pages/AddClients'
 import Windscreen from '../pages/Windscreen'
@@ -20,6 +20,8 @@ import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddOrganisation from '../pages/admin/AddOrganisation'
 import AddSupervisors from '../pages/admin/AddSupervisors'
+import StickerMgt from '../pages/admin/StickerMgt'
+import AddUsers from '../pages/AddUsers'
 
 
 function AdminRoutes() {
@@ -43,6 +45,9 @@ function AdminRoutes() {
             <PrivateRoute path="/add-supervisors" >
                 <AddSupervisors />
             </PrivateRoute>
+            <PrivateRoute path="/admin/add-users" >
+                <AddUsers />
+            </PrivateRoute>
             <PrivateRoute path="/admin/agents" >
                 <Agents />
             </PrivateRoute>
@@ -52,10 +57,22 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/clients" >
                 <Clients />
             </PrivateRoute>
+            <PrivateRoute path="/admin/sticker-management" >
+                <StickerMgt />
+            </PrivateRoute>
             <PrivateRoute path="/admin/user-management" >
                 <Users />
             </PrivateRoute>
             <PrivateRoute path="/admin/policies" >
+                <Policies />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-comprehensive" >
+                <Policies />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-windscreen" >
+                <Policies />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-mtp" >
                 <Policies />
             </PrivateRoute>
             <PrivateRoute path="/admin/claims" >
