@@ -107,8 +107,8 @@ function Policies() {
         return (
             <React.Fragment key={index}>
                 <tr className="table-row">
-                    <td style={{verticalAlign:"middle", paddingLeft:"1vw", paddingRight:"1vw"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
+                    <td className="sticker-number" style={{verticalAlign:"middle", paddingLeft:"1vw", paddingRight:"1vw"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
+                    <td className="first-cell" style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="referenceNo">
@@ -130,7 +130,7 @@ function Policies() {
                             </div>
                         </div> 
                     </td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
+                    <td className="second-cell"style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="plateNo">
@@ -177,7 +177,7 @@ function Policies() {
                             </div>
                         </div>
                     </td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
+                    <td className="third-cell" style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="seatingCapacity">
@@ -199,7 +199,7 @@ function Policies() {
                             </div>
                         </div>
                     </td>
-                    <td style={{verticalAlign:"top", paddingLeft:"1vh", paddingRight:"1vh"}}>
+                    <td className="fourth-cell" style={{verticalAlign:"top", paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="ccPower">
@@ -216,7 +216,7 @@ function Policies() {
                             </div>
                         </div>
                     </td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
+                    <td id="form-buttons" className="fifth-cell" style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
                         <div className="form-buttons">
                             <div>
                                 <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
@@ -288,12 +288,12 @@ function Policies() {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <Form>
-                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Group className="mb-3" controlId="name">
                                             <Form.Label>Name</Form.Label>
                                             <Form.Control placeholder="Enter name" id="name" onChange={handleFieldChange}/>
                                         </Form.Group>
                                         <Row className="mb-3">
-                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                            <Form.Group as={Col} controlId="email" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Date of birth</Form.Label>
                                                 <Form.Control type="date" id="date" onChange={handleFieldChange}/>
                                             </Form.Group>
@@ -361,7 +361,7 @@ function Policies() {
                             </Modal>
                         </Row>
                     </div>
-                    <Row style={{paddingBottom:"6vh", display:"flex", justifyContent:"flex-start"}}>
+                    <Row style={{paddingBottom:"6vh", display:"flex"}}>
                         <div className="currency">
                             <Form.Group classname="mb-3" controlId="currency">
                                 <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={handleFieldChange}>
