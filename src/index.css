@@ -69,6 +69,16 @@ tbody > tr:hover {
     margin: 0 20px;
 }
 
+.addComponentsData{
+    margin: 0 20px;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    margin-top: 60px;
+    border-radius: 10px;
+}
+
+
 .heading{
     margin-left: 20px;
 }
@@ -95,6 +105,10 @@ tbody > tr:hover {
     display: none;
 }
 
+.working-here:hover > ul {
+    display: block;
+}
+
 .login-container{
     display: flex;
     justify-content: center;
@@ -116,9 +130,7 @@ tbody > tr:hover {
 }
 
 
-.working-here:hover > ul {
-    display: block;
-}
+
 
 #action_context li{
     padding: 5px 10px;
@@ -236,10 +248,16 @@ tbody, td, tfoot, th, thead, tr{
     gap: 10px;
 }
 
+#stickerCategory{
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    padding: 10px;
+}
 
 
 
-@media (max-width: 780px) {
+
+@media screen and (max-width: 780px) {
     .top-container{
         /* display: grid; */
         /* grid-template-rows: .5fr 1.5fr; */
