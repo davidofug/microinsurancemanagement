@@ -25,26 +25,11 @@ function Policies() {
     const [ field, handleFieldChange ] = useForm({})
     const [ classes, setClasses ] = useState([])
     const [ vehicleUses, setVehicleUses ] = useState([])
-    let date = moment().format("l")
-    // console.log(date)
     const [ policyStartDate, setPolicyStartDate ] = useState(null)
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
 
-
-    
-
-    // console.log(policyStartDate)
-
-    const { currencies, make, categories } = dynamicFields
-
-    useEffect(() => {
-        document.title = 'Britam - Policies'
-    }, [])
-
-    
     const [ clientDetails, setClientDetails ] = useState({}) 
-
     const [ stickers, setStickers ] = useState([
         {
             referenceNo:'',
@@ -61,11 +46,17 @@ function Policies() {
         }
     ])
 
+    const { currencies, make, categories } = dynamicFields
+    let date = moment().format("l")
+
+    
+    useEffect(() => {
+        document.title = 'Britam - Policies'
+    }, [])
+
     const handleInputChange = (index, event) => {
         const values = [...stickers]
-        values[index][event.target.name] = event.target.value
-        
-                                        
+        values[index][event.target.name] = event.target.value                                        
         // console.log(event.name, event.target.value)
         setStickers(values)
     }
