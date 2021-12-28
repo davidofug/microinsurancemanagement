@@ -33,6 +33,10 @@ const menuData = {
                     link: "super-admin-admins"
                 },
                 {
+                    name: "Add Users",
+                    link: "super-admin-add-users"
+                },
+                {
                     name: "View Log Trail",
                     link: "super-admin-view-log-trail"
                 }
@@ -109,6 +113,10 @@ const menuData = {
                 {
                     name: "Supervisor",
                     link: "/admin/supervisor"
+                },
+                {
+                    name: "Add Users",
+                    link: "/admin/add-users"
                 },
                 {
                     name: "View Log Trail",
