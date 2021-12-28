@@ -102,7 +102,7 @@ function Supervisors() {
 
     const [q, setQ] = useState('');
 
-    const columnHeading = ["#", "License No.", "Name", "Gender", "Email", "NIN", "Contact", "Role", "Branch Name"]
+    const columnHeading = ["#", "License No.", "Name", "Gender", "Email", "NIN", "Contact", "Role", "Branch Name", "Actions"]
     const columns = ["id", "contact", "name", "gender", "email", "contact", "contact", "email", 'address']
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));

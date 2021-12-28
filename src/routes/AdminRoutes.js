@@ -40,7 +40,7 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/supervisor" >
                 <Supervisors />
             </PrivateRoute>
-            <PrivateRoute path="/add/supervisors" >
+            <PrivateRoute path="/add-supervisors" >
                 <AddSupervisors />
             </PrivateRoute>
             <PrivateRoute path="/admin/agents" >
