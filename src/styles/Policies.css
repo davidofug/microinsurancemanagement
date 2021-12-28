@@ -28,16 +28,8 @@ Table {
     }
 
     .currency {
-        display: flex; /*
-        justify-content: flex-start;
-        margin-top: 2vh; */
-        /* width: 25vw; */
+        display: flex; 
     }
-/*
-    .policy-start-date {
-        display: flex;
-        justify-content: flex-start;
-    } */
 
     .dates {
         display: flex;
@@ -79,7 +71,6 @@ Table {
     .form-buttons {
         display: flex;
         gap: 5px;
-        /* flex-direction: column; */
         justify-content: center;
     }
 
@@ -97,12 +88,8 @@ Table {
     }
 
     .sticker-number {
-        /* grid-column: span; */
         grid-row: 1;
-        /* grid-column-start: 1;
-        grid-column-end: 2; */
         grid-area: sticker-no;
-        /* grid-area: sticker-number; */
     } 
 
     .first-cell {
@@ -128,12 +115,10 @@ Table {
     .fifth-cell {
         grid-row:4;
         grid-area: repeater-buttons;
-        /* align-items: end; */
     }
 
     .form-buttons {
         width: 100%;
         justify-content: end;
-    }
-    
+    }  
 }
