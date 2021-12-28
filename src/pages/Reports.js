@@ -4,6 +4,7 @@ import data from '../helpers/mock-data.json'
 import Datatable from '../helpers/DataTable';
 import { Form } from 'react-bootstrap'
 import { MdDownload } from 'react-icons/md'
+import { CSVLink } from "react-csv";
 
 function Reports() {
 
@@ -27,15 +28,22 @@ function Reports() {
                     <Link to="/add-agent">
                         <button className="btn btn-primary cta">Add Reports</button>
                     </Link>
-                
                 </div>
+                
                 <div className="table-card componentsData " style={{"max-width": "80vw", "margin": "auto"}}>
                     <div id="search">
-                                <Form.Control type="text" className='mb-3' placeholder="Search for policy"
+                                <Form.Control type="text" className='mb-3' placeholder="Search for report"
                                   value={q} onChange={({target}) => setQ(target.value)}
                                   />
                                   <div></div>
-                                  <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
+                                  <CSVLink
+                                    data={data}
+                                    filename={"Britam-Reports.csv"}
+                                    className="btn btn-primary cta"
+                                    target="_blank"
+                                >
+                                    Export <MdDownload />
+                                </CSVLink>
                     
                           </div>
                     <Datatable data={search(data)} columnHeading={columnHeading} columns={columns}/>

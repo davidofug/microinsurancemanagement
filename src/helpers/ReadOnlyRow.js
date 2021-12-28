@@ -4,7 +4,7 @@ import { FaEllipsisV } from 'react-icons/fa'
 const ReadOnlyRow = ({columns, row, handleEditClick, handleDeleteClick }) => {
   return (
           <tr>
-            {columns.map(column => (<td>{row[column]}</td>))}
+            {columns.map((column, index) => (<td key={index}>{row[column]}</td>))}
             <td className='working-here'>
               <ul id="action_context">
                   <li><button onClick={(event) => handleEditClick(event, row)}>edit</button></li>
@@ -12,7 +12,7 @@ const ReadOnlyRow = ({columns, row, handleEditClick, handleDeleteClick }) => {
                     handleDeleteClick(row.id)
                   }}>Delete</button></li>
               </ul>
-              <div id="action"><div></div><div></div><div></div></div>
+              <FaEllipsisV />
             </td>
           </tr>
   );
