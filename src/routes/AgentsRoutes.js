@@ -15,7 +15,6 @@ import Comprehensive from '../pages/Comprehensive'
 import { Route } from 'react-router-dom'
 import AddUsers from '../pages/AddUsers'
 
-
 function AgentsRoutes() {
     return (
         <>
@@ -46,10 +45,10 @@ function AgentsRoutes() {
             <PrivateRoute path="/agent/settings" >
                 <Settings />
             </PrivateRoute>
-            <PrivateRoute path="/logout" >
+{/*             <PrivateRoute path="/logout" >
                 <Logout />
-            </PrivateRoute>
-            <PrivateRoute path="/agent/motor-third-party" >
+            </PrivateRoute> */}
+            <PrivateRoute path="agent-/motor-third-party" >
                 <Mtp />
             </PrivateRoute>
             <PrivateRoute path="/agent/windscreen" >
@@ -63,7 +62,7 @@ function AgentsRoutes() {
             </PrivateRoute>
             <Route path="/logout" component={Logout} />
         </>
-        
+
     )
 }
 
