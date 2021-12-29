@@ -23,7 +23,7 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 function MyRouter() {
 
-    const { currentUser } = useAuth()
+    const { currentUser, authClaims } = useAuth()
     const [ largeContentClass, setLargeContentClass ] = useState(false)
 
     return (
@@ -39,22 +39,22 @@ function MyRouter() {
             ): (
                 <div className={largeContentClass ? 'top-container-large': `top-container` }>
                 <div className='MenuSide'>
-                    {currentUser === 1 && (
+                    {authClaims.admin && (
                             <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass}/>
                             )
                     }
 
-                    {currentUser === 2 && (
+                    {authClaims.supervisor && (
                             <SupervisorMenu />
                         )
                     }
 
-                    {currentUser === 3 && (
-                            <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />
+                    {authClaims.agent && (
+                            <AgentMenu />
                         )
                     }
 
-                    {currentUser === 4 && (
+                    {authClaims.superadmin && (
                             <SuperAdminMenu />
                         )
                     }
@@ -62,19 +62,19 @@ function MyRouter() {
 
                 <main>
                     <Switch>
-                        {currentUser === 1 && (
+                        {authClaims.admin && (
                                 <AdminRoutes />
                             )
                         }
-                        {currentUser === 2 && (
+                        {authClaims.supervisor && (
                                 <SupervisorRoutes />
                             )
                         }
-                        {currentUser === 3 && (
+                        {authClaims.agent && (
                                 <AgentsRoutes />
                             )
                         }
-                        {currentUser === 4 && (
+                        {authClaims.superadmin && (
                                 <SuperAdminRoutes />
                             )
                         }

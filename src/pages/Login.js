@@ -19,8 +19,8 @@ function Login() {
     const [isLogin, setLogin] = useState(false)
     const [ isVisible, setIsVisible ] = useState(false)
 
-    const { setCurrentUser } = useAuth()
-
+    const { setCurrentUser, setAuthClaims } = useAuth()
+    const {error, setError} = useState(null)
     const history = useHistory()
     useEffect(() => {
         const loggedIn = Number(localStorage.getItem('loggedIn'))
@@ -38,25 +38,35 @@ function Login() {
 		const { email, password } = user
 		try {
 			const result = await signInWithEmailAndPassword(authentication, email, password)
-			// console.log(result)
             if (result) {
                 // console.log(result)
                 authentication.currentUser.getIdTokenResult().then((idTokenResult) => {
                     // Confirm the user is an Admin.
                     console.log(idTokenResult.claims)
+                    setAuthClaims(idTokenResult.claims)
+                    setCurrentUser(authentication.currentUser)
+                    history.push('admin/dashboard')
                     // localStorage.setItem('loggedIn', 1)
-                    // history.push('admin/dashboard')
+/*
                     if (!!idTokenResult.claims.superadmin) {
+                        history.push('admin/dashboard')
+                    } else if (!!idTokenResult.claims.admin) {
                         // Show admin UI.
                         // showAdminUI();
-                        localStorage.setItem('loggedIn', 1)
-                        history.push('admin/dashboard')
+                        history.push('superadmin/dashboard')
+
+                    } else if (!!idTokenResult.claims.supervisor) {
+                        // Show supervisor UI.
+                        // showSupervisorUI();
+                        history.push('supervisor/dashboard')
+                    } else if (!!idTokenResult.claims.agent) {
+                        history.push('agent/dashboard')
                     } else {
                         // Show regular user UI.
                         // showRegularUI();
-                        localStorage.setItem('loggedIn', 3)
-                        history.push('agent/dashboard')
-                    }
+                        setError('You are not authorized to access this page.')
+                        console.log('UI customers')
+                    } */
                 })
                     .catch((error) => {
                         console.log(error);

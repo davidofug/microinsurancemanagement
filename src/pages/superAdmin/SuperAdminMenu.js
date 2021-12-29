@@ -20,9 +20,9 @@ function SuperAdminMenu({ setLargeContentClass, largeContentClass }) {
     useEffect(() => {
         if(sessionStorage.getItem('session1')) setSelected({...selected, activeObject: selected.SuperAdmin[sessionStorage.getItem('session1')-1]})
         else setSelected({...selected, activeObject: selected.SuperAdmin[0]})
-        
-    }, [])
-    
+
+    },[])
+
     const toggleActive = index => {
         setSelected({...selected, activeObject: selected.SuperAdmin[index]})
         sessionStorage.setItem('session1', selected.SuperAdmin[index]["number"])
