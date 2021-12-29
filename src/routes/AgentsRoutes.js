@@ -13,6 +13,7 @@ import AddClients from '../pages/AddClients'
 import Settings from '../pages/agent/Settings'
 import Comprehensive from '../pages/Comprehensive'
 import { Route } from 'react-router-dom'
+import AddUsers from '../pages/AddUsers'
 
 
 function AgentsRoutes() {
@@ -26,6 +27,9 @@ function AgentsRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/agent/clients" >
                 <Clients />
+            </PrivateRoute>
+            <PrivateRoute path="/add-user" >
+                <AddUsers />
             </PrivateRoute>
             <PrivateRoute path="/agent/user" >
                 <Users />
