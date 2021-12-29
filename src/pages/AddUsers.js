@@ -3,21 +3,31 @@ import { useEffect } from 'react'
 import { Form, Row, Col, Dropdown, DropdownButton, ButtonGroup } from 'react-bootstrap'
 import Upload from '../parts/uploader/Upload'
 import Header from '../parts/header/Header'
+import formFields from '../helpers/AddUsers'
+import { useState } from 'react'
 
 function AddUsers() {
 
     useEffect(() => {document.title = 'Britam - Add Supervisors'}, [])
+    const { users } = formFields
+    const [ userRole, setUserRole ] = useState(null)
+    
 
     return (
         <div className='components'>
             <Header title="Add Users" subtitle="ADD A NEW USER" />
 
                 <div>
-                    <select name="stickerCategory" id="stickerCategory">
+                    <select name="stickerCategory" id="stickerCategory" onChange={(event) => setUserRole(event.target.value)}>
                         <option value="hide">--User Role--</option>
-                        <option value="MTP">Supervisor</option>
-                        <option value="Comprehensive">Agent</option>
-                        <option value="Windscreen">Clients</option>
+                        {/* <option value="supervisor">Supervisor</option>
+                        <option value="agent">Agent</option>
+                        <option value="admin">Admin</option>
+                        <option value="superAdmin">Super Admin</option>
+                        <option value="customer">Customer</option> */}
+                        {
+                            users.map((user) => <option value={user.user}>{user.label}</option>)
+                        }
                     </select>
                 </div>
             <div class="addComponentsData">
@@ -80,6 +90,18 @@ function AddUsers() {
                                 </select>
                             </div>
                         </Form.Group>
+                        <Form.Group className="mb-3" >
+                            <Form.Label htmlFor='access'>User Roles</Form.Label>
+                            <div>
+                                <select name="stickerCategory" id="userRoles">
+                                    <option value="hide">--User Role--</option>
+                                    <option value="MTP">MTP</option>
+                                    <option value="Comprehensive">Comprehensive</option>
+                                    <option value="Windscreen">Windscreen</option>
+                                </select>
+                            </div>
+                        </Form.Group>
+                    
                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
                         <Upload />
                     <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' /></div>

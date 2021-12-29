@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
-import Header from '../parts/header/Header'
+// import Header from '../parts/header/Header'
 import '../styles/Policies.css'
 
 
