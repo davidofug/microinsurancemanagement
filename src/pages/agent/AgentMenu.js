@@ -34,7 +34,7 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
 
     return (
         <div className='menuSide'>
-            <MobileNav role={Agent} />
+            <MobileNav role={Agent} user="agent"/>
             {toggleMenu === true 
             ?
                 <div className="sidebar"> 

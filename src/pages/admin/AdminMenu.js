@@ -33,7 +33,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
 
   return (
     <div className="menuSide">
-      <MobileNav role={Admin} />
+      <MobileNav role={Admin} user="supervisor"/>
       {toggleMenu === true ? (
         <div className="sidebar">
           <nav>
