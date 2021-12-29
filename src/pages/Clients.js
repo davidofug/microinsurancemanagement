@@ -90,7 +90,7 @@ export default function Clients() {
    
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-clients">
+                <Link to="/add-user">
                     <button className='btn btn-primary cta'>Add Client</button>
                 </Link>
             </div>

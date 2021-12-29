@@ -13,48 +13,52 @@ import AddClients from '../pages/AddClients'
 import Settings from '../pages/agent/Settings'
 import Comprehensive from '../pages/Comprehensive'
 import { Route } from 'react-router-dom'
+import AddUsers from '../pages/AddUsers'
 
 
 function AgentsRoutes() {
     return (
         <>
-            <PrivateRoute path="/agent-dashboard" >
+            <PrivateRoute path="/agent/dashboard" >
                 <Dashboard />
             </PrivateRoute>
-            <PrivateRoute path="/agent-view-log-trail" >
+            <PrivateRoute path="/agent/view-log-trail" >
                 <Logs />
             </PrivateRoute>
-            <PrivateRoute path="/agent-clients" >
+            <PrivateRoute path="/agent/clients" >
                 <Clients />
             </PrivateRoute>
-            <PrivateRoute path="/agent-user" >
+            <PrivateRoute path="/add-user" >
+                <AddUsers />
+            </PrivateRoute>
+            <PrivateRoute path="/agent/user" >
                 <Users />
             </PrivateRoute>
-            <PrivateRoute path="/agent-policies" >
+            <PrivateRoute path="/agent/policies" >
                 <Policies />
             </PrivateRoute>
-            <PrivateRoute path="/agent-claims" >
+            <PrivateRoute path="/agent/claims" >
                 <Claims />
             </PrivateRoute>
-            <PrivateRoute path="/agent-reports" >
+            <PrivateRoute path="/agent/reports" >
                 <Reports />
             </PrivateRoute>
-            <PrivateRoute path="/agent-settings" >
+            <PrivateRoute path="/agent/settings" >
                 <Settings />
             </PrivateRoute>
             <PrivateRoute path="/logout" >
                 <Logout />
             </PrivateRoute>
-            <PrivateRoute path="agent-/motor-third-party" >
+            <PrivateRoute path="/agent/motor-third-party" >
                 <Mtp />
             </PrivateRoute>
-            <PrivateRoute path="agent-/windscreen" >
+            <PrivateRoute path="/agent/windscreen" >
                 <Windscreen />
             </PrivateRoute>
-            <PrivateRoute path="/agent-comprehensive" >
+            <PrivateRoute path="/agent/comprehensive" >
                 <Comprehensive />
             </PrivateRoute>
-            <PrivateRoute path="/agent-add-clients" >
+            <PrivateRoute path="/agent/add-clients" >
                 <AddClients />
             </PrivateRoute>
             <Route path="/logout" component={Logout} />

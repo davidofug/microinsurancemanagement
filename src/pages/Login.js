@@ -22,7 +22,7 @@ function Login() {
     const { setCurrentUser, setAuthClaims } = useAuth()
     const {error, setError} = useState(null)
     const history = useHistory()
-/*     useEffect(() => {
+    useEffect(() => {
         const loggedIn = Number(localStorage.getItem('loggedIn'))
 
         if(loggedIn === 1 || loggedIn === 2 || loggedIn === 3|| loggedIn === 4){
@@ -31,7 +31,7 @@ function Login() {
         }
 
         document.title = 'Britam - With you every step of the way'
-    }) */
+    })
 
     const handleSignIn = async (event) => {
         event.preventDefault()

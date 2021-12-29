@@ -113,7 +113,7 @@ function Agents() {
    
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-agents">
+                <Link to="/add-user">
                     <button className="btn btn-primary cta">Add Agent</button>
                 </Link>
             </div>
