@@ -16,51 +16,52 @@ import Agents from '../pages/Agents'
 import AddAgents from '../pages/AddAgents'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
+import AddUsers from '../pages/AddUsers'
 
 
 function SupervisorRoutes() {
     return (
         <>
-            <PrivateRoute path="/supervisor-dashboard" >
+            <PrivateRoute path="/supervisor/dashboard" >
                 <Dashboard />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-view-log-trail" >
+            <PrivateRoute path="/supervisor/view-log-trail" >
                 <Logs />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-agents" >
+            <PrivateRoute path="/supervisor/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/add-agents" >
-                <AddAgents />
+            <PrivateRoute path="/add-user" >
+                <AddUsers />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-clients" >
+            <PrivateRoute path="/supervisor/clients" >
                 <Clients />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-user-management" >
+            <PrivateRoute path="/supervisor/user-management" >
                 <Users />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-policies" >
+            <PrivateRoute path="/supervisor/policies" >
                 <Policies />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-claims" >
+            <PrivateRoute path="/supervisor/claims" >
                 <Claims />
             </PrivateRoute>
             <PrivateRoute path="/supervisor-add-claims" >
                 <AddClaims />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-reports" >
+            <PrivateRoute path="/supervisor/reports" >
                 <Reports />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-settings" >
+            <PrivateRoute path="/supervisor/settings" >
                 <Settings />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-motor-third-party" >
+            <PrivateRoute path="/supervisor/motor-third-party" >
                 <Mtp />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-windscreen" >
+            <PrivateRoute path="/supervisor/windscreen" >
                 <Windscreen />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-comprehensive" >
+            <PrivateRoute path="/supervisor/comprehensive" >
                 <Comprehensive />
             </PrivateRoute>
             <PrivateRoute path="/add-clients" >
