@@ -1,6 +1,5 @@
 import '../assets/styles/addClients.css'
-// import { authentication } from '../helpers/firebase'
-// import { createUser, onAuthStateChanged} from 'firebase/auth'
+import { authentication } from '../helpers/firebase'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
 import { useEffect, useState } from 'react'
@@ -16,7 +15,7 @@ function AddUsers() {
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
     const [mtp, setMTP] = useState(false)
-
+    
     const [fields, handleFieldChange] = useForm({
         user_role: '',
         email: '',
