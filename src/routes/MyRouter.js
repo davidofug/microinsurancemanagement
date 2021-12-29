@@ -45,17 +45,17 @@ function MyRouter() {
                     }
 
                     {authClaims.supervisor && (
-                            <SupervisorMenu />
+                            <SupervisorMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />
                         )
                     }
 
                     {authClaims.agent && (
-                            <AgentMenu />
+                            <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />
                         )
                     }
 
                     {authClaims.superadmin && (
-                            <SuperAdminMenu />
+                            <SuperAdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />
                         )
                     }
                 </div>
