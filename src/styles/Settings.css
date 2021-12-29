@@ -2,7 +2,6 @@
 
 #settings_columns{
     display: grid; 
-    grid-auto-columns: 1fr; 
     grid-template-columns: 0.5fr 1.5fr; 
     grid-template-rows: 1fr; 
     gap: 0px 0px; 
@@ -101,4 +100,33 @@
 
 .active-content{
     display: block;
+}
+
+
+
+@media (max-width: 780px) {
+
+    #settings_columns{
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #options{
+        border-right: none;
+    }
+
+    #options ul{
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+    }
+
+    #options ul li{
+        border-bottom: none;
+        padding: 10px;
+    }
+    
 }

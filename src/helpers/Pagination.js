@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import '../assets/styles/pagination.css'
 
 const Pagination = ({pages, setCurrentPage, currentClients, sortedEmployees, entries}) => {
+    useEffect(() => setCurrentPage(currentButton))
+
     const numOfPages = []
     for(let i = 1; i <= pages; i++) numOfPages.push(i)
     
     const [ currentButton, setCurrentButton ] = useState(1)
 
-    useEffect(() => setCurrentPage(currentButton), [currentButton, setCurrentButton])
 
     return (
         <div className="clearfix">

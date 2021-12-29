@@ -33,6 +33,10 @@ const menuData = {
                     link: "super-admin-admins"
                 },
                 {
+                    name: "Add Users",
+                    link: "super-admin-add-users"
+                },
+                {
                     name: "View Log Trail",
                     link: "super-admin-view-log-trail"
                 }
@@ -92,6 +96,12 @@ const menuData = {
         },
         {
             number: 4,
+            name: "Sticker No. Management",
+            icon: <MdPerson />,
+            link: "/admin/sticker-management"
+        },
+        {
+            number: 5,
             name: "User Management",
             icon: <MdPeople />,
             link: "/admin/user-management",
@@ -105,13 +115,17 @@ const menuData = {
                     link: "/admin/supervisor"
                 },
                 {
+                    name: "Add Users",
+                    link: "/admin/add-users"
+                },
+                {
                     name: "View Log Trail",
                     link: "/admin/view-log-trail"
                 }
             ]
         },
         {
-            number: 5,
+            number: 6,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
             link: "/admin/policies",
@@ -131,13 +145,13 @@ const menuData = {
             ]
         },
         {
-            number: 6,
+            number: 7,
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
             link: "/admin/claims"
         },
         {
-            number: 7,
+            number: 8,
             name: "Reports",
             icon: <MdAssessment />,
             link: "/admin/reports"

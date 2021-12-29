@@ -6,7 +6,7 @@ import { Fragment } from 'react';
 export default function Datatable({ data, columns, columnHeading }) {
   return (
     <Table bordered hover striped responsive cellPadding={0} cellSpacing={0}>
-      <thead><tr>{data[0] && columnHeading.map(heading => <th>{heading}</th>)}</tr></thead>
+      <thead><tr>{data[0] && columnHeading.map((heading, index) => <th key={index}>{heading}</th>)}</tr></thead>
 
       <tbody>
         {data.map((row) => (
@@ -14,7 +14,7 @@ export default function Datatable({ data, columns, columnHeading }) {
         ))}
       </tbody>
 
-      <tfoot><tr>{data[0] && columnHeading.map(heading => <th>{heading}</th>)}</tr></tfoot>
+      <tfoot><tr>{data[0] && columnHeading.map((heading, index) => <th key={index}>{heading}</th>)}</tr></tfoot>
     </Table>
   );
 }
@@ -22,7 +22,7 @@ export default function Datatable({ data, columns, columnHeading }) {
 
 export function EditableDatable({ columns, columnHeading, editContactId, handleDeleteClick, handleEditClick, currentClients, editFormData, handleEditFormChange, handleCancelClick }){
   return (
-    <Table bordered hover striped responsivecellPadding={0} cellSpacing={0}>
+    <Table bordered hover striped responsive cellPadding={0} cellSpacing={0}>
       <thead>
           <tr>{columnHeading.map(heading => (<th>{heading}</th>))}</tr>
       </thead>

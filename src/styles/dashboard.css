@@ -56,6 +56,16 @@
     border-radius: 5px;
 }
 
+.cards {
+    width: 15rem;
+    height:7rem; 
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .card-body {
     display:flex; 
     flex-direction:column;

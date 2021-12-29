@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import '../../styles/Settings.css'
 import profile from '../../assets/imgs/anyuru.jpg'
-import { Form, Row, Col } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
+import Header from '../../parts/header/Header'
 
 function Settings() {
 
     const [ selectedTab, setSelectedTab ] = useState(1)
 
-    useEffect(() => document.title = 'Britam - User Profile', [])
+    useEffect(() => document.title = 'Britam - User Profile')
 
     const toggleTab = (index) => {
         setSelectedTab(index);
@@ -15,10 +16,7 @@ function Settings() {
 
     return (
         <div className='components'>
-            <header class="heading">
-                <h1 className='title'>My Profile</h1>
-                <p className='subtitle'>MANAGE YOUR ACCOUNT</p>
-            </header>
+            <Header title="My Profile" subtitle="MANAGE YOUR ACCOUNT" />
 
                 <div id='settings_columns'>
                     <div id="options">
