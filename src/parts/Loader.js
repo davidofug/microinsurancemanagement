@@ -1,8 +1,8 @@
 import React from 'react'
-
+import '../styles/loader.css'
 function Loader() {
     return (
-        <div>
+        <div className="loader">
             <h1>Loading</h1>
         </div>
     )
