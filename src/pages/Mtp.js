@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import data from '../helpers/mock-data.json'
 import Datatable from '../helpers/DataTable';
 import { Form } from 'react-bootstrap'
+import Header from '../parts/header/Header';
 
 function Agents() {
 
@@ -17,13 +18,11 @@ function Agents() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Motor Third Party</h1>
-                <p className="subtitle">MANAGING THIRD PARTY POLICIES</p>
-            </header>
+            <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
+
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-agent">
+                <Link to="/admin/add-mtp">
                     <button className="btn btn-primary cta">Add MTP</button>
                 </Link>
                 

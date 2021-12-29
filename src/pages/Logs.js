@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Table } from 'react-bootstrap'
+import Header from '../parts/header/Header'
 
 function Logs() {
 
@@ -7,10 +8,7 @@ function Logs() {
 
     return (
         <div className='components'>
-            <div className='heading'>
-                <h1 className='title'>Logs</h1>
-                <p className="subtitle">VIEW YOUR LOG TRAILS</p>
-            </div>
+            <Header title="Logs" subtitle="VIEW YOUR LOG TRAILS" />
 
             <button className="btn btn-primary cta">Check in</button>
 

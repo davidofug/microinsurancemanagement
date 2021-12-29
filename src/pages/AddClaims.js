@@ -1,6 +1,7 @@
 import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
+import Header from '../parts/header/Header'
 
 function AddClaims() {
 
@@ -8,10 +9,7 @@ function AddClaims() {
 
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Add Claim</h1>
-                <p className="subtitle">ADD A NEW CLAIM</p>
-            </header>
+            <Header title="Add Claim" subtitle="ADD A NEW CLAIM" />
 
             <div className="table-card componentsData">  
                 <form action="">

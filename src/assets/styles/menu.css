@@ -4,7 +4,6 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 260px;
 }
 
 .sidebar{
@@ -362,6 +361,7 @@ footer ul li a:hover{
 
 .mobile-sidebar{
     display: none;
+    z-index: 1001;
 }
 
 
@@ -397,6 +397,20 @@ footer ul li a:hover{
     .navbar-nav .nav-link{
         color: #fff;
         margin-left: 10px;
+    }
+
+    .navbar-light .navbar-toggler{
+        border: none;
+    }
+
+    .navbar-toggler:focus {
+        text-decoration: none;
+        outline: none;
+        box-shadow: none !important;
+    }
+
+    .navbar-light .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgb(20, 117, 207)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='3' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
     }
 
     

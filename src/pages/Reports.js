@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import data from '../helpers/mock-data.json'
 import Datatable from '../helpers/DataTable';
-import { Form } from 'react-bootstrap'
 import { MdDownload } from 'react-icons/md'
 import { CSVLink } from "react-csv";
+import SearchBar from '../parts/searchBar/SearchBar';
+import Header from '../parts/header/Header';
 
 function Reports() {
 
@@ -17,12 +18,12 @@ function Reports() {
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
+        const handleSearch = ({target}) => setQ(target.value)
+
     return (
         <div className='components'>
-            <header className='heading'>
-                <h1 className='title'>Reports</h1>
-                <p className="subtitle">MANAGING REPORTS</p>
-            </header>
+            <Header title="Reports" subtitle="MANAGING REPORTS" />
+
                 <div id="add_client_group">
                     <div></div>
                     <Link to="/add-agent">
@@ -32,9 +33,7 @@ function Reports() {
                 
                 <div className="table-card componentsData " style={{"max-width": "80vw", "margin": "auto"}}>
                     <div id="search">
-                                <Form.Control type="text" className='mb-3' placeholder="Search for report"
-                                  value={q} onChange={({target}) => setQ(target.value)}
-                                  />
+                                <SearchBar placeholder={"Search for organisation"} value={q} handleSearch={handleSearch}/>
                                   <div></div>
                                   <CSVLink
                                     data={data}

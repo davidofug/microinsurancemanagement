@@ -4,6 +4,7 @@ import { Card, Container, Row, Col, Table} from 'react-bootstrap'
 // import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
+import Header from '../parts/header/Header'
 
 function Dashboard() {
     const [claims, setClaims] = useState(0)
@@ -19,10 +20,7 @@ function Dashboard() {
 
     return (
             <div className='components'>
-                <header className='heading'>
-                    <h1 className='title'>Welcome to Britam</h1>
-                    <p className="subtitle">WITH YOU EVERY STEP OF THE WAY</p>
-                </header>
+                <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" />
 
                 <div className="componentsData" >
                     <div id="first-row" className='mb-5 first-row' style={{display:"flex", width: "100%", justifyContent: "space-between"}}>
