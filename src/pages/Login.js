@@ -22,7 +22,7 @@ function Login() {
     const { setCurrentUser } = useAuth()
 
     const history = useHistory()
-/*     useEffect(() => {
+    useEffect(() => {
         const loggedIn = Number(localStorage.getItem('loggedIn'))
 
         if(loggedIn === 1 || loggedIn === 2 || loggedIn === 3|| loggedIn === 4){
@@ -31,7 +31,7 @@ function Login() {
         }
 
         document.title = 'Britam - With you every step of the way'
-    }) */
+    })
 
     const handleSignIn = async (event) => {
         event.preventDefault()
@@ -44,15 +44,18 @@ function Login() {
                 authentication.currentUser.getIdTokenResult().then((idTokenResult) => {
                     // Confirm the user is an Admin.
                     console.log(idTokenResult.claims)
-                    localStorage.setItem('loggedIn', 1)
-                    history.push('admin/dashboard')
-                    if (!!idTokenResult.claims.admin) {
+                    // localStorage.setItem('loggedIn', 1)
+                    // history.push('admin/dashboard')
+                    if (!!idTokenResult.claims.superadmin) {
                         // Show admin UI.
                         // showAdminUI();
-
+                        localStorage.setItem('loggedIn', 1)
+                        history.push('admin/dashboard')
                     } else {
                         // Show regular user UI.
                         // showRegularUI();
+                        localStorage.setItem('loggedIn', 3)
+                        history.push('agent/dashboard')
                     }
                 })
                     .catch((error) => {

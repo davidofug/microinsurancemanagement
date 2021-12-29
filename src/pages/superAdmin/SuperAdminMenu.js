@@ -5,9 +5,12 @@ import { useState, useEffect } from 'react'
 import logo from '../../assets/imgs/britam-logo.png'
 import profile from '../../assets/imgs/anyuru.jpg'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
+import MobileNav from '../../parts/menu/MobileNav'
+import SideBar from '../../parts/menu/SideBar'
+import MinimisedSideBar from '../../parts/menu/MinimisedSideBar'
 
 
-function SuperAdminMenu() {
+function SuperAdminMenu({ setLargeContentClass, largeContentClass }) {
 
     const { SuperAdmin } = menuData
 
@@ -18,7 +21,7 @@ function SuperAdminMenu() {
         if(sessionStorage.getItem('session1')) setSelected({...selected, activeObject: selected.SuperAdmin[sessionStorage.getItem('session1')-1]})
         else setSelected({...selected, activeObject: selected.SuperAdmin[0]})
         
-    })
+    }, [])
     
     const toggleActive = index => {
         setSelected({...selected, activeObject: selected.SuperAdmin[index]})
@@ -29,104 +32,39 @@ function SuperAdminMenu() {
 
     return (
         <div>
+            <MobileNav role={SuperAdmin} />
             {toggleMenu === true 
             ?
-                <nav className='sidebar'>
-                    <div id='brand'>
-                            <img src={logo} alt="Britam" />
-                            <i onClick={() => setToggeMenu(!toggleMenu)}>
-                            <HiOutlineChevronLeft />
-                            </i>
+                <div className="sidebar">
+                    <nav>
+                    <div id="brand">
+                        <img src={logo} alt="Britam" />
+                        <i
+                        onClick={() => {
+                            setToggeMenu(!toggleMenu);
+                            setLargeContentClass(!largeContentClass);
+                        }}
+                        >
+                        <HiOutlineChevronLeft />
+                        </i>
                     </div>
-                
-                    <section className='position-sticky pt-3' id="menu_section">
-                        <ul className="nav flex-column">
-                            { selected.SuperAdmin.map((object, index) => (
-                                                <li className='nav-item'>
-                                                    <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                        <span>{object.icon}</span>{object.name}
-                                                        {object?.subMenu &&
-                                                            (<ul>
-                                                                {object.subMenu.map((sub, index) => (
-                                                                    <li>
-                                                                        <Link to={sub.link} key={index} style={{color: "black"}}>
-                                                                            {sub.name}
-                                                                        </Link>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>)
-                                                        }
-                                                    </Link>
-                                                </li>
-                                    )
-                                )
-                            }
-                            </ul>
-                    </section>
-
-                    
-                    <footer>
-                            <ul>
-                                <li><Link to="/super-admin-settings">My Profile</Link></li>
-                                <li><Link to="/logout">Logout</Link></li>
-                            </ul>
-                        <Link to={'/super-admin-settings'}>
-                            <img src={profile} alt="profile" />
-                            <div>
-                                <p>Anyuru David Derrick</p>
-                                <p style={{"color": "#646464"}}>Super Admin</p>
-                            </div>
-                            <div id="eclipse"><div></div><div></div><div></div></div>
-                        </Link>
-                    </footer>
-                    
-
-                </nav> 
+                    <SideBar role={SuperAdmin} user="superadmin" />
+                    </nav>
+                </div> 
             : 
-                <nav className='sidebar-m'>
-                    <section id='brand_m'>
-                            <i onClick={() => setToggeMenu(!toggleMenu)}>
-                            <HiOutlineChevronRight />
-                                </i>
-                    </section>
-                
-                    <section className='position-sticky pt-3' id="menu_section_m">
-                        <ul className="nav flex-column">
-                            {
-                                selected.SuperAdmin.map((object, index) => (
-                                    <li className='nav-item' key={index}>
-                                            <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                <span>{object.icon}</span>
-                                                
-                                                    {object?.subMenu &&
-                                                            (<ul>
-                                                                {object.subMenu.map((sub, index) => (
-                                                                    <Link to={sub.link} className='sub-link' key={index} style={{color: "black"}}>
-                                                                        {sub.name}
-                                                                    </Link>
-                                                                ))}
-                                                            </ul>)
-                                                        }
-                                                
-                                            </Link>
-                                        </li>
-                                    )
-                                )
-                            }
-                            </ul>
-                    </section>
-                
-                    <footer>
-                            <ul>
-                                <li><Link to="/super-admin-settings">Settings</Link></li>
-                                <li><Link to="/logout">Logout</Link></li>
-                            </ul>
-                        <Link to={'/super-admin-settings'} id="account">
-                            <img src={profile} alt="profile" />
-                        </Link>
-                    </footer>
-
-                </nav> 
+                <nav className="sidebar-m">
+                <section id="brand_m">
+                <i
+                    onClick={() => {
+                    setToggeMenu(!toggleMenu);
+                    setLargeContentClass(!largeContentClass);
+                    }}
+                >
+                    <HiOutlineChevronRight />
+                </i>
+                </section>
+                <MinimisedSideBar role={SuperAdmin} />
+            </nav>
             }
         </div>
     )

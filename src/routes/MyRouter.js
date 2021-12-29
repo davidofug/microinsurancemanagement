@@ -50,7 +50,7 @@ function MyRouter() {
                     }
 
                     {currentUser === 3 && (
-                            <AgentMenu />
+                            <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />
                         )
                     }
 
