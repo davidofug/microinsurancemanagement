@@ -31,8 +31,8 @@ function SuperAdminMenu({ setLargeContentClass, largeContentClass }) {
     const toggleActiveClassStyle = index => selected.SuperAdmin[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
 
     return (
-        <div>
-            <MobileNav role={SuperAdmin} />
+        <div className="menuSide">
+            <MobileNav role={SuperAdmin} user="superadmin"/>
             {toggleMenu === true 
             ?
                 <div className="sidebar">

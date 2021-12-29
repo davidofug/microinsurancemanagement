@@ -61,9 +61,9 @@ function AddUsers() {
                                 <option value="hide">--User Role--</option>
                                 {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
                                 {authClaims.superadmin && <option value="admin">Admin</option>}
-                                {authClaims.superadmin || authClaims.admin && <option value="supervisor">Supervisor</option>}
+                                {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
                                 {authClaims.supervisor && <option value="agent">Agent</option>}
-                                {authClaims.supervisor || authClaims.agent && <option value="Customer">Customer</option>}
+                                {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3" >
