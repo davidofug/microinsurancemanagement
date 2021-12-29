@@ -17,9 +17,9 @@ function SuperAdminMenu() {
     useEffect(() => {
         if(sessionStorage.getItem('session1')) setSelected({...selected, activeObject: selected.SuperAdmin[sessionStorage.getItem('session1')-1]})
         else setSelected({...selected, activeObject: selected.SuperAdmin[0]})
-        
-    })
-    
+
+    },[])
+
     const toggleActive = index => {
         setSelected({...selected, activeObject: selected.SuperAdmin[index]})
         sessionStorage.setItem('session1', selected.SuperAdmin[index]["number"])
@@ -29,7 +29,7 @@ function SuperAdminMenu() {
 
     return (
         <div>
-            {toggleMenu === true 
+            {toggleMenu === true
             ?
                 <nav className='sidebar'>
                     <div id='brand'>
@@ -38,7 +38,7 @@ function SuperAdminMenu() {
                             <HiOutlineChevronLeft />
                             </i>
                     </div>
-                
+
                     <section className='position-sticky pt-3' id="menu_section">
                         <ul className="nav flex-column">
                             { selected.SuperAdmin.map((object, index) => (
@@ -64,7 +64,7 @@ function SuperAdminMenu() {
                             </ul>
                     </section>
 
-                    
+
                     <footer>
                             <ul>
                                 <li><Link to="/super-admin-settings">My Profile</Link></li>
@@ -79,17 +79,17 @@ function SuperAdminMenu() {
                             <div id="eclipse"><div></div><div></div><div></div></div>
                         </Link>
                     </footer>
-                    
 
-                </nav> 
-            : 
+
+                </nav>
+            :
                 <nav className='sidebar-m'>
                     <section id='brand_m'>
                             <i onClick={() => setToggeMenu(!toggleMenu)}>
                             <HiOutlineChevronRight />
                                 </i>
                     </section>
-                
+
                     <section className='position-sticky pt-3' id="menu_section_m">
                         <ul className="nav flex-column">
                             {
@@ -97,7 +97,7 @@ function SuperAdminMenu() {
                                     <li className='nav-item' key={index}>
                                             <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
                                                 <span>{object.icon}</span>
-                                                
+
                                                     {object?.subMenu &&
                                                             (<ul>
                                                                 {object.subMenu.map((sub, index) => (
@@ -107,7 +107,7 @@ function SuperAdminMenu() {
                                                                 ))}
                                                             </ul>)
                                                         }
-                                                
+
                                             </Link>
                                         </li>
                                     )
@@ -115,7 +115,7 @@ function SuperAdminMenu() {
                             }
                             </ul>
                     </section>
-                
+
                     <footer>
                             <ul>
                                 <li><Link to="/super-admin-settings">Settings</Link></li>
@@ -126,7 +126,7 @@ function SuperAdminMenu() {
                         </Link>
                     </footer>
 
-                </nav> 
+                </nav>
             }
         </div>
     )
