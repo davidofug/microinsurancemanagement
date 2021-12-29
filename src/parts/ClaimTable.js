@@ -7,11 +7,8 @@ import './claimTable.css'
 
 export default function ClaimTable({ columns, editContactId, handleDeleteClick, handleEditClick, currentClients, editFormData, handleEditFormChange, handleCancelClick }){
     
-    const [ clickedUl, setClickedUl ] = useState('')
+    const [ clickedUl, setClickedUl ] = useState(false)
 
-    const addShow = index => {
-        setClickedUl('actions-ul-show')
-    }
 
     return (
       <Table bordered hover striped responsive cellPadding={0} cellSpacing={0}>
@@ -31,15 +28,18 @@ export default function ClaimTable({ columns, editContactId, handleDeleteClick, 
               ) : (
                 <tr key={index}>
                     {columns.map((column, index) => (<td key={index}>{row[column]}</td>))}
-                    <td>
-                        <FaEllipsisV onClick={() => addShow(row.id)} />
-                        <ul id="actions" className={row.id == index ? 'actions-ul-show' : 'actions-ul'}>
+                    <td className='started'>
+                        <FaEllipsisV className={`actions please${index}`} onClick={() => {
+                            document.querySelector(`.please${index}`).classList.add('hello')
+                        }} />
+                        <ul id="actionsUl" className='actions-ul'>
                             <li><button onClick={(event) => handleEditClick(event, row)}>View Notification</button></li>
                             <li><button onClick={(event) => handleEditClick(event, row)}>Claim Settlement</button></li>
                             <li><button onClick={(event) => handleEditClick(event, row)}>View Settlement</button></li>
                             <li><button onClick={() => {handleDeleteClick(row.id)}}>Cancel</button></li>
                             <li><button onClick={() => {handleDeleteClick(row.id)}}>Delete</button></li>
-                            <li><button onClick={() => {handleDeleteClick(row.id)}}>close</button></li>
+                            <hr style={{"color": "black"}}></hr>
+                            <li><button>close</button></li>
                         </ul>
                     </td>
                 </tr>

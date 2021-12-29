@@ -224,24 +224,24 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "agent-dashboard",
+            link: "/agent/dashboard",
             head: "Britam - Dashboard"
         },
         {
             number: 2,
             name: "Clients",
             icon: <MdPerson />,
-            link: "agent-clients"
+            link: "/agent/clients"
         },
         {
             number: 3,
             name: "User Management",
             icon: <MdPeople />,
-            link: "agent-user",
+            link: "/agent/user",
             subMenu: [
                 {
                     name: "View Log Trail",
-                    link: "agent-view-log-trail"
+                    link: "/agent/view-log-trail"
                 }
             ]
         },
@@ -249,19 +249,19 @@ const menuData = {
             number: 4,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: "agent-policies",
+            link: "/agent/policies",
             subMenu: [
                 {
                     name: "MTP",
-                    link: "agent-motor-third-party"
+                    link: "/agent/motor-third-party"
                 },
                 {
                     name: "Windscreen",
-                    link: "agent-windscreen"
+                    link: "/agent/windscreen"
                 },
                 {
                     name: "Comprehensive",
-                    link: "agent-comprehensive"
+                    link: "/agent/comprehensive"
                 }
             ]
         },
@@ -269,13 +269,13 @@ const menuData = {
             number: 5,
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
-            link: "agent-claims"
+            link: "/agent/claims"
         },
         {
             number: 6,
             name: "Reports",
             icon: <MdAssessment />,
-            link: "agent-reports"
+            link: "/agent/reports"
         }
     ]
 }
