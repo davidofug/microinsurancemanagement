@@ -1,5 +1,5 @@
 import {initializeApp} from 'firebase/app'
-import { getAuth } from "firebase/auth"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { getFunctions } from "firebase/functions"
 
 const firebaseConfig = {
@@ -15,3 +15,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 export const authentication = getAuth(app)
 export const functions = getFunctions(app)
+
+export function onAuthStateChange(userCallback, claimsCallback, loadingCallback = null) {
+    loadingCallback(true)
+    return onAuthStateChanged(authentication, user => {
+        if (user) {
+            return authentication.currentUser.getIdTokenResult().then((idTokenResult) => {
+                claimsCallback(idTokenResult.claims)
+                userCallback({ loggedIn: true, ...user });
+                loadingCallback(false)
+            }).catch(error => {
+                console.log(error)
+                loadingCallback(false)
+                return userCallback({ loggedIn: false });
+            });
+        } else {
+            loadingCallback(false)
+           return userCallback({ loggedIn: false });
+      }
+    });
+}

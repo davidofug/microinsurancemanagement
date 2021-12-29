@@ -5,30 +5,15 @@ import {
 import { useEffect } from 'react'
 
 import useAuth from '../contexts/Auth'
-import { onAuthStateChanged } from 'firebase/auth'
-import { authentication } from '../helpers/firebase'
+import { onAuthStateChange } from '../helpers/firebase'
 
 function PrivateRoute({ children, ...rest }) {
-    const { currentUser, setCurrentUser} = useAuth()
-    function onAuthStateChange(callback) {
-        return onAuthStateChanged(authentication, user => {
-          if (user) {
-              callback({ loggedIn: true, ...user });
-          } else {
-            callback({ loggedIn: false });
-          }
-        });
-      }
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChange(setCurrentUser)
-        return () => unsubscribe()
-     },[]);
+    const { currentUser} = useAuth()
 
     return (
         <Route
             {...rest}
-            render={({location}) => currentUser
+            render={({location}) => currentUser?.loggedIn
                     ? (children)
                 : (
                     <Redirect
