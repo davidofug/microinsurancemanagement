@@ -4,36 +4,36 @@ const formFields = {
             user: "supervisor",
             label: "Supervisor",
             userRoles: [
-                "agent",
-                "customer"
+                "Agent",
+                "Customer"
             ],
         },
         {
             user: "agent",
             label: "Agent",
             userRoles: [
-                "customer"
+                "Customer"
             ]
         },
         {
-            user: "Admin",
-            label: "admin",
-            userRole: [
-                "supervisor"
+            user: "admin",
+            label: "Admin",
+            userRoles: [
+                "Supervisor"
             ]
         },
         {
-            user: "SuperAdmin",
-            label: "superAdmin",
-            userRole: [
-                "admin",
-                "supervisor",
-                "superAdmin"
+            user: "superAdmin",
+            label: "Super Admin",
+            userRoles: [
+                "Admin",
+                "Supervisor",
+                "SuperAdmin"
             ]
         },
         {
-            user: "Customer",
-            label: "customer"
+            user: "customer",
+            label: "Customer"
         }  
     ]
 }

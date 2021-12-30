@@ -39,13 +39,26 @@ function Login() {
 		try {
 			const result = await signInWithEmailAndPassword(authentication, email, password)
 			// console.log(result)
-			if (result) {
-                // setCurrentUser(1)
-                localStorage.setItem('loggedIn', 1)
-                history.push('admin/dashboard')
-                console.log(result)
-            }
+            if (result) {
+                // console.log(result)
+                authentication.currentUser.getIdTokenResult().then((idTokenResult) => {
+                    // Confirm the user is an Admin.
+                    console.log(idTokenResult.claims)
+                    localStorage.setItem('loggedIn', 1)
+                    history.push('admin/dashboard')
+                    if (!!idTokenResult.claims.admin) {
+                        // Show admin UI.
+                        // showAdminUI();
 
+                    } else {
+                        // Show regular user UI.
+                        // showRegularUI();
+                    }
+                })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
 		} catch (error) {
 			console.error(error)
 		}
