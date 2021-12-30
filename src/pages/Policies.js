@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
-import Header from '../parts/header/Header'
+// import Header from '../parts/header/Header'
 import '../styles/Policies.css'
 
 
@@ -25,26 +25,11 @@ function Policies() {
     const [ field, handleFieldChange ] = useForm({})
     const [ classes, setClasses ] = useState([])
     const [ vehicleUses, setVehicleUses ] = useState([])
-    let date = moment().format("l")
-    // console.log(date)
     const [ policyStartDate, setPolicyStartDate ] = useState(null)
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
 
-
-    
-
-    // console.log(policyStartDate)
-
-    const { currencies, make, categories } = dynamicFields
-
-    useEffect(() => {
-        document.title = 'Britam - Policies'
-    }, [])
-
-    
     const [ clientDetails, setClientDetails ] = useState({}) 
-
     const [ stickers, setStickers ] = useState([
         {
             referenceNo:'',
@@ -61,11 +46,17 @@ function Policies() {
         }
     ])
 
+    const { currencies, make, categories } = dynamicFields
+    let date = moment().format("l")
+
+    
+    useEffect(() => {
+        document.title = 'Britam - Policies'
+    }, [])
+
     const handleInputChange = (index, event) => {
         const values = [...stickers]
-        values[index][event.target.name] = event.target.value
-        
-                                        
+        values[index][event.target.name] = event.target.value                                        
         // console.log(event.name, event.target.value)
         setStickers(values)
     }
@@ -106,9 +97,9 @@ function Policies() {
     const renderStickerDetails = (singleSticker, index) => {
         return (
             <React.Fragment key={index}>
-                <tr>
-                    <td style={{verticalAlign:"middle", paddingLeft:"1vh", paddingRight:"1vh"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
+                <tr className="table-row">
+                    <td className="sticker-number" style={{verticalAlign:"middle", paddingLeft:"1vw", paddingRight:"1vw"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
+                    <td className="first-cell" style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="referenceNo">
@@ -130,7 +121,7 @@ function Policies() {
                             </div>
                         </div> 
                     </td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
+                    <td className="second-cell"style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="plateNo">
@@ -177,7 +168,7 @@ function Policies() {
                             </div>
                         </div>
                     </td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
+                    <td className="third-cell" style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="seatingCapacity">
@@ -199,7 +190,7 @@ function Policies() {
                             </div>
                         </div>
                     </td>
-                    <td style={{verticalAlign:"top", paddingLeft:"1vh", paddingRight:"1vh"}}>
+                    <td className="fourth-cell" style={{verticalAlign:"top", paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="ccPower">
@@ -216,16 +207,20 @@ function Policies() {
                             </div>
                         </div>
                     </td>
-                    <td style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
-                        <div style={{display:"flex", flexDirection:"column", gap:"5px", justifyContent:"flex-end"}}>
-                            <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
-                                onClick={() => removeStickerMotorDetails(index)}
-                                type="button"
-                            >-</button>
-                            <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} 
-                                onClick={() => addStickerMotorDetails()}
-                                type="button"
-                            >+</button>
+                    <td id="form-buttons" className="fifth-cell" style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
+                        <div className="form-buttons">
+                            <div>
+                                <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
+                                    onClick={() => removeStickerMotorDetails(index)}
+                                    type="button"
+                                >-</button>
+                            </div>
+                            <div>
+                                <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} 
+                                    onClick={() => addStickerMotorDetails()}
+                                    type="button"
+                                >+</button>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -265,8 +260,8 @@ function Policies() {
                                 Client
                             </h1>    
                         </Row>
-                        <Row style={{paddingBottom:"4vh"}}>
-                            <Col xs="2">
+                        <Row style={{gap:"2vw"}}>
+                            <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
                                 <Form.Group className="mb-3" controlId="clientDetails">
                                     <Form.Control type="text" placeholder="Existing" onChange={event => {
                                         const existingClientDetails = getExistingClient(event.target.value)
@@ -275,8 +270,8 @@ function Policies() {
                                     }}/>
                                 </Form.Group>
                             </Col>
-                            <Col xs="3">
-                                <button className="btn btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button> 
+                            <Col className="add-new-client" style={{display:"flex", justifyContent:"flex-end"}}>
+                                <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button> 
                             </Col>
                             <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
@@ -284,12 +279,12 @@ function Policies() {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <Form>
-                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Group className="mb-3" controlId="name">
                                             <Form.Label>Name</Form.Label>
                                             <Form.Control placeholder="Enter name" id="name" onChange={handleFieldChange}/>
                                         </Form.Group>
                                         <Row className="mb-3">
-                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                            <Form.Group as={Col} controlId="email" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Date of birth</Form.Label>
                                                 <Form.Control type="date" id="date" onChange={handleFieldChange}/>
                                             </Form.Group>
@@ -357,15 +352,15 @@ function Policies() {
                             </Modal>
                         </Row>
                     </div>
-                    <Row style={{paddingBottom:"6vh"}}>
-                        <Col xs="3">
+                    <Row style={{paddingBottom:"6vh", display:"flex"}}>
+                        <div className="currency">
                             <Form.Group classname="mb-3" controlId="currency">
                                 <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={handleFieldChange}>
                                     <option>Currency</option>
                                     {currencies.map((currency, index) => <option value={currencies[index]}>{currency["code"]}</option>)}  
                                 </Form.Select>
                             </Form.Group>
-                        </Col>
+                        </div>
                     </Row>
                     {}
                     
@@ -377,26 +372,26 @@ function Policies() {
                     {/*Sticker form details container.*/}
                     
                     
-                    <div>
+                    <div className="dates">
                         {
                             moment(policyEndDate).isValid() === true ? 
                                 <>
-                                    <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
-                                        <Col xs="3">
-                                            <Form.Group controlId="policyStartDate" >
+                                    <div style={{display:"flex", justifyContent:"flex-start", paddingTop:"4vh", paddingBottom:"4vh"}}>
+                                        <div >
+                                            <Form.Group controlId="policyStartDate"  >
                                                 <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                                 <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
                                                     setPolicyStartDate(event.target.value)
                                                     setPolicyEndDate(moment(event.target.value).add(1, 'years').calendar())
-                                                    console.log(`end ${policyEndDate}`)
+                                                    // console.log(`end ${policyEndDate}`)
                                                     // console.log(policyStartDate)
                                                 }}/>   
                                             </Form.Group>
-                                        </Col>
-                                    </Row> 
-                                    <Row>
-                                        <Col xs="3">
-                                            <Form.Group controlId="policyEndDate" >
+                                        </div>
+                                    </div> 
+                                    <Row style={{paddingBottom:"3vh"}}>
+                                        <Col> 
+                                            <Form.Group controlId="policyEndDate" id="policy-end-date" >
                                                 <Form.Label><h5>Policy End Date</h5></Form.Label>
                                                 <Form.Control type="text" name="policy_start_date" value={policyEndDate} readOnly/>   
                                             </Form.Group>
@@ -405,7 +400,7 @@ function Policies() {
                                 </>    
                                 : 
                                 <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
-                                    <Col xs="3">
+                                    <Col>
                                         <Form.Group controlId="policyStartDate" >
                                             <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                             <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
@@ -420,9 +415,7 @@ function Policies() {
                                 
                         }
 
-                        
-
-                        <div style={{display:"flex", justifyContent:"flex-end"}}>
+                        <div style={{display:"flex", width:"100%", justifyContent:"flex-end"}}>
                             <div>
                                 <Button variant="primary" type="submit">
                                     Process 3rd Party
