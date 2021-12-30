@@ -27,7 +27,7 @@ import AddUsers from '../pages/AddUsers'
 function AdminRoutes() {
     return (
         <>
-            <PrivateRoute path="/admin/dashboard" >
+            <PrivateRoute path="/dashboard" >
                 <Dashboard />
             </PrivateRoute>
             <PrivateRoute path="/admin/organisations" >
