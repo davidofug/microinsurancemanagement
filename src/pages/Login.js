@@ -10,6 +10,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
+import { Alert } from "react-bootstrap";
 
 import "../assets/styles/login.css";
 import Loader from "../parts/Loader";
@@ -23,7 +24,7 @@ function Login() {
   const [isVisible, setIsVisible] = useState(false);
 
   const { currentUser, setCurrentUser, setAuthClaims } = useAuth();
-  const { error, setError } = useState(null);
+  const [ error, setError ] = useState('');
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
 
@@ -31,7 +32,7 @@ function Login() {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
     document.title = "Britam - With you every step of the way";
     onAuthStateChange(setCurrentUser, setAuthClaims, setLoading);
-    console.log(currentUser);
+    // console.log(currentUser);
     // return () => { unsubscribe() }
   }, []);
 
@@ -48,23 +49,31 @@ function Login() {
       if (result) {
         setLoading(false);
         onAuthStateChange(setCurrentUser, setAuthClaims);
-        history.push("/dashboard"); // had removed claim from the route.
+        history.push("/admin/dashboard"); // had removed claim from the route.
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch(err) {
+      // console.log(error.message);
+      console.log(err.code)
+      setLoading(false)
+      const errors = {
+        "auth/user-not-found": "User with email is not found",
+        "auth/wrong-password": "Password does not match the email"
+      }
+      setError(errors[err.code])
   };
+}
 
   if (isLoading) return <Loader />;
 
   if (currentUser?.loggedIn)
-    return <Redirect to={{ pathname: "/dashboard" }} />;
+    return <Redirect to={{ pathname: "/admin/dashboard" }} />;
 
   return (
-    <div className="logout">
+    <div className="auth-wrapper">
       <img src={logo} alt="Britam" />
       <form action="" onSubmit={handleSignIn}>
         <p>Enter Email and Password to sign in</p>
+        {error && <Alert variant="danger">{error}</Alert>}
         <div className="login-inputs">
           <label htmlFor="email">Email</label>
           <input
@@ -78,6 +87,7 @@ function Login() {
             required
           />
         </div>
+
         <div className="login-inputs">
           <label htmlFor="password_input">Password</label>
           <div id="password">
@@ -132,4 +142,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Login

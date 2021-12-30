@@ -37,7 +37,7 @@ function MyRouter() {
                     <Route path="/" exact component={Login} />
                     <Route path="/login" component={Login} />
                     <Route path="/forgot-password" component={ForgotPassword} />
-                    {/* <Route path="/logout" component={Logout} /> */}
+                    <Route path="/logout" component={Logout} />
                     <Route path="/not-logged-in" component={NotLoggedIn} />
                     <main>
                         <AdminRoutes />

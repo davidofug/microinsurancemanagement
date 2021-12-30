@@ -1,17 +1,32 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination';
 import ClaimTable from '../parts/ClaimTable';
 import SearchBar from '../parts/searchBar/SearchBar';
 import Header from '../parts/header/Header';
+import { Table } from 'react-bootstrap'
+import { db } from '../helpers/firebase'
+import { collection, getDocs, addDoc, doc} from 'firebase/firestore'
 
 function Claims() {
+  const [claims, setClaims] = useState([])
+  const claimsCollectionRef = collection(db, "claims")
 
-    useEffect(() => {document.title = 'Britam - Claims'}, [])
+    useEffect(() => {
+      document.title = 'Britam - Claims'
 
+      const getClaims = async () => {
+        const data = await getDocs(claimsCollectionRef)
+        console.log(data)
+      }
+      getClaims()
+    }, [])
 
-    const [claims, setClaims] = useState(data);
+    
+    // const [claims, setClaims] = useState(data);
+    
+    
   //
     const [editFormData, setEditFormData] = useState({
         name: "",
@@ -127,7 +142,9 @@ function Claims() {
                             <div></div>
                       </div>
 
-                      <form onSubmit={handleEditFormSubmit}>
+                      <Table></Table>
+
+                      {/* <form onSubmit={handleEditFormSubmit}>
                         <ClaimTable 
                             columns={columns}
                             editContactId={editContactId}
@@ -138,7 +155,7 @@ function Claims() {
                             handleEditFormChange={handleEditFormChange}
                             handleCancelClick={handleCancelClick}
                         /> 
-                  </form>
+                  </form> */}
 
                   <Pagination 
                     pages={totalPagesNum}

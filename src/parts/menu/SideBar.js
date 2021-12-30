@@ -5,7 +5,7 @@ import profile from '../../assets/imgs/image 2.png'
 import { MdLogout  } from 'react-icons/md'
 import DefaultAvatar from '../DefaultAvatar'
 
-export default function SideBar({role, user}){
+export default function SideBar({role, user, displayName}){
 
     const [ selected, setSelected ] = useState({ activeObject: null, role })
     const [ toggleMenu, setToggeMenu ] = useState(true)
@@ -58,7 +58,7 @@ export default function SideBar({role, user}){
                     <DefaultAvatar />
                     {/* <img src={profile} alt="profile" /> */}
                     <div>
-                        <p>Charles Kasasira</p>
+                        <p>{displayName}</p>
                         <p style={{"color": "#646464"}}>{user}</p>
                     </div>
                     <div id="eclipse"><div></div><div></div><div></div></div>

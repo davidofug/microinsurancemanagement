@@ -21,7 +21,7 @@ import AddUsers from '../pages/AddUsers'
 function SupervisorRoutes() {
     return (
         <>
-            <PrivateRoute path="/dashboard" >
+            <PrivateRoute path="/supervisor/dashboard" >
                 <Dashboard />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/view-log-trail" >

@@ -1,4 +1,4 @@
-.logout {
+.auth-wrapper {
   display: flex;
   flex-direction: column;
   width: 100vw;
@@ -7,11 +7,11 @@
   align-items: center;
 }
 
-.logout img {
+.auth-wrapper img {
   margin-bottom: 40px;
 }
 
-.logout form {
+.auth-wrapper form {
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
@@ -24,7 +24,7 @@
     rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
 }
 
-.logout form p {
+.auth-wrapper form p {
   font-size: 1.1rem;
 }
 
@@ -63,7 +63,7 @@
     border: 1px solid #1475cf;
 } */
 
-.logout .login-inputs {
+.auth-wrapper .login-inputs {
   display: flex;
   flex-direction: column;
   /* padding: 10px 30px; */
@@ -145,7 +145,7 @@
 }
 
 @media screen and (max-width: 780px) {
-  .logout form {
+  .auth-wrapper form {
     padding: 25px 25px;
   }
 }

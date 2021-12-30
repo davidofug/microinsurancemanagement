@@ -23,7 +23,7 @@ import AddUsers from '../pages/AddUsers'
 function SuperAdminRoutes() {
     return (
         <>
-            <PrivateRoute path="dashboard" >
+            <PrivateRoute path="/superadmin/dashboard" >
                 <Dashboard />
             </PrivateRoute>
             <PrivateRoute path="/superadmin/organisations" >
