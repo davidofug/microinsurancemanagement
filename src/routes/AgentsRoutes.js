@@ -19,7 +19,7 @@ import AddUsers from '../pages/AddUsers'
 function AgentsRoutes() {
     return (
         <>
-            <PrivateRoute path="/agent/dashboard" >
+            <PrivateRoute path="/dashboard" >
                 <Dashboard />
             </PrivateRoute>
             <PrivateRoute path="/agent/view-log-trail" >

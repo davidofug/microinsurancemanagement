@@ -15,7 +15,6 @@ import Organisations from '../pages/admin/Organisations'
 import Logs from '../pages/Logs.js'
 import Supervisors from '../pages/admin/Supervisors'
 import Agents from '../pages/Agents'
-import AddAgents from '../pages/AddAgents'
 import AddSupervisors from '../pages/admin/AddSupervisors'
 import Logout from '../pages/Logout'
 import AddUsers from '../pages/AddUsers'
@@ -24,7 +23,7 @@ import AddUsers from '../pages/AddUsers'
 function SuperAdminRoutes() {
     return (
         <>
-            <PrivateRoute path="/superadmin/dashboard" >
+            <PrivateRoute path="dashboard" >
                 <Dashboard />
             </PrivateRoute>
             <PrivateRoute path="/superadmin/organisations" >

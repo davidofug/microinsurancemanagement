@@ -1,85 +1,151 @@
-.logout{
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
+.logout {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 
-.logout form{
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
-    background: #fff; 
-    border-radius: 5px; 
-    color: #8E8E93;
-    padding: 25px 50px;
-    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+.logout img {
+  margin-bottom: 40px;
 }
 
-.logout .login-inputs{
-    display: flex;
-    flex-direction: column;
-    /* padding: 10px 30px; */
-    margin-bottom: 20px;
+.logout form {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-items: center; */
+  background: #fff;
+  border-radius: 5px;
+  color: #8e8e93;
+  padding: 25px 50px;
+  box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px,
+    rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
 }
 
-.login-inputs input{
-    border-radius: 5px;
-    padding: 5px 5px;
-    border: 1px solid #9A9A9A;
+.logout form p {
+  font-size: 1.1rem;
 }
 
-.login-inputs input:focus{
-    outline: none;
+#password {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-#password{
-    border-radius: 5px;
-    border: 1px solid #9A9A9A;
+#password_input {
+  border: none;
+  width: 95%;
 }
 
-
-
-
-#password_input:focus{
-    outline: none;
+.visibilityIcon {
+  float: right;
+  margin-right: 5px;
+  margin-top: auto;
+  position: relative;
+  z-index: 2;
 }
 
+.visibilityIcon:hover {
+  color: #000;
+}
+
+#checkbox {
+  margin-right: 5px;
+}
+
+/* #email:focus {
+  outline: 1px solid #1475cf;
+}
+
+#password_input:focus .visibilityIcon{
+    border: 1px solid #1475cf;
+} */
+
+.logout .login-inputs {
+  display: flex;
+  flex-direction: column;
+  /* padding: 10px 30px; */
+  margin-bottom: 20px;
+}
+
+.login-inputs input {
+  border-radius: 5px;
+  padding: 5px 5px;
+  border: 1px solid #9a9a9a;
+}
+
+.login-inputs input:focus {
+  outline: none;
+}
+
+#password {
+  border-radius: 5px;
+  border: 1px solid #9a9a9a;
+}
+
+#password_input:focus {
+  outline: none;
+}
 
 /* positioning the visibility */
-#password{
-    position: relative;
+#password {
+  position: relative;
 }
 
-#visible{
-    position: absolute;
-    left: 60%;
-    top: 57%;
-    color: #000;
-    border: 1px solid red;
+#visible {
+  position: absolute;
+  left: 60%;
+  top: 57%;
+  color: #000;
+  border: 1px solid red;
 }
 
-
-#submit_login{
-    display: flex;
-    /* justify-content: center; */
-    align-items: center;
-    padding: 0;
-    margin-top: 20px;
+#submit_login {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 0;
+  margin-top: 20px;
 }
 
-#submit_login input{
-    margin: 0;
+#submit_login input {
+  margin: 0;
 }
-#submit_login p{
-    text-align: center;
-    color: #1475cf;
-    margin: 0;
-    margin-left: 10px;
+#submit_login p {
+  text-align: center;
+  color: #1475cf;
+  margin: 0;
+  margin-left: 10px;
 }
-#submit_login a{
-    text-decoration: none;
+#submit_login a {
+  text-decoration: none;
+}
+
+#enter {
+  font-size: 0.9rem;
+}
+
+#forgotSubmit {
+  width: 100%;
+  margin: 0;
+}
+
+#forgotRemember {
+  text-align: center;
+  color: #1475cf;
+  margin: 0;
+}
+
+#forgotLink {
+  text-decoration: none;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 780px) {
+  .logout form {
+    padding: 25px 25px;
+  }
 }

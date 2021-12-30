@@ -13,7 +13,6 @@ import Windscreen from '../pages/Windscreen'
 import Comprehensive from '../pages/Comprehensive'
 import Logs from '../pages/Logs.js'
 import Agents from '../pages/Agents'
-import AddAgents from '../pages/AddAgents'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddUsers from '../pages/AddUsers'
@@ -22,7 +21,7 @@ import AddUsers from '../pages/AddUsers'
 function SupervisorRoutes() {
     return (
         <>
-            <PrivateRoute path="/supervisor/dashboard" >
+            <PrivateRoute path="/dashboard" >
                 <Dashboard />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/view-log-trail" >
