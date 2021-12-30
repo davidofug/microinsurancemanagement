@@ -6,7 +6,7 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "/superadmin/dashboard"
+            link: "/dashboard"
         },
         {
             number: 2,
@@ -80,7 +80,7 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "/admin/dashboard"
+            link: "/dashboard"
         },
         {
             number: 2,
@@ -162,7 +162,7 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "/supervisor/dashboard"
+            link: "/dashboard"
         },
         {
             number: 2,
@@ -228,7 +228,7 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "/agent/dashboard",
+            link: "/dashboard",
             head: "Britam - Dashboard"
         },
         {

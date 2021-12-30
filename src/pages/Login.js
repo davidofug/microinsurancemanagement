@@ -48,7 +48,7 @@ function Login() {
       if (result) {
         setLoading(false);
         onAuthStateChange(setCurrentUser, setAuthClaims);
-        history.push("admin/dashboard");
+        history.push("/dashboard"); // had removed claim from the route.
       }
     } catch (error) {
       console.error(error);
@@ -58,7 +58,7 @@ function Login() {
   if (isLoading) return <Loader />;
 
   if (currentUser?.loggedIn)
-    return <Redirect to={{ pathname: "/admin/dashboard" }} />;
+    return <Redirect to={{ pathname: "/dashboard" }} />;
 
   return (
     <div className="logout">
