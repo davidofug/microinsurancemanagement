@@ -4,6 +4,7 @@ import profile from '../../assets/imgs/image 2.png'
 import { Form, Row, Col, Alert } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
 import Header from '../../parts/header/Header'
+import DefaultAvatar from '../../parts/DefaultAvatar'
 
 function Settings() {
 
@@ -58,7 +59,8 @@ function Settings() {
                                         <Form onSubmit={handleEditFormSubmit}>
                                             <h2>Edit Profile</h2>
                                             <hr />
-                                            <img src={profile} alt="profile" />
+                                            <DefaultAvatar />
+                                            {/* <img src={profile} alt="profile" /> */}
                                             <Row className="mb-3">
                                                 <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                     <Form.Label>Name</Form.Label>
@@ -131,16 +133,16 @@ function Settings() {
                                     <hr />
                                     <Form>                            
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
-                                            <Form.Label>Old Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Enter old password" />
+                                            <Form.Label htmlFor='oldPassword'>Old Password</Form.Label>
+                                            <Form.Control type="password" id='oldPassword' placeholder="Enter old password" />
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
-                                            <Form.Label>New Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Enter new password" />
+                                            <Form.Label htmlFor='newPassword'>New Password</Form.Label>
+                                            <Form.Control type="password" id='newPassword' placeholder="Enter new password" />
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
-                                            <Form.Label>Confirm Password</Form.Label>
-                                            <Form.Control placeholder="Match password" type="password" />
+                                            <Form.Label htmlFor='confirmPassword'>Confirm Password</Form.Label>
+                                            <Form.Control placeholder="Match password" id='confirmPassword' type="password" />
                                         </Form.Group>
                                         <input type="submit" value="Update Password" className="btn btn-primary cta" />                              
                                 </Form>

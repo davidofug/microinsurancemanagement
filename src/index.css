@@ -18,18 +18,16 @@ body{
     font-size: .875rem;
 }
 
-tbody > tr:hover {
-    background-color: #1475cf;
-    color: white;
-}
+/* tbody > tr:hover {
+} */
 
 .table{
     border: 1px solid #000;
 }
 
-.table-hover > tbody > tr:hover > * {
+/* .table-hover > tbody > tr:hover > * {
     color: white;
-}
+} */
 
 .table > :not(:first-child) {
     border-top: 1px solid currentColor;
