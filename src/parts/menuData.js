@@ -6,39 +6,39 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "super-admin-dashboard"
+            link: "/superadmin/dashboard"
         },
         {
             number: 2,
             name: "Clients",
             icon: <MdPerson />,
-            link: "super-admin-clients"
+            link: "/superadmin/clients"
         },
         {
             number: 3,
             name: "User Management",
             icon: <MdPeople />,
-            link: "super-admin-user-management",
+            link: "/superadmin/user-management",
             subMenu: [
                 {
                     name: "Agents",
-                    link: "super-admin-agents"
+                    link: "/superadmin/agents"
                 },
                 {
                     name: "Supervisors",
-                    link: "super-admin-supervisors"
+                    link: "/superadmin/supervisors"
                 },
                 {
                     name: "Admins",
-                    link: "super-admin-admins"
+                    link: "/superadmin/admins"
                 },
                 {
                     name: "Add Users",
-                    link: "super-admin-add-users"
+                    link: "/add-user"
                 },
                 {
                     name: "View Log Trail",
-                    link: "super-admin-view-log-trail"
+                    link: "/superadmin/view-log-trail"
                 }
             ]
         },
@@ -46,19 +46,19 @@ const menuData = {
             number: 4,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: "super-admin-policies",
+            link: "/superadmin/policies",
             subMenu: [
                 {
                     name: "MTP",
-                    link: "super-admin-motor-third-party"
+                    link: "/superadmin/motor-third-party"
                 },
                 {
                     name: "Windscreen",
-                    link: "super-admin-windscreen"
+                    link: "/superadmin/windscreen"
                 },
                 {
                     name: "Comprehensive",
-                    link: "super-admin-comprehensive"
+                    link: "/superadmin/comprehensive"
                 }
             ]
         },
@@ -66,13 +66,13 @@ const menuData = {
             number: 5,
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
-            link: "super-admin-claims"
+            link: "/superadmin/claims"
         },
         {
             number: 6,
             name: "Reports",
             icon: <MdAssessment />,
-            link: "super-admin-reports"
+            link: "/superadmin/reports"
         }
     ],
     Admin: [
@@ -116,7 +116,7 @@ const menuData = {
                 },
                 {
                     name: "Add Users",
-                    link: "/admin/add-users"
+                    link: "/add-user"
                 },
                 {
                     name: "View Log Trail",
@@ -162,27 +162,31 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "/supervisor-dashboard"
+            link: "/supervisor/dashboard"
         },
         {
             number: 2,
             name: "Clients",
             icon: <MdPerson />,
-            link: "/supervisor-clients"
+            link: "/supervisor/clients"
         },
         {
             number: 3,
             name: "User Management",
             icon: <MdPeople />,
-            link: "/supervisor-user-management",
+            link: "/supervisor/user-management",
             subMenu: [
                 {
                     name: "Agents",
-                    link: "/supervisor-agents"
+                    link: "/supervisor/agents"
+                },
+                {
+                    name: "Add Users",
+                    link: "/add-user"
                 },
                 {
                     name: "View Log Trail",
-                    link: "/supervisor-view-log-trail"
+                    link: "/supervisor/view-log-trail"
                 }
             ]
         },
@@ -190,19 +194,19 @@ const menuData = {
             number: 4,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: "/supervisor-policies",
+            link: "/supervisor/policies",
             subMenu: [
                 {
                     name: "MTP",
-                    link: "/supervisor-motor-third-party"
+                    link: "/supervisor/motor-third-party"
                 },
                 {
                     name: "Windscreen",
-                    link: "/supervisor-windscreen"
+                    link: "/supervisor/windscreen"
                 },
                 {
                     name: "Comprehensive",
-                    link: "/supervisor-comprehensive"
+                    link: "/supervisor/comprehensive"
                 }
             ]
         },
@@ -210,13 +214,13 @@ const menuData = {
             number: 5,
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
-            link: "/supervisor-claims"
+            link: "/supervisor/claims"
         },
         {
             number: 6,
             name: "Reports",
             icon: <MdAssessment />,
-            link: "/supervisor-reports"
+            link: "/supervisor/reports"
         }
     ],
     Agent: [
@@ -224,24 +228,28 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "agent-dashboard",
+            link: "/agent/dashboard",
             head: "Britam - Dashboard"
         },
         {
             number: 2,
             name: "Clients",
             icon: <MdPerson />,
-            link: "agent-clients"
+            link: "/agent/clients"
         },
         {
             number: 3,
             name: "User Management",
             icon: <MdPeople />,
-            link: "agent-user",
+            link: "/agent/user",
             subMenu: [
                 {
+                    name: "Add Users",
+                    link: "/add-user"
+                },
+                {
                     name: "View Log Trail",
-                    link: "agent-view-log-trail"
+                    link: "/agent/view-log-trail"
                 }
             ]
         },
@@ -249,19 +257,19 @@ const menuData = {
             number: 4,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: "agent-policies",
+            link: "/agent/policies",
             subMenu: [
                 {
                     name: "MTP",
-                    link: "agent-motor-third-party"
+                    link: "/agent/motor-third-party"
                 },
                 {
                     name: "Windscreen",
-                    link: "agent-windscreen"
+                    link: "/agent/windscreen"
                 },
                 {
                     name: "Comprehensive",
-                    link: "agent-comprehensive"
+                    link: "/agent/comprehensive"
                 }
             ]
         },
@@ -269,13 +277,13 @@ const menuData = {
             number: 5,
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
-            link: "agent-claims"
+            link: "/agent/claims"
         },
         {
             number: 6,
             name: "Reports",
             icon: <MdAssessment />,
-            link: "agent-reports"
+            link: "/agent/reports"
         }
     ]
 }

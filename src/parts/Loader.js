@@ -1,9 +1,13 @@
 import React from 'react'
-
+import '../styles/loader.css'
 function Loader() {
     return (
-        <div>
-            <h1>Loading</h1>
+        <div className="loader-container">
+            <div className="lds-ripple">
+                <div></div>
+                <div></div>
+            </div>
+            <p className="caption">Please wait!</p>
         </div>
     )
 }

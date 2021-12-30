@@ -6,7 +6,7 @@ import profile from '../../assets/imgs/image 2.png'
 import logo from '../../assets/imgs/britam-logo.png'
 import { Navbar, Offcanvas, Container, Nav, NavDropdown} from 'react-bootstrap'
 
-export default function MobileNav ({role}) {
+export default function MobileNav ({role, user}) {
     const [ selected, setSelected ] = useState({ activeObject: null, role })
 
     useEffect(() => {
@@ -69,7 +69,7 @@ export default function MobileNav ({role}) {
                                 <img src={profile} alt="profile" />
                                 <div>
                                     <p>Charles Kasasira</p>
-                                    <p style={{"color": "#646464"}}>role</p>
+                                    <p style={{"color": "#646464"}}>{user}</p>
                                 </div>
                                 <div id="eclipse"><div></div><div></div><div></div></div>
                             </Link>

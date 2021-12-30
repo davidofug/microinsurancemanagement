@@ -12,8 +12,6 @@ function Dashboard() {
     const [policies, setPolicies] = useState(2)
     const [claimNotifications, setClaimNotifications] = useState(27)
 
-
-
     useEffect(() => {
         document.title = 'Britam - Welcome'
     }, [])
