@@ -24,12 +24,6 @@ function Reports() {
         <div className='components'>
             <Header title="Reports" subtitle="MANAGING REPORTS" />
 
-                <div id="add_client_group">
-                    <div></div>
-                    <Link to="/add-agent">
-                        <button className="btn btn-primary cta">Add Reports</button>
-                    </Link>
-                </div>
                 
                 <div className="table-card componentsData " style={{"max-width": "80vw", "margin": "auto"}}>
                     <div id="search">

@@ -17,74 +17,36 @@ import SupervisorMenu from '../pages/supervisor/SupervisorMenu'
 import AgentMenu from '../pages/agent/AgentMenu'
 import SuperAdminMenu from '../pages/superAdmin/SuperAdminMenu'
 
-
-
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 function MyRouter() {
 
-    const { currentUser } = useAuth()
+    const {currentUser,authClaims } = useAuth()
     const [ largeContentClass, setLargeContentClass ] = useState(false)
 
     return (
         <Router>
-            {!currentUser ? (
+            <div className={largeContentClass ? 'top-container-large': `top-container` }>
+                {currentUser?.loggedIn && <div className='MenuSide'>
+                    {authClaims?.admin && <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                    {authClaims?.supervisor && <SupervisorMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                    {authClaims?.agent && <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                    {authClaims?.superadmin && <SuperAdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                </div>}
                 <Switch>
                     <Route path="/" exact component={Login} />
                     <Route path="/login" component={Login} />
                     <Route path="/forgot-password" component={ForgotPassword} />
-                    <Route path="/logout" component={Logout} />
+                    {/* <Route path="/logout" component={Logout} /> */}
                     <Route path="/not-logged-in" component={NotLoggedIn} />
+                    <main>
+                        <AdminRoutes />
+                        <SupervisorRoutes />
+                        <AgentsRoutes />
+                        <SuperAdminRoutes />
+                    </main>
                 </Switch>
-            ): (
-                <div className={largeContentClass ? 'top-container-large': `top-container` }>
-                <div className='MenuSide'>
-                    {currentUser === 1 && (
-                            <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass}/>
-                            )
-                    }
-
-                    {currentUser === 2 && (
-                            <SupervisorMenu />
-                        )
-                    }
-
-                    {currentUser === 3 && (
-                            <AgentMenu />
-                        )
-                    }
-
-                    {currentUser === 4 && (
-                            <SuperAdminMenu />
-                        )
-                    }
-                </div>
-
-                <main>
-                    <Switch>
-                        {currentUser === 1 && (
-                                <AdminRoutes />
-                            )
-                        }
-                        {currentUser === 2 && (
-                                <SupervisorRoutes />
-                            )
-                        }
-                        {currentUser === 3 && (
-                                <AgentsRoutes />
-                            )
-                        }
-                        {currentUser === 4 && (
-                                <SuperAdminRoutes />
-                            )
-                        }
-
-                    </Switch>
-                </main>
             </div>
-            )}
-
-
         </Router>
     )
 }

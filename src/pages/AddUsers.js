@@ -1,6 +1,5 @@
 import '../assets/styles/addClients.css'
-// import { authentication } from '../helpers/firebase'
-// import { createUser, onAuthStateChanged} from 'firebase/auth'
+import { authentication } from '../helpers/firebase'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
 import { useEffect, useState } from 'react'
@@ -10,8 +9,10 @@ import Header from '../parts/header/Header'
 import formFields from '../helpers/AddUsers'
 // import { useState } from 'react'
 import { useForm } from '../hooks/useForm'
+import useAuth from '../contexts/Auth'
 
 function AddUsers() {
+    const { authClaims } = useAuth()
     const addUser = httpsCallable(functions,'addUser')
     useEffect(() => { document.title = 'Britam - Add Supervisors' }, [])
 
@@ -42,6 +43,11 @@ function AddUsers() {
         if(windscreen) fields['windscreen'] = true
         if(checkedItems) fields['userRoles'] = checkedItems
         // console.log(fields)
+        if (windscreen) fields['windscreen'] = true
+
+        fields['added_by_uid'] = authentication.currentUser.uid
+        fields['added_by_name'] = authentication.currentUser.displayName
+
         addUser(fields).then((results) => {
             console.log(results)
         }).catch((err) => {
@@ -74,6 +80,11 @@ function AddUsers() {
                                 }}>
                                 <option value="hide">--User Role--</option>
                                 {users?.length > 0 && users.map((user) => <option value={user.user}>{user.label}</option>)}
+                                {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
+                                {authClaims.superadmin && <option value="admin">Admin</option>}
+                                {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
+                                {authClaims.supervisor && <option value="agent">Agent</option>}
+                                {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3" >
