@@ -291,6 +291,19 @@ tbody, td, tfoot, th, thead, tr{
 }
 
 
+.avatarBG {
+    background-color: rgb(143, 140, 140);
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 50%;
+  }
+  
+
+
 
 
 
