@@ -25,6 +25,7 @@ function BarChart () {
       
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top',
@@ -51,7 +52,7 @@ function BarChart () {
         labels,
         datasets: [
             {
-                label: 'Total monthly Sales',
+                label: 'Sticker sales',
                 data: [...sales],
                 backgroundColor: '#E0E7EC',
                 hoverBackgroundColor:"#1475CF"
