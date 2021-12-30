@@ -48,7 +48,7 @@ function AgentsRoutes() {
 {/*             <PrivateRoute path="/logout" >
                 <Logout />
             </PrivateRoute> */}
-            <PrivateRoute path="agent-/motor-third-party" >
+            <PrivateRoute path="/agent/motor-third-party" >
                 <Mtp />
             </PrivateRoute>
             <PrivateRoute path="/agent/windscreen" >
