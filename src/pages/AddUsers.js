@@ -6,8 +6,6 @@ import { useEffect, useState } from 'react'
 import { Form, Row, Col, Dropdown, DropdownButton, ButtonGroup, FormControl, InputGroup } from 'react-bootstrap'
 import Upload from '../parts/uploader/Upload'
 import Header from '../parts/header/Header'
-import formFields from '../helpers/AddUsers'
-// import { useState } from 'react'
 import { useForm } from '../hooks/useForm'
 import useAuth from '../contexts/Auth'
 
@@ -19,9 +17,6 @@ function AddUsers() {
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
     const [mtp, setMTP] = useState(false)
-    const [userRole, setUserRole] = useState(null)
-    const [selectedUser, setSelectedUser] = useState({})
-    const [checkedItems, setCheckedItems] = useState({})
 
     const [fields, handleFieldChange] = useForm({
         user_role: '',
@@ -40,9 +35,6 @@ function AddUsers() {
         event.preventDefault()
         if(comprehensive) fields['comprehensive'] = true
         if(mtp) fields['mtp'] = true
-        if(windscreen) fields['windscreen'] = true
-        if(checkedItems) fields['userRoles'] = checkedItems
-        // console.log(fields)
         if (windscreen) fields['windscreen'] = true
 
         fields['added_by_uid'] = authentication.currentUser.uid
@@ -56,15 +48,7 @@ function AddUsers() {
 
     }
 
-    const handleChange = (event) => {
-        setCheckedItems({
-            ...checkedItems,
-            [event.target.name]: event.target.checked
-        })
-        console.log(checkedItems)
-    }
-    
-    const { users } = formFields
+    const { user_role } = fields
 
     return (
         <div className='components'>
@@ -73,13 +57,8 @@ function AddUsers() {
                     <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
-                            <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={(event) => {
-                                setUserRole(event.target.value)
-                                const [ bingo ] = users.filter(user_ => user_.user === event.target.value)
-                                setSelectedUser( bingo )
-                                }}>
+                            <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange}>
                                 <option value="hide">--User Role--</option>
-                                {users?.length > 0 && users.map((user) => <option value={user.user}>{user.label}</option>)}
                                 {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
                                 {authClaims.superadmin && <option value="admin">Admin</option>}
                                 {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
@@ -126,16 +105,16 @@ function AddUsers() {
                             <Form.Control id="address" placeholder="Enter your address"  onChange={handleFieldChange}/>
                     </Form.Group>
                     <Row className="mb-3">
-                        <Form.Group as={Col} className="addFormGroups" >
-                            <Form.Label htmlFor='license'>License No.</Form.Label>
-                            <Form.Control id="licenseNo" placeholder="license No." onChange={handleFieldChange} />
-                        </Form.Group>
-                        <Form.Group as={Col} className="addFormGroups" >
-                            <Form.Label htmlFor='nin'>NIN</Form.Label>
-                            <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
+                    <Form.Group as={Col} className="addFormGroups" >
+                        <Form.Label htmlFor='license'>License No.</Form.Label>
+                        <Form.Control id="licenseNo" placeholder="license No." onChange={handleFieldChange} />
+                    </Form.Group>
+                    <Form.Group as={Col} className="addFormGroups" >
+                        <Form.Label htmlFor='nin'>NIN</Form.Label>
+                        <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
                         </Form.Group>
                     </Row>
-                    { userRole === 'agent' &&
+                    { user_role === 'agent' &&
                         <>
                             <Form.Group className="mb-3" >
                                 <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
@@ -144,23 +123,12 @@ function AddUsers() {
                                 <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="mtp">
-                                <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> {setMTP(!mtp)}}/>
+                                <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="windscreen">
                                 <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
                             </Form.Group>
                         </>
-                    }
-                    <Form.Group className="mb-3" >
-                        <Form.Label htmlFor='userRoles'>User Roles</Form.Label>
-                    </Form.Group>
-                    { (selectedUser?.userRoles && selectedUser.userRoles.length > 0) && selectedUser.userRoles.map((role, index) => 
-                    <div key={index}>
-                        <Form.Group className="mb-3" controlId={selectedUser.user}>
-                            <Form.Check type="checkbox" name={role} checked={checkedItems[role]} label={role} onChange={(event) => {handleChange(event)}}/>
-                        </Form.Group>
-                    </div>)
-
                     }
                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
                         <Upload />
@@ -172,3 +140,4 @@ function AddUsers() {
 }
 
 export default AddUsers
+
