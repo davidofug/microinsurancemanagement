@@ -1,10 +1,18 @@
 import React from "react";
+import useAuth from "../contexts/Auth";
+import { authentication } from "../helpers/firebase";
 
 function DefaultAvatar() {
-  const displayName = "Default Admin";
-  const lastName = displayName.split(" ")[1];
-  const lastNameInitial = lastName.split("")[0];
-  const firstNameInitial = displayName.split("")[0];
+  const { currentUser } = useAuth;
+  //   console.log(authentication.currentUser.displayName)
+  let displayName, lastName, firstNameInitial, lastNameInitial;
+  if (currentUser !== null) {
+    displayName = authentication?.currentUser?.displayName || "No User";
+    lastName = displayName.split(" ")[1];
+    lastNameInitial = lastName.split("")[0];
+    firstNameInitial = displayName.split("")[0];
+  }
+
   return (
     <div className="avatarBG">
       <span>

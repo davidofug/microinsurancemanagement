@@ -24,7 +24,7 @@ function ForgotPassword() {
   if (isLogin) return <Redirect to={{ pathname: "/supervisor-dashboard" }} />;
 
   return (
-    <div className="logout">
+    <div className="auth-wrapper">
       <img src={logo} alt="Britam" />
       <form action="">
         <p>Forgot Password?</p>

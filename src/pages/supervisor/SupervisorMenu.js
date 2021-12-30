@@ -8,7 +8,7 @@ import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import MobileNav from '../../parts/menu/MobileNav'
 import SideBar from '../../parts/menu/SideBar'
 import MinimisedSideBar from '../../parts/menu/MinimisedSideBar'
-
+import { authentication } from "../../helpers/firebase";
 
 function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
 
@@ -35,7 +35,7 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
 
     return (
         <div className="menuSide">
-            <MobileNav role={SuperVisor} user="supervisor"/>
+            <MobileNav role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
             {toggleMenu === true 
             ?
                 <div className="sidebar">
@@ -51,7 +51,7 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                         <HiOutlineChevronLeft />
                         </i>
                     </div>
-                    <SideBar role={SuperVisor} user="supervisor" />
+                    <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
                     </nav>
                 </div>
             : 
@@ -66,7 +66,7 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                     <HiOutlineChevronRight />
                 </i>
                 </section>
-                <MinimisedSideBar role={SuperVisor} />
+                <MinimisedSideBar role={SuperVisor} displayName={authentication?.currentUser?.displayName} />
             </nav>
             }
         </div>

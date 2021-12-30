@@ -35,7 +35,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
 
   return (
     <div className="menuSide">
-      <MobileNav role={Admin} user="supervisor"/>
+      <MobileNav role={Admin} user="supervisor" displayName={authentication?.currentUser?.displayName}/>
       {toggleMenu === true ? (
         <div className="sidebar">
           <nav>
@@ -50,7 +50,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                 <HiOutlineChevronLeft />
               </i>
             </div>
-            <SideBar role={Admin} user="admin" />
+            <SideBar role={Admin} user="admin" displayName={authentication?.currentUser?.displayName} />
           </nav>
         </div>
       ) : (
@@ -65,7 +65,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
               <HiOutlineChevronRight />
             </i>
           </section>
-          <MinimisedSideBar role={Admin} />
+          <MinimisedSideBar role={Admin} displayName={authentication?.currentUser?.displayName} />
         </nav>
       )}
     </div>

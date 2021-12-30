@@ -7,7 +7,7 @@ import logo from '../../assets/imgs/britam-logo.png'
 import { Navbar, Offcanvas, Container, Nav, NavDropdown} from 'react-bootstrap'
 import DefaultAvatar from '../DefaultAvatar'
 
-export default function MobileNav ({role, user}) {
+export default function MobileNav ({role, user, displayName}) {
     const [ selected, setSelected ] = useState({ activeObject: null, role })
 
     useEffect(() => {
@@ -70,7 +70,7 @@ export default function MobileNav ({role, user}) {
                                 <DefaultAvatar />
                                 {/* <img src={profile} alt="profile" /> */}
                                 <div>
-                                    <p>Charles Kasasira</p>
+                                    <p>{displayName}</p>
                                     <p style={{"color": "#646464"}}>{user}</p>
                                 </div>
                                 <div id="eclipse"><div></div><div></div><div></div></div>
