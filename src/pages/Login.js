@@ -4,8 +4,7 @@ import useAuth from "../contexts/Auth";
 import { useHistory, Redirect } from "react-router-dom";
 import logo from "../assets/imgs/britam-logo.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-
-import { authentication } from "../helpers/firebase";
+import { authentication, onAuthStateChange } from "../helpers/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -13,6 +12,7 @@ import {
 } from "firebase/auth";
 
 import "../assets/styles/login.css";
+import Loader from "../parts/Loader";
 
 function Login() {
   const [user, setUser] = useState({
@@ -20,27 +20,25 @@ function Login() {
     password: "",
   });
   const [password, setPassword] = useState("password");
-  const [isLogin, setLogin] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  const { setCurrentUser, setAuthClaims } = useAuth();
+  const { currentUser, setCurrentUser, setAuthClaims } = useAuth();
   const { error, setError } = useState(null);
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
+
   useEffect(() => {
-    const loggedIn = JSON.parse(localStorage.getItem("currentUser"));
-
-    if (loggedIn === 1 || loggedIn === 2 || loggedIn === 3 || loggedIn === 4) {
-      setCurrentUser(loggedIn);
-      setLogin(loggedIn);
-    }
-    console.log(authentication.currentUser);
-
+    // const unsubscribe = onAuthStateChange(setCurrentUser)
     document.title = "Britam - With you every step of the way";
+    onAuthStateChange(setCurrentUser, setAuthClaims, setLoading);
+    console.log(currentUser);
+    // return () => { unsubscribe() }
   }, []);
 
   const handleSignIn = async (event) => {
     event.preventDefault();
     const { email, password } = user;
+    setLoading(true);
     try {
       const result = await signInWithEmailAndPassword(
         authentication,
@@ -48,53 +46,19 @@ function Login() {
         password
       );
       if (result) {
-        // console.log(result)
-
-        authentication.currentUser
-          .getIdTokenResult()
-          .then((idTokenResult) => {
-            // Confirm the user is an Admin.
-            console.log(idTokenResult.claims);
-            setAuthClaims(idTokenResult.claims);
-            setCurrentUser(authentication.currentUser);
-            localStorage.setItem(
-              "currentUser",
-              JSON.stringify(authentication.currentUser)
-            );
-            history.push("dashboard");
-            // localStorage.setItem('loggedIn', 1)
-            /*
-                    if (!!idTokenResult.claims.superadmin) {
-                        history.push('admin/dashboard')
-                    } else if (!!idTokenResult.claims.admin) {
-                        // Show admin UI.
-                        // showAdminUI();
-                        history.push('superadmin/dashboard')
-
-                    } else if (!!idTokenResult.claims.supervisor) {
-                        // Show supervisor UI.
-                        // showSupervisorUI();
-                        history.push('supervisor/dashboard')
-                    } else if (!!idTokenResult.claims.agent) {
-                        history.push('agent/dashboard')
-                    } else {
-                        // Show regular user UI.
-                        // showRegularUI();
-                        setError('You are not authorized to access this page.')
-                        console.log('UI customers')
-                    } */
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        setLoading(false);
+        onAuthStateChange(setCurrentUser, setAuthClaims);
+        history.push("admin/dashboard");
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  // if (isLogin)
-  //     return <Redirect to={{ pathname: '/admin/dashboard' }} />
+  if (isLoading) return <Loader />;
+
+  if (currentUser?.loggedIn)
+    return <Redirect to={{ pathname: "/admin/dashboard" }} />;
 
   return (
     <div className="logout">

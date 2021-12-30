@@ -2,21 +2,23 @@ import {
     Route,
     Redirect
 } from 'react-router-dom'
+import { useEffect } from 'react'
 
 import useAuth from '../contexts/Auth'
+import { onAuthStateChange } from '../helpers/firebase'
 
-function PrivateRoute({children, ...rest}) {
-    const { currentUser } = useAuth()
+function PrivateRoute({ children, ...rest }) {
+    const { currentUser} = useAuth()
 
     return (
         <Route
             {...rest}
-            render={({location}) => currentUser
+            render={({location}) => currentUser?.loggedIn
                     ? (children)
                 : (
                     <Redirect
                         to={{
-                            pathname: "/not-logged-in",
+                            pathname: "/login",
                             state:{from:location}
                         }}
                     />
