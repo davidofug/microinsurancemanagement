@@ -5,111 +5,116 @@ import Pagination from '../helpers/Pagination';
 import ClaimTable from '../parts/ClaimTable';
 import SearchBar from '../parts/searchBar/SearchBar';
 import Header from '../parts/header/Header';
-import { Table, Alert } from 'react-bootstrap'
+import { Table, Alert, Modal, Form, Col, Row, Button } from 'react-bootstrap'
 import { db } from '../helpers/firebase'
-import { collection, getDocs, addDoc, doc} from 'firebase/firestore'
+import { collection, getDoc, getDocs, addDoc, doc, deleteDoc, updateDoc} from 'firebase/firestore'
 import { FaEllipsisV } from 'react-icons/fa'
+import { useForm } from '../hooks/useForm';
+import { authentication } from '../helpers/firebase';
+import { date } from 'faker';
  
 function Claims() {
   const [claims, setClaims] = useState([])
   const claimsCollectionRef = collection(db, "claims")
 
+
+  const [ editID, setEditID ] = useState(null)
+
+  
+
+  
+  // console.log(fromArray.dateReported)
+  // console.log(dateReported)
+
+
+  const [fields, handleFieldChange] = useForm({
+    uid: authentication.currentUser.uid,
+    refNumber: '',
+    dateReported: '',
+    policyType: '',
+    numberPlate: '',
+    stickerNumber: '',
+    claimantName: '',
+    claimantEmail: '',
+    claimantPhoneNumber: '',
+    dateOfIncident: '',
+    claimEstimate: '',
+    detailsOfIncident: '',
+    attachedDocuments: '',
+    status: ''
+
+})
+
+
+  const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     useEffect(() => {
       document.title = 'Britam - Claims'
-
-
-      const getClaims = async () => {
-        const data = await getDocs(claimsCollectionRef)
-        // console.log(data)
-        // console.log(data.docs)
-        setClaims(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      }
-      // setClaims(data)
-      // getClaims()
-      // console.log(data)
       getClaims()
+      
     }, [])
 
-    /* start from here */
 
-    // function getData() {
-    //   claimsCollectionRef.onSnapshot((querySnapshot) => {
-    //     const items = []
-    //     querySnapshot.forEach((doc) =>{
-    //       items.push({...doc.data(), id: doc.id})
-    //     })
-    //     setClaims(items)
-    //   })
-    // }
+    const [claimInfo, setClaimInfo] = useState({})
 
-    
-    // const [claims, setClaims] = useState(data);
-    
-    
-  //
-  //   const [editFormData, setEditFormData] = useState({
-  //       name: "",
-  //       gender: "",
-  //       email: "",
-  //       contact: "",
-  //       address: "",
-  //   });
+    const getClaims = async () => {
+      const data = await getDocs(claimsCollectionRef)
+      setClaims(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }
 
-  // const [editContactId, setEditContactId] = useState(null);
-
-  // const handleEditFormChange = (event) => {
-  //   event.preventDefault();
-
-  //   const fieldName = event.target.getAttribute("name");
-  //   const fieldValue = event.target.value;
-
-  //   const newFormData = { ...editFormData };
-  //   newFormData[fieldName] = fieldValue;
-
-  //   setEditFormData(newFormData);
-  // };
+    const updateClaim = async (id) => {
+      const userDoc = doc(db, "claims", id);
+      await updateDoc(userDoc, {claimantName: singleClaims.claimantName});
+    };
 
 
-  // const handleEditFormSubmit = (event) => {
-  //   event.preventDefault();
+    const handleDelete = async (id) => {
+      const claimDoc = doc(db, "claims", id)
+      await deleteDoc(claimDoc)
+    };
 
-  //   const editedContact = {
-  //     id: editContactId,
-  //     name: editFormData.name,
-  //     gender: editFormData.gender,
-  //     email: editFormData.email,
-  //     contact: editFormData.contact,
-  //     address: editFormData.address,
-  //   };
-    
-  //   const newClaims = [...claims];
+    const [ singleDoc, setSingleDoc ] = useState(fields)
 
-  //   const index = claims.findIndex(claim => claim.id === editContactId);
 
-  //   newClaims[index] = editedContact;
+    const getSingleDoc= async (id) => {
+      
+      const docRef = doc(db, "claims", id)
+      const docSnap = await getDoc(docRef)
+      // console.log(docSnap.data())
+      setSingleDoc(docSnap.data())
+    };
 
-  //   setClaims(newClaims);
-  //   setEditContactId(null);
-  // };
+    const functionToCall = () => {
+      updateClaim(editID)
+    }
 
-  // const handleEditClick = (event, contact) => {
-  //   event.preventDefault();
-  //   setEditContactId(contact.id);
+    const [ singleClaims, setSingleClaims ] = useState({})
 
-  //   const formValues = {
-  //     name: contact.name,
-  //     gender: contact.gender,
-  //     email: contact.email,
-  //     contact: contact.contact,
-  //     address: contact.address,
-  //   };
+    const modalSubmit = async (event) => {
+      event.preventDefault()
 
-  //   setEditFormData(formValues);
-  // };
+      const claimRef = doc(db, "claims", editID);
 
-  //
+      const result = await updateDoc(claimRef, {
+        dateReported: event.target.dateReported.value,
+        policyType: event.target.policyType.value,
+        numberPlate: event.target.numberPlate.value,
+        stickerNumber: event.target.stickerNumber.value,
+        claimantName: event.target.claimantName.value,
+        claimantEmail: event.target.claimantEmail.value,
+        claimantPhoneNumber: event.target.claimantPhoneNumber.value,
+        dateOfIncident: event.target.dateOfIncident.value,
+        estimate: event.target.estimate.value,
+        detailsOfIncident: '',
+        attachedDocuments: '',
+        status: ''
+      });
+      getClaims()
+    }
 
-    //
     const [ currentPage, setCurrentPage ] = useState(1)
     const [employeesPerPage] = useState(10)
 
@@ -119,29 +124,6 @@ function Claims() {
     const totalPagesNum = Math.ceil(data.length / employeesPerPage)
 
 
-
-    // const handleDeleteClick = (claimId) => {
-    //     const newClaims = [...claims];
-    //     const index = claims.findIndex((claim) => claim.id === claimId);
-    //     newClaims.splice(index, 1);
-    //     setClaims(newClaims);
-    //   };
-  
-    //   const handleCancelClick = () => {
-    //     setEditContactId(null);
-    //   };
-
-
-    // const [q, setQ] = useState('');
-
-    
-    // const columns = ["contact", "name", "createdAt", "contact", "contact", "amount", "status"]
-    // const search = rows => rows.filter(row =>
-    //     columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
-
-    //     const handleSearch = ({target}) => setQ(target.value)
-
-      // setClaims(search(claims))
     return (
         <div className='components'>
             <Header title="Claims" subtitle="MANAGING CLAIMS" />
@@ -154,6 +136,84 @@ function Claims() {
                 
             </div>
 
+
+            
+
+            <Modal show={show} onHide={handleClose}>
+                                <Modal.Header closeButton>
+                                <Modal.Title>Edit Claim</Modal.Title>
+                                </Modal.Header>
+                                    <Form id="update_claim" onSubmit={modalSubmit}>
+                                <Modal.Body>
+                                        <Row className='mb-3'>
+                                              <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                              <Form.Label htmlFor='dateReported'>Date Reported</Form.Label>
+                                              <Form.Control type="date" id="dateReported" defaultValue={singleDoc.dateReported} onChange={handleFieldChange} />
+                                          </Form.Group>
+                                          <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                              <Form.Label htmlFor='policyType'>Policy</Form.Label>
+                                              <Form.Select aria-label="User role" id="policyType" defaultValue={singleDoc.policyType} onChange={handleFieldChange}>
+                                                  <option value="hide">--Select Category--</option>
+                                                  <option value="mtp">MTP</option>
+                                                  <option value="comprehensive">Comprehensive</option>
+                                                  <option value="windscreen">Windscreen</option>
+                                              </Form.Select>
+                                          </Form.Group>
+                                        </Row>
+                                        <Row className='mb-3'>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label htmlFor='numberPlate'>Plate No.</Form.Label>
+                                                <Form.Control type="text" name="" id="numberPlate" defaultValue={singleDoc.numberPlate} placeholder="Enter plate No." onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label htmlFor='stickerNumber'>Sticker No.</Form.Label>
+                                                <Form.Control type="text" name="" id="stickerNumber" defaultValue={singleDoc.stickerNumber} placeholder="Enter Sticker Number" onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                        </Row>
+                                        <h5>Claimant Details</h5>
+                                        <Row className="mb-3">
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label htmlFor='claimantName'>Name</Form.Label>
+                                                <Form.Control type="text" name="" id="claimantName" defaultValue={singleDoc.claimantName} placeholder="Enter Claimant's name" onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label htmlFor='claimantEmail'>Email Address</Form.Label>
+                                                <Form.Control type="text" name="" id="claimantEmail" placeholder="Enter claimant's email" defaultValue={singleDoc.claimantEmail} onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                        </Row>
+                                        <Row>
+                                        <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label htmlFor='claimantPhoneNumber'>Phone Number</Form.Label>
+                                                <Form.Control type="text" name="" id="claimantPhoneNumber" defaultValue={singleDoc.claimantPhoneNumber} placeholder="Enter Claimant's phone number" onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label htmlFor='dateOfIncident'>Date of Incident</Form.Label>
+                                                <Form.Control type="date" name="" id="dateOfIncident" defaultValue={singleDoc.dateOfIncident} onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                        </Row>
+
+                                        <Row className="mb-3">
+                                          <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                              <Form.Label htmlFor='estimate'>Claim Estimate</Form.Label>
+                                              <Form.Control type="text" name="" id="estimate" defaultValue={singleDoc.estimate} placeholder="Enter Claim Estimate" onChange={handleFieldChange}/>
+                                          </Form.Group>
+                                      </Row>
+                                    <Button variant="primary" type="submit" onClick={() => {
+                                      handleClose()
+                                      }} id="submit">
+                                        Submit
+                                    </Button>
+                            
+                                </Modal.Body>
+                                <Modal.Footer>
+                                </Modal.Footer>
+                                    </Form>
+                            </Modal>
+
+
+
+
+
             <div className="table-card componentsData">   
                       <div id="search">
                             {/* <SearchBar placeholder={"Search for claim"} value={q} handleSearch={handleSearch}/> */}
@@ -161,20 +221,20 @@ function Claims() {
                             <div></div>
                       </div>
 
-                      <Table hover striped responsive>
+                      <Table hover striped responsive cellPadding={0} cellSpacing={0}> 
                         <thead>
                           <tr><th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {claims.map((claim, index) => (
-                            <tr key={index}>
+                            <tr key={claim.id}>
                               <td>{claim.contact}</td>
                               <td>{claim.claimantName}</td>
                               <td>{claim.dateOfIncident}</td>
                               <td>{claim.numberPlate}</td>
                               <td>{claim.stickerNumber}</td>
                               <td>{claim.estimate}</td>
-                              <td><Alert style={{"backgroundColor": "#1475cf", "color": "#fff", "padding": "5px", "textAlign": "center", "border": "none", "margin": "0"}}>{claim.status}</Alert></td>
+                              <td><Alert style={{"backgroundColor": "#1475cf", "color": "#fff", "padding": "5px", "textAlign": "center", "border": "none", "margin": "0"}}>new</Alert></td>
                               <td className='started'>
                         <FaEllipsisV className={`actions please${index}`} onClick={() => {
                             document.querySelector(`.please${index}`).classList.add('hello')
@@ -184,8 +244,20 @@ function Claims() {
                             <li><button >Claim Settlement</button></li>
                             <li><button >View Settlement</button></li>
                             <li><button >Cancel</button></li>
-                            <li><button >Delete</button></li>
-                            <li><button >Edit</button></li>
+                            <li><button onClick={() => {
+                              document.querySelector(`.please${index}`).classList.remove('hello')
+                              const confirmBox = window.confirm(`Are you sure you want to delete ${claim.claimantName}'s claim`)
+                              if(confirmBox === true){
+                                handleDelete(claim.id)
+                                getClaims()
+                              }
+                            }}>Delete</button></li>
+                            <li><button onClick={() => {
+                              setEditID(claim.id)
+                              getSingleDoc(claim.id)
+                              handleShow()
+                              document.querySelector(`.please${index}`).classList.remove('hello')
+                            }}>Edit</button></li>
                             <hr style={{"color": "black"}}></hr>
                             <li><button onClick={() => {
                               document.querySelector(`.please${index}`).classList.remove('hello')
@@ -196,7 +268,7 @@ function Claims() {
                           ))}
                         </tbody>
                         <tfoot>
-                          <tr><th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker Number</th><th>Status</th><th>Action</th></tr>
+                          <tr><th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th><th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th></tr>
                         </tfoot>
                       </Table>
 

@@ -9,7 +9,7 @@ import Pagination from "../../helpers/Pagination";
 import SearchBar from "../../parts/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, addDoc, getDocs } from 'firebase/firestore'
 
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
@@ -18,15 +18,23 @@ export default function Organisations() {
   useEffect(() => {
     document.title = "Britam - Organisations";
 
+    // const getOrganisations = async () => {
+    //   organisationsCollectionRef.onSnapshot((querySnapshot) => {
+    //     const items = [];
+    //     querySnapshot.forEach((doc) => {
+    //       items.push({ ...doc.data(), id: doc.id });
+    //     });
+    //     setOrganisations(items);
+    //   });
+    // };
+
     const getOrganisations = async () => {
-      organisationsCollectionRef.onSnapshot((querySnapshot) => {
-        const items = [];
-        querySnapshot.forEach((doc) => {
-          items.push({ ...doc.data(), id: doc.id });
-        });
-        setOrganisations(items);
-      });
-    };
+        const data = await getDocs(organisationsCollectionRef)
+        setOrganisations(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      }
+
+      getOrganisations()
+
   }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
