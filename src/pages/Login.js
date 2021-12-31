@@ -1,14 +1,11 @@
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory, Redirect, Link, useLocation } from "react-router-dom";
 import logo from "../assets/imgs/britam-logo.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
 } from "firebase/auth";
 import { Alert } from "react-bootstrap";
 
@@ -27,13 +24,15 @@ function Login() {
   const [ error, setError ] = useState('');
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
+  const location = useLocation();
+  const from = location?.pathname || "/admin/dashboard";
 
   useEffect(() => {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
     document.title = "Britam - With you every step of the way";
     onAuthStateChange(setCurrentUser, setAuthClaims, setLoading);
-    // console.log(currentUser);
     // return () => { unsubscribe() }
+    // currentUser?.loggedIn && history.push(from);
   }, []);
 
   const handleSignIn = async (event) => {
@@ -49,7 +48,7 @@ function Login() {
       if (result) {
         setLoading(false);
         onAuthStateChange(setCurrentUser, setAuthClaims);
-        history.push("/admin/dashboard"); // had removed claim from the route.
+        history.push(from); // had removed claim from the route.
       }
     } catch(err) {
       // console.log(error.message);
@@ -66,7 +65,7 @@ function Login() {
   if (isLoading) return <Loader />;
 
   if (currentUser?.loggedIn)
-    return <Redirect to={{ pathname: "/admin/dashboard" }} />;
+    return <Redirect to={{ pathname: from }} />;
 
   return (
     <div className="auth-wrapper">
