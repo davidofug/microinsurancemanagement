@@ -5,29 +5,37 @@ import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
 // import Header from '../parts/header/Header'
 import '../styles/Policies.css'
-
-
-
 import moment from 'moment'
+import { db } from '../helpers/firebase'
+import { collection, addDoc } from 'firebase/firestore'
+import { authentication } from '../helpers/firebase'
+
 
 // import AddClient from '../parts/AddClient'
-
 // enlarging the size of + and -
 
-function Policies() {
-    const [ formData, setFormData ] = useState({})
+ 
 
+
+function Policies() {    
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const [ field, handleFieldChange ] = useForm({})
+    const [ existingClient, setExistingClient ] = useState(null)
     const [ classes, setClasses ] = useState([])
     const [ vehicleUses, setVehicleUses ] = useState([])
     const [ policyStartDate, setPolicyStartDate ] = useState(null)
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
+    const [ newClient, handleClientDetails] = useForm({
+        name:'',
+        DOB:'',
+        gender:'',
+        email:'',
+        phone_number:'',
+        address:''
+    })
 
     const [ clientDetails, setClientDetails ] = useState({}) 
     const [ stickers, setStickers ] = useState([
@@ -45,11 +53,10 @@ function Policies() {
             totalPremium:''
         }
     ])
-
+    
     const { currencies, make, categories } = dynamicFields
     let date = moment().format("l")
 
-    
     useEffect(() => {
         document.title = 'Britam - Policies'
     }, [])
@@ -57,7 +64,6 @@ function Policies() {
     const handleInputChange = (index, event) => {
         const values = [...stickers]
         values[index][event.target.name] = event.target.value                                        
-        // console.log(event.name, event.target.value)
         setStickers(values)
     }
 
@@ -78,7 +84,6 @@ function Policies() {
                 totalPremium:''
             }
         ])
-        // console.log(stickers)
     }
 
     const removeStickerMotorDetails = (index) => {
@@ -88,10 +93,31 @@ function Policies() {
             setStickers(stickersDetails)
         }
         return
-        // const filteredStickers = stickers.filter(sticker => sticker !== stickers[index])
-        // setStickers(filteredStickers)
     }
 
+    // firebase collections
+    const policiesRef = collection(db, "policies")
+    const clientsRef = collection(db, "clients")
+
+    //createPolicies
+    const createPolicies = async(event) => {
+        event.preventDefault()
+        await addDoc(policiesRef, {
+            currency,
+            stickersDetails: stickers,
+            clientDetails: existingClient !== null ? existingClient : newClient,
+            uid: authentication.currentUser.uid
+        })
+    }
+
+    //createClients
+    const createClient = async(event) => {
+        event.preventDefault()
+        await addDoc(clientsRef, {
+            clientDetails,
+            uid: authentication.currentUser.uid
+        })
+    }
     
 
     const renderStickerDetails = (singleSticker, index) => {
@@ -146,7 +172,7 @@ function Policies() {
                                         }
                                         
                                         if(category?.vehicle_use?.length > 0) {
-                                            const [ {vehicle_use} ] = result
+                                            const [{ vehicle_use }] = result
                                             setVehicleUses(vehicle_use)
                                         } else { 
                                             setVehicleUses([])
@@ -229,7 +255,6 @@ function Policies() {
     }
 
     const getExistingClient = ( name ) => { 
-
         // Dummy existing user data.
         // Implementation to be done based on the accessibility of the source of data and data structure implemementing the data bank.
         if(name) return (
@@ -253,7 +278,7 @@ function Policies() {
                 <p>MANAGING POLICIES</p>
             </div>
             <div className="table-card componentsData" style={{paddingBottom:"10vh"}}>
-                <Form>
+                <Form onSubmit={createPolicies}>
                     <div style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                         <Row style={{paddingTop:"2vh"}}>
                             <h1>
@@ -277,16 +302,16 @@ function Policies() {
                                 <Modal.Header closeButton>
                                 <Modal.Title>Add New Client</Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body>
-                                    <Form>
+                                <Form onSubmit={createClient}>
+                                    <Modal.Body>
                                         <Form.Group className="mb-3" controlId="name">
                                             <Form.Label>Name</Form.Label>
-                                            <Form.Control placeholder="Enter name" id="name" onChange={handleFieldChange}/>
+                                            <Form.Control placeholder="Enter name" id="name" onChange={handleClientDetails}/>
                                         </Form.Group>
                                         <Row className="mb-3">
                                             <Form.Group as={Col} controlId="email" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Date of birth</Form.Label>
-                                                <Form.Control type="date" id="date" onChange={handleFieldChange}/>
+                                                <Form.Control type="date" id="DOB" onChange={handleClientDetails}/>
                                             </Form.Group>
                                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Gender</Form.Label>
@@ -307,8 +332,9 @@ function Policies() {
                                                         label="Male"
                                                         name="gender"
                                                         id="gender"
+                                                        value="male"
                                                         onChange={
-                                                            handleFieldChange
+                                                            handleClientDetails
                                                         }
                                                         />
                                                     </Col>
@@ -318,8 +344,9 @@ function Policies() {
                                                         label="Female"
                                                         name="gender"
                                                         id="gender"
+                                                        value="female"
                                                         onChange={
-                                                            handleFieldChange
+                                                            handleClientDetails
                                                         }
                                                         />
                                                     </Col>
@@ -331,33 +358,39 @@ function Policies() {
                                         <Row className="mb-3">
                                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Email</Form.Label>
-                                                <Form.Control type="email" placeholder="Enter email" id="email"  onChange={handleFieldChange}/>
+                                                <Form.Control type="email" placeholder="Enter email" id="email"  onChange={handleClientDetails}/>
                                             </Form.Group>
                                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Phone Number</Form.Label>
-                                                <Form.Control type="tel" placeholder="Enter phone number" id="phone_number" onChange={handleFieldChange}/>
+                                                <Form.Control type="tel" placeholder="Enter phone number" id="phone_number" onChange={handleClientDetails}/>
                                             </Form.Group>
                                         </Row>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
                                             <Form.Label>Address</Form.Label>
-                                            <Form.Control placeholder="Enter your address" id="address" onChange={handleFieldChange}/>
+                                            <Form.Control placeholder="Enter your address" id="address" onChange={handleClientDetails}/>
                                         </Form.Group>
-                                    </Form>
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button variant="primary" onClick={handleClose} id="submit">
-                                        Submit
-                                    </Button>
-                                </Modal.Footer>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="primary" onClick={() => {
+                                            handleClose()
+                                        }} id="submit" type="submit">
+                                            Submit
+                                        </Button>
+                                    </Modal.Footer>
+                                </Form>
                             </Modal>
                         </Row>
                     </div>
                     <Row style={{paddingBottom:"6vh", display:"flex"}}>
                         <div className="currency">
                             <Form.Group classname="mb-3" controlId="currency">
-                                <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={handleFieldChange}>
+                                <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={(event)=>{
+                                    setCurrency(event.target.value)
+                                    // console.log(authentication.currentUser.uid)
+                                    
+                                    }}>
                                     <option>Currency</option>
-                                    {currencies.map((currency, index) => <option value={currencies[index]}>{currency["code"]}</option>)}  
+                                    {currencies.map((currency, index) => <option value={currencies["code"]}>{currency["code"]}</option>)}  
                                 </Form.Select>
                             </Form.Group>
                         </div>
@@ -422,7 +455,7 @@ function Policies() {
                                 </Button>
                             </div>
                         </div>
-                        {console.log(field)}  
+                        {/* {console.log(fields)}   */}
                     </div> 
                 </Form>
             </div>
