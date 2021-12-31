@@ -18,18 +18,16 @@ body{
     font-size: .875rem;
 }
 
-tbody > tr:hover {
-    background-color: #1475cf;
-    color: white;
-}
+/* tbody > tr:hover {
+} */
 
 .table{
     border: 1px solid #000;
 }
 
-.table-hover > tbody > tr:hover > * {
+/* .table-hover > tbody > tr:hover > * {
     color: white;
-}
+} */
 
 .table > :not(:first-child) {
     border-top: 1px solid currentColor;
@@ -289,6 +287,19 @@ tbody, td, tfoot, th, thead, tr{
     }
     
 }
+
+
+.avatarBG {
+    background-color: rgb(143, 140, 140);
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 50%;
+  }
+  
 
 
 

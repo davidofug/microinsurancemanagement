@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import profile from '../../assets/imgs/image 2.png'
 import { MdLogout  } from 'react-icons/md'
+import DefaultAvatar from '../DefaultAvatar'
 
-export default function SideBar({role, user}){
+export default function SideBar({role, user, displayName}){
 
     const [ selected, setSelected ] = useState({ activeObject: null, role })
     const [ toggleMenu, setToggeMenu ] = useState(true)
@@ -54,9 +55,10 @@ export default function SideBar({role, user}){
                     <li><Link to="/logout"><MdLogout /> Logout</Link></li>
                 </ul>
                 <Link to='/admin/settings'>
-                    <img src={profile} alt="profile" />
+                    <DefaultAvatar />
+                    {/* <img src={profile} alt="profile" /> */}
                     <div>
-                        <p>Charles Kasasira</p>
+                        <p>{displayName}</p>
                         <p style={{"color": "#646464"}}>{user}</p>
                     </div>
                     <div id="eclipse"><div></div><div></div><div></div></div>
