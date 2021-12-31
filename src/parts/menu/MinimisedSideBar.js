@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import profile from '../../assets/imgs/image 2.png'
 import { MdLogout  } from 'react-icons/md'
+import DefaultAvatar from '../DefaultAvatar'
 
 export default function MinimisedSideBar({role}){
 
@@ -54,7 +55,8 @@ export default function MinimisedSideBar({role}){
                         <li><Link to="/logout"><MdLogout /> Logout</Link></li>
                     </ul>
                 <Link to={'/admin-settings'} id="account">
-                    <img src={profile} alt="profile" />
+                    <DefaultAvatar />
+                    {/* <img src={profile} alt="profile" /> */}
                 </Link>
             </footer>
 

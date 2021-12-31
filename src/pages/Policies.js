@@ -1,5 +1,8 @@
 
 import React, { useState, useEffect } from 'react'
+import { httpsCallable } from 'firebase/functions'
+import { functions } from '../helpers/firebase'
+
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
@@ -14,10 +17,9 @@ import { authentication } from '../helpers/firebase'
 // import AddClient from '../parts/AddClient'
 // enlarging the size of + and -
 
+function Policies() {
+    const listUsers = httpsCallable(functions,'listUsers')
  
-
-
-function Policies() {    
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -37,7 +39,7 @@ function Policies() {
         address:''
     })
 
-    const [ clientDetails, setClientDetails ] = useState({}) 
+    const [ clientDetails, setClientDetails ] = useState({})
     const [ stickers, setStickers ] = useState([
         {
             referenceNo:'',
@@ -45,7 +47,7 @@ function Policies() {
             seatingCapacity:'',
             ccPower:'',
             grossWeight:'',
-            category:'', 
+            category:'',
             motorClass:'',
             chasisNo:'',
             motorMake:'',
@@ -59,6 +61,13 @@ function Policies() {
 
     useEffect(() => {
         document.title = 'Britam - Policies'
+
+        listUsers().then((results) => {
+            console.log(results)
+        }).catch((err) => {
+            console.log(err)
+        })
+
     }, [])
 
     const handleInputChange = (index, event) => {
@@ -76,7 +85,7 @@ function Policies() {
                 seatingCapacity:'',
                 ccPower:'',
                 grossWeight:'',
-                category:'', 
+                category:'',
                 motorClass:'',
                 chasisNo:'',
                 motorMake:'',
@@ -145,7 +154,7 @@ function Policies() {
                                     </Form.Select>
                                 </Form.Group >
                             </div>
-                        </div> 
+                        </div>
                     </td>
                     <td className="second-cell"style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
@@ -155,29 +164,29 @@ function Policies() {
                                 </Form.Group>
                             </div>
                             <div>
-                                <Form.Group controlId="category" > 
+                                <Form.Group controlId="category" >
                                     <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} onChange={event => {
                                         handleInputChange(index, event)
-                                        
+
                                         const result = categories.filter(category => category.label === event.target.value)
                                         const [ category ] = result
                                         // eslint-disable-next-line no-lone-blocks
                                         console.log(date)
-                                        
+
                                         if(category?.classes?.length > 0) {
                                             const [ {classes} ] = result
                                             setClasses(classes)
                                         } else {
                                             setClasses([])
                                         }
-                                        
+
                                         if(category?.vehicle_use?.length > 0) {
                                             const [{ vehicle_use }] = result
                                             setVehicleUses(vehicle_use)
-                                        } else { 
+                                        } else {
                                             setVehicleUses([])
-                                        }   
-                                        
+                                        }
+
                                     }}>
                                         <option>-Select Category-</option>
                                         {categories.map((category, index) => <option key={index} value={category["label"]}>{category["label"]}</option>)}
@@ -229,7 +238,7 @@ function Policies() {
                                 </Form.Group>
                             </div>
                             <div>
-                                
+
                             </div>
                         </div>
                     </td>
@@ -242,7 +251,7 @@ function Policies() {
                                 >-</button>
                             </div>
                             <div>
-                                <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}} 
+                                <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}}
                                     onClick={() => addStickerMotorDetails()}
                                     type="button"
                                 >+</button>
@@ -250,7 +259,7 @@ function Policies() {
                         </div>
                     </td>
                 </tr>
-            </React.Fragment>      
+            </React.Fragment>
         )
     }
 
@@ -269,10 +278,10 @@ function Policies() {
 
     // }
 
-    
+
 
     return (
-        <div className='components'> 
+        <div className='components'>
             <div className='heading'>
                 <h1 className='title'>Policies</h1>
                 <p>MANAGING POLICIES</p>
@@ -283,7 +292,7 @@ function Policies() {
                         <Row style={{paddingTop:"2vh"}}>
                             <h1>
                                 Client
-                            </h1>    
+                            </h1>
                         </Row>
                         <Row style={{gap:"2vw"}}>
                             <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
@@ -296,7 +305,7 @@ function Policies() {
                                 </Form.Group>
                             </Col>
                             <Col className="add-new-client" style={{display:"flex", justifyContent:"flex-end"}}>
-                                <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button> 
+                                <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button>
                             </Col>
                             <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
@@ -350,11 +359,11 @@ function Policies() {
                                                         }
                                                         />
                                                     </Col>
-                                                </Row>    
-                                                
+                                                </Row>
+
                                             </Form.Group>
                                         </Row>
-                                        
+
                                         <Row className="mb-3">
                                             <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Email</Form.Label>
@@ -396,18 +405,18 @@ function Policies() {
                         </div>
                     </Row>
                     {}
-                    
+
                     <Table striped bordered>
                         <tbody>
                             {stickers.map(renderStickerDetails)}
                         </tbody>
                     </Table>
                     {/*Sticker form details container.*/}
-                    
-                    
+
+
                     <div className="dates">
                         {
-                            moment(policyEndDate).isValid() === true ? 
+                            moment(policyEndDate).isValid() === true ?
                                 <>
                                     <div style={{display:"flex", justifyContent:"flex-start", paddingTop:"4vh", paddingBottom:"4vh"}}>
                                         <div >
@@ -418,20 +427,20 @@ function Policies() {
                                                     setPolicyEndDate(moment(event.target.value).add(1, 'years').calendar())
                                                     // console.log(`end ${policyEndDate}`)
                                                     // console.log(policyStartDate)
-                                                }}/>   
+                                                }}/>
                                             </Form.Group>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <Row style={{paddingBottom:"3vh"}}>
-                                        <Col> 
+                                        <Col>
                                             <Form.Group controlId="policyEndDate" id="policy-end-date" >
                                                 <Form.Label><h5>Policy End Date</h5></Form.Label>
-                                                <Form.Control type="text" name="policy_start_date" value={policyEndDate} readOnly/>   
+                                                <Form.Control type="text" name="policy_start_date" value={policyEndDate} readOnly/>
                                             </Form.Group>
                                         </Col>
                                     </Row>
-                                </>    
-                                : 
+                                </>
+                                :
                                 <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                                     <Col>
                                         <Form.Group controlId="policyStartDate" >
@@ -441,11 +450,11 @@ function Policies() {
                                                 setPolicyEndDate(moment(event.target.value).add(1, 'years').calendar())
                                                 console.log(`end ${policyEndDate}`)
                                                 // console.log(policyStartDate)
-                                            }}/>   
+                                            }}/>
                                         </Form.Group>
                                     </Col>
                                 </Row>
-                                
+
                         }
 
                         <div style={{display:"flex", width:"100%", justifyContent:"flex-end"}}>

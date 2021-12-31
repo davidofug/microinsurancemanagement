@@ -6,6 +6,7 @@ import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import MobileNav from "../../parts/menu/MobileNav";
 import SideBar from "../../parts/menu/SideBar";
 import MinimisedSideBar from "../../parts/menu/MinimisedSideBar";
+import { authentication } from "../../helpers/firebase";
 
 export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
   const { Admin } = menuData;
@@ -19,6 +20,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
           activeObject: selected.Admin[sessionStorage.getItem("session1") - 1],
         })
       : setSelected({ ...selected, activeObject: selected.Admin[0] });
+      console.log(authentication.currentUser.displayName)
   }, []);
 
   const toggleActive = (index) => {
@@ -33,7 +35,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
 
   return (
     <div className="menuSide">
-      <MobileNav role={Admin} user="supervisor"/>
+      <MobileNav role={Admin} user="admin" displayName={authentication?.currentUser?.displayName}/>
       {toggleMenu === true ? (
         <div className="sidebar">
           <nav>
@@ -48,7 +50,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                 <HiOutlineChevronLeft />
               </i>
             </div>
-            <SideBar role={Admin} user="admin" />
+            <SideBar role={Admin} user="admin" displayName={authentication?.currentUser?.displayName} />
           </nav>
         </div>
       ) : (
@@ -63,7 +65,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
               <HiOutlineChevronRight />
             </i>
           </section>
-          <MinimisedSideBar role={Admin} />
+          <MinimisedSideBar role={Admin} displayName={authentication?.currentUser?.displayName} />
         </nav>
       )}
     </div>
