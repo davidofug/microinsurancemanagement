@@ -21,7 +21,7 @@ function Claims() {
       const getClaims = async () => {
         const data = await getDocs(claimsCollectionRef)
         // console.log(data)
-        console.log(data.docs)
+        // console.log(data.docs)
         setClaims(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
       }
       // setClaims(data)
@@ -29,6 +29,18 @@ function Claims() {
       // console.log(data)
       getClaims()
     }, [])
+
+    /* start from here */
+
+    // function getData() {
+    //   claimsCollectionRef.onSnapshot((querySnapshot) => {
+    //     const items = []
+    //     querySnapshot.forEach((doc) =>{
+    //       items.push({...doc.data(), id: doc.id})
+    //     })
+    //     setClaims(items)
+    //   })
+    // }
 
     
     // const [claims, setClaims] = useState(data);
@@ -157,11 +169,11 @@ function Claims() {
                           {claims.map((claim, index) => (
                             <tr key={index}>
                               <td>{claim.contact}</td>
-                              <td>{claim.name}</td>
-                              <td>{claim.createdAt}</td>
-                              <td>{claim.contact}</td>
-                              <td>{claim.contact}</td>
-                              <td>{claim.amount}</td>
+                              <td>{claim.claimantName}</td>
+                              <td>{claim.dateOfIncident}</td>
+                              <td>{claim.numberPlate}</td>
+                              <td>{claim.stickerNumber}</td>
+                              <td>{claim.estimate}</td>
                               <td><Alert style={{"backgroundColor": "#1475cf", "color": "#fff", "padding": "5px", "textAlign": "center", "border": "none", "margin": "0"}}>{claim.status}</Alert></td>
                               <td className='started'>
                         <FaEllipsisV className={`actions please${index}`} onClick={() => {
