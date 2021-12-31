@@ -95,7 +95,7 @@ export default function Clients() {
                 </Link>
             </div>
 
-            <div className="componentsData" style={{"border": "1px solid red"}}>
+            <div className="componentsData">
               <div className="table-card">
                   <div id="search">
                     <SearchBar placeholder={"Search for client"} value={q} handleSearch={handleSearch}/>

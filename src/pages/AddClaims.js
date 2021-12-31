@@ -2,7 +2,7 @@ import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import Header from '../parts/header/Header'
-import { db } from '../helpers/firebase'
+import { authentication, db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../hooks/useForm'
 
@@ -12,6 +12,7 @@ function AddClaims() {
 
     const claimsCollectionRef = collection(db, 'claims')
     const [fields, handleFieldChange] = useForm({
+        uid: authentication.currentUser.uid,
         refNumber: '',
         dateReported: '',
         policyType: '',
@@ -29,8 +30,14 @@ function AddClaims() {
     })
 
     const createClaim = async (event) => {
-        event.preventDefault()
-        await addDoc(claimsCollectionRef, fields)
+        try{
+            event.preventDefault()
+            await addDoc(claimsCollectionRef, fields)
+            alert(`successfully added ${fields.claimantName}'s claim`)
+            document.form1.reset();
+        } catch(error){
+            console.log(error)
+        }
       }
 
     return (
@@ -38,7 +45,7 @@ function AddClaims() {
             <Header title="Add Claim" subtitle="ADD A NEW CLAIM" />
 
             <div className="table-card componentsData">  
-                    <Form onSubmit={createClaim}>
+                    <Form name="form1" onSubmit={createClaim}>
                         <Row className="mb-3">
                         <h5>Claim Details</h5>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
@@ -48,7 +55,7 @@ function AddClaims() {
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='policyType'>Policy</Form.Label>
                                 <Form.Select aria-label="User role" id="policyType" onChange={handleFieldChange}>
-                                    <option value="hide">--User Role--</option>
+                                    <option value="hide">--Select Category--</option>
                                     <option value="mtp">MTP</option>
                                     <option value="comprehensive">Comprehensive</option>
                                     <option value="windscreen">Windscreen</option>

@@ -25,21 +25,23 @@ function Reports() {
             <Header title="Reports" subtitle="MANAGING REPORTS" />
 
                 
-                <div className="table-card componentsData " style={{"max-width": "80vw", "margin": "auto"}}>
-                    <div id="search">
-                                <SearchBar placeholder={"Search for organisation"} value={q} handleSearch={handleSearch}/>
-                                  <div></div>
-                                  <CSVLink
-                                    data={data}
-                                    filename={"Britam-Reports.csv"}
-                                    className="btn btn-primary cta"
-                                    target="_blank"
-                                >
-                                    Export <MdDownload />
-                                </CSVLink>
-                    
-                          </div>
-                    <Datatable data={search(data)} columnHeading={columnHeading} columns={columns}/>
+                <div className="componentsData " style={{"max-width": "80vw", "margin": "auto"}}>
+                    <div class="table-card">
+                        <div id="search">
+                                    <SearchBar placeholder={"Search for organisation"} value={q} handleSearch={handleSearch}/>
+                                      <div></div>
+                                      <CSVLink
+                                        data={data}
+                                        filename={"Britam-Reports.csv"}
+                                        className="btn btn-primary cta"
+                                        target="_blank"
+                                    >
+                                        Export <MdDownload />
+                                    </CSVLink>
+                        
+                              </div>
+                        <Datatable data={search(data)} columnHeading={columnHeading} columns={columns}/>
+                    </div>
                 
                 </div>
         </div>

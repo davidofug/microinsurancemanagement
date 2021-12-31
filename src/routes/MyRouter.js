@@ -33,7 +33,7 @@ function MyRouter() {
                     {authClaims?.agent && <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.superadmin && <SuperAdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                 </div>}
-                <Switch>
+                <Switch >
                     <Route path="/" exact component={Login} />
                     <Route path="/login" component={Login} />
                     <Route path="/forgot-password" component={ForgotPassword} />
