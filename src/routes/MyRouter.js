@@ -27,24 +27,29 @@ function MyRouter() {
     return (
         <Router>
             <div className={largeContentClass ? 'top-container-large': `top-container` }>
-                {currentUser?.loggedIn && <div className='MenuSide'>
+                {currentUser?.loggedIn && 
+                <>
+                <div className='MenuSide'>
                     {authClaims?.admin && <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.supervisor && <SupervisorMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.agent && <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.superadmin && <SuperAdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
-                </div>}
+                </div>
+                <main className='displayLeft'>
+                    <AdminRoutes />
+                    <SupervisorRoutes />
+                    <AgentsRoutes />
+                    <SuperAdminRoutes />
+                </main>
+                </>
+                }
                 <Switch >
                     <Route path="/" exact component={Login} />
                     <Route path="/login" component={Login} />
                     <Route path="/forgot-password" component={ForgotPassword} />
                     <Route path="/logout" component={Logout} />
                     <Route path="/not-logged-in" component={NotLoggedIn} />
-                    <main>
-                        <AdminRoutes />
-                        <SupervisorRoutes />
-                        <AgentsRoutes />
-                        <SuperAdminRoutes />
-                    </main>
+                    
                 </Switch>
             </div>
         </Router>

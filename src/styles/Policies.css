@@ -1,7 +1,7 @@
-Table {
+/* Table {
     border: 1px solid black;
 
-}
+} */
     
 
 @media (min-width: 430px) and (max-width: 900px) {
@@ -33,18 +33,18 @@ Table {
         justify-content: center;
     }
 
-    tr {
+    /* tr {
         display: grid;
         grid-template-columns: repeat(2, 1fr); 
         grid-template-areas: "sticker-no sticker-no" 
                             "first second"
                             "third fourth"
                             "repeater-buttons repeater-buttons";   
-    }
+    } */
 
-    td {
+    /* td {
         display: flex;
-    }
+    } */
 
     .sticker-number {
         grid-row: 1;
@@ -83,10 +83,10 @@ Table {
 }
 
 @media (max-width: 428px) {
-    td {
+    /* td {
         display: flex;
         justify-content: center;
-    }
+    } */
 
     .form-buttons {
         display: flex;

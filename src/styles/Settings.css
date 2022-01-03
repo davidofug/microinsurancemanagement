@@ -38,7 +38,7 @@
 
 #options{
     height: 100%;
-    border-right: 5px solid #fafafa;
+    /* border-right: 5px solid #fafafa; */
     padding: 20px;
 }
 
@@ -47,7 +47,22 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
+    background-color: white;
+    margin-bottom: 10px;
 }
+
+.avatarSection{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.profileSection{
+    display: flex;
+    justify-content: space-between;
+}
+
+
 
 #settings_columns img{
     height: 100px;

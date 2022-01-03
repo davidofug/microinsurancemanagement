@@ -6,7 +6,7 @@ import profile from '../../assets/imgs/image 2.png'
 import logo from '../../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import MobileNav from '../../parts/menu/MobileNav'
-import SideBar from '../../parts/menu/SideBar'
+import SideBar from './SideBar'
 import MinimisedSideBar from '../../parts/menu/MinimisedSideBar'
 import { authentication } from "../../helpers/firebase";
 
@@ -42,12 +42,15 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                     <nav >
                         <div id='brand'>
                             <img src={logo} alt="Britam" />
-                            <i onClick={() => {
-                                setToggeMenu(!toggleMenu)
-                                setLargeContentClass(!largeContentClass)
-                                }}>
-                                <HiOutlineChevronLeft />
-                            </i>
+                            <div id="arrowCircle" onClick={() => {
+                                    setToggeMenu(!toggleMenu)
+                                    setLargeContentClass(!largeContentClass)
+                                    }}>
+                                    
+                                        <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                                    
+                                    
+                            </div>
                         </div>
                         <SideBar role={Agent} user="agent" displayName={authentication?.currentUser?.displayName} />
                     </nav>
@@ -55,12 +58,15 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
             : 
             <nav className='sidebar-m'>
                 <section id='brand_m'>
-                    <i onClick={() => {
+                    <div id="arrowOutCircle" onClick={() => {
                         setToggeMenu(!toggleMenu)
                         setLargeContentClass(!largeContentClass)
                         }}>
-                        <HiOutlineChevronRight />
-                    </i>
+                        
+                            <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                        
+                        
+                </div>
                 </section>
                 <MinimisedSideBar role={Agent} displayName={authentication?.currentUser?.displayName}/>
             
