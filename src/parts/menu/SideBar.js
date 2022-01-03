@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import profile from '../../assets/imgs/image 2.png'
 import { MdLogout  } from 'react-icons/md'
 import DefaultAvatar from '../DefaultAvatar'
+import { Badge } from 'react-bootstrap'
 
 export default function SideBar({role, user, displayName}){
 
@@ -59,7 +60,7 @@ export default function SideBar({role, user, displayName}){
                     {/* <img src={profile} alt="profile" /> */}
                     <div>
                         <p>{displayName}</p>
-                        <p style={{"color": "#646464"}}>{user}</p>
+                        <p style={{"color": "#646464"}}><Badge>{user}</Badge></p>
                     </div>
                     <div id="eclipse"><div></div><div></div><div></div></div>
                 </Link>

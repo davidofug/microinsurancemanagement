@@ -104,6 +104,8 @@ function AddClaims() {
                         <Form.Group className="mb-3">
                             <Form.Label>upload support documents</Form.Label>
                             <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} />
+                            <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} />
+                            <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} />
                         </Form.Group>
                         
                         <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>

@@ -99,8 +99,53 @@
     
 }
 
+.logoutIcon{
+    color: #000;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.logoutIcon:hover{
+    background-color: #F4F4F4;
+    border-radius: 10px;
+    cursor: pointer;
+}
 
 /* End Menu CSS */
+
+
+/* .dropdown{
+} */
+
+.buttonDetail{
+    list-style: none;
+    list-style-type: none;
+}
+
+.dropdown ul{
+    padding-left: 60px;
+}
+
+/* .dropdown ul li{
+} */
+
+.dropdown ul li a {
+    text-decoration: none;
+}
+
+/* .buttonDetail a{
+    color: #000;
+} */
+
+  /* .dropdown[open] > summary::before {
+      content: ' ';
+      display: block;
+      position: fixed;
+      z-index: 1;
+  } */
+
+
 
 
 
@@ -154,14 +199,27 @@
 /* footer account */
 
 footer{
+    display: flex;
+    position: relative;
+    bottom: 0;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+
+footer p{
+    margin: 0;
+}
+
+/* footer{
     position: relative;
     bottom: 0;
     padding: 10px 5px;
     width: inherit;
     color: #000;
-}
+} */
 
-footer a{
+/* footer a{
     text-decoration: none;
     align-items: center;
     display: grid;
@@ -172,19 +230,19 @@ footer a{
 footer a p{
     color: #000;
     margin: 0;
-}
+} */
 
 
-footer:hover{
+/* footer:hover{
     background-color: #F4F4F4;
     color: #000;
-}
+} */
 
-footer a img{
+/* footer a img{
     height: 50px;
     width: 50px;
     border-radius: 50%;
-}
+} */
 
 
 
@@ -365,7 +423,7 @@ footer ul li a:hover{
 }
 
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
     .mobile-sidebar{
         display: block;
     }

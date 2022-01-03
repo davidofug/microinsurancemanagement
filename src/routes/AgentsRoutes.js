@@ -3,8 +3,8 @@ import Users from '../pages/Users'
 import Logs from '../pages/Logs.js'
 import Claims from '../pages/Claims'
 import Logout from '../pages/Logout'
-import Reports from '../pages/Reports'
-import Clients from '../pages/Clients'
+import Reports from '../pages/agent/Reports'
+import Clients from '../pages/agent/Clients'
 import Policies from '../pages/Policies'
 import PrivateRoute  from './PrivateRoute'
 import Dashboard from '../pages/Dashboard'
@@ -13,7 +13,7 @@ import AddClients from '../pages/AddClients'
 import Settings from '../pages/agent/Settings'
 import Comprehensive from '../pages/Comprehensive'
 import { Route } from 'react-router-dom'
-import AddUsers from '../pages/AddUsers'
+import AddUsers from '../pages/agent/AddUsers'
 
 function AgentsRoutes() {
     return (
@@ -27,7 +27,7 @@ function AgentsRoutes() {
             <PrivateRoute path="/agent/clients" >
                 <Clients />
             </PrivateRoute>
-            <PrivateRoute path="/add-user" >
+            <PrivateRoute path="/agent/add-user" >
                 <AddUsers />
             </PrivateRoute>
             <PrivateRoute path="/agent/user" >

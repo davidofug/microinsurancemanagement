@@ -1,4 +1,4 @@
-import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson } from 'react-icons/md'
+import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson, MdSettings } from 'react-icons/md'
 
 const menuData = {
     SuperAdmin: [
@@ -241,23 +241,13 @@ const menuData = {
             number: 3,
             name: "User Management",
             icon: <MdPeople />,
-            link: "/agent/user",
-            subMenu: [
-                {
-                    name: "Add Users",
-                    link: "/add-user"
-                },
-                {
-                    name: "View Log Trail",
-                    link: "/agent/view-log-trail"
-                }
-            ]
+            link: "/agent/view-log-trail"
         },
         {
             number: 4,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: "/agent/policies",
+            link: null,
             subMenu: [
                 {
                     name: "MTP",
@@ -284,6 +274,12 @@ const menuData = {
             name: "Reports",
             icon: <MdAssessment />,
             link: "/agent/reports"
+        },
+        {
+            number: 7,
+            name: "Account Settings",
+            icon: <MdSettings />,
+            link: "/agent/settings"
         }
     ]
 }
