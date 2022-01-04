@@ -1,6 +1,6 @@
 import { Table } from 'react-bootstrap'
 import { Fragment, useState } from 'react'
-import EditableRow from '../helpers/EditableRow'
+import EditableRow from '../../helpers/EditableRow'
 import { FaEllipsisV } from 'react-icons/fa'
 import './claimTable.css'
 

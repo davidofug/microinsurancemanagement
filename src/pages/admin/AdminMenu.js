@@ -37,36 +37,39 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
     <div className="menuSide">
       <MobileNav role={Admin} user="admin" displayName={authentication?.currentUser?.displayName}/>
       {toggleMenu === true ? (
-        <div className="sidebar">
-          <nav>
-            <div id="brand">
-              <img src={logo} alt="Britam" />
-              <i
-                onClick={() => {
-                  setToggeMenu(!toggleMenu);
-                  setLargeContentClass(!largeContentClass);
-                }}
-              >
-                <HiOutlineChevronLeft />
-              </i>
+        <div className="sidebar"> 
+        <nav >
+            <div id='brand'>
+                <img src={logo} alt="Britam" />
+                <div id="arrowCircle" onClick={() => {
+                        setToggeMenu(!toggleMenu)
+                        setLargeContentClass(!largeContentClass)
+                        }}>
+                        
+                            <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                        
+                        
+                </div>
             </div>
             <SideBar role={Admin} user="admin" displayName={authentication?.currentUser?.displayName} />
-          </nav>
-        </div>
-      ) : (
-        <nav className="sidebar-m">
-          <section id="brand_m">
-            <i
-              onClick={() => {
-                setToggeMenu(!toggleMenu);
-                setLargeContentClass(!largeContentClass);
-              }}
-            >
-              <HiOutlineChevronRight />
-            </i>
-          </section>
-          <MinimisedSideBar role={Admin} displayName={authentication?.currentUser?.displayName} />
         </nav>
+    </div>
+      ) : (
+        <nav className='sidebar-m'>
+                <section id='brand_m'>
+                    <div id="arrowOutCircle" onClick={() => {
+                        setToggeMenu(!toggleMenu)
+                        setLargeContentClass(!largeContentClass)
+                        }}>
+                        
+                            <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                        
+                        
+                </div>
+                </section>
+                <MinimisedSideBar role={Admin} displayName={authentication?.currentUser?.displayName}/>
+            
+            </nav>
       )}
     </div>
   );

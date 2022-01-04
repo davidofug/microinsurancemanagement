@@ -275,12 +275,12 @@ const menuData = {
             icon: <MdAssessment />,
             link: "/agent/reports"
         },
-        {
-            number: 7,
-            name: "Account Settings",
-            icon: <MdSettings />,
-            link: "/agent/settings"
-        }
+        // {
+        //     number: 7,
+        //     name: "Account Settings",
+        //     icon: <MdSettings />,
+        //     link: "/agent/settings"
+        // }
     ]
 }
 

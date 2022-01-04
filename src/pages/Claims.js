@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import data from "../helpers/mock-data.json";
 import Pagination from "../helpers/Pagination";
-import ClaimTable from "../parts/ClaimTable";
+import ClaimTable from "../parts/claimTable/ClaimTable";
 import SearchBar from "../parts/searchBar/SearchBar";
 import Header from "../parts/header/Header";
 import { Table, Alert, Modal, Form, Col, Row, Button } from "react-bootstrap";
@@ -11,7 +11,6 @@ import {
   collection,
   getDoc,
   getDocs,
-  addDoc,
   doc,
   deleteDoc,
   updateDoc,
