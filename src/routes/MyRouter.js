@@ -4,6 +4,7 @@ import Login from '../pages/Login'
 import Logout from '../pages/Logout'
 import ForgotPassword from '../pages/ForgotPassword'
 import { useState } from 'react'
+import Loader from '../parts/Loader'
 
 //different user roles routes
 import SuperAdminRoutes from './SuperAdminRoutes'
@@ -18,6 +19,7 @@ import AgentMenu from '../pages/agent/AgentMenu'
 import SuperAdminMenu from '../pages/superAdmin/SuperAdminMenu'
 
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import { Suspense } from 'react'
 
 function MyRouter() {
 

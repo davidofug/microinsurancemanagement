@@ -135,12 +135,12 @@ const menuData = {
                     link: "/admin/motor-third-party"
                 },
                 {
-                    name: "Windscreen",
-                    link: "/admin/windscreen"
-                },
-                {
                     name: "Comprehensive",
                     link: "/admin/comprehensive"
+                },
+                {
+                    name: "Windscreen",
+                    link: "/admin/windscreen"
                 }
             ]
         },
@@ -201,12 +201,12 @@ const menuData = {
                     link: "/supervisor/motor-third-party"
                 },
                 {
-                    name: "Windscreen",
-                    link: "/supervisor/windscreen"
-                },
-                {
                     name: "Comprehensive",
                     link: "/supervisor/comprehensive"
+                },
+                {
+                    name: "Windscreen",
+                    link: "/supervisor/windscreen"
                 }
             ]
         },

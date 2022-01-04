@@ -20,7 +20,6 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
           activeObject: selected.Admin[sessionStorage.getItem("session1") - 1],
         })
       : setSelected({ ...selected, activeObject: selected.Admin[0] });
-      console.log(authentication.currentUser.displayName)
   }, []);
 
   const toggleActive = (index) => {
