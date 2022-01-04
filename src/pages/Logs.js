@@ -4,16 +4,18 @@ import Header from '../parts/header/Header'
 
 function Logs() {
 
-    useEffect(() => document.title = 'Britam - Logs Trails', [])
+    useEffect(() => {
+        document.title = 'Britam - Logtrails'
+    }, [])
 
     return (
         <div className='components'>
-            <Header title="Logs" subtitle="VIEW YOUR LOG TRAILS" />
+            <Header title="Logs" subtitle="USER LOG TRAILS" />
 
             <button className="btn btn-primary cta">Check in</button>
 
 
-            <div className="table-card componentsData"> 
+            <div className="shadow-sm table-card componentsData"> 
 
                 <Table striped hover responsive>
                     <thead>

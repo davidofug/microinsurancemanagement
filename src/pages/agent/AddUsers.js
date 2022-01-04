@@ -1,18 +1,18 @@
-import '../assets/styles/addClients.css'
-import { authentication } from '../helpers/firebase'
+import '../../assets/styles/addClients.css'
+import { authentication } from '../../helpers/firebase'
 import { httpsCallable } from 'firebase/functions'
-import { functions } from '../helpers/firebase'
+import { functions } from '../../helpers/firebase'
 import { useEffect, useState } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
-import Upload from '../parts/uploader/Upload'
-import Header from '../parts/header/Header'
-import { useForm } from '../hooks/useForm'
-import useAuth from '../contexts/Auth'
+import Upload from '../../parts/uploader/Upload'
+import Header from '../../parts/header/Header'
+import { useForm } from '../../hooks/useForm'
+import useAuth from '../../contexts/Auth'
 
 function AddUsers() {
     const { authClaims } = useAuth()
-    const addUser = httpsCallable(functions, 'addUser')
-    useEffect(() => { document.title = 'Britam - Add Supervisors' }, [])
+    const addUser = httpsCallable(functions,'addUser')
+    useEffect(() => { document.title = 'Britam - Add Clients' }, [])
 
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
@@ -45,25 +45,19 @@ function AddUsers() {
         }).catch((err) => {
             console.log(err)
         })
-
     }
 
     const { user_role } = fields
 
     return (
         <div className='components'>
-            <Header title="Add Users" subtitle="ADD A NEW USER" />
-            <div class="shadow-sm table-card">
+            <Header title="Add Clients" subtitle="ADD A NEW CLIENT" />
+            <div class="addComponentsData">
                     <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
-                            <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange}>
-                                <option value="hide">--User Role--</option>
-                                {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
-                                {authClaims.superadmin && <option value="admin">Admin</option>}
-                                {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
-                                {authClaims.supervisor && <option value="agent">Agent</option>}
-                                {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
+                            <Form.Select aria-label="User role" controlId="user_role" id="user_role" value="Customer" onChange={handleFieldChange}>
+                                {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Client</option>}
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3" >
@@ -73,7 +67,7 @@ function AddUsers() {
                         <Row className="mb-3">
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='dob'>Date of birth</Form.Label>
-                            <Form.Control type="date" id="dob" onChange={handleFieldChange} />
+                                <Form.Control type="date" id="dob" onChange={handleFieldChange} />
                             </Form.Group>
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
@@ -106,11 +100,7 @@ function AddUsers() {
                     </Form.Group>
                     <Row className="mb-3">
                     <Form.Group as={Col} className="addFormGroups" >
-                        <Form.Label htmlFor='license'>License No.</Form.Label>
-                        <Form.Control id="licenseNo" placeholder="license No." onChange={handleFieldChange} />
-                    </Form.Group>
-                    <Form.Group as={Col} className="addFormGroups" >
-                        <Form.Label htmlFor='nin'>NIN</Form.Label>
+                        <Form.Label htmlFor='NIN'>NIN</Form.Label>
                         <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
                         </Form.Group>
                     </Row>
@@ -132,7 +122,8 @@ function AddUsers() {
                     }
                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
                         <Upload />
-                    <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' /></div>
+                    <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' />
+                    </div>
                     </Form>
             </div>
         </div>

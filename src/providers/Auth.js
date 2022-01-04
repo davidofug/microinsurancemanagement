@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AuthContext } from '../contexts/Auth'
 
 function AuthProvider({ children }) {

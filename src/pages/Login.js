@@ -51,7 +51,6 @@ function Login() {
         history.push(from); // had removed claim from the route.
       }
     } catch(err) {
-      // console.log(error.message);
       console.log(err.code)
       setLoading(false)
       const errors = {
