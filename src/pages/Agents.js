@@ -6,12 +6,28 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../parts/searchBar/SearchBar'
 import Header from '../parts/header/Header';
+import { functions } from '../helpers/firebase';
+import { httpsCallable } from 'firebase/functions';
+import { Table } from 'react-bootstrap'
+import { FaEllipsisV } from "react-icons/fa";
 
 function Agents() {
 
-    useEffect(() => {document.title = 'Britam - Agents'}, [])
+    useEffect(() => {
+      document.title = 'Britam - Agents'
 
-    const [agents, setAgents] = useState(data);
+      const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then((results) => {
+          const resultsArray = results.data
+          console.log(resultsArray)
+          const myUsers = resultsArray.filter(user => user.role.agent === true)
+          setAgents(myUsers)
+      }).catch((err) => {
+          console.log(err)
+      })
+    }, [])
+
+    const [agents, setAgents] = useState([]);
   //
     const [editFormData, setEditFormData] = useState({
         name: "",
@@ -125,7 +141,7 @@ function Agents() {
                     <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>
 
-                    <form onSubmit={handleEditFormSubmit}>
+                    {/* <form onSubmit={handleEditFormSubmit}>
                         <EditableDatable 
                             columns={columns}
                             columnHeading={columnHeading}
@@ -137,7 +153,81 @@ function Agents() {
                             handleEditFormChange={handleEditFormChange}
                             handleCancelClick={handleCancelClick}
                         /> 
-                  </form>
+                  </form> */}
+
+<Table hover striped responsive>
+                        <thead>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                        </thead>
+                        <tbody>
+                          {agents.map(agent => (
+                              <tr key={agent.uid}>
+                              <td>{1}</td>
+                              <td>{agent.name}</td>
+                              <td>{agent.email}</td>
+                              <td>Email</td>
+                              <td>Contact</td>
+                              <td>Address</td>
+                <td className="started">
+                  <FaEllipsisV
+                    className={`actions please`}
+                    onClick={() => {
+                      document
+                        .querySelector(`.please`)
+                        .classList.add("hello");
+                    }}
+                  />
+                  <ul id="actionsUl" className="actions-ul">
+                  
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                          const confirmBox = window.confirm(
+                            `Are you sure you want to delete's claim`
+                          );
+                          if (confirmBox === true) {
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </li>
+                    <hr style={{ color: "black" }}></hr>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        close
+                      </button>
+                    </li>
+                  </ul>
+                </td>
+                          </tr>
+                          ))}
+                            
+                        </tbody>
+                        <tfoot>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                        </tfoot>
+                    </Table>
 
                   <Pagination 
                     pages={totalPagesNum}
