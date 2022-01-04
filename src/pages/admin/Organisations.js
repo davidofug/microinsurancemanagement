@@ -48,14 +48,14 @@ export default function Organisations() {
   const [q, setQ] = useState("");
 
   const columns = [
-    "id",
-    "name",
-    "email",
-    "contact",
-    "agentName",
-    "role",
-    "contact",
-    "email",
+    "Logo",
+    "Name",
+    "Email",
+    "Phone No",
+    "Contact Name",
+    "Role",
+    "Contact's No",
+    "Contact Email",
   ];
   const search = (rows) =>
     rows.filter((row) =>
@@ -108,17 +108,24 @@ export default function Organisations() {
           responsive
           cellPadding={0}
           cellSpacing={0}
+          className="mt-5"
         >
           <thead>
-            <tr>
+            <tr style={{borderTop: '1px solid transparent', borderLeft: '1px solid transparent', borderRight: '1px solid transparent'}}>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th colSpan={4} style={{border: "1px solid #000", textAlign: "center"}}>Contact Person</th></tr>
+            <tr style={{borderTop: "1px solid #000"}}>
               <th>Logo</th>
               <th>Name</th>
               <th>Email</th>
               <th>Phone No.</th>
-              <th>Contact Name</th>
+              <th style={{borderLeft: "1px solid #000"}}>Name</th>
               <th>Role</th>
-              <th>Contact's No</th>
-              <th>Contact Email</th>
+              <th>Phone No.</th>
+              <th style={{borderRight: "1px solid #000"}}>Email</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -130,11 +137,11 @@ export default function Organisations() {
                 <td>{organisation.name}</td>
                 <td>{organisation.org_email}</td>
                 <td>{organisation.tel}</td>
-                <td>{organisation.ContactName}</td>
+                <td style={{borderLeft: "1px solid #000"}}>{organisation.ContactName}</td>
                 <td>{organisation.role}</td>
                 <td>{organisation.contactPhoneNumber}</td>
-                <td>{organisation.contact_email}</td>
-                <td className="started">
+                <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
+                <td style={{borderRight: "1px solid #000"}}className="started">
                     <FaEllipsisV
                       className={`actions please${organisation.id}`}
                       onClick={() => {
@@ -191,10 +198,10 @@ export default function Organisations() {
               <th>Name</th>
               <th>Email</th>
               <th>Phone No.</th>
-              <th>Contact Name</th>
+              <th style={{borderLeft: "1px solid #000"}}>Contact Name</th>
               <th>Role</th>
               <th>Contact's No</th>
-              <th>Contact Email</th>
+              <th style={{borderRight: "1px solid #000"}}>Contact Email</th>
               <th>Action</th>
             </tr>
           </tfoot>
