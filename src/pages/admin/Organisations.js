@@ -4,15 +4,18 @@ import { useEffect, useState } from "react";
 import { MdDownload } from "react-icons/md";
 import data from "../../helpers/mock-data.json";
 import Header from "../../parts/header/Header";
-import Datatable from "../../helpers/DataTable";
 import Pagination from "../../helpers/Pagination";
 import SearchBar from "../../parts/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
-import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { collection, addDoc, getDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { FaEllipsisV } from "react-icons/fa";
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../../helpers/firebase'
+import ClaimModel from "../agent/ClaimModel";
+import { Modal } from 'react-bootstrap'
+import { useForm } from "../../hooks/useForm";
+import { authentication } from "../../helpers/firebase";
 
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
@@ -33,6 +36,28 @@ export default function Organisations() {
       getOrganisations()
 
   }, []);
+
+  const [editID, setEditID] = useState(null);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [fields, handleFieldChange] = useForm({
+    uid: authentication.currentUser.uid,
+    refNumber: "",
+    dateReported: "",
+    policyType: "",
+    numberPlate: "",
+    stickerNumber: "",
+    claimantName: "",
+    claimantEmail: "",
+    claimantPhoneNumber: "",
+    dateOfIncident: "",
+    claimEstimate: "",
+    detailsOfIncident: "",
+    attachedDocuments: "",
+    status: "",
+  });
 
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
@@ -65,6 +90,20 @@ export default function Organisations() {
       )
     );
 
+    const handleDelete = async (id) => {
+      const organisationDoc = doc(db, "organsiations", id);
+      console.log(organisationDoc)
+      await deleteDoc(organisationDoc);
+    };
+
+    const [singleDoc, setSingleDoc] = useState({});
+
+    const getSingleDoc = async (id) => {
+      const docRef = doc(db, "claims", id);
+      const docSnap = await getDoc(docRef);
+      setSingleDoc(docSnap.data());
+    };
+
   const handleSearch = ({ target }) => setQ(target.value);
 
   return (
@@ -77,6 +116,10 @@ export default function Organisations() {
           <button className="btn btn-primary cta">Add Organisation</button>
         </Link>
       </div>
+
+      <Modal show={show} onHide={handleClose}>
+        <ClaimModel singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+      </Modal>
 
       {organisations.length <= 0 
       ?
@@ -131,7 +174,7 @@ export default function Organisations() {
           </thead>
 
           <tbody>
-            {organisations.map((organisation) => (
+            {organisations.map((organisation, index) => (
               <tr key={organisation.id}>
                 <td>{organisation.logo}</td>
                 <td>{organisation.name}</td>
@@ -143,34 +186,40 @@ export default function Organisations() {
                 <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
                 <td style={{borderRight: "1px solid #000"}}className="started">
                     <FaEllipsisV
-                      className={`actions please${organisation.id}`}
+                      className={`actions please${index}`}
                       onClick={() => {
                         document
-                          .querySelector(`.please${organisation.id}`)
+                          .querySelector(`.please${index}`)
                           .classList.add("hello");
                       }}
                     />
                     <ul id="actionsUl" className="actions-ul">
                       <li>
-                        <button>Details</button>
-                      </li>
-                      <li>
                         <button
                           onClick={() => {
                             document
-                              .querySelector(`.please${organisation.id}`)
+                              .querySelector(`.please${index}`)
                               .classList.remove("hello");
                             const confirmBox = window.confirm(
-                              `Are you sure you want to delete ${organisation.name}'s claim`
-                            );
-                            if (confirmBox === true) {}
+                              `Are you sure you want to delete ${organisation.name}`);
+                            if (confirmBox === true) {
+                              handleDelete(organisation.id);
+                            }
                           }}
                         >
                           Delete
                         </button>
                       </li>
                       <li>
-                        <button>
+                        <button
+                        onClick={() => {
+                          setEditID(organisation.id);
+                          getSingleDoc(organisation.id);
+                          handleShow();
+                          document
+                            .querySelector(`.please${index}`)
+                            .classList.remove("hello");
+                        }}>
                           Edit
                         </button>
                       </li>
@@ -179,7 +228,7 @@ export default function Organisations() {
                         <button
                           onClick={() => {
                             document
-                              .querySelector(`.please${organisation.id}`)
+                              .querySelector(`.please${index}`)
                               .classList.remove("hello");
                           }}
                         >
