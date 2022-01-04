@@ -6,12 +6,28 @@ import Pagination from '../../helpers/Pagination';
 import { EditableDatable } from '../../helpers/DataTable'
 import SearchBar from '../../parts/searchBar/SearchBar';
 import Header from '../../parts/header/Header';
+import { functions } from '../../helpers/firebase';
+import { httpsCallable } from 'firebase/functions';
+import { FaEllipsisV } from "react-icons/fa";
+import { Table } from 'react-bootstrap'
 
 function Supervisors() {
 
-    useEffect(() => {document.title = 'Britam - Supervisors'}, [])
+    useEffect(() => {
+      document.title = 'Britam - Supervisors'
 
-    const [supervisors, setSuperviors] = useState(data);
+      const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then((results) => {
+          const resultsArray = results.data
+          const myUsers = resultsArray.filter(user => user.role.supervisor === true)
+          setSuperviors(myUsers)
+      }).catch((err) => {
+          console.log(err)
+      })
+
+    }, [])
+
+    const [supervisors, setSuperviors] = useState([]);
   //
     const [editFormData, setEditFormData] = useState({
         name: "",
@@ -128,25 +144,85 @@ function Supervisors() {
                             <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                       </div>
 
-                <form onSubmit={handleEditFormSubmit}>
-                        <EditableDatable 
-                            columns={columns}
-                            columnHeading={columnHeading}
-                            editContactId={editContactId}
-                            currentClients={search(currentSupervisors)}
-                            handleDeleteClick={handleDeleteClick}
-                            handleEditClick={handleEditClick}
-                            editFormData={editFormData}
-                            handleEditFormChange={handleEditFormChange}
-                            handleCancelClick={handleCancelClick}
-                        /> 
-                  </form>
+                    <Table hover striped responsive>
+                        <thead>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                        </thead>
+                        <tbody>
+                          {supervisors.map((supervisor, index) => (
+                              <tr key={supervisor.uid}>
+                              <td>{index+1}</td>
+                              <td>{supervisor.name}</td>
+                              <td>{supervisor.email}</td>
+                              <td>{supervisor.email}</td>
+                              <td>Contact</td>
+                              <td>Address</td>
+                <td className="started">
+                  <FaEllipsisV
+                    className={`actions please`}
+                    onClick={() => {
+                      document
+                        .querySelector(`.please`)
+                        .classList.add("hello");
+                    }}
+                  />
+                  <ul id="actionsUl" className="actions-ul">
+                  
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                          const confirmBox = window.confirm(
+                            `Are you sure you want to delete's claim`
+                          );
+                          if (confirmBox === true) {
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </li>
+                    <hr style={{ color: "black" }}></hr>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        close
+                      </button>
+                    </li>
+                  </ul>
+                </td>
+                          </tr>
+                          ))}
+                            
+                        </tbody>
+                        <tfoot>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                        </tfoot>
+                    </Table>
 
                   <Pagination 
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentSupervisors}
-                    sortedEmployees={data}
+                    sortedEmployees={supervisors}
                     entries={'Supervisor'} />
 
                
