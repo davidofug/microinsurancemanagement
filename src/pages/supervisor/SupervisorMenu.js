@@ -38,35 +38,38 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
             <MobileNav role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
             {toggleMenu === true 
             ?
-                <div className="sidebar">
-                    <nav>
-                    <div id="brand">
+            <div className="sidebar"> 
+                <nav >
+                    <div id='brand'>
                         <img src={logo} alt="Britam" />
-                        <i
-                        onClick={() => {
-                            setToggeMenu(!toggleMenu);
-                            setLargeContentClass(!largeContentClass);
-                        }}
-                        >
-                        <HiOutlineChevronLeft />
-                        </i>
+                        <div id="arrowCircle" onClick={() => {
+                                setToggeMenu(!toggleMenu)
+                                setLargeContentClass(!largeContentClass)
+                                }}>
+                                
+                                    <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                                
+                                
+                        </div>
                     </div>
                     <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
-                    </nav>
-                </div>
+                </nav>
+            </div>
             : 
-            <nav className="sidebar-m">
-                <section id="brand_m">
-                <i
-                    onClick={() => {
-                    setToggeMenu(!toggleMenu);
-                    setLargeContentClass(!largeContentClass);
-                    }}
-                >
-                    <HiOutlineChevronRight />
-                </i>
+            <nav className='sidebar-m'>
+                <section id='brand_m'>
+                    <div id="arrowOutCircle" onClick={() => {
+                        setToggeMenu(!toggleMenu)
+                        setLargeContentClass(!largeContentClass)
+                        }}>
+                        
+                            <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                        
+                        
+                </div>
                 </section>
-                <MinimisedSideBar role={SuperVisor} displayName={authentication?.currentUser?.displayName} />
+                <MinimisedSideBar role={SuperVisor} displayName={authentication?.currentUser?.displayName}/>
+            
             </nav>
             }
         </div>

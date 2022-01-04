@@ -7,9 +7,12 @@ import Datatable from '../../helpers/DataTable';
 import Pagination from '../../helpers/Pagination';
 import { CSVLink } from "react-csv";
 import SearchBar from '../../parts/searchBar/SearchBar';
+import { Table } from "react-bootstrap"
 
 export default function StickerMgt() {
     useEffect(() => document.title = 'Britam - Stickers Management')
+
+    
 
     const [q, setQ] = useState('');
     const [ currentPage, setCurrentPage ] = useState(1)
@@ -20,7 +23,6 @@ export default function StickerMgt() {
     const currentOrganisations = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(data.length / employeesPerPage)
 
-  const columnHeading = ["#", "Category", "Sticker Nos", "Total No Received", "Status"]
   const columns = ["id", "category", "contact", "contact", "status"]
   const search = rows => rows.filter(row =>
     columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
@@ -38,7 +40,7 @@ export default function StickerMgt() {
                             <Badge color={"#D43F3A"} number={77} title={"Motor Private"} />
                             <Badge color={"#FFB848"} number={10} title={"Motor Commercial"} />
                     </div>
-                    <div className="table-card">
+                    <div className="shadow-sm table-card">
                     <div id="search">
                             <SearchBar placeholder={"Search"} value={q} handleSearch={handleSearch}/>
                             <div>
@@ -52,7 +54,20 @@ export default function StickerMgt() {
                                 Export <MdDownload />
                             </CSVLink>
                       </div>
-                      <Datatable data={search(currentOrganisations)} columnHeading={columnHeading} columns={columns}/>
+
+                      <Table responsive hover bordered striped>
+                          <thead>
+                            <tr><th>#</th><th>Category</th><th>Sticker Nos</th><th>Total No Received</th><th>Status</th></tr>
+                          </thead>
+                          <tbody>
+                            <tr><td>#</td><td>Category</td><td>Sticker Nos</td><td>Total No Received</td><td>Active</td></tr>
+                            <tr><td>#</td><td>Category</td><td>Sticker Nos</td><td>Total No Received</td><td>Active</td></tr>
+                            <tr><td>#</td><td>Category</td><td>Sticker Nos</td><td>Total No Received</td><td>Active</td></tr>
+                          </tbody>
+                          <tfoot>
+                            <tr><th>#</th><th>Category</th><th>Sticker Nos</th><th>Total No Received</th><th>Status</th></tr>
+                          </tfoot>
+                      </Table>
 
                       <Pagination 
                           pages={totalPagesNum}

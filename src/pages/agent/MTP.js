@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
-import Header from "../parts/header/Header";
+import Header from "../../parts/header/Header";
 import { Table, Alert } from 'react-bootstrap'
 import { FaEllipsisV } from "react-icons/fa";
 
-export default function Mtp() {
+export default function MTP() {
   useEffect(() => {
     document.title = "Britam - Motor Third Party";
   }, []);

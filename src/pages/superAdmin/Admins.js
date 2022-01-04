@@ -1,54 +1,60 @@
-import { CSVLink } from 'react-csv'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
-import Header from '../parts/header/Header';
-import data from '../helpers/mock-data.json'
-import Pagination from '../helpers/Pagination';
-import SearchBar from '../parts/searchBar/SearchBar';
-import { EditableDatable } from '../helpers/DataTable';
-import { Table } from 'react-bootstrap';
-import { FaEllipsisV } from "react-icons/fa";
-import { functions } from '../helpers/firebase';
+import Pagination from '../../helpers/Pagination';
+import SearchBar from '../../parts/searchBar/SearchBar';
+import Header from '../../parts/header/Header';
+import { functions } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
+import { FaEllipsisV } from "react-icons/fa";
+import { Table } from 'react-bootstrap'
 
-export default function Clients() {
+function Admins() {
 
-  useEffect(() => 
-    {
-      document.title = 'Britam - Clients'
+    useEffect(() => {
+      document.title = 'Britam - Admins'
 
       const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then((results) => {
           const resultsArray = results.data
-          const myUsers = resultsArray.filter(user => user.role.Customer === true)
-          setClients(myUsers)
+          const myUsers = resultsArray.filter(user => user.role.supervisor === true)
+          setAdmins(myUsers)
       }).catch((err) => {
           console.log(err)
       })
 
+    }, [])
 
-  }, [])
+    const [admins, setAdmins] = useState([]);
+    const [supervisors, setSuperviors] = useState([]);
+  //
+    const [editFormData, setEditFormData] = useState({
+        name: "",
+        gender: "",
+        email: "",
+        contact: "",
+        address: "",
+    });
 
-  
-  const [clients, setClients] = useState([]);
-  const [editFormData, setEditFormData] = useState({ name: "", gender: "", email: "", contact: "", address: "" });
   const [editContactId, setEditContactId] = useState(null);
-  const [q, setQ] = useState('');
-
-
 
   const handleEditFormChange = (event) => {
     event.preventDefault();
+
     const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
     const newFormData = { ...editFormData };
-    newFormData[fieldName] = event.target.value;
+    newFormData[fieldName] = fieldValue;
+
     setEditFormData(newFormData);
   };
 
 
   const handleEditFormSubmit = (event) => {
     event.preventDefault();
+
     const editedContact = {
       id: editContactId,
       name: editFormData.name,
@@ -57,17 +63,21 @@ export default function Clients() {
       contact: editFormData.contact,
       address: editFormData.address,
     };
+    
+    const newSupervisors = [...supervisors];
 
-    const newClients = [...clients];
-    const index = clients.findIndex((client) => client.id === editContactId);
-    newClients[index] = editedContact;
-    setClients(newClients);
+    const index = supervisors.findIndex((supervisor) => supervisor.id === editContactId);
+
+    newSupervisors[index] = editedContact;
+
+    setAdmins(newSupervisors);
     setEditContactId(null);
   };
 
   const handleEditClick = (event, contact) => {
     event.preventDefault();
     setEditContactId(contact.id);
+
     const formValues = {
       name: contact.name,
       gender: contact.gender,
@@ -75,75 +85,76 @@ export default function Clients() {
       contact: contact.contact,
       address: contact.address,
     };
+
     setEditFormData(formValues);
   };
 
-  const [ currentPage, setCurrentPage ] = useState(1)
-  const [employeesPerPage] = useState(10)
+  //
 
-  const indexOfLastEmployee = currentPage * employeesPerPage
-  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
-  const currentClients = clients.slice(indexOfFirstEmployee, indexOfLastEmployee)
-  const totalPagesNum = Math.ceil(data.length / employeesPerPage)
+    //
+    const [ currentPage, setCurrentPage ] = useState(1)
+    const [adminsPerPage] = useState(10)
 
-  const handleDeleteClick = (clientId) => {
-    const newClients = [...clients];
-    const index = clients.findIndex((client) => client.id === clientId);
-    newClients.splice(index, 1);
-    setClients(newClients);
-  };
+    const indexOfLastAdmin = currentPage * adminsPerPage
+    const indexOfFirstAdmin = indexOfLastAdmin - adminsPerPage
+    const currentAdmins = admins.slice(indexOfFirstAdmin, indexOfLastAdmin)
+    const totalPagesNum = Math.ceil(admins.length / adminsPerPage)
 
-  const handleCancelClick = () => {
-    setEditContactId(null);
-  };
-    
-  const columns = ["id", "name", "gender", "email", "contact", "address"]
-  const columnHeading = ["#", "Name", "Gender", "Email", "Contact", "Address", "Action"]
 
-  const search = rows => rows.filter(row => columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
-  const handleSearch = ({target}) => setQ(target.value)
+    const handleDeleteClick = (supervisorId) => {
+        const newSupervisors = [...supervisors];
+        const index = supervisors.findIndex(supervisor => supervisor.id === supervisorId);
+        newSupervisors.splice(index, 1);
+        console.log(newSupervisors)
+        setAdmins(newSupervisors);
+      };
+  
+      const handleCancelClick = () => {
+        setEditContactId(null);
+      };
+
+
+
+    const [q, setQ] = useState('');
+
+    const columnHeading = ["#", "License No.", "Name", "Gender", "Email", "NIN", "Contact", "Role", "Branch Name", "Actions"]
+    const columns = ["id", "contact", "name", "gender", "email", "contact", "contact", "email", 'address']
+    const search = rows => rows.filter(row =>
+        columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
+
+        const handleSearch = ({target}) => setQ(target.value)
 
     return (
         <div className='components'>
-            <Header title="Clients" subtitle="MANAGING CLIENTS" />
-   
+          <Header title="Supervisors" subtitle="MANAGING SUPERVISORS" />
+
             <div id="add_client_group">
                 <div></div>
                 <Link to="/add-user">
-                    <button className='btn btn-primary cta'>Add Client</button>
+                    <button className="btn btn-primary cta">Add supervisor</button>
                 </Link>
+                
             </div>
 
-            <div className="componentsData">
-              <div className="shadow-sm table-card">
-                  <div id="search">
-                    <SearchBar placeholder={"Search for client"} value={q} handleSearch={handleSearch}/>
-                    <div></div>
-                    <CSVLink data={data} filename={"Britam-Clients.csv"} className="btn btn-primary cta">
-                      Export <MdDownload />
-                    </CSVLink>
-                  </div>
+            <div className="shadow-sm table-card componentsData">   
+                <div id="search">
+                            <SearchBar placeholder={"Search for Supervisor"} value={q} handleSearch={handleSearch}/>
+                            <div></div>
+                            <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
+                      </div>
 
-                  {/* <form onSubmit={handleEditFormSubmit}>
-                  <EditableDatable columns={columns} columnHeading={columnHeading} editContactId={editContactId}
-                    currentClients={search(currentClients)} handleDeleteClick={handleDeleteClick}
-                    handleEditClick={handleEditClick} editFormData={editFormData}
-                    handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick}
-                  /> 
-                  </form> */}
-
-                  <Table hover striped responsive>
+                <Table hover striped responsive>
                         <thead>
                             <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {clients.map(client => (
-                              <tr key={client.uid}>
-                              <td>{1}</td>
-                              <td>{client.name}</td>
-                              <td>{client.email}</td>
-                              <td>Email</td>
+                          {admins.map((admin, index) => (
+                              <tr key={admin.uid}>
+                              <td>{index+1}</td>
+                              <td>{admin.name}</td>
+                              <td>{admin.email}</td>
+                              <td>{admin.email}</td>
                               <td>Contact</td>
                               <td>Address</td>
                 <td className="started">
@@ -210,11 +221,14 @@ export default function Clients() {
                   <Pagination 
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
-                    currentClients={currentClients}
-                    sortedEmployees={data}
-                    entries={'Clients'} />
-              </div>
+                    currentClients={currentAdmins}
+                    sortedEmployees={admins}
+                    entries={'Admins'} />
+
+               
             </div>
         </div>
     )
 }
+
+export default Admins

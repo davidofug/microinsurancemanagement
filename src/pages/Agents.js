@@ -6,12 +6,27 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../parts/searchBar/SearchBar'
 import Header from '../parts/header/Header';
+import { functions } from '../helpers/firebase';
+import { httpsCallable } from 'firebase/functions';
+import { Table } from 'react-bootstrap'
+import { FaEllipsisV } from "react-icons/fa";
 
 function Agents() {
 
-    useEffect(() => {document.title = 'Britam - Agents'}, [])
+    useEffect(() => {
+      document.title = 'Britam - Agents'
 
-    const [agents, setAgents] = useState(data);
+      const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then((results) => {
+          const resultsArray = results.data
+          const myUsers = resultsArray.filter(user => user.role.agent === true)
+          setAgents(myUsers)
+      }).catch((err) => {
+          console.log(err)
+      })
+    }, [])
+
+    const [agents, setAgents] = useState([]);
   //
     const [editFormData, setEditFormData] = useState({
         name: "",
@@ -82,7 +97,7 @@ function Agents() {
     const indexOfLastEmployee = currentPage * employeesPerPage
     const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
     const currentAgents = agents.slice(indexOfFirstEmployee, indexOfLastEmployee)
-    const totalPagesNum = Math.ceil(data.length / employeesPerPage)
+    const totalPagesNum = Math.ceil(agents.length / employeesPerPage)
 
 
 
@@ -118,14 +133,14 @@ function Agents() {
                 </Link>
             </div>
 
-            <div className="table-card componentsData">   
+            <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                 <SearchBar placeholder={"Search for agent"} value={q} handleSearch={handleSearch}/>
                     <div></div>
                     <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>
 
-                    <form onSubmit={handleEditFormSubmit}>
+                    {/* <form onSubmit={handleEditFormSubmit}>
                         <EditableDatable 
                             columns={columns}
                             columnHeading={columnHeading}
@@ -137,13 +152,87 @@ function Agents() {
                             handleEditFormChange={handleEditFormChange}
                             handleCancelClick={handleCancelClick}
                         /> 
-                  </form>
+                  </form> */}
+
+<Table hover striped responsive>
+                        <thead>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                        </thead>
+                        <tbody>
+                          {agents.map((agent, index) => (
+                              <tr key={agent.uid}>
+                              <td>{index + 1}</td>
+                              <td>{agent.name}</td>
+                              <td>{agent.email}</td>
+                              <td>{agent.email}</td>
+                              <td>Contact</td>
+                              <td>Address</td>
+                <td className="started">
+                  <FaEllipsisV
+                    className={`actions please`}
+                    onClick={() => {
+                      document
+                        .querySelector(`.please`)
+                        .classList.add("hello");
+                    }}
+                  />
+                  <ul id="actionsUl" className="actions-ul">
+                  
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                          const confirmBox = window.confirm(
+                            `Are you sure you want to delete's claim`
+                          );
+                          if (confirmBox === true) {
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </li>
+                    <hr style={{ color: "black" }}></hr>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        close
+                      </button>
+                    </li>
+                  </ul>
+                </td>
+                          </tr>
+                          ))}
+                            
+                        </tbody>
+                        <tfoot>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                        </tfoot>
+                    </Table>
 
                   <Pagination 
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentAgents}
-                    sortedEmployees={data}
+                    sortedEmployees={agents}
                     entries={'Agents'} />
 
                

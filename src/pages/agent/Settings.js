@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react'
 import '../../styles/Settings.css'
 import profile from '../../assets/imgs/image 2.png'
-import { Form, Row, Col, Alert } from 'react-bootstrap'
+import { Form, Row, Col, Alert, Modal, Button, Badge } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
 import Header from '../../parts/header/Header'
 import DefaultAvatar from '../../parts/DefaultAvatar'
+import { authentication } from '../../helpers/firebase'
+import { AiOutlineEdit } from 'react-icons/ai'
 
 function Settings() {
 
     const [ selectedTab, setSelectedTab ] = useState(1)
+    const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
     useEffect(() => document.title = 'Britam - User Profile', [])
 
@@ -41,118 +46,108 @@ function Settings() {
 
     return (
         <div className='components'>
-            <Header title="My Profile" subtitle="MANAGE YOUR ACCOUNT" />
+            <Header title="Setting" subtitle="CUSTOMIZE YOUR ACCOUNT" />
+
+
+            <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Form id="update_claim" >
+          <Modal.Body>
+                <DefaultAvatar />
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Change Name</Form.Label>
+                    <Form.Control type="password" id='newPassword' placeholder="Enter full Name" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Change Phone Number</Form.Label>
+                    <Form.Control type="password" id='newPassword' placeholder="Enter new phone number" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Change Email</Form.Label>
+                    <Form.Control type="password" id='newPassword' placeholder="Enter new email" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Change Address</Form.Label>
+                    <Form.Control type="password" id='newPassword' placeholder="Enter new address" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Enter Password to confirm</Form.Label>
+                    <Form.Control type="password" id='newPassword' placeholder="Enter password" />
+                </Form.Group>
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={() => {
+                handleClose();
+              }}
+              id="submit"
+            >
+              Save
+            </Button>
+          </Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Form>
+      </Modal>
 
                 <div class="componentsData">
-                    <div id='settings_columns'>
-                        <div id="options">
-                            <ul>
-                                <li><button onClick={() => toggleTab(1)} className={selectedTab === 1 ? "tabs active-tabs" : "tabs"}>Edit Profile</button></li>
-                                <li><button onClick={() => toggleTab(2)} className={selectedTab === 2 ? "tabs active-tabs" : "tabs"}>Notifications</button></li>
-                                <li><button onClick={() => toggleTab(3)} className={selectedTab === 3 ? "tabs active-tabs" : "tabs"}>Edit Password</button></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div className="tabs-content">
-                                <div className={selectedTab === 1 ? "content  active-content" : "content"}>
-                                    <div id="edit_profile">
-                                        <Form onSubmit={handleEditFormSubmit}>
-                                            <h2>Edit Profile</h2>
-                                            <hr />
-                                            <DefaultAvatar />
-                                            {/* <img src={profile} alt="profile" /> */}
-                                            <Row className="mb-3">
-                                                <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                                    <Form.Label>Name</Form.Label>
-                                                    <Form.Control 
-                                                    name="name"
-                                                    value={editFormData.name}
-                                                    onChange={handleEditFormChange} />
-                                                </Form.Group>
-                                                <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                                    <Form.Label>Phone Number</Form.Label>
-                                                    <Form.Control type="tel"
-                                                        name="number" 
-                                                        value={editFormData.number} 
-                                                        onChange={handleEditFormChange}
-                                                    />
-                                                </Form.Group>
-                                            </Row>
-                                            <Row className="mb-3">
-                                                <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                                    <Form.Label>Date of birth</Form.Label>
-                                                    <Form.Control type="date" name="date" value={editFormData.date} onChange={handleEditFormChange}/>
-                                                </Form.Group>
-                                                <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                                    <Form.Label>Gender</Form.Label>
-                                                    <div style={{"display": "flex", "gap": "10px"}}>
-                                                        <div>
-                                                            <input type="radio" name="gender" id="" style={{"margin-right": "5px"}} checked/>
-                                                            <label htmlFor="gender">Male</label>
-                                                        </div>
-                                                        <div>
-                                                            <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
-                                                            <label htmlFor="gender">Female</label>
-                                                        </div>
+                                <div id="edit_profile">
+                                        <form onSubmit={handleEditFormSubmit}>
+                                            <h2>Profile</h2>
+                                            <p>User Detail</p>
+                                            <div className='profileSection'>
+                                                <div className="avatarSection">
+                                                    <DefaultAvatar />
+                                                    <div>
+                                                        <p>{authentication.currentUser.displayName}</p>
+                                                        <p>{authentication.currentUser.email}</p>
                                                     </div>
-                                                </Form.Group>
-                                            </Row>
-                                            <Form.Group className="mb-3" controlId="formGridAddress1">
-                                                <Form.Label>Email</Form.Label>
-                                                <Form.Control onChange={handleEditFormChange}
-                                                    name="email"
-                                                    value={editFormData.email} />
-                                            </Form.Group>
-                                            <Form.Group className="mb-3" controlId="formGridAddress1">
-                                                <Form.Label>Address</Form.Label>
-                                                <Form.Control value={editFormData.address} name="address" onChange={handleEditFormChange} />
-                                            </Form.Group>
-                                            <Form.Group className="mb-3" controlId="formGridAddress1">
-                                                <Form.Label>Branch Name</Form.Label>
-                                                <Form.Control value={editFormData.branch} name="branch" onChange={handleEditFormChange} />
-                                            </Form.Group>
-                                            <Form.Group className="mb-3" controlId="formGridAddress1">
-                                                <Form.Label>Enter Password to confirm</Form.Label>
-                                                <Form.Control type="password" placeholder='Password' />
-                                            </Form.Group>
-                                            <input type="submit" value="Update Profile" className="btn btn-primary cta" />
+                                                </div>
+                                                <button className="btn btn-primary cta" onClick={handleShow}><AiOutlineEdit /> Update Profile</button>
+                                                
+                                            </div>
+                                            <Badge >Agent</Badge>
+
                                             
-                                        </Form>
-                                    </div>
+                                            
+                                        </form>
                                 </div>
-                                <div className={selectedTab === 2 ? "content  active-content" : "content"}>
-                                    <h2>Notifications</h2>
-                                    <hr />
-                                    <p>
-                                        <Alert variant='success'> <MdCheckCircle /> You don't have any notifications</Alert>
-                                    </p>
+
+                                <div id="edit_profile">
+                                        <form onSubmit={handleEditFormSubmit}>
+                                            <h2>Notification</h2>
+                                            <p>User Detail</p>
+                                            
+                                        </form>
                                 </div>
-                                <div className={selectedTab === 3 ? "content  active-content" : "content"}
-                                    >
-                                    <h2>Edit Password</h2>
-                                    <hr />
-                                    <Form>                            
+
+                                <div id="edit_profile">
+                                        <form onSubmit={handleEditFormSubmit}>
+                                            <h2>Password and Security</h2>
+                                            <p>change your password</p>
+                                            <Form>                            
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
-                                            <Form.Label>Old Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Enter old password" />
+                                            <Form.Label htmlFor='oldPassword'>Old Password</Form.Label>
+                                            <Form.Control type="password" id='oldPassword' placeholder="Enter old password" />
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
-                                            <Form.Label>New Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Enter new password" />
+                                            <Form.Label htmlFor='newPassword'>New Password</Form.Label>
+                                            <Form.Control type="password" id='newPassword' placeholder="Enter new password" />
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
-                                            <Form.Label>Confirm Password</Form.Label>
-                                            <Form.Control placeholder="Match password" type="password" />
+                                            <Form.Label htmlFor='confirmPassword'>Confirm Password</Form.Label>
+                                            <Form.Control placeholder="Match password" id='confirmPassword' type="password" />
                                         </Form.Group>
                                         <input type="submit" value="Update Password" className="btn btn-primary cta" />                              
                                 </Form>
+                                        </form>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
         </div>
     )
 }
 
 export default Settings
+
+

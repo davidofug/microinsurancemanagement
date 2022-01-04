@@ -1,61 +1,226 @@
 import { CSVLink } from "react-csv";
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { MdDownload } from 'react-icons/md'
-import data from '../../helpers/mock-data.json'
-import Header from '../../parts/header/Header';
-import Datatable from '../../helpers/DataTable';
-import Pagination from '../../helpers/Pagination';
-import SearchBar from '../../parts/searchBar/SearchBar';
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { MdDownload } from "react-icons/md";
+import data from "../../helpers/mock-data.json";
+import Header from "../../parts/header/Header";
+import Datatable from "../../helpers/DataTable";
+import Pagination from "../../helpers/Pagination";
+import SearchBar from "../../parts/searchBar/SearchBar";
+import { Table } from "react-bootstrap";
+import { db } from '../../helpers/firebase'
+import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { FaEllipsisV } from "react-icons/fa";
+import { httpsCallable } from 'firebase/functions'
+import { functions } from '../../helpers/firebase'
 
 export default function Organisations() {
-
-  useEffect(() => { document.title = 'Britam - Organisations'})
-
-  const [ currentPage, setCurrentPage ] = useState(1)
-  const [employeesPerPage] = useState(10)
-
-  const indexOfLastEmployee = currentPage * employeesPerPage
-  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
-  const currentOrganisations = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
-  const totalPagesNum = Math.ceil(data.length / employeesPerPage)
+  const [organisations, setOrganisations] = useState([]);
+  const organisationsCollectionRef = collection(db, "organisations");
+  
 
 
+  
 
-  const [q, setQ] = useState('');
+  useEffect(() => {
+    document.title = "Britam - Organisations";
 
-  const columnHeading = ["Logo", "Name", "Email", "Phone No.", "Contact Name", "Role", "Contact's No.", "Contact Email"]
-  const columns = ["id", "name", "email", "contact", "agentName", "role", "contact", "email"]
-  const search = rows => rows.filter(row => columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
+    const getOrganisations = async () => {
+        const data = await getDocs(organisationsCollectionRef)
+        setOrganisations(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      }
 
-  const handleSearch = ({target}) => setQ(target.value)
+      getOrganisations()
+
+  }, []);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [organisationsPerPage] = useState(10);
+
+  const indexOfLastOrganisation = currentPage * organisationsPerPage;
+  const indexOfFirstOrganisation = indexOfLastOrganisation - organisationsPerPage;
+  const currentOrganisations = organisations.slice(
+    indexOfFirstOrganisation,
+    indexOfLastOrganisation
+  );
+  const totalPagesNum = Math.ceil(organisations.length / organisationsPerPage);
+
+  const [q, setQ] = useState("");
+
+  const columns = [
+    "id",
+    "name",
+    "email",
+    "contact",
+    "agentName",
+    "role",
+    "contact",
+    "email",
+  ];
+  const search = (rows) =>
+    rows.filter((row) =>
+      columns.some(
+        (column) =>
+          row[column].toString().toLowerCase().organisation.idOf(q.toLowerCase()) > -1
+      )
+    );
+
+  const handleSearch = ({ target }) => setQ(target.value);
 
   return (
-        <div className='components'>
-            <Header title="Organisations" subtitle="MANAGE ORGANISATIONS" />
+    <div className="components">
+      <Header title="Organisations" subtitle="VIEW COMPANY DETAILS" />
 
-            <div id="add_client_group">
-                <div></div>
-                <Link to="/admin/add-organisations">
-                    <button className='btn btn-primary cta'>Add Organisation</button>
-                </Link>
-            </div>
+      <div id="add_client_group">
+        <div></div>
+        <Link to="/admin/add-organisations">
+          <button className="btn btn-primary cta">Add Organisation</button>
+        </Link>
+      </div>
 
-            <div className="componentsData">
-              <div className="table-card">
-                <div id="search">
-                        <SearchBar placeholder={"Search for organisation"} value={q} handleSearch={handleSearch}/>
-                        <div></div>
-                        <CSVLink data={data} filename={"Britam-Organisations.csv"} className="btn btn-primary cta"> Export <MdDownload /></CSVLink>
-                </div>
-                <Datatable data={search(currentOrganisations)} columnHeading={columnHeading} columns={columns}/>
-
-                  <Pagination 
-                      pages={totalPagesNum} setCurrentPage={setCurrentPage}
-                      currentClients={currentOrganisations}
-                      sortedEmployees={data} entries={'Organisations'} />
-                </div>
-            </div>
+      {organisations.length <= 0 
+      ?
+        <p>No organisations yet</p>
+      :
+      <div className="componentsData">
+      <div className="table-card">
+        <div id="search">
+          <SearchBar
+            placeholder={"Search for organisation"}
+            value={q}
+            handleSearch={handleSearch}
+          />
+          <div></div>
+          <CSVLink
+            data={data}
+            filename={"Britam-Organisations.csv"}
+            className="btn btn-primary cta"
+          >
+            {" "}
+            Export <MdDownload />
+          </CSVLink>
         </div>
-    )
+
+        <Table
+          bordered
+          hover
+          striped
+          responsive
+          cellPadding={0}
+          cellSpacing={0}
+        >
+          <thead>
+            <tr>
+              <th>Logo</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone No.</th>
+              <th>Contact Name</th>
+              <th>Role</th>
+              <th>Contact's No</th>
+              <th>Contact Email</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {organisations.map((organisation) => (
+              <tr key={organisation.id}>
+                <td>{organisation.logo}</td>
+                <td>{organisation.name}</td>
+                <td>{organisation.org_email}</td>
+                <td>{organisation.tel}</td>
+                <td>{organisation.ContactName}</td>
+                <td>{organisation.role}</td>
+                <td>{organisation.contactPhoneNumber}</td>
+                <td>{organisation.contact_email}</td>
+                <td className="started">
+                    <FaEllipsisV
+                      className={`actions please${organisation.id}`}
+                      onClick={() => {
+                        document
+                          .querySelector(`.please${organisation.id}`)
+                          .classList.add("hello");
+                      }}
+                    />
+                    <ul id="actionsUl" className="actions-ul">
+                      <li>
+                        <button>View Notification</button>
+                      </li>
+                      <li>
+                        <button>Claim Settlement</button>
+                      </li>
+                      <li>
+                        <button>View Settlement</button>
+                      </li>
+                      <li>
+                        <button>Cancel</button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            document
+                              .querySelector(`.please${organisation.id}`)
+                              .classList.remove("hello");
+                            const confirmBox = window.confirm(
+                              `Are you sure you want to delete ${organisation.name}'s claim`
+                            );
+                            if (confirmBox === true) {}
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </li>
+                      <li>
+                        <button>
+                          Edit
+                        </button>
+                      </li>
+                      <hr style={{ color: "black" }}></hr>
+                      <li>
+                        <button
+                          onClick={() => {
+                            document
+                              .querySelector(`.please${organisation.id}`)
+                              .classList.remove("hello");
+                          }}
+                        >
+                          close
+                        </button>
+                      </li>
+                    </ul>
+                  </td>
+              </tr>
+            ))}
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <th>Logo</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone No.</th>
+              <th>Contact Name</th>
+              <th>Role</th>
+              <th>Contact's No</th>
+              <th>Contact Email</th>
+              <th>Action</th>
+            </tr>
+          </tfoot>
+        </Table>
+
+        <Pagination
+          pages={totalPagesNum}
+          setCurrentPage={setCurrentPage}
+          currentClients={currentOrganisations}
+          sortedEmployees={data}
+          entries={"Organisations"}
+        />
+      </div>
+    </div>
+        }
+
+      
+    </div>
+  );
 }
