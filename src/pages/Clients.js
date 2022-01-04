@@ -10,7 +10,9 @@ import { EditableDatable } from '../helpers/DataTable';
 
 export default function Clients() {
 
-  useEffect(() => {document.title = 'Britam - Clients'}, [])
+  useEffect(() => 
+    {document.title = 'Britam - Clients'
+  }, [])
 
   const [clients, setClients] = useState(data);
   const [editFormData, setEditFormData] = useState({ name: "", gender: "", email: "", contact: "", address: "" });

@@ -1,9 +1,8 @@
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import profile from '../../assets/imgs/image 2.png'
 import { MdLogout  } from 'react-icons/md'
-import DefaultAvatar from '../DefaultAvatar'
+import DefaultAvatar from '../../parts/DefaultAvatar'
 import { Badge } from 'react-bootstrap'
 
 export default function SideBar({role, user, displayName}){
@@ -25,16 +24,25 @@ export default function SideBar({role, user, displayName}){
 
     const toggleActiveClassStyle = index => selected.role[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
 
+    console.log(window.location.pathname)
+
     return (
         <>
             <section className='position-sticky pt-3' id="menu_section">
                 <ul className="nav flex-column">
                     { selected.role.map((menuItem, index) => (
-                        <li className='nav-item' key={menuItem.number}>
-                            <Link to={menuItem.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} >
-                                <span>{menuItem.icon}</span>{menuItem.name}
-                                {menuItem?.subMenu &&
-                                    (<ul>
+                        <li className='nav-item'>
+                        {menuItem.link ? 
+                            <Link to={menuItem.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)}>
+                            <span>{menuItem.icon}</span>{menuItem.name}
+                            </Link>
+                        : 
+                        <>
+                            <details className={`${toggleActiveClassStyle(index)} dropdown`} onClick={() => toggleActive(index)}>
+                                <summary role="button" className='buttonDetail' >
+                                    <a ><span>{menuItem.icon}</span>{menuItem.name}</a>
+                                </summary>
+                                <ul>
                                         {menuItem.subMenu.map((sub, index) => (
                                             <li key={index}>
                                                 <Link to={sub.link} style={{color: "black"}}>
@@ -42,14 +50,20 @@ export default function SideBar({role, user, displayName}){
                                                 </Link>
                                             </li>
                                         ))}
-                                    </ul>)
-                                }
-                            </Link>
-                        </li>
+                                    </ul>
+                            </details>
+                                    
+                                </>
+                        }
+                        
+                    </li>
                     ))}
+                    
                 </ul>
             </section>
             
+            
+
             <footer>
                 <ul>
                     <li><Link to={`/${user}/settings`}>My Profile</Link></li>
@@ -60,13 +74,7 @@ export default function SideBar({role, user, displayName}){
                     {/* <img src={profile} alt="profile" /> */}
                     <div>
                         <p>{displayName}</p>
-                        <p style={{"color": "#646464"}}>
-                            {user == 'superadmin' && <Badge bg='danger'>{user}</Badge>}
-                            {user == 'admin' && <Badge bg="warning">{user}</Badge>}
-                            {user == 'supervisor' && <Badge bg="success">{user}</Badge>}
-                            {user == 'agent' && <Badge bg="dark">{user}</Badge>}
-                            
-                        </p>
+                        <p style={{"color": "#646464"}}><Badge >{user}</Badge></p>
                     </div>
                     <div id="eclipse"><div></div><div></div><div></div></div>
                 </Link>

@@ -211,15 +211,15 @@ footer p{
     margin: 0;
 }
 
-/* footer{
+footer{
     position: relative;
     bottom: 0;
     padding: 10px 5px;
     width: inherit;
     color: #000;
-} */
+}
 
-/* footer a{
+footer a{
     text-decoration: none;
     align-items: center;
     display: grid;
@@ -230,19 +230,19 @@ footer p{
 footer a p{
     color: #000;
     margin: 0;
-} */
+}
 
 
-/* footer:hover{
+footer:hover{
     background-color: #F4F4F4;
     color: #000;
-} */
+}
 
-/* footer a img{
+ footer a img{
     height: 50px;
     width: 50px;
     border-radius: 50%;
-} */
+}
 
 
 

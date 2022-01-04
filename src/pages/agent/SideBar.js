@@ -105,14 +105,22 @@ export default function SideBar({role, user, displayName}){
                 </ul>
             </section>
             
+            
+
             <footer>
+                <ul>
+                    <li><Link to={`/${user}/settings`}>My Profile</Link></li>
+                    <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                </ul>
+                <Link to='/admin/settings'>
                     <DefaultAvatar />
                     {/* <img src={profile} alt="profile" /> */}
                     <div>
                         <p>{displayName}</p>
-                        <p style={{"color": "#646464"}}><Badge>{user}</Badge></p>
+                        <p style={{"color": "#646464"}}><Badge >{user}</Badge></p>
                     </div>
-                    <Link to="/logout"><MdOutlinePowerSettingsNew className='logoutIcon' /></Link>                    
+                    <div id="eclipse"><div></div><div></div><div></div></div>
+                </Link>
             </footer>
 
         </>

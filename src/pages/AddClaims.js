@@ -48,6 +48,20 @@ function AddClaims() {
                     <Form name="form1" onSubmit={createClaim}>
                         <Row className="mb-3">
                         <h5>Claim Details</h5>
+                        <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                <Form.Label htmlFor='stickerNumber'>Reference Number</Form.Label>
+                                <Form.Control type="text" name="" id="refNumber" placeholder="Enter Ref Number" onChange={handleFieldChange}/>
+                            </Form.Group>
+                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                            </Form.Group>
+                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                            </Form.Group>
+                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                            </Form.Group>
+                            
+                        </Row>
+                        <Row className="mb-3">
+                        <h5>Claim Details</h5>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='dateReported'>Date Reported</Form.Label>
                                 <Form.Control type="date" id="dateReported" onChange={handleFieldChange} />

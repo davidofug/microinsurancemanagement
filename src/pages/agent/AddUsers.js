@@ -3,12 +3,11 @@ import { authentication } from '../../helpers/firebase'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../../helpers/firebase'
 import { useEffect, useState } from 'react'
-import { Form, Row, Col, Dropdown, DropdownButton, ButtonGroup, FormControl, InputGroup } from 'react-bootstrap'
+import { Form, Row, Col } from 'react-bootstrap'
 import Upload from '../../parts/uploader/Upload'
 import Header from '../../parts/header/Header'
 import { useForm } from '../../hooks/useForm'
 import useAuth from '../../contexts/Auth'
-import { AiOutlineSave } from 'react-icons/ai'
 
 function AddUsers() {
     const { authClaims } = useAuth()
@@ -46,7 +45,6 @@ function AddUsers() {
         }).catch((err) => {
             console.log(err)
         })
-
     }
 
     const { user_role } = fields
@@ -59,11 +57,6 @@ function AddUsers() {
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
                             <Form.Select aria-label="User role" controlId="user_role" id="user_role" value="Customer" onChange={handleFieldChange}>
-                                <option value="hide">--User Role--</option>
-                                {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
-                                {authClaims.superadmin && <option value="admin">Admin</option>}
-                                {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
-                                {authClaims.supervisor && <option value="agent">Agent</option>}
                                 {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Client</option>}
                             </Form.Select>
                         </Form.Group>
@@ -74,7 +67,7 @@ function AddUsers() {
                         <Row className="mb-3">
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='dob'>Date of birth</Form.Label>
-                            <Form.Control type="date" id="dob" onChange={handleFieldChange} />
+                                <Form.Control type="date" id="dob" onChange={handleFieldChange} />
                             </Form.Group>
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>

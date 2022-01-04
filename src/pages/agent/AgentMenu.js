@@ -6,7 +6,7 @@ import profile from '../../assets/imgs/image 2.png'
 import logo from '../../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import MobileNav from '../../parts/menu/MobileNav'
-import SideBar from './SideBar'
+import SideBar from '../../parts/menu/SideBar'
 import MinimisedSideBar from '../../parts/menu/MinimisedSideBar'
 import { authentication } from "../../helpers/firebase";
 

@@ -30,6 +30,8 @@ export default function AddOrganisation() {
     const createOrganisation = async (event) => {
         event.preventDefault()
         await addDoc(organisationsCollectionRef, fields)
+        alert(`successfully added ${fields.claimantName}'s claim`)
+        document.form2.reset()
       }
 
     return (
@@ -38,7 +40,7 @@ export default function AddOrganisation() {
 
             <div className="componentsData">
                 <div id="addForm">
-                        <Form onSubmit={createOrganisation}>
+                        <Form name='form2' onSubmit={createOrganisation}>
                             <div className='organisation-columns'>
                                 <div>
                                     <Form.Group className="mb-3" >
