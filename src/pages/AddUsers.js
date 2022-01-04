@@ -40,6 +40,8 @@ function AddUsers() {
         fields['added_by_uid'] = authentication.currentUser.uid
         fields['added_by_name'] = authentication.currentUser.displayName
 
+        console.log(fields)
+
         addUser(fields).then((results) => {
             console.log(results)
         }).catch((err) => {

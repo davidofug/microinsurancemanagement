@@ -145,16 +145,7 @@ export default function Organisations() {
                     />
                     <ul id="actionsUl" className="actions-ul">
                       <li>
-                        <button>View Notification</button>
-                      </li>
-                      <li>
-                        <button>Claim Settlement</button>
-                      </li>
-                      <li>
-                        <button>View Settlement</button>
-                      </li>
-                      <li>
-                        <button>Cancel</button>
+                        <button>Details</button>
                       </li>
                       <li>
                         <button
@@ -213,7 +204,7 @@ export default function Organisations() {
           pages={totalPagesNum}
           setCurrentPage={setCurrentPage}
           currentClients={currentOrganisations}
-          sortedEmployees={data}
+          sortedEmployees={organisations}
           entries={"Organisations"}
         />
       </div>
