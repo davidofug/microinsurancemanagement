@@ -79,7 +79,7 @@ export default function AddOrganisation() {
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                             <Form.Label htmlFor='contactPhoneNumber'>Contact Phone <span className='required'>*</span></Form.Label>
-                                            <Form.Control id="contactPhoneNumber" type="tel" placeholder="Enter contact's phone number" onChange={handleFieldChange} />
+                                            <Form.Control id="contactPhoneNumber" type="tel" placeholder="Enter phone number" onChange={handleFieldChange} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                             <Form.Label htmlFor='contact_email'>Contact Email</Form.Label>
@@ -87,7 +87,7 @@ export default function AddOrganisation() {
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                             <Form.Label htmlFor='password'>Contact Password</Form.Label>
-                                            <Form.Control id="password" type="text" placeholder="create password" onChange={handleFieldChange} />
+                                            <Form.Control id="password" type="text" placeholder="Create password" onChange={handleFieldChange} />
                                     </Form.Group>
                                 </div>
                             </div>

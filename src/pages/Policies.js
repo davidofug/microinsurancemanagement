@@ -2,15 +2,11 @@
 import React, { useState, useEffect } from 'react'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
-
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
-// import Header from '../parts/header/Header'
+import Header from '../parts/header/Header'
 import '../styles/Policies.css'
-
-
-
 import moment from 'moment'
 
 // import AddClient from '../parts/AddClient'
@@ -260,11 +256,9 @@ function Policies() {
 
     return (
         <div className='components'>
-            <div className='heading'>
-                <h1 className='title'>Policies</h1>
-                <p>MANAGING POLICIES</p>
-            </div>
-            <div className="table-card componentsData" style={{paddingBottom:"10vh"}}>
+            <Header title="Policies" subtitle="MANAGING POLICIES" />
+
+            <div className="shadow-sm table-card componentsData" style={{paddingBottom:"10vh"}}>
                 <Form>
                     <div style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                         <Row style={{paddingTop:"2vh"}}>

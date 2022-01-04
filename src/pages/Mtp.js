@@ -28,7 +28,7 @@ function Agents() {
                 
             </div>
 
-            <div className="table-card componentsData" >   
+            <div className="shadow-sm table-card componentsData" >   
                 <div id="search">
                             <div></div>
                             <div></div>
