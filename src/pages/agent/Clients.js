@@ -9,12 +9,27 @@ import SearchBar from '../../parts/searchBar/SearchBar';
 import { Table, Modal } from "react-bootstrap";
 import { FaEllipsisV } from "react-icons/fa";
 import ClientModal from '../../parts/ClientModal';
+import { functions } from '../../helpers/firebase';
+import { httpsCallable } from 'firebase/functions';
 
 export default function Clients() {
 
-  useEffect(() => {document.title = 'Britam - Clients'}, [])
+  useEffect(() => {
+    document.title = 'Britam - Clients'
 
-  const [clients, setClients] = useState(data);
+    const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then((results) => {
+          const resultsArray = results.data
+          console.log(resultsArray)
+          const myUsers = resultsArray.filter(user => user.role.Customer === true)
+          setClients(myUsers)
+      }).catch((err) => {
+          console.log(err)
+      })
+  
+  }, [])
+
+  const [clients, setClients] = useState([]);
   const [editFormData, setEditFormData] = useState({ name: "", gender: "", email: "", contact: "", address: "" });
   const [editContactId, setEditContactId] = useState(null);
   const [q, setQ] = useState('');
@@ -66,67 +81,68 @@ export default function Clients() {
                             <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>number</td>
-                                <td>Name</td>
-                                <td>Gender</td>
-                                <td>Email</td>
-                                <td>Contact</td>
-                                <td>Address</td>
-                  <td className="started">
-                    <FaEllipsisV
-                      className={`actions please`}
-                      onClick={() => {
-                        document
-                          .querySelector(`.please`)
-                          .classList.add("hello");
-                      }}
-                    />
-                    <ul id="actionsUl" className="actions-ul">
-                    
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please`)
-                              .classList.remove("hello");
-                            const confirmBox = window.confirm(
-                              `Are you sure you want to delete's claim`
-                            );
-                            if (confirmBox === true) {
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            handleShow();
-                            document
-                              .querySelector(`.please`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </li>
-                      <hr style={{ color: "black" }}></hr>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          close
-                        </button>
-                      </li>
-                    </ul>
-                  </td>
-                            </tr>
+                        {clients.map(client => (
+                              <tr>
+                              <td>{1}</td>
+                              <td>{client.name}</td>
+                              <td>{client.email}</td>
+                              <td>Email</td>
+                              <td>Contact</td>
+                              <td>Address</td>
+                <td className="started">
+                  <FaEllipsisV
+                    className={`actions please`}
+                    onClick={() => {
+                      document
+                        .querySelector(`.please`)
+                        .classList.add("hello");
+                    }}
+                  />
+                  <ul id="actionsUl" className="actions-ul">
+                  
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                          const confirmBox = window.confirm(
+                            `Are you sure you want to delete's claim`
+                          );
+                          if (confirmBox === true) {
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </li>
+                    <hr style={{ color: "black" }}></hr>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        close
+                      </button>
+                    </li>
+                  </ul>
+                </td>
+                          </tr>
+                          ))}
                         </tbody>
                         <tfoot>
                             <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>

@@ -7,17 +7,36 @@ import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../parts/searchBar/SearchBar';
 import { EditableDatable } from '../helpers/DataTable';
+import { Table } from 'react-bootstrap';
+import { FaEllipsisV } from "react-icons/fa";
+import { functions } from '../helpers/firebase';
+import { httpsCallable } from 'firebase/functions';
 
 export default function Clients() {
 
   useEffect(() => 
-    {document.title = 'Britam - Clients'
+    {
+      document.title = 'Britam - Clients'
+
+      const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then((results) => {
+          const resultsArray = results.data
+          const myUsers = resultsArray.filter(user => user.role.Customer === true)
+          setClients(myUsers)
+      }).catch((err) => {
+          console.log(err)
+      })
+
+
   }, [])
 
-  const [clients, setClients] = useState(data);
+  
+  const [clients, setClients] = useState([]);
   const [editFormData, setEditFormData] = useState({ name: "", gender: "", email: "", contact: "", address: "" });
   const [editContactId, setEditContactId] = useState(null);
   const [q, setQ] = useState('');
+
+
 
   const handleEditFormChange = (event) => {
     event.preventDefault();
@@ -71,7 +90,6 @@ export default function Clients() {
     const newClients = [...clients];
     const index = clients.findIndex((client) => client.id === clientId);
     newClients.splice(index, 1);
-    console.log(newClients)
     setClients(newClients);
   };
 
@@ -107,13 +125,87 @@ export default function Clients() {
                     </CSVLink>
                   </div>
 
-                  <form onSubmit={handleEditFormSubmit}>
+                  {/* <form onSubmit={handleEditFormSubmit}>
                   <EditableDatable columns={columns} columnHeading={columnHeading} editContactId={editContactId}
                     currentClients={search(currentClients)} handleDeleteClick={handleDeleteClick}
                     handleEditClick={handleEditClick} editFormData={editFormData}
                     handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick}
                   /> 
-                  </form>
+                  </form> */}
+
+                  <Table hover striped responsive>
+                        <thead>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                        </thead>
+                        <tbody>
+                          {clients.map(client => (
+                              <tr>
+                              <td>{1}</td>
+                              <td>{client.name}</td>
+                              <td>{client.email}</td>
+                              <td>Email</td>
+                              <td>Contact</td>
+                              <td>Address</td>
+                <td className="started">
+                  <FaEllipsisV
+                    className={`actions please`}
+                    onClick={() => {
+                      document
+                        .querySelector(`.please`)
+                        .classList.add("hello");
+                    }}
+                  />
+                  <ul id="actionsUl" className="actions-ul">
+                  
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                          const confirmBox = window.confirm(
+                            `Are you sure you want to delete's claim`
+                          );
+                          if (confirmBox === true) {
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </li>
+                    <hr style={{ color: "black" }}></hr>
+                    <li>
+                      <button
+                        onClick={() => {
+                          document
+                            .querySelector(`.please`)
+                            .classList.remove("hello");
+                        }}
+                      >
+                        close
+                      </button>
+                    </li>
+                  </ul>
+                </td>
+                          </tr>
+                          ))}
+                            
+                        </tbody>
+                        <tfoot>
+                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                        </tfoot>
+                    </Table>
 
                   <Pagination 
                     pages={totalPagesNum}

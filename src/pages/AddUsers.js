@@ -3,7 +3,7 @@ import { authentication } from '../helpers/firebase'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
 import { useEffect, useState } from 'react'
-import { Form, Row, Col, Dropdown, DropdownButton, ButtonGroup, FormControl, InputGroup } from 'react-bootstrap'
+import { Form, Row, Col } from 'react-bootstrap'
 import Upload from '../parts/uploader/Upload'
 import Header from '../parts/header/Header'
 import { useForm } from '../hooks/useForm'
@@ -11,7 +11,7 @@ import useAuth from '../contexts/Auth'
 
 function AddUsers() {
     const { authClaims } = useAuth()
-    const addUser = httpsCallable(functions,'addUser')
+    const addUser = httpsCallable(functions, 'addUser')
     useEffect(() => { document.title = 'Britam - Add Supervisors' }, [])
 
     const [comprehensive, setComprehensive] = useState(false)

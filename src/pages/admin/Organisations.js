@@ -11,23 +11,19 @@ import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
 import { collection, addDoc, getDocs } from 'firebase/firestore'
 import { FaEllipsisV } from "react-icons/fa";
+import { httpsCallable } from 'firebase/functions'
+import { functions } from '../../helpers/firebase'
 
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
+  
+
+
+  
 
   useEffect(() => {
     document.title = "Britam - Organisations";
-
-    // const getOrganisations = async () => {
-    //   organisationsCollectionRef.onSnapshot((querySnapshot) => {
-    //     const items = [];
-    //     querySnapshot.forEach((doc) => {
-    //       items.push({ ...doc.data(), id: doc.id });
-    //     });
-    //     setOrganisations(items);
-    //   });
-    // };
 
     const getOrganisations = async () => {
         const data = await getDocs(organisationsCollectionRef)
