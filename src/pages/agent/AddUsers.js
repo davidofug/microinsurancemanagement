@@ -41,7 +41,8 @@ function AddUsers() {
         fields['added_by_name'] = authentication.currentUser.displayName
 
         addUser(fields).then((results) => {
-            console.log(results)
+            alert(`successfully added ${fields.name}`)
+            document.form4.reset()
         }).catch((err) => {
             console.log(err)
         })
@@ -53,14 +54,7 @@ function AddUsers() {
         <div className='components'>
             <Header title="Add Clients" subtitle="ADD A NEW CLIENT" />
             <div class="addComponentsData">
-                    <Form onSubmit={handleSubmit}>
-                    {/* <Form.Group className="mb-3" >
-                        <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
-                            <Form.Select aria-label="User role" controlId="user_role" id="user_role" value="Customer" onChange={handleFieldChange}>
-                                <option value=''>set Role</option>
-                                {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Client</option>}
-                            </Form.Select>
-                        </Form.Group> */}
+                    <Form id='form4' onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                             <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} />
