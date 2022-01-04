@@ -10,6 +10,7 @@ import SearchBar from "../../parts/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
 import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { FaEllipsisV } from "react-icons/fa";
 
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
@@ -64,7 +65,7 @@ export default function Organisations() {
     rows.filter((row) =>
       columns.some(
         (column) =>
-          row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+          row[column].toString().toLowerCase().organisation.idOf(q.toLowerCase()) > -1
       )
     );
 
@@ -72,7 +73,7 @@ export default function Organisations() {
 
   return (
     <div className="components">
-      <Header title="Organisations" subtitle="VIEW COMPANY PROFILE" />
+      <Header title="Organisations" subtitle="VIEW COMPANY DETAILS" />
 
       <div id="add_client_group">
         <div></div>
@@ -81,84 +82,149 @@ export default function Organisations() {
         </Link>
       </div>
 
+      {organisations.length <= 0 
+      ?
+        <p>No organisations yet</p>
+      :
       <div className="componentsData">
-        <div className="table-card">
-          <div id="search">
-            <SearchBar
-              placeholder={"Search for organisation"}
-              value={q}
-              handleSearch={handleSearch}
-            />
-            <div></div>
-            <CSVLink
-              data={data}
-              filename={"Britam-Organisations.csv"}
-              className="btn btn-primary cta"
-            >
-              {" "}
-              Export <MdDownload />
-            </CSVLink>
-          </div>
-
-          <Table
-            bordered
-            hover
-            striped
-            responsive
-            cellPadding={0}
-            cellSpacing={0}
-          >
-            <thead>
-              <tr>
-                <th>Logo</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone No.</th>
-                <th>Contact Name</th>
-                <th>Role</th>
-                <th>Contact's No</th>
-                <th>Contact Email</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {organisations.map((organisation) => (
-                <tr key={organisation.id}>
-                  <td>{organisation.logo}</td>
-                  <td>{organisation.name}</td>
-                  <td>{organisation.org_email}</td>
-                  <td>{organisation.tel}</td>
-                  <td>{organisation.ContactName}</td>
-                  <td>{organisation.role}</td>
-                  <td>{organisation.contactPhoneNumber}</td>
-                  <td>{organisation.contact_email}</td>
-                </tr>
-              ))}
-            </tbody>
-
-            <tfoot>
-              <tr>
-                <th>Logo</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone No.</th>
-                <th>Contact Name</th>
-                <th>Role</th>
-                <th>Contact's No</th>
-                <th>Contact Email</th>
-              </tr>
-            </tfoot>
-          </Table>
-
-          <Pagination
-            pages={totalPagesNum}
-            setCurrentPage={setCurrentPage}
-            currentClients={currentOrganisations}
-            sortedEmployees={data}
-            entries={"Organisations"}
+      <div className="table-card">
+        <div id="search">
+          <SearchBar
+            placeholder={"Search for organisation"}
+            value={q}
+            handleSearch={handleSearch}
           />
+          <div></div>
+          <CSVLink
+            data={data}
+            filename={"Britam-Organisations.csv"}
+            className="btn btn-primary cta"
+          >
+            {" "}
+            Export <MdDownload />
+          </CSVLink>
         </div>
+
+        <Table
+          bordered
+          hover
+          striped
+          responsive
+          cellPadding={0}
+          cellSpacing={0}
+        >
+          <thead>
+            <tr>
+              <th>Logo</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone No.</th>
+              <th>Contact Name</th>
+              <th>Role</th>
+              <th>Contact's No</th>
+              <th>Contact Email</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {organisations.map((organisation) => (
+              <tr key={organisation.id}>
+                <td>{organisation.logo}</td>
+                <td>{organisation.name}</td>
+                <td>{organisation.org_email}</td>
+                <td>{organisation.tel}</td>
+                <td>{organisation.ContactName}</td>
+                <td>{organisation.role}</td>
+                <td>{organisation.contactPhoneNumber}</td>
+                <td>{organisation.contact_email}</td>
+                <td className="started">
+                    <FaEllipsisV
+                      className={`actions please${organisation.id}`}
+                      onClick={() => {
+                        document
+                          .querySelector(`.please${organisation.id}`)
+                          .classList.add("hello");
+                      }}
+                    />
+                    <ul id="actionsUl" className="actions-ul">
+                      <li>
+                        <button>View Notification</button>
+                      </li>
+                      <li>
+                        <button>Claim Settlement</button>
+                      </li>
+                      <li>
+                        <button>View Settlement</button>
+                      </li>
+                      <li>
+                        <button>Cancel</button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            document
+                              .querySelector(`.please${organisation.id}`)
+                              .classList.remove("hello");
+                            const confirmBox = window.confirm(
+                              `Are you sure you want to delete ${organisation.name}'s claim`
+                            );
+                            if (confirmBox === true) {}
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </li>
+                      <li>
+                        <button>
+                          Edit
+                        </button>
+                      </li>
+                      <hr style={{ color: "black" }}></hr>
+                      <li>
+                        <button
+                          onClick={() => {
+                            document
+                              .querySelector(`.please${organisation.id}`)
+                              .classList.remove("hello");
+                          }}
+                        >
+                          close
+                        </button>
+                      </li>
+                    </ul>
+                  </td>
+              </tr>
+            ))}
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <th>Logo</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone No.</th>
+              <th>Contact Name</th>
+              <th>Role</th>
+              <th>Contact's No</th>
+              <th>Contact Email</th>
+              <th>Action</th>
+            </tr>
+          </tfoot>
+        </Table>
+
+        <Pagination
+          pages={totalPagesNum}
+          setCurrentPage={setCurrentPage}
+          currentClients={currentOrganisations}
+          sortedEmployees={data}
+          entries={"Organisations"}
+        />
       </div>
+    </div>
+        }
+
+      
     </div>
   );
 }

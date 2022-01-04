@@ -53,7 +53,7 @@ function AddUsers() {
     return (
         <div className='components'>
             <Header title="Add Users" subtitle="ADD A NEW USER" />
-            <div class="addComponentsData">
+            <div class="shadow-sm table-card">
                     <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>

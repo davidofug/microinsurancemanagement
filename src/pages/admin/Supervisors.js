@@ -121,7 +121,7 @@ function Supervisors() {
                 
             </div>
 
-            <div className="table-card componentsData">   
+            <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                             <SearchBar placeholder={"Search for Supervisor"} value={q} handleSearch={handleSearch}/>
                             <div></div>

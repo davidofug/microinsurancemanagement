@@ -98,7 +98,7 @@ export default function Clients() {
             </div>
 
             <div className="componentsData">
-              <div className="table-card">
+              <div className="shadow-sm table-card">
                   <div id="search">
                     <SearchBar placeholder={"Search for client"} value={q} handleSearch={handleSearch}/>
                     <div></div>

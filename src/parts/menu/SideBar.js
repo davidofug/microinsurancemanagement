@@ -59,7 +59,7 @@ export default function SideBar({role, user, displayName}){
                     <DefaultAvatar />
                     {/* <img src={profile} alt="profile" /> */}
                     <div>
-                        <p>{displayName}</p>
+                        <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{displayName}</p>
                         <p style={{"color": "#646464"}}>
                             {user == 'superadmin' && <Badge bg='danger'>{user}</Badge>}
                             {user == 'admin' && <Badge bg="warning">{user}</Badge>}

@@ -15,7 +15,7 @@ function Logs() {
             <button className="btn btn-primary cta">Check in</button>
 
 
-            <div className="table-card componentsData"> 
+            <div className="shadow-sm table-card componentsData"> 
 
                 <Table striped hover responsive>
                     <thead>
