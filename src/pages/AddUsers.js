@@ -40,10 +40,10 @@ function AddUsers() {
         fields['added_by_uid'] = authentication.currentUser.uid
         fields['added_by_name'] = authentication.currentUser.displayName
 
-        console.log(fields)
 
         addUser(fields).then((results) => {
-            console.log(results)
+            alert(`successfully added ${fields.name}`)
+            document.form3.reset()
         }).catch((err) => {
             console.log(err)
         })
@@ -56,7 +56,7 @@ function AddUsers() {
         <div className='components'>
             <Header title="Add Users" subtitle="ADD A NEW USER" />
             <div class="shadow-sm table-card">
-                    <Form onSubmit={handleSubmit}>
+                    <Form id='form3' onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
                             <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange}>
