@@ -139,7 +139,7 @@ export default function Clients() {
                         </thead>
                         <tbody>
                           {clients.map(client => (
-                              <tr>
+                              <tr key={client.uid}>
                               <td>{1}</td>
                               <td>{client.name}</td>
                               <td>{client.email}</td>
