@@ -4,10 +4,11 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../parts/searchBar/SearchBar';
 import Header from '../../parts/header/Header';
-import { functions } from '../../helpers/firebase';
+import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { FaEllipsisV } from "react-icons/fa";
 import { Table } from 'react-bootstrap'
+import { getDocs, collection } from 'firebase/firestore'
 
 function Supervisors() {
 
@@ -22,8 +23,16 @@ function Supervisors() {
       }).catch((err) => {
           console.log(err)
       })
+      getUsersMeta()
 
     }, [])
+
+    const [meta, setMeta] = useState([])
+    const metaCollectionRef = collection(db, "usermeta");
+    const getUsersMeta = async () => {
+      const data = await getDocs(metaCollectionRef);
+      setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
 
     const [supervisors, setSuperviors] = useState([]);
     const [editFormData, setEditFormData] = useState({
@@ -140,7 +149,7 @@ function Supervisors() {
 
                     <Table hover striped responsive className='mt-5'>
                         <thead>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {supervisors.map((supervisor, index) => (
@@ -148,15 +157,19 @@ function Supervisors() {
                               <td>{index+1}</td>
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
-                              <td>{supervisor.email}</td>
-                              <td>Contact</td>
-                              <td>Address</td>
+                              {meta.filter(user => user.id == supervisor.uid).map(user => (
+                                <>
+                                  <td>{user.gender}</td>
+                                  <td>{user.phone}</td>
+                                  <td>{user.address}</td>
+                                </>
+                              ))}
                 <td className="started">
                   <FaEllipsisV
-                    className={`actions please`}
+                    className={`actions please${index}`}
                     onClick={() => {
                       document
-                        .querySelector(`.please`)
+                        .querySelector(`.please${index}`)
                         .classList.add("hello");
                     }}
                   />
@@ -166,7 +179,7 @@ function Supervisors() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                           const confirmBox = window.confirm(
                             `Are you sure you want to delete's claim`
@@ -182,7 +195,7 @@ function Supervisors() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -194,7 +207,7 @@ function Supervisors() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -208,7 +221,7 @@ function Supervisors() {
                             
                         </tbody>
                         <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 

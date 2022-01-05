@@ -11,6 +11,7 @@ import { httpsCallable } from 'firebase/functions';
 import { Table } from 'react-bootstrap'
 import { FaEllipsisV } from "react-icons/fa";
 import { getDocs, collection } from 'firebase/firestore'
+import useAuth from '../contexts/Auth';
 
 function Agents() {
 
@@ -29,10 +30,10 @@ function Agents() {
     }, [])
     const [agents, setAgents] = useState([]);
     const [meta, setMeta] = useState([])
-
     const metaCollectionRef = collection(db, "usermeta");
 
   const [editContactId, setEditContactId] = useState(null);
+  const { authClaims } = useAuth()
 
   const getUsersMeta = async () => {
     const data = await getDocs(metaCollectionRef);
@@ -80,9 +81,16 @@ function Agents() {
    
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-user">
-                    <button className="btn btn-primary cta">Add Agent</button>
-                </Link>
+                {authClaims.supervisor && 
+                  <Link to="/supervisor/add-user">
+                      <button className="btn btn-primary cta">Add Agent</button>
+                  </Link>
+                }
+                {authClaims.admin && 
+                  <Link to="/admin/add-user">
+                      <button className="btn btn-primary cta">Add Agent</button>
+                  </Link>
+                }
             </div>
 
             <div className="shadow-sm table-card componentsData">   
