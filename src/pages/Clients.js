@@ -6,12 +6,12 @@ import Header from '../parts/header/Header';
 import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../parts/searchBar/SearchBar';
-import { EditableDatable } from '../helpers/DataTable';
 import { Table } from 'react-bootstrap';
 import { FaEllipsisV } from "react-icons/fa";
-import { functions } from '../helpers/firebase';
+import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
+import { getDocs, collection } from 'firebase/firestore'
 
 export default function Clients() {
 
@@ -28,55 +28,18 @@ export default function Clients() {
           console.log(err)
       })
 
-
+      getUsersMeta()
   }, [])
 
   const { authClaims } = useAuth()
   const [clients, setClients] = useState([]);
-  const [editFormData, setEditFormData] = useState({ name: "", gender: "", email: "", contact: "", address: "" });
-  const [editContactId, setEditContactId] = useState(null);
   const [q, setQ] = useState('');
+  const [meta, setMeta] = useState([])
+  const metaCollectionRef = collection(db, "usermeta");
 
-
-
-  const handleEditFormChange = (event) => {
-    event.preventDefault();
-    const fieldName = event.target.getAttribute("name");
-    const newFormData = { ...editFormData };
-    newFormData[fieldName] = event.target.value;
-    setEditFormData(newFormData);
-  };
-
-
-  const handleEditFormSubmit = (event) => {
-    event.preventDefault();
-    const editedContact = {
-      id: editContactId,
-      name: editFormData.name,
-      gender: editFormData.gender,
-      email: editFormData.email,
-      contact: editFormData.contact,
-      address: editFormData.address,
-    };
-
-    const newClients = [...clients];
-    const index = clients.findIndex((client) => client.id === editContactId);
-    newClients[index] = editedContact;
-    setClients(newClients);
-    setEditContactId(null);
-  };
-
-  const handleEditClick = (event, contact) => {
-    event.preventDefault();
-    setEditContactId(contact.id);
-    const formValues = {
-      name: contact.name,
-      gender: contact.gender,
-      email: contact.email,
-      contact: contact.contact,
-      address: contact.address,
-    };
-    setEditFormData(formValues);
+  const getUsersMeta = async () => {
+    const data = await getDocs(metaCollectionRef);
+    setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
   const [ currentPage, setCurrentPage ] = useState(1)
@@ -87,19 +50,8 @@ export default function Clients() {
   const currentClients = clients.slice(indexOfFirstClient, indexOfLastClient)
   const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
 
-  const handleDeleteClick = (clientId) => {
-    const newClients = [...clients];
-    const index = clients.findIndex((client) => client.id === clientId);
-    newClients.splice(index, 1);
-    setClients(newClients);
-  };
 
-  const handleCancelClick = () => {
-    setEditContactId(null);
-  };
-    
   const columns = ["id", "name", "gender", "email", "contact", "address"]
-  const columnHeading = ["#", "Name", "Gender", "Email", "Contact", "Address", "Action"]
 
   const search = rows => rows.filter(row => columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
@@ -111,8 +63,13 @@ export default function Clients() {
    
             <div id="add_client_group">
                 <div></div>
-                {(authClaims.supervisor || authClaims.agent) && 
-                  <Link to="/add-user">
+                {authClaims.supervisor && 
+                  <Link to="/supervisor/add-user">
+                      <button className='btn btn-primary cta'>Add Client</button>
+                  </Link>
+                }
+                {authClaims.agent && 
+                  <Link to="/agent/add-user">
                       <button className='btn btn-primary cta'>Add Client</button>
                   </Link>
                 }
@@ -131,23 +88,27 @@ export default function Clients() {
 
                   <Table hover striped responsive className='mt-5'>
                         <thead>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {clients.map(client => (
+                          {clients.map((client, index) => (
                               <tr key={client.uid}>
                               <td>{1}</td>
                               <td>{client.name}</td>
                               <td>{client.email}</td>
-                              <td>Email</td>
-                              <td>Contact</td>
-                              <td>Address</td>
+                              {meta.filter(user => user.id == client.uid).map(user => (
+                                <>
+                                  <td>{user.gender}</td>
+                                  <td>{user.phone}</td>
+                                  <td>{user.address}</td>
+                                </>
+                              ))}
                 <td className="started">
                   <FaEllipsisV
-                    className={`actions please`}
+                    className={`actions please${index}`}
                     onClick={() => {
                       document
-                        .querySelector(`.please`)
+                        .querySelector(`.please${index}`)
                         .classList.add("hello");
                     }}
                   />
@@ -157,7 +118,7 @@ export default function Clients() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                           const confirmBox = window.confirm(
                             `Are you sure you want to delete's claim`
@@ -173,7 +134,7 @@ export default function Clients() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -185,7 +146,7 @@ export default function Clients() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -199,7 +160,7 @@ export default function Clients() {
                             
                         </tbody>
                         <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 

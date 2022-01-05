@@ -30,7 +30,7 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/add-user" >
+            <PrivateRoute path="/supervisor/add-user" >
                 <AddUsers />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/clients" >
