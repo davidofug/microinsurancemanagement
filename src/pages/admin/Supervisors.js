@@ -8,7 +8,7 @@ import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { FaEllipsisV } from "react-icons/fa";
 import { Table } from 'react-bootstrap'
-import { getDocs, collection, doc, getDoc } from 'firebase/firestore'
+import { getDocs, collection, doc, getDoc, deleteDoc } from 'firebase/firestore'
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
 import OrganisationModal from "../../parts/OrganisationModel";
@@ -62,53 +62,9 @@ function Supervisors() {
   })
 
   const [singleDoc, setSingleDoc] = useState(fields);
-    const [supervisors, setSuperviors] = useState([]);
-    const [editFormData, setEditFormData] = useState({
-        name: "",
-        gender: "",
-        email: "",
-        contact: "",
-        address: "",
-    });
+  const [supervisors, setSuperviors] = useState([]);
 
   const [editContactId, setEditContactId] = useState(null);
-
-  const handleEditFormChange = (event) => {
-    event.preventDefault();
-
-    const fieldName = event.target.getAttribute("name");
-    const fieldValue = event.target.value;
-
-    const newFormData = { ...editFormData };
-    newFormData[fieldName] = fieldValue;
-
-    setEditFormData(newFormData);
-  };
-
-
-  const handleEditFormSubmit = (event) => {
-    event.preventDefault();
-
-    const editedContact = {
-      id: editContactId,
-      name: editFormData.name,
-      gender: editFormData.gender,
-      email: editFormData.email,
-      contact: editFormData.contact,
-      address: editFormData.address,
-    };
-    
-    const newSupervisors = [...supervisors];
-
-    const index = supervisors.findIndex((supervisor) => supervisor.id === editContactId);
-
-    newSupervisors[index] = editedContact;
-
-    setSuperviors(newSupervisors);
-    setEditContactId(null);
-  };
-
-
 
   const [ currentPage, setCurrentPage ] = useState(1)
   const [supervisorsPerPage] = useState(10)
@@ -122,11 +78,12 @@ function Supervisors() {
 
   const handleDelete = async (id) => {
     const deleteUser = httpsCallable(functions, 'deleteUser')
-    deleteUser(id).then(results => {
-      console.log('deleted successfully')
-    }).catch(err => {
+    deleteUser({uid:id}).then().catch(err => {
       console.log(err)
     })
+
+    const userMetaDoc = doc(db, "usermeta", id);
+    await deleteDoc(userMetaDoc);
   };
 
 
@@ -200,7 +157,7 @@ function Supervisors() {
                             .querySelector(`.please${index}`)
                             .classList.remove("hello");
                           const confirmBox = window.confirm(
-                            `Are you sure you want to delete's claim`
+                            `Are you sure you want to delete ${supervisor.name}`
                           );
                           if (confirmBox === true) {
                             handleDelete(supervisor.uid);
