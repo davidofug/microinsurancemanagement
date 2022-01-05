@@ -125,15 +125,8 @@ export default function Clients() {
                     </CSVLink>
                   </div>
 
-                  {/* <form onSubmit={handleEditFormSubmit}>
-                  <EditableDatable columns={columns} columnHeading={columnHeading} editContactId={editContactId}
-                    currentClients={search(currentClients)} handleDeleteClick={handleDeleteClick}
-                    handleEditClick={handleEditClick} editFormData={editFormData}
-                    handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick}
-                  /> 
-                  </form> */}
 
-                  <Table hover striped responsive>
+                  <Table hover striped responsive className='mt-5'>
                         <thead>
                             <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
