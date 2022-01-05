@@ -4,16 +4,29 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../parts/searchBar/SearchBar';
 import Header from '../../parts/header/Header';
-import { functions } from '../../helpers/firebase';
+import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { FaEllipsisV } from "react-icons/fa";
 import { Table } from 'react-bootstrap'
+import useAuth from '../../contexts/Auth';
+import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 
 function Admins() {
 
     useEffect(() => {
       document.title = 'Britam - Admins'
 
+      getAdmins()
+      getUsersMeta()
+
+    }, [])
+
+    const [admins, setAdmins] = useState([]);
+    const [meta, setMeta] = useState([])
+    const metaCollectionRef = collection(db, "usermeta");
+  
+
+    const getAdmins = () => {
       const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then((results) => {
           const resultsArray = results.data
@@ -22,73 +35,14 @@ function Admins() {
       }).catch((err) => {
           console.log(err)
       })
+  }
 
-    }, [])
-
-    const [admins, setAdmins] = useState([]);
-    const [supervisors, setSuperviors] = useState([]);
-  //
-    const [editFormData, setEditFormData] = useState({
-        name: "",
-        gender: "",
-        email: "",
-        contact: "",
-        address: "",
-    });
+  const getUsersMeta = async () => {
+    const data = await getDocs(metaCollectionRef);
+    setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
 
   const [editContactId, setEditContactId] = useState(null);
-
-  const handleEditFormChange = (event) => {
-    event.preventDefault();
-
-    const fieldName = event.target.getAttribute("name");
-    const fieldValue = event.target.value;
-
-    const newFormData = { ...editFormData };
-    newFormData[fieldName] = fieldValue;
-
-    setEditFormData(newFormData);
-  };
-
-
-  const handleEditFormSubmit = (event) => {
-    event.preventDefault();
-
-    const editedContact = {
-      id: editContactId,
-      name: editFormData.name,
-      gender: editFormData.gender,
-      email: editFormData.email,
-      contact: editFormData.contact,
-      address: editFormData.address,
-    };
-    
-    const newSupervisors = [...supervisors];
-
-    const index = supervisors.findIndex((supervisor) => supervisor.id === editContactId);
-
-    newSupervisors[index] = editedContact;
-
-    setAdmins(newSupervisors);
-    setEditContactId(null);
-  };
-
-  const handleEditClick = (event, contact) => {
-    event.preventDefault();
-    setEditContactId(contact.id);
-
-    const formValues = {
-      name: contact.name,
-      gender: contact.gender,
-      email: contact.email,
-      contact: contact.contact,
-      address: contact.address,
-    };
-
-    setEditFormData(formValues);
-  };
-
-  //
 
     //
     const [ currentPage, setCurrentPage ] = useState(1)
@@ -99,25 +53,24 @@ function Admins() {
     const currentAdmins = admins.slice(indexOfFirstAdmin, indexOfLastAdmin)
     const totalPagesNum = Math.ceil(admins.length / adminsPerPage)
 
+    const handleDelete = (id) => {
+      const deleteUser = httpsCallable(functions, 'deleteUser')
+      const userMetaDoc = doc(db, "usermeta", id);
+      deleteUser({uid:id}).then((result) => {
+        deleteDoc(userMetaDoc)
+        console.log(result)
+      }
+      ).catch(err => {
+        console.log(err)
+      })
 
-
-    const handleDeleteClick = (supervisorId) => {
-        const newSupervisors = [...supervisors];
-        const index = supervisors.findIndex(supervisor => supervisor.id === supervisorId);
-        newSupervisors.splice(index, 1);
-        console.log(newSupervisors)
-        setAdmins(newSupervisors);
-      };
-  
-      const handleCancelClick = () => {
-        setEditContactId(null);
-      };
-
+      getAdmins()
+      getUsersMeta()
+    };
 
 
     const [q, setQ] = useState('');
 
-    const columnHeading = ["#", "License No.", "Name", "Gender", "Email", "NIN", "Contact", "Role", "Branch Name", "Actions"]
     const columns = ["id", "contact", "name", "gender", "email", "contact", "contact", "email", 'address']
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
@@ -145,7 +98,7 @@ function Admins() {
 
                 <Table hover striped responsive>
                         <thead>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {admins.map((admin, index) => (
@@ -153,15 +106,19 @@ function Admins() {
                               <td>{index+1}</td>
                               <td>{admin.name}</td>
                               <td>{admin.email}</td>
-                              <td>{admin.email}</td>
-                              <td>Contact</td>
-                              <td>Address</td>
+                              {meta.filter(user => user.id == admin.uid).map(user => (
+                                <>
+                                  <td>{user.gender}</td>
+                                  <td>{user.phone}</td>
+                                  <td>{user.address}</td>
+                                </>
+                              ))}
                 <td className="started">
                   <FaEllipsisV
-                    className={`actions please`}
+                    className={`actions please${index}`}
                     onClick={() => {
                       document
-                        .querySelector(`.please`)
+                        .querySelector(`.please${index}`)
                         .classList.add("hello");
                     }}
                   />
@@ -171,12 +128,14 @@ function Admins() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                           const confirmBox = window.confirm(
-                            `Are you sure you want to delete's claim`
+                            `Are you sure you want to ${admin.name}`
                           );
                           if (confirmBox === true) {
+                            handleDelete(admin.uid)
+                            console.log(admin.uid)
                           }
                         }}
                       >
@@ -187,7 +146,7 @@ function Admins() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -199,7 +158,7 @@ function Admins() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -213,7 +172,7 @@ function Admins() {
                             
                         </tbody>
                         <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 
