@@ -41,7 +41,7 @@ function SuperAdminRoutes() {
             <PrivateRoute path="/superadmin/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/add-user" >
+            <PrivateRoute path="/superadmin/add-user" >
                 <AddUsers />
             </PrivateRoute>
             <PrivateRoute path="/superadmin/clients" >

@@ -10,40 +10,12 @@ const menuData = {
         },
         {
             number: 2,
-            name: "Clients",
+            name: "Admins",
             icon: <MdPerson />,
-            link: "/superadmin/clients"
+            link: "/superadmin/admins"
         },
         {
             number: 3,
-            name: "User Management",
-            icon: <MdPeople />,
-            link: "/superadmin/user-management",
-            subMenu: [
-                {
-                    name: "Agents",
-                    link: "/superadmin/agents"
-                },
-                {
-                    name: "Supervisors",
-                    link: "/superadmin/supervisors"
-                },
-                {
-                    name: "Admins",
-                    link: "/superadmin/admins"
-                },
-                {
-                    name: "Add Users",
-                    link: "/add-user"
-                },
-                {
-                    name: "View Log Trail",
-                    link: "/superadmin/view-log-trail"
-                }
-            ]
-        },
-        {
-            number: 4,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
             link: "/superadmin/policies",
@@ -63,16 +35,10 @@ const menuData = {
             ]
         },
         {
-            number: 5,
+            number: 4,
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
             link: "/superadmin/claims"
-        },
-        {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/superadmin/reports"
         }
     ],
     Admin: [
@@ -102,7 +68,7 @@ const menuData = {
         },
         {
             number: 5,
-            name: "User Management",
+            name: "Users",
             icon: <MdPeople />,
             link: "/admin/user-management",
             subMenu: [
@@ -115,11 +81,7 @@ const menuData = {
                     link: "/admin/supervisor"
                 },
                 {
-                    name: "Add Users",
-                    link: "/admin/add-user"
-                },
-                {
-                    name: "View Log Trail",
+                    name: "Log Trail",
                     link: "/admin/view-log-trail"
                 }
             ]
@@ -274,13 +236,7 @@ const menuData = {
             name: "Reports",
             icon: <MdAssessment />,
             link: "/agent/reports"
-        },
-        // {
-        //     number: 7,
-        //     name: "Account Settings",
-        //     icon: <MdSettings />,
-        //     link: "/agent/settings"
-        // }
+        }
     ]
 }
 
