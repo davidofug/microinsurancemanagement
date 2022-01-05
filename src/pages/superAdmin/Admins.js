@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../parts/searchBar/SearchBar';
@@ -18,7 +17,7 @@ function Admins() {
       const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then((results) => {
           const resultsArray = results.data
-          const myUsers = resultsArray.filter(user => user.role.supervisor === true)
+          const myUsers = resultsArray.filter(user => user.role.admin === true)
           setAdmins(myUsers)
       }).catch((err) => {
           console.log(err)
@@ -127,12 +126,12 @@ function Admins() {
 
     return (
         <div className='components'>
-          <Header title="Supervisors" subtitle="MANAGING SUPERVISORS" />
+          <Header title="Admins" subtitle="MANAGING ADMINS" />
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-user">
-                    <button className="btn btn-primary cta">Add supervisor</button>
+                <Link to="/superadmin/add-user">
+                    <button className="btn btn-primary cta">Add admin</button>
                 </Link>
                 
             </div>

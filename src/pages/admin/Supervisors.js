@@ -8,7 +8,10 @@ import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { FaEllipsisV } from "react-icons/fa";
 import { Table } from 'react-bootstrap'
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, doc, getDoc } from 'firebase/firestore'
+import { Modal } from 'react-bootstrap'
+import { useForm } from "../../hooks/useForm";
+import OrganisationModal from "../../parts/OrganisationModel";
 
 function Supervisors() {
 
@@ -27,6 +30,17 @@ function Supervisors() {
 
     }, [])
 
+    
+
+    const getSingleDoc = async (id) => {
+      const docRef = doc(db, "organisations", id);
+      const docSnap = await getDoc(docRef);
+      setSingleDoc(docSnap.data());
+    };
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     const [meta, setMeta] = useState([])
     const metaCollectionRef = collection(db, "usermeta");
     const getUsersMeta = async () => {
@@ -34,6 +48,20 @@ function Supervisors() {
       setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
+    const [fields, handleFieldChange] = useForm({
+      user_role: '',
+      email: '',
+      name: '',
+      dob: '',
+      gender: '',
+      phone: '',
+      address: '',
+      licenseNo: '',
+      NIN: '',
+      photo: '',
+  })
+
+  const [singleDoc, setSingleDoc] = useState(fields);
     const [supervisors, setSuperviors] = useState([]);
     const [editFormData, setEditFormData] = useState({
         name: "",
@@ -80,20 +108,6 @@ function Supervisors() {
     setEditContactId(null);
   };
 
-  const handleEditClick = (event, contact) => {
-    event.preventDefault();
-    setEditContactId(contact.id);
-
-    const formValues = {
-      name: contact.name,
-      gender: contact.gender,
-      email: contact.email,
-      contact: contact.contact,
-      address: contact.address,
-    };
-
-    setEditFormData(formValues);
-  };
 
 
   const [ currentPage, setCurrentPage ] = useState(1)
@@ -106,17 +120,14 @@ function Supervisors() {
 
 
 
-    const handleDeleteClick = (supervisorId) => {
-        const newSupervisors = [...supervisors];
-        const index = supervisors.findIndex(supervisor => supervisor.id === supervisorId);
-        newSupervisors.splice(index, 1);
-        console.log(newSupervisors)
-        setSuperviors(newSupervisors);
-      };
-  
-      const handleCancelClick = () => {
-        setEditContactId(null);
-      };
+  const handleDelete = async (id) => {
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    deleteUser(id).then(results => {
+      console.log('deleted successfully')
+    }).catch(err => {
+      console.log(err)
+    })
+  };
 
 
 
@@ -136,9 +147,16 @@ function Supervisors() {
                 <div></div>
                 <Link to="/admin/add-user">
                     <button className="btn btn-primary cta">Add supervisor</button>
-                </Link>
-                
+                </Link>               
             </div>
+
+            <Modal show={show} onHide={() =>
+              {
+                handleClose()
+                setSingleDoc(fields)
+              }}>
+              <OrganisationModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+            </Modal>
 
             <div className="shadow-sm table-card componentsData">   
                 <div id="search">
@@ -185,6 +203,7 @@ function Supervisors() {
                             `Are you sure you want to delete's claim`
                           );
                           if (confirmBox === true) {
+                            handleDelete(supervisor.uid);
                           }
                         }}
                       >
@@ -194,6 +213,8 @@ function Supervisors() {
                     <li>
                       <button
                         onClick={() => {
+                          getSingleDoc(supervisor.uid);
+                          handleShow();
                           document
                             .querySelector(`.please${index}`)
                             .classList.remove("hello");

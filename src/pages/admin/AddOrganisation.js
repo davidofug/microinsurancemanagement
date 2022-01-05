@@ -45,7 +45,7 @@ export default function AddOrganisation() {
                                 <div>
                                     <Form.Group className="mb-3" >
                                             <Form.Label>Organisations Name <span className='required'>*</span></Form.Label>
-                                            <Form.Control type="text" id='name' placeholder="Enter organisation's email" onChange={handleFieldChange} />
+                                            <Form.Control type="text" id='name' placeholder="Enter organisation's name" onChange={handleFieldChange} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                             <Form.Label htmlFor="org_email">Organisation Email <span className='required'>*</span></Form.Label>
