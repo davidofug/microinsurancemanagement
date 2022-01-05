@@ -126,7 +126,7 @@ function Supervisors() {
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-user">
+                <Link to="/admin/add-user">
                     <button className="btn btn-primary cta">Add supervisor</button>
                 </Link>
                 
