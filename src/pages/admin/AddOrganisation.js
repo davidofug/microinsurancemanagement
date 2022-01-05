@@ -30,7 +30,7 @@ export default function AddOrganisation() {
     const createOrganisation = async (event) => {
         event.preventDefault()
         await addDoc(organisationsCollectionRef, fields)
-        alert(`successfully added ${fields.claimantName}'s claim`)
+        alert(`successfully added ${fields.name}`)
         document.form2.reset()
       }
 
@@ -57,7 +57,7 @@ export default function AddOrganisation() {
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                             <Form.Label htmlFor='address'>Address</Form.Label>
-                                            <Form.Control id="address" placeholder="Enter your address" />
+                                            <Form.Control id="address" placeholder="Enter your address" onChange={handleFieldChange}/>
                                     </Form.Group>
                                     <Form.Group controlId="formFile" className="mb-3">
                                             <Form.Label htmlFor='logo'>upload Organisation Logo</Form.Label>

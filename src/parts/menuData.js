@@ -62,7 +62,7 @@ const menuData = {
         },
         {
             number: 4,
-            name: "Sticker No. Management",
+            name: "Sticker No.",
             icon: <MdPerson />,
             link: "/admin/sticker-management"
         },
@@ -103,6 +103,14 @@ const menuData = {
                 {
                     name: "Windscreen",
                     link: "/admin/windscreen"
+                },
+                {
+                    name: "New imports",
+                    link: "/admin/new-import"
+                },
+                {
+                    name: "Transit",
+                    link: "/admin/transit"
                 }
             ]
         },

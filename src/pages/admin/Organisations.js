@@ -20,22 +20,17 @@ import { authentication } from "../../helpers/firebase";
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
-  
-
-
-  
 
   useEffect(() => {
     document.title = "Britam - Organisations";
-
-    const getOrganisations = async () => {
-        const data = await getDocs(organisationsCollectionRef)
-        setOrganisations(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      }
-
       getOrganisations()
 
   }, []);
+
+  const getOrganisations = async () => {
+    const data = await getDocs(organisationsCollectionRef)
+    setOrganisations(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  }
 
   const [editID, setEditID] = useState(null);
   const [show, setShow] = useState(false);
@@ -90,7 +85,7 @@ export default function Organisations() {
     );
 
     const handleDelete = async (id) => {
-      const organisationDoc = doc(db, "organsiations", id);
+      const organisationDoc = doc(db, "organisations", id);
       console.log(organisationDoc)
       await deleteDoc(organisationDoc);
     };
@@ -121,7 +116,7 @@ export default function Organisations() {
           handleClose()
           setSingleDoc(fields)
         }}>
-        <OrganisationModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+        <OrganisationModal fields={fields} singleDoc={singleDoc} handleClose={handleClose} handleFieldChange={handleFieldChange} editID={editID} />
       </Modal>
 
       {organisations.length <= 0 
@@ -183,7 +178,7 @@ export default function Organisations() {
                 <td>{organisation.name}</td>
                 <td>{organisation.org_email}</td>
                 <td>{organisation.tel}</td>
-                <td style={{borderLeft: "1px solid #000"}}>{organisation.ContactName}</td>
+                <td style={{borderLeft: "1px solid #000"}}>{organisation.contactName}</td>
                 <td>{organisation.role}</td>
                 <td>{organisation.contactPhoneNumber}</td>
                 <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
@@ -207,6 +202,7 @@ export default function Organisations() {
                               `Are you sure you want to delete ${organisation.name}`);
                             if (confirmBox === true) {
                               handleDelete(organisation.id);
+                              getOrganisations()
                             }
                           }}
                         >
@@ -216,7 +212,7 @@ export default function Organisations() {
                       <li>
                         <button
                         onClick={() => {
-                          // setEditID(organisation.id);
+                          setEditID(organisation.id)
                           getSingleDoc(organisation.id);
                           handleShow();
                           document
@@ -250,10 +246,10 @@ export default function Organisations() {
               <th>Name</th>
               <th>Email</th>
               <th>Phone No.</th>
-              <th style={{borderLeft: "1px solid #000"}}>Contact Name</th>
+              <th style={{borderLeft: "1px solid #000"}}>Name</th>
               <th>Role</th>
-              <th>Contact's No</th>
-              <th style={{borderRight: "1px solid #000"}}>Contact Email</th>
+              <th>Phone No.</th>
+              <th style={{borderRight: "1px solid #000"}}>Email</th>
               <th>Action</th>
             </tr>
           </tfoot>
