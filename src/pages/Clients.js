@@ -79,12 +79,12 @@ export default function Clients() {
   };
 
   const [ currentPage, setCurrentPage ] = useState(1)
-  const [employeesPerPage] = useState(10)
+  const [clientsPerPage] = useState(10)
 
-  const indexOfLastEmployee = currentPage * employeesPerPage
-  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
-  const currentClients = clients.slice(indexOfFirstEmployee, indexOfLastEmployee)
-  const totalPagesNum = Math.ceil(data.length / employeesPerPage)
+  const indexOfLastClient = currentPage * clientsPerPage
+  const indexOfFirstClient = indexOfLastClient - clientsPerPage
+  const currentClients = clients.slice(indexOfFirstClient, indexOfLastClient)
+  const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
 
   const handleDeleteClick = (clientId) => {
     const newClients = [...clients];
@@ -211,7 +211,7 @@ export default function Clients() {
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentClients}
-                    sortedEmployees={data}
+                    sortedEmployees={clients}
                     entries={'Clients'} />
               </div>
             </div>

@@ -3,7 +3,6 @@ import Badge from "../../parts/Badge"
 import { useEffect, useState } from 'react'
 import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
-import Datatable from '../../helpers/DataTable';
 import Pagination from '../../helpers/Pagination';
 import { CSVLink } from "react-csv";
 import SearchBar from '../../parts/searchBar/SearchBar';
