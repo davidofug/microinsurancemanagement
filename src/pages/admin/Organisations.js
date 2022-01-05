@@ -12,7 +12,7 @@ import { collection, addDoc, getDoc, getDocs, deleteDoc, doc } from 'firebase/fi
 import { FaEllipsisV } from "react-icons/fa";
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../../helpers/firebase'
-import ClaimModel from "../agent/ClaimModel";
+import OrganisationModal from "../../parts/OrganisationModel";
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
 import { authentication } from "../../helpers/firebase";
@@ -44,20 +44,19 @@ export default function Organisations() {
 
   const [fields, handleFieldChange] = useForm({
     uid: authentication.currentUser.uid,
-    refNumber: "",
-    dateReported: "",
-    policyType: "",
-    numberPlate: "",
-    stickerNumber: "",
-    claimantName: "",
-    claimantEmail: "",
-    claimantPhoneNumber: "",
-    dateOfIncident: "",
-    claimEstimate: "",
-    detailsOfIncident: "",
-    attachedDocuments: "",
-    status: "",
-  });
+    name: '',
+    org_email: '',
+    tel: '',
+    address: '',
+    logo: '',
+    role: '',
+    title: '',
+    contactName: '',
+    contactPhoneNumber: '',
+    contact_email: '',
+    password: ''
+
+})
 
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
@@ -96,10 +95,10 @@ export default function Organisations() {
       await deleteDoc(organisationDoc);
     };
 
-    const [singleDoc, setSingleDoc] = useState({});
+    const [singleDoc, setSingleDoc] = useState(fields);
 
     const getSingleDoc = async (id) => {
-      const docRef = doc(db, "claims", id);
+      const docRef = doc(db, "organisations", id);
       const docSnap = await getDoc(docRef);
       setSingleDoc(docSnap.data());
     };
@@ -117,8 +116,12 @@ export default function Organisations() {
         </Link>
       </div>
 
-      <Modal show={show} onHide={handleClose}>
-        <ClaimModel singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+      <Modal show={show} onHide={() =>
+        {
+          handleClose()
+          setSingleDoc(fields)
+        }}>
+        <OrganisationModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
       </Modal>
 
       {organisations.length <= 0 
@@ -213,7 +216,7 @@ export default function Organisations() {
                       <li>
                         <button
                         onClick={() => {
-                          setEditID(organisation.id);
+                          // setEditID(organisation.id);
                           getSingleDoc(organisation.id);
                           handleShow();
                           document
