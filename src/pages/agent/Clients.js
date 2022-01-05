@@ -156,7 +156,7 @@ export default function Clients() {
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentClients}
-                    sortedEmployees={data}
+                    sortedEmployees={clients}
                     entries={'Clients'} />
               </div>
             </div>
