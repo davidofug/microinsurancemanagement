@@ -11,6 +11,7 @@ function Dashboard() {
     const [stickers, setStickers] = useState(13)
     const [policies, setPolicies] = useState(2)
     const [claimNotifications, setClaimNotifications] = useState(27)
+    const { authClaims } = useAuth()
 
     useEffect(() => {
         document.title = 'Britam - Welcome'
@@ -61,24 +62,59 @@ function Dashboard() {
                             </Container>
                         </div>
 
-                        <div className="shadow-sm bg-body rounded first-container" >
-                            {/* Are these supposed to be links or just mere words? */}
+                        <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex", alignItems: "flex-start"}}>
                             <div id="short_stats">
-                                <h3 className="heading">Agent issued reports</h3>
-                                <Table responsive borderless>
-                                    <thead><th></th><th>Grand totals</th></thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Daily</td><td>UGX 10,000,001</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Weekly</td><td>UGX 13,000,001</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Monthly</td><td>UGX 21,000,001</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
+                                {authClaims.admin && <>
+                                    <h5 className="heading">Daily Reports Summary</h5>
+                                    <table>
+                                        <thead><th>Category</th><th>Grand totals</th></thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>MTP</td><td>UGX ___</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Comprehensive</td><td>UGX ___</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Windscreen</td><td>UGX ___</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </>
+                                }
+                                {authClaims.supervisor && <>
+                                    <h5 className="heading">Latest Agents</h5>
+                                    <table>
+                                        <thead><th>Name</th><th>Email Address</th></thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Agent One</td><td>agent1@gmail.com</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Agent Two</td><td>agent2@gmail.com</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Agent Three</td><td>agent3@gmail.com</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </>
+                                }
+                                {authClaims.agent && <>
+                                    <h5 className="heading">Latest Clients</h5>
+                                    <table>
+                                        <thead>
+                                            <tr><th>Name</th><th>Email</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Charles Kasasira</td>
+                                                <td>charleskasasira01@gmail.com</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>

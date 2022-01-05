@@ -19,7 +19,6 @@ import AddAgents from '../pages/AddAgents'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddOrganisation from '../pages/admin/AddOrganisation'
-import AddSupervisors from '../pages/admin/AddSupervisors'
 import StickerMgt from '../pages/admin/StickerMgt'
 import AddUsers from '../pages/AddUsers'
 
@@ -41,9 +40,6 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/supervisor" >
                 <Supervisors />
-            </PrivateRoute>
-            <PrivateRoute path="/add-supervisors" >
-                <AddSupervisors />
             </PrivateRoute>
             <PrivateRoute path="/admin/add-user" >
                 <AddUsers />

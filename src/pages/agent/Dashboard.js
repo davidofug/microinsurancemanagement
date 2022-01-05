@@ -73,20 +73,18 @@ function Dashboard() {
                         <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex", alignItems: "flex-start"}}>
                             {/* Are these supposed to be links or just mere words? */}
                             <div id="short_stats">
-                                <h3 className="heading">Latest Clients</h3>
-                                <Table responsive borderless style={{width: "100%", border: "none"}}>
-                                    <thead>
-                                        <tr><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th></tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Charles Kasasira</td>
-                                            <td>M</td>
-                                            <td>charleskasasira01@gmail.com</td>
-                                            <td>07053566</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
+                                    <h5 className="heading">Latest Clients</h5>
+                                    <table>
+                                        <thead>
+                                            <tr><th>Name</th><th>Email</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Charles Kasasira</td>
+                                                <td>charleskasasira01@gmail.com</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                             </div>
                         </div>
                     </div>

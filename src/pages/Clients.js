@@ -11,6 +11,7 @@ import { Table } from 'react-bootstrap';
 import { FaEllipsisV } from "react-icons/fa";
 import { functions } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
+import useAuth from '../contexts/Auth';
 
 export default function Clients() {
 
@@ -30,7 +31,7 @@ export default function Clients() {
 
   }, [])
 
-  
+  const { authClaims } = useAuth()
   const [clients, setClients] = useState([]);
   const [editFormData, setEditFormData] = useState({ name: "", gender: "", email: "", contact: "", address: "" });
   const [editContactId, setEditContactId] = useState(null);
@@ -110,9 +111,11 @@ export default function Clients() {
    
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-user">
-                    <button className='btn btn-primary cta'>Add Client</button>
-                </Link>
+                {(authClaims.supervisor || authClaims.agent) && 
+                  <Link to="/add-user">
+                      <button className='btn btn-primary cta'>Add Client</button>
+                  </Link>
+                }
             </div>
 
             <div className="componentsData">

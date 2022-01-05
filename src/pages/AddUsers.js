@@ -12,7 +12,7 @@ import useAuth from '../contexts/Auth'
 function AddUsers() {
     const { authClaims } = useAuth()
     const addUser = httpsCallable(functions, 'addUser')
-    useEffect(() => { document.title = 'Britam - Add Supervisors' }, [])
+    useEffect(() => { document.title = 'Britam - Add Users' }, [])
 
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
@@ -43,6 +43,7 @@ function AddUsers() {
 
         addUser(fields).then((results) => {
             alert(`successfully added ${fields.name}`)
+            console.log(fields)
             document.form3.reset()
         }).catch((err) => {
             console.log(err)
@@ -56,7 +57,7 @@ function AddUsers() {
         <div className='components'>
             <Header title="Add Users" subtitle="ADD A NEW USER" />
             <div class="shadow-sm table-card">
-                    <Form id='form3' onSubmit={handleSubmit}>
+                    <Form name='form3' onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
                             <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange}>
