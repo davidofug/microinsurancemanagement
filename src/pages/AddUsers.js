@@ -43,7 +43,6 @@ function AddUsers() {
 
         addUser(fields).then((results) => {
             alert(`successfully added ${fields.name}`)
-            console.log(fields)
             document.form3.reset()
         }).catch((err) => {
             console.log(err)

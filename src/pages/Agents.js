@@ -10,7 +10,7 @@ import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table } from 'react-bootstrap'
 import { FaEllipsisV } from "react-icons/fa";
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 import useAuth from '../contexts/Auth';
 
 function Agents() {
@@ -18,14 +18,7 @@ function Agents() {
     useEffect(() => {
       document.title = 'Britam - Agents'
 
-      const listUsers = httpsCallable(functions, 'listUsers')
-      listUsers().then((results) => {
-          const resultsArray = results.data
-          const myUsers = resultsArray.filter(user => user.role.agent === true)
-          setAgents(myUsers)
-      }).catch((err) => {
-          console.log(err)
-      })
+      getAgents()
       getUsersMeta()
     }, [])
     const [agents, setAgents] = useState([]);
@@ -34,6 +27,17 @@ function Agents() {
 
   const [editContactId, setEditContactId] = useState(null);
   const { authClaims } = useAuth()
+
+  const getAgents = () => {
+    const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then((results) => {
+          const resultsArray = results.data
+          const myUsers = resultsArray.filter(user => user.role.agent === true)
+          setAgents(myUsers)
+      }).catch((err) => {
+          console.log(err)
+      })
+  }
 
   const getUsersMeta = async () => {
     const data = await getDocs(metaCollectionRef);
@@ -53,22 +57,21 @@ function Agents() {
     const currentAgents = agents.slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(agents.length / employeesPerPage)
 
-
-    const handleDeleteClick = (agentId) => {
-        const newAgents = [...agents];
-        const index = agents.findIndex((agent) => agent.id === agentId);
-        newAgents.splice(index, 1);
-        console.log(newAgents)
-        setAgents(newAgents);
-      };
+    const handleDelete = async (id) => {
+      const deleteUser = httpsCallable(functions, 'deleteUser')
+      deleteUser({uid:id}).then().catch(err => {
+        console.log(err)
+      })
   
-      const handleCancelClick = () => {
-        setEditContactId(null);
-      };
+      const userMetaDoc = doc(db, "usermeta", id);
+      await deleteDoc(userMetaDoc);
+
+      getAgents()
+      getUsersMeta()
+    };
 
     const [q, setQ] = useState('');
 
-    const columnHeading = ["#", "License No.", "National ID", "Name", "Gender", "Phone No.", "Email", "CreatedAt", "Action"]
     const columns = ["id", "contact", "contact", "name", "gender", "contact", "email", "createdAt"]
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
@@ -136,9 +139,10 @@ function Agents() {
                             .querySelector(`.please${index}`)
                             .classList.remove("hello");
                           const confirmBox = window.confirm(
-                            `Are you sure you want to delete's claim`
+                            `Are you sure you want to ${agent.name}`
                           );
                           if (confirmBox === true) {
+                            handleDelete(agent.uid);
                           }
                         }}
                       >

@@ -11,7 +11,7 @@ import { FaEllipsisV } from "react-icons/fa";
 import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 
 export default function Clients() {
 
@@ -19,15 +19,8 @@ export default function Clients() {
     {
       document.title = 'Britam - Clients'
 
-      const listUsers = httpsCallable(functions, 'listUsers')
-      listUsers().then((results) => {
-          const resultsArray = results.data
-          const myUsers = resultsArray.filter(user => user.role.Customer === true)
-          setClients(myUsers)
-      }).catch((err) => {
-          console.log(err)
-      })
-
+      
+      getClients()
       getUsersMeta()
   }, [])
 
@@ -36,6 +29,17 @@ export default function Clients() {
   const [q, setQ] = useState('');
   const [meta, setMeta] = useState([])
   const metaCollectionRef = collection(db, "usermeta");
+
+  const getClients = () => {
+      const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then((results) => {
+          const resultsArray = results.data
+          const myUsers = resultsArray.filter(user => user.role.Customer === true)
+          setClients(myUsers)
+      }).catch((err) => {
+          console.log(err)
+      })
+  }
 
   const getUsersMeta = async () => {
     const data = await getDocs(metaCollectionRef);
@@ -49,6 +53,20 @@ export default function Clients() {
   const indexOfFirstClient = indexOfLastClient - clientsPerPage
   const currentClients = clients.slice(indexOfFirstClient, indexOfLastClient)
   const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
+
+
+  const handleDelete = async (id) => {
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    deleteUser({uid:id}).then().catch(err => {
+      console.log(err)
+    })
+
+    const userMetaDoc = doc(db, "usermeta", id);
+    await deleteDoc(userMetaDoc);
+
+    getClients()
+    getUsersMeta()
+  };
 
 
   const columns = ["id", "name", "gender", "email", "contact", "address"]
@@ -93,7 +111,7 @@ export default function Clients() {
                         <tbody>
                           {clients.map((client, index) => (
                               <tr key={client.uid}>
-                              <td>{1}</td>
+                              <td>{index + 1}</td>
                               <td>{client.name}</td>
                               <td>{client.email}</td>
                               {meta.filter(user => user.id == client.uid).map(user => (
@@ -121,9 +139,10 @@ export default function Clients() {
                             .querySelector(`.please${index}`)
                             .classList.remove("hello");
                           const confirmBox = window.confirm(
-                            `Are you sure you want to delete's claim`
+                            `Are you sure you want to ${client.name}`
                           );
                           if (confirmBox === true) {
+                            handleDelete(client.uid)
                           }
                         }}
                       >
