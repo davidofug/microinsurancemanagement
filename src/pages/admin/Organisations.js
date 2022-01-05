@@ -4,15 +4,18 @@ import { useEffect, useState } from "react";
 import { MdDownload } from "react-icons/md";
 import data from "../../helpers/mock-data.json";
 import Header from "../../parts/header/Header";
-import Datatable from "../../helpers/DataTable";
 import Pagination from "../../helpers/Pagination";
 import SearchBar from "../../parts/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
-import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { collection, addDoc, getDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { FaEllipsisV } from "react-icons/fa";
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../../helpers/firebase'
+import ClaimModel from "../agent/ClaimModel";
+import { Modal } from 'react-bootstrap'
+import { useForm } from "../../hooks/useForm";
+import { authentication } from "../../helpers/firebase";
 
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
@@ -34,6 +37,28 @@ export default function Organisations() {
 
   }, []);
 
+  const [editID, setEditID] = useState(null);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [fields, handleFieldChange] = useForm({
+    uid: authentication.currentUser.uid,
+    refNumber: "",
+    dateReported: "",
+    policyType: "",
+    numberPlate: "",
+    stickerNumber: "",
+    claimantName: "",
+    claimantEmail: "",
+    claimantPhoneNumber: "",
+    dateOfIncident: "",
+    claimEstimate: "",
+    detailsOfIncident: "",
+    attachedDocuments: "",
+    status: "",
+  });
+
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
 
@@ -48,14 +73,14 @@ export default function Organisations() {
   const [q, setQ] = useState("");
 
   const columns = [
-    "id",
-    "name",
-    "email",
-    "contact",
-    "agentName",
-    "role",
-    "contact",
-    "email",
+    "Logo",
+    "Name",
+    "Email",
+    "Phone No",
+    "Contact Name",
+    "Role",
+    "Contact's No",
+    "Contact Email",
   ];
   const search = (rows) =>
     rows.filter((row) =>
@@ -64,6 +89,20 @@ export default function Organisations() {
           row[column].toString().toLowerCase().organisation.idOf(q.toLowerCase()) > -1
       )
     );
+
+    const handleDelete = async (id) => {
+      const organisationDoc = doc(db, "organsiations", id);
+      console.log(organisationDoc)
+      await deleteDoc(organisationDoc);
+    };
+
+    const [singleDoc, setSingleDoc] = useState({});
+
+    const getSingleDoc = async (id) => {
+      const docRef = doc(db, "claims", id);
+      const docSnap = await getDoc(docRef);
+      setSingleDoc(docSnap.data());
+    };
 
   const handleSearch = ({ target }) => setQ(target.value);
 
@@ -77,6 +116,10 @@ export default function Organisations() {
           <button className="btn btn-primary cta">Add Organisation</button>
         </Link>
       </div>
+
+      <Modal show={show} onHide={handleClose}>
+        <ClaimModel singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+      </Modal>
 
       {organisations.length <= 0 
       ?
@@ -108,71 +151,75 @@ export default function Organisations() {
           responsive
           cellPadding={0}
           cellSpacing={0}
+          className="mt-5"
         >
           <thead>
-            <tr>
+            <tr style={{borderTop: '1px solid transparent', borderLeft: '1px solid transparent', borderRight: '1px solid transparent'}}>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th colSpan={4} style={{border: "1px solid #000", textAlign: "center"}}>Contact Person</th></tr>
+            <tr style={{borderTop: "1px solid #000"}}>
               <th>Logo</th>
               <th>Name</th>
               <th>Email</th>
               <th>Phone No.</th>
-              <th>Contact Name</th>
+              <th style={{borderLeft: "1px solid #000"}}>Name</th>
               <th>Role</th>
-              <th>Contact's No</th>
-              <th>Contact Email</th>
+              <th>Phone No.</th>
+              <th style={{borderRight: "1px solid #000"}}>Email</th>
               <th>Action</th>
             </tr>
           </thead>
 
           <tbody>
-            {organisations.map((organisation) => (
+            {organisations.map((organisation, index) => (
               <tr key={organisation.id}>
                 <td>{organisation.logo}</td>
                 <td>{organisation.name}</td>
                 <td>{organisation.org_email}</td>
                 <td>{organisation.tel}</td>
-                <td>{organisation.ContactName}</td>
+                <td style={{borderLeft: "1px solid #000"}}>{organisation.ContactName}</td>
                 <td>{organisation.role}</td>
                 <td>{organisation.contactPhoneNumber}</td>
-                <td>{organisation.contact_email}</td>
-                <td className="started">
+                <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
+                <td style={{borderRight: "1px solid #000"}}className="started">
                     <FaEllipsisV
-                      className={`actions please${organisation.id}`}
+                      className={`actions please${index}`}
                       onClick={() => {
                         document
-                          .querySelector(`.please${organisation.id}`)
+                          .querySelector(`.please${index}`)
                           .classList.add("hello");
                       }}
                     />
                     <ul id="actionsUl" className="actions-ul">
                       <li>
-                        <button>View Notification</button>
-                      </li>
-                      <li>
-                        <button>Claim Settlement</button>
-                      </li>
-                      <li>
-                        <button>View Settlement</button>
-                      </li>
-                      <li>
-                        <button>Cancel</button>
-                      </li>
-                      <li>
                         <button
                           onClick={() => {
                             document
-                              .querySelector(`.please${organisation.id}`)
+                              .querySelector(`.please${index}`)
                               .classList.remove("hello");
                             const confirmBox = window.confirm(
-                              `Are you sure you want to delete ${organisation.name}'s claim`
-                            );
-                            if (confirmBox === true) {}
+                              `Are you sure you want to delete ${organisation.name}`);
+                            if (confirmBox === true) {
+                              handleDelete(organisation.id);
+                            }
                           }}
                         >
                           Delete
                         </button>
                       </li>
                       <li>
-                        <button>
+                        <button
+                        onClick={() => {
+                          setEditID(organisation.id);
+                          getSingleDoc(organisation.id);
+                          handleShow();
+                          document
+                            .querySelector(`.please${index}`)
+                            .classList.remove("hello");
+                        }}>
                           Edit
                         </button>
                       </li>
@@ -181,7 +228,7 @@ export default function Organisations() {
                         <button
                           onClick={() => {
                             document
-                              .querySelector(`.please${organisation.id}`)
+                              .querySelector(`.please${index}`)
                               .classList.remove("hello");
                           }}
                         >
@@ -200,10 +247,10 @@ export default function Organisations() {
               <th>Name</th>
               <th>Email</th>
               <th>Phone No.</th>
-              <th>Contact Name</th>
+              <th style={{borderLeft: "1px solid #000"}}>Contact Name</th>
               <th>Role</th>
               <th>Contact's No</th>
-              <th>Contact Email</th>
+              <th style={{borderRight: "1px solid #000"}}>Contact Email</th>
               <th>Action</th>
             </tr>
           </tfoot>
@@ -213,7 +260,7 @@ export default function Organisations() {
           pages={totalPagesNum}
           setCurrentPage={setCurrentPage}
           currentClients={currentOrganisations}
-          sortedEmployees={data}
+          sortedEmployees={organisations}
           entries={"Organisations"}
         />
       </div>

@@ -23,11 +23,14 @@ export default function Clients() {
           console.log(resultsArray)
           const myUsers = resultsArray.filter(user => user.role.Customer === true)
           setClients(myUsers)
+          console.log(resultsArray.data)
       }).catch((err) => {
           console.log(err)
       })
   
   }, [])
+
+  
 
   const [clients, setClients] = useState([]);
   const [editFormData, setEditFormData] = useState({ name: "", gender: "", email: "", contact: "", address: "" });
@@ -81,14 +84,14 @@ export default function Clients() {
                             <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                        {clients.map(client => (
-                              <tr>
-                              <td>{1}</td>
+                        {clients.map((client, index) => (
+                              <tr key={client.uid}>
+                              <td>{index}</td>
                               <td>{client.name}</td>
+                              <td>{client.gender}</td>
                               <td>{client.email}</td>
-                              <td>Email</td>
-                              <td>Contact</td>
-                              <td>Address</td>
+                              <td>{client.contact}</td>
+                              <td>{client.address}</td>
                 <td className="started">
                   <FaEllipsisV
                     className={`actions please`}

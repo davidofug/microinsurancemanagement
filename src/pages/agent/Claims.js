@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../../helpers/Pagination";
 import SearchBar from "../../parts/searchBar/SearchBar";
 import Header from "../../parts/header/Header";
-import { Table, Alert, Modal, Form, Col, Row, Button } from "react-bootstrap";
+import { Table, Alert, Modal } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
 import {
   collection,
