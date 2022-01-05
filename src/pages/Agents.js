@@ -6,10 +6,11 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../parts/searchBar/SearchBar'
 import Header from '../parts/header/Header';
-import { functions } from '../helpers/firebase';
+import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table } from 'react-bootstrap'
 import { FaEllipsisV } from "react-icons/fa";
+import { getDocs, collection } from 'firebase/firestore'
 
 function Agents() {
 
@@ -24,69 +25,21 @@ function Agents() {
       }).catch((err) => {
           console.log(err)
       })
+      getUsersMeta()
     }, [])
-
     const [agents, setAgents] = useState([]);
-  //
-    const [editFormData, setEditFormData] = useState({
-        name: "",
-        gender: "",
-        email: "",
-        contact: "",
-        address: "",
-    });
+    const [meta, setMeta] = useState([])
+
+    const metaCollectionRef = collection(db, "usermeta");
 
   const [editContactId, setEditContactId] = useState(null);
 
-  const handleEditFormChange = (event) => {
-    event.preventDefault();
-
-    const fieldName = event.target.getAttribute("name");
-    const fieldValue = event.target.value;
-
-    const newFormData = { ...editFormData };
-    newFormData[fieldName] = fieldValue;
-
-    setEditFormData(newFormData);
+  const getUsersMeta = async () => {
+    const data = await getDocs(metaCollectionRef);
+    setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
 
-  const handleEditFormSubmit = (event) => {
-    event.preventDefault();
-
-    const editedContact = {
-      id: editContactId,
-      name: editFormData.name,
-      gender: editFormData.gender,
-      email: editFormData.email,
-      contact: editFormData.contact,
-      address: editFormData.address,
-    };
-    
-    const newAgents = [...agents];
-
-    const index = agents.findIndex((agent) => agent.id === editContactId);
-
-    newAgents[index] = editedContact;
-
-    setAgents(newAgents);
-    setEditContactId(null);
-  };
-
-  const handleEditClick = (event, contact) => {
-    event.preventDefault();
-    setEditContactId(contact.id);
-
-    const formValues = {
-      name: contact.name,
-      gender: contact.gender,
-      email: contact.email,
-      contact: contact.contact,
-      address: contact.address,
-    };
-
-    setEditFormData(formValues);
-  };
 
   //
 
@@ -98,7 +51,6 @@ function Agents() {
     const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
     const currentAgents = agents.slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(agents.length / employeesPerPage)
-
 
 
     const handleDeleteClick = (agentId) => {
@@ -140,23 +92,9 @@ function Agents() {
                     <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>
 
-                    {/* <form onSubmit={handleEditFormSubmit}>
-                        <EditableDatable 
-                            columns={columns}
-                            columnHeading={columnHeading}
-                            editContactId={editContactId}
-                            currentClients={search(currentAgents)}
-                            handleDeleteClick={handleDeleteClick}
-                            handleEditClick={handleEditClick}
-                            editFormData={editFormData}
-                            handleEditFormChange={handleEditFormChange}
-                            handleCancelClick={handleCancelClick}
-                        /> 
-                  </form> */}
-
-<Table hover striped responsive>
+                  <Table hover striped responsive>
                         <thead>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {agents.map((agent, index) => (
@@ -164,15 +102,20 @@ function Agents() {
                               <td>{index + 1}</td>
                               <td>{agent.name}</td>
                               <td>{agent.email}</td>
-                              <td>{agent.email}</td>
-                              <td>Contact</td>
-                              <td>Address</td>
+                              {meta.filter(user => user.id == agent.uid).map(user => (
+                                <>
+                                  <td>{user.gender}</td>
+                                  <td>{user.phone}</td>
+                                  <td>{user.address}</td>
+                                </>
+                              ))}
+                              
                 <td className="started">
                   <FaEllipsisV
-                    className={`actions please`}
+                    className={`actions please${index}`}
                     onClick={() => {
                       document
-                        .querySelector(`.please`)
+                        .querySelector(`.please${index}`)
                         .classList.add("hello");
                     }}
                   />
@@ -182,7 +125,7 @@ function Agents() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                           const confirmBox = window.confirm(
                             `Are you sure you want to delete's claim`
@@ -198,7 +141,7 @@ function Agents() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -210,7 +153,7 @@ function Agents() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -224,7 +167,7 @@ function Agents() {
                             
                         </tbody>
                         <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 

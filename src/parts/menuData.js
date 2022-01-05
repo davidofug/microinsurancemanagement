@@ -182,7 +182,7 @@ const menuData = {
                 },
                 {
                     name: "Add Users",
-                    link: "/add-user"
+                    link: "/supervisor/add-user"
                 },
                 {
                     name: "View Log Trail",
