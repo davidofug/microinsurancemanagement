@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
-import { EditableDatable } from '../../helpers/DataTable'
 import SearchBar from '../../parts/searchBar/SearchBar';
 import Header from '../../parts/header/Header';
 import { functions } from '../../helpers/firebase';
@@ -28,7 +27,6 @@ function Supervisors() {
     }, [])
 
     const [supervisors, setSuperviors] = useState([]);
-  //
     const [editFormData, setEditFormData] = useState({
         name: "",
         gender: "",
@@ -89,16 +87,14 @@ function Supervisors() {
     setEditFormData(formValues);
   };
 
-  //
 
-    //
-    const [ currentPage, setCurrentPage ] = useState(1)
-    const [employeesPerPage] = useState(10)
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [supervisorsPerPage] = useState(10)
 
-    const indexOfLastEmployee = currentPage * employeesPerPage
-    const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
-    const currentSupervisors = supervisors.slice(indexOfFirstEmployee, indexOfLastEmployee)
-    const totalPagesNum = Math.ceil(data.length / employeesPerPage)
+  const indexOfLastSupervisor = currentPage * supervisorsPerPage
+  const indexOfFirstSupervisor = indexOfLastSupervisor - supervisorsPerPage
+  const currentSupervisors = supervisors.slice(indexOfFirstSupervisor, indexOfLastSupervisor)
+  const totalPagesNum = Math.ceil(supervisors.length / supervisorsPerPage)
 
 
 
@@ -118,7 +114,6 @@ function Supervisors() {
 
     const [q, setQ] = useState('');
 
-    const columnHeading = ["#", "License No.", "Name", "Gender", "Email", "NIN", "Contact", "Role", "Branch Name", "Actions"]
     const columns = ["id", "contact", "name", "gender", "email", "contact", "contact", "email", 'address']
     const search = rows => rows.filter(row =>
         columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
@@ -144,7 +139,7 @@ function Supervisors() {
                             <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                       </div>
 
-                    <Table hover striped responsive>
+                    <Table hover striped responsive className='mt-5'>
                         <thead>
                             <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
