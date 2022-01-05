@@ -1,22 +1,37 @@
 import { useState } from 'react'
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
-import { useForm } from '../hooks/useForm';
+import { db } from '../helpers/firebase';
+import { doc, updateDoc } from 'firebase/firestore'
+import { authentication } from '../helpers/firebase';
 
-function OrganisationModal({ handleFieldChange, singleDoc, setSingleDoc, fields }) {
+function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }) {
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
   
-    const modalSubmit = (event) => {
+    const modalSubmit = async (event) => {
         event.preventDefault()
-        setSingleDoc(fields)
+
+        const organisationRef = doc(db, "organisations", editID);
+
+        await updateDoc(organisationRef, {
+            uid: authentication.currentUser.uid,
+            name: event.target.name.value,
+            org_email: event.target.org_email.value,
+            tel: event.target.tel.value,
+            address: event.target.address.value,
+            logo: event.target.logo.value,
+            role: event.target.role.value,
+            title: event.target.title.value,
+            contactName: event.target.contactName.value,
+            contactPhoneNumber: event.target.contactPhoneNumber.value,
+            contact_email: event.target.contact_email.value
+        });
     }
 
 
     return (
         <>
             <Modal.Header closeButton>
-                <Modal.Title>Edit Claim</Modal.Title>
+                <Modal.Title>Edit Organisation</Modal.Title>
             </Modal.Header>
             <Form id="organisation_claim" onSubmit={modalSubmit}>
                 <Modal.Body>
@@ -92,11 +107,18 @@ function OrganisationModal({ handleFieldChange, singleDoc, setSingleDoc, fields 
                         type="text"
                         name=""
                         id="address"
-                        defaultValue={singleDoc.address}
                         placeholder="Enter address"
+                        defaultValue={singleDoc.address}
                         onChange={handleFieldChange}
                         />
                     </Form.Group>
+                    </Row>
+                    <Row className="mb-3">
+                    <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label htmlFor='logo'>Logo</Form.Label>
+                            <Form.Control id='logo' type="file" defaultValue={singleDoc.logo} onChange={handleFieldChange} />
+                    </Form.Group>
+                    </Row>
                     <h3>Contact Person</h3>
                     <Form.Group
                         as={Col}
@@ -116,7 +138,7 @@ function OrganisationModal({ handleFieldChange, singleDoc, setSingleDoc, fields 
                         onChange={handleFieldChange}
                         />
                     </Form.Group>
-                    </Row>
+                    
                     <Row>
                         <Form.Group
                             as={Col}
@@ -211,7 +233,6 @@ function OrganisationModal({ handleFieldChange, singleDoc, setSingleDoc, fields 
                     type="submit"
                     onClick={() => {
                         handleClose();
-                        
                     }}
                     id="submit"
                     >
