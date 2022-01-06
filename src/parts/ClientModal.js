@@ -48,6 +48,7 @@ function ClientModal({ singleDoc}) {
                 <Form.Control
                   type="date"
                   id="dateReported"
+                  defaultValue={singleDoc.dob}
                 />
               </Form.Group>
               <Form.Group as={Col} className='addFormGroups'>

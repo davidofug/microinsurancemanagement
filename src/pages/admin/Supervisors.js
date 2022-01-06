@@ -11,7 +11,7 @@ import { Table } from 'react-bootstrap'
 import { getDocs, collection, doc, getDoc, deleteDoc } from 'firebase/firestore'
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
-import OrganisationModal from "../../parts/OrganisationModel";
+import ClientModal from '../../parts/ClientModal';
 
 function Supervisors() {
 
@@ -29,6 +29,23 @@ function Supervisors() {
       getUsersMeta()
 
     }, [])
+
+    const [fields, handleFieldChange] = useForm({
+      user_role: '',
+      email: '',
+      name: '',
+      dob: '',
+      gender: '',
+      phone: '',
+      address: '',
+      licenseNo: '',
+      NIN: '',
+      photo: '',
+  })
+  
+  const [singleDoc, setSingleDoc] = useState(fields);
+  
+  const getSingleSupervisor = async (id) => setSingleDoc(supervisors.filter(supervisor => supervisor.uid == id)[0])
 
     
 
@@ -48,20 +65,6 @@ function Supervisors() {
       setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
-    const [fields, handleFieldChange] = useForm({
-      user_role: '',
-      email: '',
-      name: '',
-      dob: '',
-      gender: '',
-      phone: '',
-      address: '',
-      licenseNo: '',
-      NIN: '',
-      photo: '',
-  })
-
-  const [singleDoc, setSingleDoc] = useState(fields);
   const [supervisors, setSuperviors] = useState([]);
 
   const [editContactId, setEditContactId] = useState(null);
@@ -88,13 +91,10 @@ function Supervisors() {
 
 
 
-    const [q, setQ] = useState('');
-
-    const columns = ["id", "contact", "name", "gender", "email", "contact", "contact", "email", 'address']
-    const search = rows => rows.filter(row =>
-        columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
-
-        const handleSearch = ({target}) => setQ(target.value)
+    // search by name
+    const [searchText, setSearchText] = useState('')
+    const handleSearch = ({ target }) => setSearchText(target.value);
+    const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
     return (
         <div className='components'>
@@ -112,22 +112,22 @@ function Supervisors() {
                 handleClose()
                 setSingleDoc(fields)
               }}>
-              <OrganisationModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+              <ClientModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
             </Modal>
 
             <div className="shadow-sm table-card componentsData">   
                 <div id="search">
-                            <SearchBar placeholder={"Search for Supervisor"} value={q} handleSearch={handleSearch}/>
-                            <div></div>
-                            <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
-                      </div>
+                      <SearchBar placeholder={"Search Supervisor by name"} value={searchText} handleSearch={handleSearch}/>
+                      <div></div>
+                      <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
+                </div>
 
                     <Table hover striped responsive className='mt-5'>
                         <thead>
                             <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {supervisors.map((supervisor, index) => (
+                          {searchByName(supervisors).map((supervisor, index) => (
                               <tr key={supervisor.uid}>
                               <td>{index+1}</td>
                               <td>{supervisor.name}</td>
@@ -170,7 +170,7 @@ function Supervisors() {
                     <li>
                       <button
                         onClick={() => {
-                          getSingleDoc(supervisor.uid);
+                          getSingleSupervisor(supervisor.uid)
                           handleShow();
                           document
                             .querySelector(`.please${index}`)
