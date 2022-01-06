@@ -14,6 +14,7 @@ function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }
 
         await updateDoc(organisationRef, {
             uid: authentication.currentUser.uid,
+            category: event.target.category.value,
             name: event.target.name.value,
             org_email: event.target.org_email.value,
             tel: event.target.tel.value,
@@ -35,6 +36,27 @@ function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }
             </Modal.Header>
             <Form id="organisation_claim" onSubmit={modalSubmit}>
                 <Modal.Body>
+                    <p style={{color: "#76859a"}}>Organisation's Details</p>
+                    <Row className="mb-3">
+                    <Form.Group
+                        as={Col}
+                        style={{
+                        display: "flex",
+                        "flex-direction": "column",
+                        "align-items": "start",
+                        }}
+                    >
+                        <Form.Label htmlFor="name">Category</Form.Label>
+                        <Form.Select aria-label="User role" id='category' defaultValue={singleDoc.category} onChange={handleFieldChange}>
+                                                <option value="hide">--Select Category--</option>
+                                                <option value="mtp">Bank</option>
+                                                <option value="comprehensive">Brokers</option>
+                                                <option value="windscreen">MTN</option>
+                                                <option value="windscreen">Shell</option>
+                                                <option value="windscreen">others</option>
+                                            </Form.Select>
+                    </Form.Group>
+                    </Row>
                     <Row className="mb-3">
                     <Form.Group
                         as={Col}
@@ -114,12 +136,12 @@ function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }
                     </Form.Group>
                     </Row>
                     <Row className="mb-3">
-                    <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Group className="mb-3">
                             <Form.Label htmlFor='logo'>Logo</Form.Label>
                             <Form.Control id='logo' type="file" defaultValue={singleDoc.logo} onChange={handleFieldChange} />
                     </Form.Group>
                     </Row>
-                    <h3>Contact Person</h3>
+                    <p style={{color: "#76859a"}}>Contact's Details</p>
                     <Form.Group
                         as={Col}
                         style={{
