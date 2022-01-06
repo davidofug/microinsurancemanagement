@@ -19,7 +19,7 @@ function Dashboard() {
     const claimsCollectionRef = collection(db, "claims");
 
     useEffect(() => {
-        document.title = 'Britam - Welcome'
+        document.title = 'Britam - Dashboard'
         getClaims()
         getClients()
     }, [])
