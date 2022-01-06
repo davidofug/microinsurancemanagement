@@ -57,12 +57,15 @@ function Admins() {
       const deleteUser = httpsCallable(functions, 'deleteUser')
       const userMetaDoc = doc(db, "usermeta", id);
       deleteUser({uid:id}).then((result) => {
-        deleteDoc(userMetaDoc)
         console.log(result)
+        if(result.data !== null) {
+          deleteDoc(userMetaDoc)
+        }
       }
       ).catch(err => {
         console.log(err)
       })
+      
 
       getAdmins()
       getUsersMeta()
@@ -135,7 +138,6 @@ function Admins() {
                           );
                           if (confirmBox === true) {
                             handleDelete(admin.uid)
-                            console.log(admin.uid)
                           }
                         }}
                       >
