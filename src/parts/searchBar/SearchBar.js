@@ -2,8 +2,7 @@ import './searchBar.css'
 import React from 'react'
 import { MdSearch } from 'react-icons/md'
 
-export default function SearchBar({placeholder, value, handleSearch}) {
-    return (
+const SearchBar = ({placeholder, handleSearch, value}) => (
             <div className='searchComponent'>
                 <div className="searchContainer">
                 <input
@@ -16,4 +15,5 @@ export default function SearchBar({placeholder, value, handleSearch}) {
                 </div>
             </div>
     )
-}
+
+export default SearchBar

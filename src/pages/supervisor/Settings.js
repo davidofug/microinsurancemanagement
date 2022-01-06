@@ -82,7 +82,8 @@ function Settings() {
                   <Form onSubmit={handleEditFormSubmit}>
                     <h2>Edit Profile</h2>
                     <hr />
-                    <img src={profile} alt="profile" />
+                    <DefaultAvatar />
+                    {/* <img src={profile} alt="profile" /> */}
                     <Row className="mb-3">
                       <Form.Group
                         as={Col}

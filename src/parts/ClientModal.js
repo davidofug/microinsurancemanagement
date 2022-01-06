@@ -1,7 +1,7 @@
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
 import { useState } from 'react'
 
-function ClientModal() {
+function ClientModal({ singleDoc}) {
     const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -14,9 +14,9 @@ function ClientModal() {
     return (
         <>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Claim</Modal.Title>
+          <Modal.Title>Edit Client</Modal.Title>
         </Modal.Header>
-        <Form id="update_claim" onSubmit={modalSubmit}>
+        <Form id="update_client" onSubmit={modalSubmit}>
           <Modal.Body>
             <Form.Group
                 as={Col}
@@ -32,6 +32,7 @@ function ClientModal() {
                   name=""
                   id="claimantName"
                   placeholder="Enter Client's name"
+                  value={singleDoc.name}
                 />
               </Form.Group>
               <Row className='mb-3'>
@@ -47,6 +48,7 @@ function ClientModal() {
                 <Form.Control
                   type="date"
                   id="dateReported"
+                  defaultValue={singleDoc.dob}
                 />
               </Form.Group>
               <Form.Group as={Col} className='addFormGroups'>
@@ -66,11 +68,11 @@ function ClientModal() {
 
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='email'>Email Address</Form.Label>
-                                <Form.Control type="email" id="email" placeholder="Enter email"/>
+                                <Form.Control type="email" id="email" placeholder="Enter email" value={singleDoc.email}/>
                             </Form.Group>
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
-                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" />
+                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" value={singleDoc.phone} />
                             </Form.Group>
                             <Form.Group className="mb-3" >
                             <Form.Label htmlFor='address'>Address</Form.Label>

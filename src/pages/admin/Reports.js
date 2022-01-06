@@ -38,11 +38,11 @@ function Reports() {
   ];
   const columns = [
     "name",
-    "contact",
-    "createdAt",
+    "regNumber",
+    "carMake",
     "id",
     "amount",
-    "amount",
+    "regNumber",
     "status",
     "paymentMethod",
     "createdAt",

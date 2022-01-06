@@ -19,7 +19,6 @@ function Login() {
   });
   const [password, setPassword] = useState("password");
   const [isVisible, setIsVisible] = useState(false);
-
   const { currentUser, setCurrentUser, setAuthClaims } = useAuth();
   const [ error, setError ] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -55,7 +54,8 @@ function Login() {
       setLoading(false)
       const errors = {
         "auth/user-not-found": "User with email is not found",
-        "auth/wrong-password": "Password does not match the email"
+        "auth/wrong-password": "Password does not match the email",
+        "auth/network-request-failed": "something is wrong, check your network connection"
       }
       setError(errors[err.code])
   };
@@ -92,7 +92,7 @@ function Login() {
             <input
               type={password}
               placeholder="Enter password"
-              name=""
+              name="password"
               id="password_input"
               onChange={(event) =>
                 setUser({ ...user, password: event.target.value })

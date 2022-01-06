@@ -2,17 +2,14 @@ import { CSVLink } from "react-csv";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MdDownload } from "react-icons/md";
-import data from "../../helpers/mock-data.json";
 import Header from "../../parts/header/Header";
 import Pagination from "../../helpers/Pagination";
 import SearchBar from "../../parts/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
-import { collection, addDoc, getDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import { collection, getDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { FaEllipsisV } from "react-icons/fa";
-import { httpsCallable } from 'firebase/functions'
-import { functions } from '../../helpers/firebase'
-import ClaimModel from "../agent/ClaimModel";
+import OrganisationModal from "../../parts/OrganisationModel";
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
 import { authentication } from "../../helpers/firebase";
@@ -20,44 +17,40 @@ import { authentication } from "../../helpers/firebase";
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
-  
-
-
-  
 
   useEffect(() => {
     document.title = "Britam - Organisations";
-
-    const getOrganisations = async () => {
-        const data = await getDocs(organisationsCollectionRef)
-        setOrganisations(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      }
-
       getOrganisations()
 
   }, []);
+
+  const getOrganisations = async () => {
+    const data = await getDocs(organisationsCollectionRef)
+    setOrganisations(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  }
 
   const [editID, setEditID] = useState(null);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [ searchText, setSearchText ] = useState('')
 
   const [fields, handleFieldChange] = useForm({
     uid: authentication.currentUser.uid,
-    refNumber: "",
-    dateReported: "",
-    policyType: "",
-    numberPlate: "",
-    stickerNumber: "",
-    claimantName: "",
-    claimantEmail: "",
-    claimantPhoneNumber: "",
-    dateOfIncident: "",
-    claimEstimate: "",
-    detailsOfIncident: "",
-    attachedDocuments: "",
-    status: "",
-  });
+    category: '',
+    name: '',
+    org_email: '',
+    tel: '',
+    address: '',
+    logo: '',
+    role: '',
+    title: '',
+    contactName: '',
+    contactPhoneNumber: '',
+    contact_email: '',
+    password: ''
+
+})
 
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
@@ -70,41 +63,24 @@ export default function Organisations() {
   );
   const totalPagesNum = Math.ceil(organisations.length / organisationsPerPage);
 
-  const [q, setQ] = useState("");
-
-  const columns = [
-    "Logo",
-    "Name",
-    "Email",
-    "Phone No",
-    "Contact Name",
-    "Role",
-    "Contact's No",
-    "Contact Email",
-  ];
-  const search = (rows) =>
-    rows.filter((row) =>
-      columns.some(
-        (column) =>
-          row[column].toString().toLowerCase().organisation.idOf(q.toLowerCase()) > -1
-      )
-    );
 
     const handleDelete = async (id) => {
-      const organisationDoc = doc(db, "organsiations", id);
+      const organisationDoc = doc(db, "organisations", id);
       console.log(organisationDoc)
       await deleteDoc(organisationDoc);
     };
 
-    const [singleDoc, setSingleDoc] = useState({});
+    const [singleDoc, setSingleDoc] = useState(fields);
 
     const getSingleDoc = async (id) => {
-      const docRef = doc(db, "claims", id);
+      const docRef = doc(db, "organisations", id);
       const docSnap = await getDoc(docRef);
       setSingleDoc(docSnap.data());
     };
 
-  const handleSearch = ({ target }) => setQ(target.value);
+  const handleSearch = ({ target }) => setSearchText(target.value);
+  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
 
   return (
     <div className="components">
@@ -117,8 +93,12 @@ export default function Organisations() {
         </Link>
       </div>
 
-      <Modal show={show} onHide={handleClose}>
-        <ClaimModel singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+      <Modal show={show} onHide={() =>
+        {
+          handleClose()
+          setSingleDoc(fields)
+        }}>
+        <OrganisationModal fields={fields} singleDoc={singleDoc} handleClose={handleClose} handleFieldChange={handleFieldChange} editID={editID} />
       </Modal>
 
       {organisations.length <= 0 
@@ -129,13 +109,13 @@ export default function Organisations() {
       <div className="table-card">
         <div id="search">
           <SearchBar
-            placeholder={"Search for organisation"}
-            value={q}
+            placeholder={"Search Organisation by name"}
+            value={searchText}
             handleSearch={handleSearch}
           />
           <div></div>
           <CSVLink
-            data={data}
+            data={organisations}
             filename={"Britam-Organisations.csv"}
             className="btn btn-primary cta"
           >
@@ -174,13 +154,13 @@ export default function Organisations() {
           </thead>
 
           <tbody>
-            {organisations.map((organisation, index) => (
+            {searchByName(organisations).map((organisation, index) => (
               <tr key={organisation.id}>
                 <td>{organisation.logo}</td>
                 <td>{organisation.name}</td>
                 <td>{organisation.org_email}</td>
                 <td>{organisation.tel}</td>
-                <td style={{borderLeft: "1px solid #000"}}>{organisation.ContactName}</td>
+                <td style={{borderLeft: "1px solid #000"}}>{organisation.contactName}</td>
                 <td>{organisation.role}</td>
                 <td>{organisation.contactPhoneNumber}</td>
                 <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
@@ -204,6 +184,7 @@ export default function Organisations() {
                               `Are you sure you want to delete ${organisation.name}`);
                             if (confirmBox === true) {
                               handleDelete(organisation.id);
+                              getOrganisations()
                             }
                           }}
                         >
@@ -213,7 +194,7 @@ export default function Organisations() {
                       <li>
                         <button
                         onClick={() => {
-                          setEditID(organisation.id);
+                          setEditID(organisation.id)
                           getSingleDoc(organisation.id);
                           handleShow();
                           document
@@ -247,10 +228,10 @@ export default function Organisations() {
               <th>Name</th>
               <th>Email</th>
               <th>Phone No.</th>
-              <th style={{borderLeft: "1px solid #000"}}>Contact Name</th>
+              <th style={{borderLeft: "1px solid #000"}}>Name</th>
               <th>Role</th>
-              <th>Contact's No</th>
-              <th style={{borderRight: "1px solid #000"}}>Contact Email</th>
+              <th>Phone No.</th>
+              <th style={{borderRight: "1px solid #000"}}>Email</th>
               <th>Action</th>
             </tr>
           </tfoot>

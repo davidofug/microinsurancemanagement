@@ -120,6 +120,16 @@ body{
 }
 
 
+/* addUser */
+.hide{
+    display: none;
+}
+
+.show{
+    display: block;
+}
+
+
 
 .working-here ul{
     position: absolute;
