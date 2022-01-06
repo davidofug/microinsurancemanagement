@@ -5,10 +5,12 @@ import { Card, Container, Row, Col} from 'react-bootstrap'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
 import Header from '../parts/header/Header'
-import { db } from '../helpers/firebase'
 import { getDocs, collection } from 'firebase/firestore'
+import { functions, db } from '../helpers/firebase';
+import { httpsCallable } from 'firebase/functions';
 
 function Dashboard() {
+    const [clients, setClients] = useState([]);
     const [claims, setClaims] = useState([])
     const [stickers, setStickers] = useState(13)
     const [policies, setPolicies] = useState(2)
@@ -19,7 +21,19 @@ function Dashboard() {
     useEffect(() => {
         document.title = 'Britam - Welcome'
         getClaims()
+        getClients()
     }, [])
+
+    const getClients = () => {
+        const listUsers = httpsCallable(functions, 'listUsers')
+        listUsers().then((results) => {
+            const resultsArray = results.data
+            const myUsers = resultsArray.filter(user => user.role.Customer === true)
+            setClients([myUsers[myUsers.length-1]])
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
 
     const getClaims = async () => {
         const data = await getDocs(claimsCollectionRef);
@@ -96,15 +110,12 @@ function Dashboard() {
                                     <table>
                                         <thead><th>Name</th><th>Email Address</th></thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Agent One</td><td>agent1@gmail.com</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Agent Two</td><td>agent2@gmail.com</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Agent Three</td><td>agent3@gmail.com</td>
-                                            </tr>
+                                            {clients.map(client => (
+                                                <tr key={client.uid}>
+                                                    <td>{client.name}</td>
+                                                    <td>{client.email}</td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </table>
                                     </>
@@ -116,10 +127,12 @@ function Dashboard() {
                                             <tr><th>Name</th><th>Email</th></tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Charles Kasasira</td>
-                                                <td>charleskasasira01@gmail.com</td>
-                                            </tr>
+                                            {clients.map(client => (
+                                                <tr key={client.uid}>
+                                                    <td>{client.name}</td>
+                                                    <td>{client.email}</td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </table>
                                     </>
