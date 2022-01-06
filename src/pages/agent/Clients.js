@@ -9,8 +9,9 @@ import SearchBar from '../../parts/searchBar/SearchBar';
 import { Table, Modal } from "react-bootstrap";
 import { FaEllipsisV } from "react-icons/fa";
 import ClientModal from '../../parts/ClientModal';
-import { functions } from '../../helpers/firebase';
+import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
+import { doc, deleteDoc } from 'firebase/firestore'
 
 export default function Clients() {
 
@@ -20,7 +21,6 @@ export default function Clients() {
     const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then((results) => {
           const resultsArray = results.data
-          console.log(resultsArray)
           const myUsers = resultsArray.filter(user => user.role.Customer === true)
           setClients(myUsers)
           console.log(resultsArray.data)
@@ -48,6 +48,11 @@ export default function Clients() {
   const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
   const currentClients = clients.slice(indexOfFirstEmployee, indexOfLastEmployee)
   const totalPagesNum = Math.ceil(data.length / employeesPerPage)
+
+  const handleDelete = async (id) => {
+    const clientMeta = doc(db, "user", id);
+    await deleteDoc(clientMeta);
+  };
 
 
 //   const search = rows => rows.filter(row => columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
@@ -86,7 +91,7 @@ export default function Clients() {
                         <tbody>
                         {clients.map((client, index) => (
                               <tr key={client.uid}>
-                              <td>{index}</td>
+                              <td>{index + 1}</td>
                               <td>{client.name}</td>
                               <td>{client.gender}</td>
                               <td>{client.email}</td>
@@ -113,6 +118,7 @@ export default function Clients() {
                             `Are you sure you want to delete's claim`
                           );
                           if (confirmBox === true) {
+                            handleDelete(client.uid);
                           }
                         }}
                       >
@@ -156,7 +162,7 @@ export default function Clients() {
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentClients}
-                    sortedEmployees={data}
+                    sortedEmployees={clients}
                     entries={'Clients'} />
               </div>
             </div>

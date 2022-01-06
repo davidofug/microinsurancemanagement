@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
-import { EditableDatable } from '../../helpers/DataTable'
 import SearchBar from '../../parts/searchBar/SearchBar';
 import Header from '../../parts/header/Header';
-import { functions } from '../../helpers/firebase';
+import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { FaEllipsisV } from "react-icons/fa";
 import { Table } from 'react-bootstrap'
+import { getDocs, collection, doc, getDoc, deleteDoc } from 'firebase/firestore'
+import { Modal } from 'react-bootstrap'
+import { useForm } from "../../hooks/useForm";
+import ClientModal from '../../parts/ClientModal';
 
 function Supervisors() {
 
@@ -24,106 +26,75 @@ function Supervisors() {
       }).catch((err) => {
           console.log(err)
       })
+      getUsersMeta()
 
     }, [])
 
-    const [supervisors, setSuperviors] = useState([]);
-  //
-    const [editFormData, setEditFormData] = useState({
-        name: "",
-        gender: "",
-        email: "",
-        contact: "",
-        address: "",
-    });
+    const [fields, handleFieldChange] = useForm({
+      user_role: '',
+      email: '',
+      name: '',
+      dob: '',
+      gender: '',
+      phone: '',
+      address: '',
+      licenseNo: '',
+      NIN: '',
+      photo: '',
+  })
+  
+  const [singleDoc, setSingleDoc] = useState(fields);
+  
+  const getSingleSupervisor = async (id) => setSingleDoc(supervisors.filter(supervisor => supervisor.uid == id)[0])
+
+    
+
+    const getSingleDoc = async (id) => {
+      const docRef = doc(db, "organisations", id);
+      const docSnap = await getDoc(docRef);
+      setSingleDoc(docSnap.data());
+    };
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const [meta, setMeta] = useState([])
+    const metaCollectionRef = collection(db, "usermeta");
+    const getUsersMeta = async () => {
+      const data = await getDocs(metaCollectionRef);
+      setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+
+  const [supervisors, setSuperviors] = useState([]);
 
   const [editContactId, setEditContactId] = useState(null);
 
-  const handleEditFormChange = (event) => {
-    event.preventDefault();
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [supervisorsPerPage] = useState(10)
 
-    const fieldName = event.target.getAttribute("name");
-    const fieldValue = event.target.value;
+  const indexOfLastSupervisor = currentPage * supervisorsPerPage
+  const indexOfFirstSupervisor = indexOfLastSupervisor - supervisorsPerPage
+  const currentSupervisors = supervisors.slice(indexOfFirstSupervisor, indexOfLastSupervisor)
+  const totalPagesNum = Math.ceil(supervisors.length / supervisorsPerPage)
 
-    const newFormData = { ...editFormData };
-    newFormData[fieldName] = fieldValue;
 
-    setEditFormData(newFormData);
+
+  const handleDelete = async (id) => {
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    deleteUser({uid:id}).then().catch(err => {
+      console.log(err)
+    })
+
+    const userMetaDoc = doc(db, "usermeta", id);
+    await deleteDoc(userMetaDoc);
   };
 
 
-  const handleEditFormSubmit = (event) => {
-    event.preventDefault();
 
-    const editedContact = {
-      id: editContactId,
-      name: editFormData.name,
-      gender: editFormData.gender,
-      email: editFormData.email,
-      contact: editFormData.contact,
-      address: editFormData.address,
-    };
-    
-    const newSupervisors = [...supervisors];
-
-    const index = supervisors.findIndex((supervisor) => supervisor.id === editContactId);
-
-    newSupervisors[index] = editedContact;
-
-    setSuperviors(newSupervisors);
-    setEditContactId(null);
-  };
-
-  const handleEditClick = (event, contact) => {
-    event.preventDefault();
-    setEditContactId(contact.id);
-
-    const formValues = {
-      name: contact.name,
-      gender: contact.gender,
-      email: contact.email,
-      contact: contact.contact,
-      address: contact.address,
-    };
-
-    setEditFormData(formValues);
-  };
-
-  //
-
-    //
-    const [ currentPage, setCurrentPage ] = useState(1)
-    const [employeesPerPage] = useState(10)
-
-    const indexOfLastEmployee = currentPage * employeesPerPage
-    const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
-    const currentSupervisors = supervisors.slice(indexOfFirstEmployee, indexOfLastEmployee)
-    const totalPagesNum = Math.ceil(data.length / employeesPerPage)
-
-
-
-    const handleDeleteClick = (supervisorId) => {
-        const newSupervisors = [...supervisors];
-        const index = supervisors.findIndex(supervisor => supervisor.id === supervisorId);
-        newSupervisors.splice(index, 1);
-        console.log(newSupervisors)
-        setSuperviors(newSupervisors);
-      };
-  
-      const handleCancelClick = () => {
-        setEditContactId(null);
-      };
-
-
-
-    const [q, setQ] = useState('');
-
-    const columnHeading = ["#", "License No.", "Name", "Gender", "Email", "NIN", "Contact", "Role", "Branch Name", "Actions"]
-    const columns = ["id", "contact", "name", "gender", "email", "contact", "contact", "email", 'address']
-    const search = rows => rows.filter(row =>
-        columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
-
-        const handleSearch = ({target}) => setQ(target.value)
+    // search by name
+    const [searchText, setSearchText] = useState('')
+    const handleSearch = ({ target }) => setSearchText(target.value);
+    const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
     return (
         <div className='components'>
@@ -131,38 +102,49 @@ function Supervisors() {
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-user">
+                <Link to="/admin/add-user">
                     <button className="btn btn-primary cta">Add supervisor</button>
-                </Link>
-                
+                </Link>               
             </div>
+
+            <Modal show={show} onHide={() =>
+              {
+                handleClose()
+                setSingleDoc(fields)
+              }}>
+              <ClientModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+            </Modal>
 
             <div className="shadow-sm table-card componentsData">   
                 <div id="search">
-                            <SearchBar placeholder={"Search for Supervisor"} value={q} handleSearch={handleSearch}/>
-                            <div></div>
-                            <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
-                      </div>
+                      <SearchBar placeholder={"Search Supervisor by name"} value={searchText} handleSearch={handleSearch}/>
+                      <div></div>
+                      <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
+                </div>
 
-                    <Table hover striped responsive>
+                    <Table hover striped responsive className='mt-5'>
                         <thead>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {supervisors.map((supervisor, index) => (
+                          {searchByName(supervisors).map((supervisor, index) => (
                               <tr key={supervisor.uid}>
                               <td>{index+1}</td>
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
-                              <td>{supervisor.email}</td>
-                              <td>Contact</td>
-                              <td>Address</td>
+                              {meta.filter(user => user.id == supervisor.uid).map(user => (
+                                <>
+                                  <td>{user.gender}</td>
+                                  <td>{user.phone}</td>
+                                  <td>{user.address}</td>
+                                </>
+                              ))}
                 <td className="started">
                   <FaEllipsisV
-                    className={`actions please`}
+                    className={`actions please${index}`}
                     onClick={() => {
                       document
-                        .querySelector(`.please`)
+                        .querySelector(`.please${index}`)
                         .classList.add("hello");
                     }}
                   />
@@ -172,12 +154,13 @@ function Supervisors() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                           const confirmBox = window.confirm(
-                            `Are you sure you want to delete's claim`
+                            `Are you sure you want to delete ${supervisor.name}`
                           );
                           if (confirmBox === true) {
+                            handleDelete(supervisor.uid);
                           }
                         }}
                       >
@@ -187,8 +170,10 @@ function Supervisors() {
                     <li>
                       <button
                         onClick={() => {
+                          getSingleSupervisor(supervisor.uid)
+                          handleShow();
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -200,7 +185,7 @@ function Supervisors() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -211,10 +196,19 @@ function Supervisors() {
                 </td>
                           </tr>
                           ))}
+                          <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             
                         </tbody>
                         <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 

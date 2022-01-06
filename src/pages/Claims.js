@@ -125,11 +125,16 @@ function Claims() {
         </Link>
       </div>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={() => {
+        handleClose()
+        setSingleDoc(fields)
+      }}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Claim</Modal.Title>
         </Modal.Header>
-        <Form id="update_claim" onSubmit={modalSubmit}>
+        <Form id="update_claim" onSubmit={() => {
+            modalSubmit()
+          }}>
           <Modal.Body>
             <Row className="mb-3">
               <Form.Group

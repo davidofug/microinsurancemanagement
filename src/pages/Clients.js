@@ -6,11 +6,15 @@ import Header from '../parts/header/Header';
 import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../parts/searchBar/SearchBar';
-import { EditableDatable } from '../helpers/DataTable';
 import { Table } from 'react-bootstrap';
 import { FaEllipsisV } from "react-icons/fa";
-import { functions } from '../helpers/firebase';
+import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
+import useAuth from '../contexts/Auth';
+import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
+import ClientModal from '../parts/ClientModal'
+import { Modal } from 'react-bootstrap'
+import { useForm } from '../hooks/useForm';
 
 export default function Clients() {
 
@@ -18,6 +22,40 @@ export default function Clients() {
     {
       document.title = 'Britam - Clients'
 
+      
+      getClients()
+      getUsersMeta()
+  }, [])
+
+  const { authClaims } = useAuth()
+  const [clients, setClients] = useState([]);
+  const [meta, setMeta] = useState([])
+  const metaCollectionRef = collection(db, "usermeta");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [editID, setEditID] = useState(null);
+  const [searchText, setSearchText] = useState('')
+
+  const [fields, handleFieldChange] = useForm({
+    user_role: 'Customer',
+    email: '',
+    name: '',
+    dob: '',
+    gender: '',
+    phone: '',
+    address: '',
+    licenseNo: '',
+    NIN: '',
+    photo: '',
+})
+
+const [singleDoc, setSingleDoc] = useState(fields);
+
+const getSingleClient = async (id) => setSingleDoc(clients.filter(client => client.uid == id)[0])
+
+
+  const getClients = () => {
       const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then((results) => {
           const resultsArray = results.data
@@ -26,56 +64,11 @@ export default function Clients() {
       }).catch((err) => {
           console.log(err)
       })
+  }
 
-
-  }, [])
-
-  
-  const [clients, setClients] = useState([]);
-  const [editFormData, setEditFormData] = useState({ name: "", gender: "", email: "", contact: "", address: "" });
-  const [editContactId, setEditContactId] = useState(null);
-  const [q, setQ] = useState('');
-
-
-
-  const handleEditFormChange = (event) => {
-    event.preventDefault();
-    const fieldName = event.target.getAttribute("name");
-    const newFormData = { ...editFormData };
-    newFormData[fieldName] = event.target.value;
-    setEditFormData(newFormData);
-  };
-
-
-  const handleEditFormSubmit = (event) => {
-    event.preventDefault();
-    const editedContact = {
-      id: editContactId,
-      name: editFormData.name,
-      gender: editFormData.gender,
-      email: editFormData.email,
-      contact: editFormData.contact,
-      address: editFormData.address,
-    };
-
-    const newClients = [...clients];
-    const index = clients.findIndex((client) => client.id === editContactId);
-    newClients[index] = editedContact;
-    setClients(newClients);
-    setEditContactId(null);
-  };
-
-  const handleEditClick = (event, contact) => {
-    event.preventDefault();
-    setEditContactId(contact.id);
-    const formValues = {
-      name: contact.name,
-      gender: contact.gender,
-      email: contact.email,
-      contact: contact.contact,
-      address: contact.address,
-    };
-    setEditFormData(formValues);
+  const getUsersMeta = async () => {
+    const data = await getDocs(metaCollectionRef);
+    setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
   const [ currentPage, setCurrentPage ] = useState(1)
@@ -86,23 +79,22 @@ export default function Clients() {
   const currentClients = clients.slice(indexOfFirstClient, indexOfLastClient)
   const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
 
-  const handleDeleteClick = (clientId) => {
-    const newClients = [...clients];
-    const index = clients.findIndex((client) => client.id === clientId);
-    newClients.splice(index, 1);
-    setClients(newClients);
+
+  const handleDelete = async (id) => {
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    deleteUser({uid:id}).then().catch(err => {
+      console.log(err)
+    })
+
+    const userMetaDoc = doc(db, "usermeta", id);
+    await deleteDoc(userMetaDoc);
+
+    getClients()
+    getUsersMeta()
   };
 
-  const handleCancelClick = () => {
-    setEditContactId(null);
-  };
-    
-  const columns = ["id", "name", "gender", "email", "contact", "address"]
-  const columnHeading = ["#", "Name", "Gender", "Email", "Contact", "Address", "Action"]
-
-  const search = rows => rows.filter(row => columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
-
-  const handleSearch = ({target}) => setQ(target.value)
+  const handleSearch = ({ target }) => setSearchText(target.value);
+  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
     return (
         <div className='components'>
@@ -110,48 +102,56 @@ export default function Clients() {
    
             <div id="add_client_group">
                 <div></div>
-                <Link to="/add-user">
-                    <button className='btn btn-primary cta'>Add Client</button>
-                </Link>
+                {authClaims.supervisor && 
+                  <Link to="/supervisor/add-user">
+                      <button className='btn btn-primary cta'>Add Client</button>
+                  </Link>
+                }
+                {authClaims.agent && 
+                  <Link to="/agent/add-user">
+                      <button className='btn btn-primary cta'>Add Client</button>
+                  </Link>
+                }
             </div>
+
+            <Modal show={show} onHide={handleClose}>
+              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+            </Modal>
 
             <div className="componentsData">
               <div className="shadow-sm table-card">
                   <div id="search">
-                    <SearchBar placeholder={"Search for client"} value={q} handleSearch={handleSearch}/>
+                    <SearchBar placeholder={"Search Client by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
-                    <CSVLink data={data} filename={"Britam-Clients.csv"} className="btn btn-primary cta">
+                    <CSVLink data={clients} filename={"Britam-Clients.csv"} className="btn btn-primary cta">
                       Export <MdDownload />
                     </CSVLink>
                   </div>
 
-                  {/* <form onSubmit={handleEditFormSubmit}>
-                  <EditableDatable columns={columns} columnHeading={columnHeading} editContactId={editContactId}
-                    currentClients={search(currentClients)} handleDeleteClick={handleDeleteClick}
-                    handleEditClick={handleEditClick} editFormData={editFormData}
-                    handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick}
-                  /> 
-                  </form> */}
 
-                  <Table hover striped responsive>
+                  <Table hover striped responsive className='mt-5'>
                         <thead>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {clients.map(client => (
+                          {searchByName(clients).map((client, index) => (
                               <tr key={client.uid}>
-                              <td>{1}</td>
+                              <td>{index + 1}</td>
                               <td>{client.name}</td>
                               <td>{client.email}</td>
-                              <td>Email</td>
-                              <td>Contact</td>
-                              <td>Address</td>
+                              {meta.filter(user => user.id == client.uid).map(user => (
+                                <>
+                                  <td>{user.gender}</td>
+                                  <td>{user.phone}</td>
+                                  <td>{user.address}</td>
+                                </>
+                              ))}
                 <td className="started">
                   <FaEllipsisV
-                    className={`actions please`}
+                    className={`actions please${index}`}
                     onClick={() => {
                       document
-                        .querySelector(`.please`)
+                        .querySelector(`.please${index}`)
                         .classList.add("hello");
                     }}
                   />
@@ -161,12 +161,13 @@ export default function Clients() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                           const confirmBox = window.confirm(
-                            `Are you sure you want to delete's claim`
+                            `Are you sure you want to ${client.name}`
                           );
                           if (confirmBox === true) {
+                            handleDelete(client.uid)
                           }
                         }}
                       >
@@ -176,8 +177,11 @@ export default function Clients() {
                     <li>
                       <button
                         onClick={() => {
+                          setEditID(client.uid);
+                          getSingleClient(client.uid)
+                          handleShow();
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -189,7 +193,7 @@ export default function Clients() {
                       <button
                         onClick={() => {
                           document
-                            .querySelector(`.please`)
+                            .querySelector(`.please${index}`)
                             .classList.remove("hello");
                         }}
                       >
@@ -200,10 +204,19 @@ export default function Clients() {
                 </td>
                           </tr>
                           ))}
+                          <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             
                         </tbody>
                         <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Gender</th><th>Email</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 
