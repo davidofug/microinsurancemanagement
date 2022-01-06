@@ -12,6 +12,9 @@ import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
 import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
+import ClientModal from '../parts/ClientModal'
+import { Modal } from 'react-bootstrap'
+import { useForm } from '../hooks/useForm';
 
 export default function Clients() {
 
@@ -29,6 +32,29 @@ export default function Clients() {
   const [q, setQ] = useState('');
   const [meta, setMeta] = useState([])
   const metaCollectionRef = collection(db, "usermeta");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [editID, setEditID] = useState(null);
+  const [searchText, setSearchText] = useState('')
+
+  const [fields, handleFieldChange] = useForm({
+    user_role: 'Customer',
+    email: '',
+    name: '',
+    dob: '',
+    gender: '',
+    phone: '',
+    address: '',
+    licenseNo: '',
+    NIN: '',
+    photo: '',
+})
+
+const [singleDoc, setSingleDoc] = useState(fields);
+
+const getSingleClient = async (id) => setSingleDoc(clients.filter(client => client.uid == id)[0])
+
 
   const getClients = () => {
       const listUsers = httpsCallable(functions, 'listUsers')
@@ -68,12 +94,8 @@ export default function Clients() {
     getUsersMeta()
   };
 
-
-  const columns = ["id", "name", "gender", "email", "contact", "address"]
-
-  const search = rows => rows.filter(row => columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
-
-  const handleSearch = ({target}) => setQ(target.value)
+  const handleSearch = ({ target }) => setSearchText(target.value);
+  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
     return (
         <div className='components'>
@@ -93,12 +115,16 @@ export default function Clients() {
                 }
             </div>
 
+            <Modal show={show} onHide={handleClose}>
+              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+            </Modal>
+
             <div className="componentsData">
               <div className="shadow-sm table-card">
                   <div id="search">
-                    <SearchBar placeholder={"Search for client"} value={q} handleSearch={handleSearch}/>
+                    <SearchBar placeholder={"Search Client by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
-                    <CSVLink data={data} filename={"Britam-Clients.csv"} className="btn btn-primary cta">
+                    <CSVLink data={clients} filename={"Britam-Clients.csv"} className="btn btn-primary cta">
                       Export <MdDownload />
                     </CSVLink>
                   </div>
@@ -109,7 +135,7 @@ export default function Clients() {
                             <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {clients.map((client, index) => (
+                          {searchByName(clients).map((client, index) => (
                               <tr key={client.uid}>
                               <td>{index + 1}</td>
                               <td>{client.name}</td>
@@ -152,6 +178,9 @@ export default function Clients() {
                     <li>
                       <button
                         onClick={() => {
+                          setEditID(client.uid);
+                          getSingleClient(client.uid)
+                          handleShow();
                           document
                             .querySelector(`.please${index}`)
                             .classList.remove("hello");
