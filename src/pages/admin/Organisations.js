@@ -36,9 +36,11 @@ export default function Organisations() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [ searchText, setSearchText ] = useState('')
 
   const [fields, handleFieldChange] = useForm({
     uid: authentication.currentUser.uid,
+    category: '',
     name: '',
     org_email: '',
     tel: '',
@@ -64,25 +66,6 @@ export default function Organisations() {
   );
   const totalPagesNum = Math.ceil(organisations.length / organisationsPerPage);
 
-  const [q, setQ] = useState("");
-
-  const columns = [
-    "Logo",
-    "Name",
-    "Email",
-    "Phone No",
-    "Contact Name",
-    "Role",
-    "Contact's No",
-    "Contact Email",
-  ];
-  const search = (rows) =>
-    rows.filter((row) =>
-      columns.some(
-        (column) =>
-          row[column].toString().toLowerCase().organisation.idOf(q.toLowerCase()) > -1
-      )
-    );
 
     const handleDelete = async (id) => {
       const organisationDoc = doc(db, "organisations", id);
@@ -98,7 +81,9 @@ export default function Organisations() {
       setSingleDoc(docSnap.data());
     };
 
-  const handleSearch = ({ target }) => setQ(target.value);
+  const handleSearch = ({ target }) => setSearchText(target.value);
+  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
 
   return (
     <div className="components">
@@ -127,13 +112,13 @@ export default function Organisations() {
       <div className="table-card">
         <div id="search">
           <SearchBar
-            placeholder={"Search for organisation"}
-            value={q}
+            placeholder={"Search Organisation by name"}
+            value={searchText}
             handleSearch={handleSearch}
           />
           <div></div>
           <CSVLink
-            data={data}
+            data={organisations}
             filename={"Britam-Organisations.csv"}
             className="btn btn-primary cta"
           >
@@ -172,7 +157,7 @@ export default function Organisations() {
           </thead>
 
           <tbody>
-            {organisations.map((organisation, index) => (
+            {searchByName(organisations).map((organisation, index) => (
               <tr key={organisation.id}>
                 <td>{organisation.logo}</td>
                 <td>{organisation.name}</td>
