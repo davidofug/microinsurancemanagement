@@ -2,6 +2,7 @@
     {
         "id": 1,
         "name": "John Doe",
+        "regNumber": "23",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -13,11 +14,13 @@
         "paymentMethod": "Mobile Money",
         "amount": "34,000",
         "role": "Managing Director",
-        "category": "Motor Private"
+        "category": "Motor Private",
+        "carMake": "Toyota"
     },
     {
         "id": 2,
         "name": "Lorem Ipsum",
+        "regNumber": "261",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -29,11 +32,13 @@
         "paymentMethod": "Cash",
         "amount": "23,000",
         "role": "Salesperson",
-        "category": "Motor Private"
+        "category": "Motor Private",
+        "carMake": "Toyota"
     },
     {
         "id": 3,
         "name": "Edward Mutessa",
+        "regNumber": "123",
         "gender": "F",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -45,11 +50,13 @@
         "createdAt": "31-12-2021",
         "agentName": "John Doe",
         "role": "Manager",
+        "carMake": "Mercedez Benz",
         "category": "Motor Commercial"
     },
     {
         "id": 4,
         "name": "Milton Obote",
+        "regNumber": "243",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -61,11 +68,13 @@
         "status": "Active",
         "agentName": "charles Kasasira",
         "role": "Branch Manager",
+        "carMake": "Nissan",
         "category": "Motor Transit"
     },
     {
         "id": 5,
         "name": "Idi Amin",
+        "regNumber": "111",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "amount": "23,000",
@@ -77,11 +86,13 @@
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
         "role": "Officer",
+        "carMake": "GMC",
         "category": "Motor Transit"
     },
     {
         "id": 6,
         "name": "Yusuf Lule",
+        "regNumber": "143",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -98,6 +109,7 @@
     {
         "id": 7,
         "name": "Godfrey Binaisa",
+        "regNumber": "089",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -109,11 +121,13 @@
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
         "role": "Execute Director",
+        "carMake": "BMW",
         "category": "Motor Private"
     },
     {
         "id": 8,
         "name": "Paulo Mawanga",
+        "regNumber": "523",
         "gender": "M",
         "paymentMethod": "Cash",
         "email": "davidderrick@gmail.com",
@@ -125,11 +139,13 @@
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
         "role": "Managing Director",
+        "carMake": "Isuzu",
         "category": "Motor Bike"
     },
     {
         "id": 9,
         "name": "Tito Okello",
+        "regNumber": "57",
         "gender": "F",
         "email": "davidderrick@gmail.com",
         "paymentMethod": "Cash",
@@ -141,11 +157,13 @@
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
         "role": "Managing Director",
+        "carMake": "BMW",
         "category": "Motor Private"
     },
     {
         "id": 10,
         "name": "Yoweri Museveni",
+        "regNumber": "245",
         "gender": "F",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -157,11 +175,13 @@
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
         "role": "Managing Director",
+        "carMake": "BMW",
         "category": "Motor Private"
     },
     {
         "id": 11,
         "name": "David Anyuru Eleven",
+        "regNumber": "22",
         "gender": "M",
         "email": "davidderrick@gmail.com",
         "contact": "077123456",
@@ -173,11 +193,13 @@
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
         "role": "Managing Director",
+        "carMake": "Isuzu",
         "category": "Motor Private"
     },
     {
         "id": 12,
         "name": "David Anyuru Twelve",
+        "regNumber": "923",
         "gender": "F",
         "email": "davidderrick@gmail.com",
         "paymentMethod": "Cash",
@@ -189,6 +211,7 @@
         "createdAt": "02-12-2021",
         "agentName": "charles Kasasira",
         "role": "Managing Director",
+        "carMake": "BMW",
         "category": "Motor Private"
     }
 ]
