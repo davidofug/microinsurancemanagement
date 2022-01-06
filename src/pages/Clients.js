@@ -29,7 +29,6 @@ export default function Clients() {
 
   const { authClaims } = useAuth()
   const [clients, setClients] = useState([]);
-  const [q, setQ] = useState('');
   const [meta, setMeta] = useState([])
   const metaCollectionRef = collection(db, "usermeta");
   const [show, setShow] = useState(false);
