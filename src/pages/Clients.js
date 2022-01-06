@@ -204,6 +204,15 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
                 </td>
                           </tr>
                           ))}
+                          <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             
                         </tbody>
                         <tfoot>

@@ -9,7 +9,6 @@ const Pagination = ({pages, setCurrentPage, currentClients, sortedEmployees, ent
     
     const [ currentButton, setCurrentButton ] = useState(1)
 
-
     return (
         <div className="clearfix">
             <div className="hint-text">Showing <b>{currentClients.length}</b> out of <b>{sortedEmployees.length}</b> {entries}</div>

@@ -96,7 +96,7 @@ function Agents() {
                 }
             </div>
 
-            <div className="shadow-sm table-card componentsData">   
+              <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                 <SearchBar placeholder={"Search for agent"} value={q} handleSearch={handleSearch}/>
                     <div></div>
@@ -176,6 +176,15 @@ function Agents() {
                 </td>
                           </tr>
                           ))}
+                          <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             
                         </tbody>
                         <tfoot>
