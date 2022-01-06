@@ -1,21 +1,30 @@
 import { useState, useEffect } from 'react'
 import useAuth from '../contexts/Auth'
-import { Card, Container, Row, Col, Table} from 'react-bootstrap'
+import { Card, Container, Row, Col} from 'react-bootstrap'
 // import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
 import Header from '../parts/header/Header'
+import { db } from '../helpers/firebase'
+import { getDocs, collection } from 'firebase/firestore'
 
 function Dashboard() {
-    const [claims, setClaims] = useState(0)
+    const [claims, setClaims] = useState([])
     const [stickers, setStickers] = useState(13)
     const [policies, setPolicies] = useState(2)
-    const [claimNotifications, setClaimNotifications] = useState(27)
+    const [claimNotifications, setClaimNotifications] = useState(0)
     const { authClaims } = useAuth()
+    const claimsCollectionRef = collection(db, "claims");
 
     useEffect(() => {
         document.title = 'Britam - Welcome'
+        getClaims()
     }, [])
+
+    const getClaims = async () => {
+        const data = await getDocs(claimsCollectionRef);
+        setClaims(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
 
     return (
             <div className='components'>
@@ -28,7 +37,7 @@ function Dashboard() {
                                     <div className="col">
                                         <div className="custom-card" style={{"background-color":"#804C75"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${claims}`}</div>
+                                                <div className="statistics">{`${claims.length}`}</div>
                                                 <div className="card-text">Claim Settlement</div>
                                             </Card.Body>
                                         </div>
@@ -54,7 +63,7 @@ function Dashboard() {
                                     <div className="col">
                                         <div className="custom-card" style={{"background-color":"#1FBBA6"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${claimNotifications}`}</div>
+                                                <div className="statistics">{`${claims.length}`}</div>
                                                 <div className="card-text">Claim Notifications</div>
                                             </Card.Body>
                                         </div>
