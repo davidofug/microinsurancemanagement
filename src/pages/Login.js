@@ -19,6 +19,7 @@ function Login() {
   });
   const [password, setPassword] = useState("password");
   const [isVisible, setIsVisible] = useState(false);
+
   const { currentUser, setCurrentUser, setAuthClaims } = useAuth();
   const [ error, setError ] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -92,7 +93,7 @@ function Login() {
             <input
               type={password}
               placeholder="Enter password"
-              name="password"
+              name=""
               id="password_input"
               onChange={(event) =>
                 setUser({ ...user, password: event.target.value })

@@ -8,6 +8,8 @@ import dynamicFields from '../helpers/multipleChoice'
 import Header from '../parts/header/Header'
 import '../styles/Policies.css'
 import moment from 'moment'
+import Upload from '../parts/uploader/Upload';
+
 
 // import AddClient from '../parts/AddClient'
 
@@ -16,10 +18,11 @@ import moment from 'moment'
 function Policies() {
     const listUsers = httpsCallable(functions,'listUsers')
 
+
+
     const [ formData, setFormData ] = useState({})
 
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -50,17 +53,23 @@ function Policies() {
     const { currencies, make, categories } = dynamicFields
     let date = moment().format("l")
 
+    //charles
+    const [ existingClient, setExistingClient ] = useState([])
+
 
     useEffect(() => {
         document.title = 'Britam - Policies'
 
         listUsers().then((results) => {
-            console.log(results)
+            // console.log(results.data) 
+            setExistingClient(results.data)
         }).catch((err) => {
             console.log(err)
         })
 
     }, [])
+
+    const clientsNameOnly = existingClient.filter(client => client.role.Customer).map(client => client.name)
 
     const handleInputChange = (index, event) => {
         const values = [...stickers]
@@ -266,95 +275,86 @@ function Policies() {
                                 Client
                             </h1>
                         </Row>
+                        <div style={{display: "flex", gap: "10px"}}>
+                            <Form.Group className="mb-3" controlId="clientDetails">
+                                {/* <Form.Control type="text" placeholder="Existing" onChange={event => {
+                                    const existingClientDetails = getExistingClient(event.target.value)
+                                    // console.log(existingClientDetails)
+                                    setClientDetails(existingClientDetails)
+                                }}/> */}
+                                <div>
+                                <Form.Control list="clientNames" placeholder='Existing client' />
+                                    <datalist id="clientNames">
+                                        {clientsNameOnly.map(client => <option value={client} />)}
+                                    </datalist> 
+                                </div>
+                            </Form.Group>
+                                <button className="btn btn-primary cta" type="button" onClick={handleShow}> Add New Client </button>
+                        </div>
                         <Row style={{gap:"2vw"}}>
-                            <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
-                                <Form.Group className="mb-3" controlId="clientDetails">
-                                    <Form.Control type="text" placeholder="Existing" onChange={event => {
-                                        const existingClientDetails = getExistingClient(event.target.value)
-                                        // console.log(existingClientDetails)
-                                        setClientDetails(existingClientDetails)
-                                    }}/>
-                                </Form.Group>
-                            </Col>
-                            <Col className="add-new-client" style={{display:"flex", justifyContent:"flex-end"}}>
-                                <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button>
-                            </Col>
+                            {/* <Row>
+                                <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
+                                    <Form.Group className="mb-3" controlId="clientDetails">
+                                        <Form.Control type="text" placeholder="Existing" onChange={event => {
+                                            const existingClientDetails = getExistingClient(event.target.value)
+                                            // console.log(existingClientDetails)
+                                            setClientDetails(existingClientDetails)
+                                        }}/>
+                                    </Form.Group>
+                                </Col>
+                                <Col className="add-new-client" style={{display:"flex", justifyContent:"flex-end"}}>
+                                    <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button>
+                                </Col>
+                            </Row> */}
                             <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
                                 <Modal.Title>Add New Client</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <Form>
-                                        <Form.Group className="mb-3" controlId="name">
-                                            <Form.Label>Name</Form.Label>
-                                            <Form.Control placeholder="Enter name" id="name" onChange={handleFieldChange}/>
-                                        </Form.Group>
-                                        <Row className="mb-3">
-                                            <Form.Group as={Col} controlId="email" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                                <Form.Label>Date of birth</Form.Label>
-                                                <Form.Control type="date" id="date" onChange={handleFieldChange}/>
-                                            </Form.Group>
-                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                                <Form.Label>Gender</Form.Label>
-                                                {/* <div style={{"display": "flex", "gap": "10px"}}>
-                                                    <div>
-                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
-                                                        <label htmlFor="gender">Male</label>
-                                                    </div>
-                                                    <div>
-                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
-                                                        <label htmlFor="gender">Female</label>
-                                                    </div>
-                                                </div> */}
-                                                <Row>
-                                                    <Col sm="4">
-                                                        <Form.Check
-                                                        type="radio"
-                                                        label="Male"
-                                                        name="gender"
-                                                        id="gender"
-                                                        onChange={
-                                                            handleFieldChange
-                                                        }
-                                                        />
-                                                    </Col>
-                                                    <Col sm="4">
-                                                        <Form.Check
-                                                        type="radio"
-                                                        label="Female"
-                                                        name="gender"
-                                                        id="gender"
-                                                        onChange={
-                                                            handleFieldChange
-                                                        }
-                                                        />
-                                                    </Col>
-                                                </Row>
-
-                                            </Form.Group>
-                                        </Row>
-
-                                        <Row className="mb-3">
-                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                                <Form.Label>Email</Form.Label>
-                                                <Form.Control type="email" placeholder="Enter email" id="email"  onChange={handleFieldChange}/>
-                                            </Form.Group>
-                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                                <Form.Label>Phone Number</Form.Label>
-                                                <Form.Control type="tel" placeholder="Enter phone number" id="phone_number" onChange={handleFieldChange}/>
-                                            </Form.Group>
-                                        </Row>
-                                        <Form.Group className="mb-3" controlId="formGridAddress1">
-                                            <Form.Label>Address</Form.Label>
-                                            <Form.Control placeholder="Enter your address" id="address" onChange={handleFieldChange}/>
-                                        </Form.Group>
-                                    </Form>
+                                <Form>
+                        <Form.Group className="mb-3" >
+                            <Form.Label>Name <span className='required'>*</span></Form.Label>
+                            <Form.Control placeholder="Enter Client's name" />
+                        </Form.Group>
+                        <Row className="mb-3">
+                            <Form.Group as={Col} className='addFormGroups'>
+                                <Form.Label>Date of birth</Form.Label>
+                                <Form.Control type="date" />
+                            </Form.Group>
+                            <Form.Group as={Col} className='addFormGroups'>
+                                <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
+                                <div className='gender-options'>
+                                    <div>
+                                        <input type="radio" name="gender" id="male" className='addFormRadio'/>
+                                        <label htmlFor="male">Male</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="gender" id="female" className='addFormRadio'/>
+                                        <label htmlFor="female">Female</label>
+                                    </div>
+                                </div>
+                            </Form.Group>
+                        </Row>
+                        
+                        <Row className="mb-3">
+                            <Form.Group as={Col} className='addFormGroups'>
+                                <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                <Form.Control type="email" id="email" placeholder="Enter email" />
+                            </Form.Group>
+                            <Form.Group as={Col} className='addFormGroups'>
+                                <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
+                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" />
+                            </Form.Group>
+                        </Row>
+                        <Form.Group className="mb-3" >
+                            <Form.Label htmlFor='address'>Address</Form.Label>
+                            <Form.Control id="address" placeholder="Enter your address" />
+                        </Form.Group>
+                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
+                        <Upload />
+                    <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' onClick={handleClose} /></div>
+                    </Form>
                                 </Modal.Body>
-                                <Modal.Footer>
-                                    <Button variant="primary" onClick={handleClose} id="submit">
-                                        Submit
-                                    </Button>
-                                </Modal.Footer>
                             </Modal>
                         </Row>
                     </div>

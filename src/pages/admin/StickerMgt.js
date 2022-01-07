@@ -7,6 +7,7 @@ import Pagination from '../../helpers/Pagination';
 import { CSVLink } from "react-csv";
 import SearchBar from '../../parts/searchBar/SearchBar';
 import { Table } from "react-bootstrap"
+import { Link } from "react-router-dom"
 
 export default function StickerMgt() {
     useEffect(() => document.title = 'Britam - Stickers Management')
@@ -43,6 +44,9 @@ export default function StickerMgt() {
                     <div id="search">
                             <SearchBar placeholder={"Search"} value={q} handleSearch={handleSearch}/>
                             <div>
+                              <Link to="/admin/sticker-number">
+                                <button className="btn btn-primary cta">Add Sticker Nos.</button>
+                              </Link>
                             </div>
                             <CSVLink
                                 data={data}

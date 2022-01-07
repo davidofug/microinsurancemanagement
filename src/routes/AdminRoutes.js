@@ -23,6 +23,7 @@ import StickerMgt from '../pages/admin/StickerMgt'
 import AddUsers from '../pages/AddUsers'
 import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
+import AddStickerRange from '../pages/admin/AddStickerRange'
 
 
 function AdminRoutes() {
@@ -57,6 +58,9 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/sticker-management" >
                 <StickerMgt />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/sticker-number" >
+                <AddStickerRange />
             </PrivateRoute>
             <PrivateRoute path="/admin/user-management" >
                 <Users />
