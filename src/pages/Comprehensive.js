@@ -42,7 +42,7 @@ function Comprehensive() {
 
             <div className="shadow-sm table-card componentsData">   
                 <div id="search">
-                    <SearchBar placeholder={"Search Client by name"} value={searchText} handleSearch={handleSearch}/>
+                    <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
                     <div></div>
                   </div>
@@ -60,18 +60,26 @@ function Comprehensive() {
                                 <td>{row.paymentMethod}</td>
                                 <td>{row.currency}</td>
                                 <td>{row.agentName}</td>
-                                <td><Alert
-                      style={{
-                        backgroundColor: "#1475cf",
-                        color: "#fff",
-                        padding: "2px",
-                        textAlign: "center",
-                        border: "none",
-                        margin: "0",
-                      }}
-                    >
-                      {row.status}
-                    </Alert></td>
+                                
+                                {row.status === 'Active' 
+                                  ? <td>
+                                     <Alert
+                                        style={{backgroundColor: "#1475cf",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
+                                        }}
+                                      >
+                                        {row.status}
+                                      </Alert>
+                                  </td> 
+                                  : <td>
+                                      <Alert
+                                        style={{backgroundColor: "red",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
+                                        }}
+                                      >
+                                        {row.status}
+                                      </Alert>
+                                  </td> }
+
+
                                 <td>{row.createdAt}</td>
                                 <td className="started">
                     <FaEllipsisV
