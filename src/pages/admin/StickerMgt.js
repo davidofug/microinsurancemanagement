@@ -23,15 +23,11 @@ export default function StickerMgt() {
     const currentOrganisations = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(data.length / employeesPerPage)
 
-  const columns = ["id", "category", "contact", "contact", "status"]
-  const search = rows => rows.filter(row =>
-    columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
 
-  const handleSearch = ({target}) => setQ(target.value)
 
     return (
         <div className="components">
-            <Header title="Sticker No. Management" subtitle="MANAGE STICKER NUMBERS" />
+            <Header title="Sticker No. Management" subtitle="MANAGING STICKER NUMBERS" />
 
             <div className="componentsData">
                     <div className="sticker-mgt">
@@ -42,7 +38,7 @@ export default function StickerMgt() {
                     </div>
                     <div className="shadow-sm table-card">
                     <div id="search">
-                            <SearchBar placeholder={"Search"} value={q} handleSearch={handleSearch}/>
+                            <SearchBar placeholder={"Search"}/>
                             <div>
                               <Link to="/admin/sticker-number">
                                 <button className="btn btn-primary cta">Add Sticker Nos.</button>
@@ -50,7 +46,7 @@ export default function StickerMgt() {
                             </div>
                             <CSVLink
                                 data={data}
-                                filename={"Britam-Organisations.csv"}
+                                filename={"Sticker-Ranges.csv"}
                                 className="btn btn-primary cta"
                                 target="_blank"
                               >
@@ -63,9 +59,15 @@ export default function StickerMgt() {
                             <tr><th>#</th><th>Category</th><th>Sticker Nos</th><th>Total No Received</th><th>Status</th></tr>
                           </thead>
                           <tbody>
-                            <tr><td>#</td><td>Category</td><td>Sticker Nos</td><td>Total No Received</td><td>Active</td></tr>
-                            <tr><td>#</td><td>Category</td><td>Sticker Nos</td><td>Total No Received</td><td>Active</td></tr>
-                            <tr><td>#</td><td>Category</td><td>Sticker Nos</td><td>Total No Received</td><td>Active</td></tr>
+                            {data.map((sticker, index) => (
+                              <tr>
+                                <td>{index+1}</td>
+                                <td>{sticker.category}</td>
+                                <td>{`[00${index+1} - 10${index+2}]`}</td>
+                                <td>{index+2}</td>
+                                <td>{sticker.status}</td>
+                              </tr>
+                            ))}
                           </tbody>
                           <tfoot>
                             <tr><th>#</th><th>Category</th><th>Sticker Nos</th><th>Total No Received</th><th>Status</th></tr>
@@ -77,7 +79,7 @@ export default function StickerMgt() {
                           setCurrentPage={setCurrentPage}
                           currentClients={currentOrganisations}
                           sortedEmployees={data}
-                          entries={'Sticker Numbers'} />
+                          entries={'Sticker Ranges'} />
                     </div>
             </div>
             
