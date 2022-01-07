@@ -21,6 +21,8 @@ import AddClaims from '../pages/AddClaims'
 import AddOrganisation from '../pages/admin/AddOrganisation'
 import StickerMgt from '../pages/admin/StickerMgt'
 import AddUsers from '../pages/AddUsers'
+import NewImport from '../pages/NewImport'
+import Transit from '../pages/Transit'
 
 
 function AdminRoutes() {
@@ -88,6 +90,12 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/comprehensive" >
                 <Comprehensive />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/new-import" >
+                <NewImport />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/transit" >
+                <Transit />
             </PrivateRoute>
             <PrivateRoute path="/add-clients" >
                 <AddClients />

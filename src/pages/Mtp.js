@@ -43,7 +43,7 @@ export default function Mtp() {
 
       <div className="table-card componentsData">
                 <div id="search">
-                    <SearchBar placeholder={"Search Client by name"} value={searchText} handleSearch={handleSearch}/>
+                    <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
                     <div></div>
                 </div>
@@ -61,18 +61,26 @@ export default function Mtp() {
                                 <td>{row.paymentMethod}</td>
                                 <td>{row.currency}</td>
                                 <td>{row.agentName}</td>
-                                <td><Alert
-                      style={{
-                        backgroundColor: "#1475cf",
-                        color: "#fff",
-                        padding: "2px",
-                        textAlign: "center",
-                        border: "none",
-                        margin: "0",
-                      }}
-                    >
-                      {row.status}
-                    </Alert></td>
+                                
+                                {row.status === 'Active' 
+                                  ? <td>
+                                     <Alert
+                                        style={{backgroundColor: "#1475cf",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
+                                        }}
+                                      >
+                                        {row.status}
+                                      </Alert>
+                                  </td> 
+                                  : <td>
+                                      <Alert
+                                        style={{backgroundColor: "red",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
+                                        }}
+                                      >
+                                        {row.status}
+                                      </Alert>
+                                  </td> }
+
+
                                 <td>{row.createdAt}</td>
                             <td className="started">
                     <FaEllipsisV
@@ -159,7 +167,7 @@ export default function Mtp() {
                     setCurrentPage={setCurrentPage}
                     currentClients={currentPolicies}
                     sortedEmployees={data}
-                    entries={'Comprehensive policies'} />
+                    entries={'Motor Third Party'} />
 
         
       </div>
