@@ -54,7 +54,7 @@ function AddUsers() {
         <div className='components'>
             <Header title="Add Clients" subtitle="ADD A NEW CLIENT" />
             <div class="addComponentsData">
-                    <Form id='form4' onSubmit={handleSubmit}>
+                    <Form name='form4' onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                             <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} />

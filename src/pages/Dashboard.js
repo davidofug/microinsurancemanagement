@@ -29,7 +29,7 @@ function Dashboard() {
         listUsers().then((results) => {
             const resultsArray = results.data
             const myUsers = resultsArray.filter(user => user.role.Customer === true)
-            setClients([myUsers[myUsers.length-1]])
+            setClients(myUsers)
         }).catch((err) => {
             console.log(err)
         })
