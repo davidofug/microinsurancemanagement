@@ -1,7 +1,7 @@
 import menuData from "../../parts/menuData";
 import "../../assets/styles/menu.css";
 import { useState, useEffect } from "react";
-import logo from "../../assets/imgs/britam-logo.png";
+import logo from "../../assets/imgs/britam-logo2.png";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import MobileNav from "../../parts/menu/MobileNav";
 import SideBar from "../../parts/menu/SideBar";
@@ -39,7 +39,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
         <div className="sidebar"> 
         <nav >
             <div id='brand'>
-                <img src={logo} alt="Britam" />
+                <img width={150} src={logo} alt="Britam" />
                 <div id="arrowCircle" onClick={() => {
                         setToggeMenu(!toggleMenu)
                         setLargeContentClass(!largeContentClass)

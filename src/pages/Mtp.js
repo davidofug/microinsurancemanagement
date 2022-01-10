@@ -7,11 +7,27 @@ import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../parts/searchBar/SearchBar'
 import { Table, Alert } from 'react-bootstrap'
+import { getDocs, collection } from 'firebase/firestore'
+import { db } from '../helpers/firebase'
 
 export default function Mtp() {
   useEffect(() => {
     document.title = "Britam - Motor Third Party";
+
+    getPolicies()
   }, []);
+
+  // policies
+  const [policies, setPolicies] = useState([])
+  const policyCollectionRef = collection(db, "policies");
+
+  const getPolicies = async () => {
+      const data = await getDocs(policyCollectionRef);
+      // console.log(data.docs)
+      setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+
+  console.log(policies)
 
   // pagination
   const [ currentPage, setCurrentPage ] = useState(1)
@@ -43,17 +59,28 @@ export default function Mtp() {
 
       <div className="table-card componentsData">
                 <div id="search">
-                    <SearchBar placeholder={"Search Client by name"} value={searchText} handleSearch={handleSearch}/>
+                    <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
                     <div></div>
                 </div>
 
                 <Table striped hover responsive>
                     <thead>
-                        <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
-                        {searchByName(currentPolicies).map((row, index) => (
+                        {policies.length > 0 && policies.map((policy, index) => (
+                          <tr key={policy.id}>
+                            <td>{index + 1}</td>
+                            {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
+                            <td>{policy.id}</td>
+                            <td>{policy.id}</td>
+                            <td>{policy.id}</td>
+                            <td>{policy.id}</td>
+                          </tr>
+                        ))}
+                        {/* {searchByName(currentPolicies).map((row, index) => (
                             <tr key={row.id}>
                                 <td>{row.name}</td>
                                 <td>{row.category}</td>
@@ -61,18 +88,26 @@ export default function Mtp() {
                                 <td>{row.paymentMethod}</td>
                                 <td>{row.currency}</td>
                                 <td>{row.agentName}</td>
-                                <td><Alert
-                      style={{
-                        backgroundColor: "#1475cf",
-                        color: "#fff",
-                        padding: "2px",
-                        textAlign: "center",
-                        border: "none",
-                        margin: "0",
-                      }}
-                    >
-                      {row.status}
-                    </Alert></td>
+                                
+                                {row.status === 'Active' 
+                                  ? <td>
+                                     <Alert
+                                        style={{backgroundColor: "#1475cf",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
+                                        }}
+                                      >
+                                        {row.status}
+                                      </Alert>
+                                  </td> 
+                                  : <td>
+                                      <Alert
+                                        style={{backgroundColor: "red",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
+                                        }}
+                                      >
+                                        {row.status}
+                                      </Alert>
+                                  </td> }
+
+
                                 <td>{row.createdAt}</td>
                             <td className="started">
                     <FaEllipsisV
@@ -135,7 +170,7 @@ export default function Mtp() {
                     </ul>
                   </td>
                             </tr>
-                        ))}
+                        ))} */}
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -149,7 +184,7 @@ export default function Mtp() {
                             </tr>
                     </tbody>
                     <tfoot>
-                        <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><td>#</td><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </tfoot>
                 </Table>
 
@@ -159,7 +194,7 @@ export default function Mtp() {
                     setCurrentPage={setCurrentPage}
                     currentClients={currentPolicies}
                     sortedEmployees={data}
-                    entries={'Comprehensive policies'} />
+                    entries={'Motor Third Party'} />
 
         
       </div>
