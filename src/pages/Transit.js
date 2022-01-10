@@ -1,43 +1,47 @@
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
+import Header from "../parts/header/Header";
+import { FaEllipsisV } from "react-icons/fa";
 import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../parts/searchBar/SearchBar'
 import { Table, Alert } from 'react-bootstrap'
-import Header from '../parts/header/Header';
-import { FaEllipsisV } from "react-icons/fa";
 
-function Windscreen() {
+export default function Transit() {
+  useEffect(() => {
+    document.title = "Britam - Transit";
+  }, []);
 
-    useEffect(() => {document.title = 'Britam - Windscreen'}, [])
+  // pagination
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [policiesPerPage] = useState(10)
 
-    // pagination
-    const [ currentPage, setCurrentPage ] = useState(1)
-    const [policiesPerPage] = useState(10)
+  const indexOfLastPolicy = currentPage * policiesPerPage
+  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
+  const currentPolicies = data.slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const totalPagesNum = Math.ceil(data.length / policiesPerPage)
 
-    const indexOfLastPolicy = currentPage * policiesPerPage
-    const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-    const currentPolicies = data.slice(indexOfFirstPolicy, indexOfLastPolicy)
-    const totalPagesNum = Math.ceil(data.length / policiesPerPage)
+  // search by Name
+  const [searchText, setSearchText] = useState('')
+  const handleSearch = ({ target }) => setSearchText(target.value);
+  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
-    // search by Name
-    const [searchText, setSearchText] = useState('')
-    const handleSearch = ({ target }) => setSearchText(target.value);
-    const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+  return (
+    <div className="components">
+      <Header
+        title="Transit"
+        subtitle="MANAGING TRANSIT POLICIES"
+      />
 
-    return (
-        <div className='components'>
-            <Header title="Windscreen" subtitle="MANAGING WINDSCREEN" />
+      <div id="add_client_group">
+        <div></div>
+        <Link to="/admin/add-mtp">
+          <button className="btn btn-primary cta">Add Transit</button>
+        </Link>
+      </div>
 
-            <div id="add_client_group">
-                <div></div>
-                <Link to="/admin/add-windscreen">
-                    <button className="btn btn-primary cta">Add Windscreen</button>
-                </Link>
-                
-            </div>
-
-            <div className="shadow-sm table-card componentsData">   
+      <div className="table-card componentsData">
                 <div id="search">
                     <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
@@ -57,8 +61,8 @@ function Windscreen() {
                                 <td>{row.paymentMethod}</td>
                                 <td>{row.currency}</td>
                                 <td>{row.agentName}</td>
-
-                                  {row.status === 'Active' 
+                                
+                                {row.status === 'Active' 
                                   ? <td>
                                      <Alert
                                         style={{backgroundColor: "#1475cf",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
@@ -76,10 +80,8 @@ function Windscreen() {
                                       </Alert>
                                   </td> }
 
-
                                 <td>{row.createdAt}</td>
-
-                                <td className="started">
+                            <td className="started">
                     <FaEllipsisV
                       className={`actions please${index}`}
                       onClick={() => {
@@ -150,6 +152,7 @@ function Windscreen() {
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                             </tr>
                     </tbody>
                     <tfoot>
@@ -157,17 +160,16 @@ function Windscreen() {
                     </tfoot>
                 </Table>
 
+
                 <Pagination 
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentPolicies}
                     sortedEmployees={data}
-                    entries={'Windscreen policies'} />
+                    entries={'Transit Policies'} />
 
-               
-            </div>
-        </div>
-    )
+        
+      </div>
+    </div>
+  );
 }
-
-export default Windscreen

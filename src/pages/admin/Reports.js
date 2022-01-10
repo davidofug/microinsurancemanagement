@@ -74,9 +74,9 @@ function Reports() {
 
       <div
         className="componentsData "
-        style={{ "max-width": "80vw", margin: "auto" }}
+        style={{ "maxWidth": "80vw", margin: "auto" }}
       >
-        <div class=" shadow-sm table-card">
+        <div className=" shadow-sm table-card">
           <div id="search">
             <SearchBar
               placeholder={"Search for organisation"}
