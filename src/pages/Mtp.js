@@ -6,7 +6,7 @@ import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../parts/searchBar/SearchBar'
 import { Table, Alert } from 'react-bootstrap'
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 
 export default function Mtp() {
@@ -36,8 +36,13 @@ export default function Mtp() {
   // search by Name
   const [searchText, setSearchText] = useState('')
   const handleSearch = ({ target }) => setSearchText(target.value);
-  // const searchByName = (data) => data.filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
   const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+  // delete a policy
+  const handleDelete = async id => {
+    const policyDoc = doc(db, "policies", id);
+    await deleteDoc(policyDoc);
+  }
 
   return (
     <div className="components">
@@ -111,9 +116,11 @@ export default function Mtp() {
                               .querySelector(`.please${index}`)
                               .classList.remove("hello");
                             const confirmBox = window.confirm(
-                              `Are you sure you want to delete claim`
+                              `Are you sure you want to delete this sticker`
                             );
                             if (confirmBox === true) {
+                              handleDelete(policy.id);
+                              getPolicies();
                             }
                           }}
                         >
