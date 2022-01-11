@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
@@ -133,11 +133,11 @@ function Supervisors() {
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
                               {meta.filter(user => user.id == supervisor.uid).map(user => (
-                                <>
+                                <Fragment key={user.id}>
                                   <td>{user.gender}</td>
                                   <td>{user.phone}</td>
                                   <td>{user.address}</td>
-                                </>
+                                </Fragment>
                               ))}
                 <td className="started">
                   <FaEllipsisV

@@ -50,7 +50,7 @@ function Dashboard() {
                         <div id="bin" className="shadow-sm bg-body rounded first-container">
                             <Container className="row-container">
                                     <div className="col">
-                                        <div className="custom-card" style={{"background-color":"#804C75"}}>
+                                        <div className="custom-card" style={{backgroundColor:"#804C75"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${claims.length}`}</div>
                                                 <div className="card-text">Claim Settlement</div>
@@ -58,7 +58,7 @@ function Dashboard() {
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <div className="custom-card" style={{"background-color":"#FFB848"}}>
+                                        <div className="custom-card" style={{backgroundColor:"#FFB848"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${policies}`}</div>
                                                 <div className="card-text">Policies</div>
@@ -68,7 +68,7 @@ function Dashboard() {
                             </Container>
                             <Container className="row-container">
                                     <div className="col">
-                                        <div className="custom-card" style={{"background-color":"#C82E29"}}>
+                                        <div className="custom-card" style={{backgroundColor:"#C82E29"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${stickers}`}</div>
                                                 <div className="card-text">Stickers</div>
@@ -76,7 +76,7 @@ function Dashboard() {
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <div className="custom-card" style={{"background-color":"#1FBBA6"}}>
+                                        <div className="custom-card" style={{backgroundColor:"#1FBBA6"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${claims.length}`}</div>
                                                 <div className="card-text">Claim Notifications</div>
@@ -152,7 +152,7 @@ function Dashboard() {
                     {/* Graph div  */}
                     <div className="shadow-sm p-3 mb-5 bg-body rounded graph-container" >
                         <h5 style={{"display":"flex", "gap": "10px"}}><span>
-                            <div style={{"width": "20px", "height": "20px", "background-color": "#E0E7EC"}}></div>
+                            <div style={{"width": "20px", "height": "20px", backgroundColor: "#E0E7EC"}}></div>
                         </span>Monthly Stickers Issued</h5>
                         <Row style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
                             <Col className="graph-space" >

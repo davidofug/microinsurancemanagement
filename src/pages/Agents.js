@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import data from '../helpers/mock-data.json'
 import { EditableDatable } from '../helpers/DataTable';
 import { MdDownload } from 'react-icons/md'
@@ -114,11 +114,11 @@ function Agents() {
                               <td>{agent.name}</td>
                               <td>{agent.email}</td>
                               {meta.filter(user => user.id == agent.uid).map(user => (
-                                <>
+                                <Fragment key={user.id}>
                                   <td>{user.gender}</td>
                                   <td>{user.phone}</td>
                                   <td>{user.address}</td>
-                                </>
+                                </Fragment>
                               ))}
                               
                 <td className="started">
