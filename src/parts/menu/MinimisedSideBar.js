@@ -48,16 +48,15 @@ export default function MinimisedSideBar({role}){
                 </ul>
             </section>
                     
-            <footer>
+            {/* <footer>
                     <ul>
                         <li><Link to="/admin/settings">Settings</Link></li>
                         <li><Link to="/logout"><MdLogout /> Logout</Link></li>
                     </ul>
                 <Link to={'/admin-settings'} id="account">
                     <DefaultAvatar />
-                    {/* <img src={profile} alt="profile" /> */}
                 </Link>
-            </footer>
+            </footer> */}
 
         </>
     )
