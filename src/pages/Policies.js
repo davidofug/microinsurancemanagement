@@ -25,11 +25,14 @@ function Policies() {
     const handleShow = () => setShow(true);
 
     const [ existingClient, setExistingClient ] = useState(null)
+    const [ existingCustomers, setExistingCustomers ] = useState([])
     const [ classes, setClasses ] = useState([])
     const [ vehicleUses, setVehicleUses ] = useState([])
     const [ policyStartDate, setPolicyStartDate ] = useState(null)
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
+    const [ suggestions, setSuggestions ] = useState([])
+    // const [users, setUsers] = useState(null)
     const [ newClient, handleClientDetails] = useForm({
         name:'',
         DOB:'',
@@ -62,12 +65,12 @@ function Policies() {
     useEffect(() => {
         document.title = 'Britam - Policies'
 
-        listUsers().then((results) => {
-            console.log(results)
+        listUsers().then(({data}) => {
+            setExistingCustomers(data.filter(user => user?.role?.Customer))
+            // console.log(data.filter(user => user?.role?.Customer))
         }).catch((err) => {
             console.log(err)
         })
-
     }, [])
 
     const handleInputChange = (index, event) => {
@@ -263,20 +266,25 @@ function Policies() {
         )
     }
 
-    const getExistingClient = ( name ) => { 
-        // Dummy existing user data.
-        // Implementation to be done based on the accessibility of the source of data and data structure implemementing the data bank.
-        if(name) return (
-            {
-                name: 'david',
-                email: 'davidderrickanyuru@gmail.com',
-                nin:'CM97005509WTVG'
-            }
-        )
+    const getExistingClient = ( text ) => { 
+            if(existingCustomers !== null) {
+                // console.log(existingCustomers)
+                let matches = existingCustomers.filter(customer => {
+                    const regex = new RegExp(`${text}`, "gi") 
+                    return customer.email.match(regex) || customer.name.match(regex)
+                })
+                console.log(matches)
+                setSuggestions(matches)
+            }    
     }
-    // const handleSubmit = () => {
+    // const handleSubmit = () => 
 
     // }
+    const suggestionHandler = (text) => {
+        setSuggestions([])
+        setExistingClient(text)
+    
+    }
 
 
 
@@ -297,13 +305,21 @@ function Policies() {
                         <Row style={{gap:"2vw"}}>
                             <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
                                 <Form.Group className="mb-3" controlId="clientDetails">
-                                    <Form.Control type="text" placeholder="Existing" onChange={event => {
-                                        const existingClientDetails = getExistingClient(event.target.value)
-                                        // console.log(existingClientDetails)
-                                        setClientDetails(existingClientDetails)
+                                    <Form.Control type="text" placeholder="Existing" autocomplete="on" data={existingCustomers.map((customer, index) => customer.name)} onChange={event => {
+                                        const existingClient = getExistingClient(event.target.value)
+                                        setClientDetails(existingClient)
                                     }}/>
                                 </Form.Group>
                             </Col>
+                            {
+                                suggestions?.length > 0 && 
+                                    <Row>
+                                        {
+                                            suggestions.map((suggestion, index) => <div key={index}>{suggestion.name}</div>)
+                                        }
+                                    </Row>
+                                
+                            }
                             <Col className="add-new-client" style={{display:"flex", justifyContent:"flex-end"}}>
                                 <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button>
                             </Col>
