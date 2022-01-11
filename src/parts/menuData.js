@@ -31,6 +31,14 @@ const menuData = {
                 {
                     name: "Comprehensive",
                     link: "/superadmin/comprehensive"
+                },
+                {
+                    name: "New imports",
+                    link: "/superadmin/new-import"
+                },
+                {
+                    name: "Transit",
+                    link: "/superadmin/transit"
                 }
             ]
         },
@@ -183,6 +191,14 @@ const menuData = {
                 {
                     name: "Windscreen",
                     link: "/supervisor/windscreen"
+                },
+                {
+                    name: "New imports",
+                    link: "/supervisor/new-import"
+                },
+                {
+                    name: "Transit",
+                    link: "/supervisor/transit"
                 }
             ]
         },
@@ -204,8 +220,7 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "/agent/dashboard",
-            head: "Britam - Dashboard"
+            link: "/agent/dashboard"
         },
         {
             number: 2,
@@ -236,6 +251,14 @@ const menuData = {
                 {
                     name: "Comprehensive",
                     link: "/agent/comprehensive"
+                },
+                {
+                    name: "New imports",
+                    link: "/agent/new-import"
+                },
+                {
+                    name: "Transit",
+                    link: "/agent/transit"
                 }
             ]
         },
