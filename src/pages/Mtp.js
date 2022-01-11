@@ -91,9 +91,6 @@ export default function Mtp() {
                     />
                     <ul id="actionsUl" className="actions-ul">
                       <li>
-                        <button onClick={() => {
-                          
-                        }}>Details</button>
                         <Link to="/supervisor/policy-details" >Details</Link>
                       </li>
                       <li>
