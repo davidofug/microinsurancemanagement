@@ -1,7 +1,11 @@
 import logo from '../assets/imgs/britam-logo2.png'
 import { Table } from 'react-bootstrap'
+import { useEffect } from 'react'
 
 function PolicyDetails() {
+    useEffect(() => {
+        document.title = "Britam - Sticker Details";
+      }, []);
     return (
         <div style={{margin: "30px"}}>
             <div style={{display: "flex", justifyContent: "space-between"}}>
