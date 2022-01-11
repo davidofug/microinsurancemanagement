@@ -37,7 +37,7 @@ export default function Mtp() {
   const [searchText, setSearchText] = useState('')
   const handleSearch = ({ target }) => setSearchText(target.value);
   // const searchByName = (data) => data.filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
-  const searchByName = (data) = data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+  const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
   return (
     <div className="components">
