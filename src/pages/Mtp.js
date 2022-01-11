@@ -115,6 +115,17 @@ export default function Mtp() {
                             document
                               .querySelector(`.please${index}`)
                               .classList.remove("hello");
+                          }}
+                        >
+                          Edit
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            document
+                              .querySelector(`.please${index}`)
+                              .classList.remove("hello");
                             const confirmBox = window.confirm(
                               `Are you sure you want to delete this sticker`
                             );
@@ -125,17 +136,6 @@ export default function Mtp() {
                           }}
                         >
                           Delete
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          Edit
                         </button>
                       </li>
                       <hr style={{ color: "black" }}></hr>
@@ -155,15 +155,6 @@ export default function Mtp() {
                           </tr>
                         ))}
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                             </tr>
                     </tbody>
                     <tfoot>
