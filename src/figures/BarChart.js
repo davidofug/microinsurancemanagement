@@ -29,9 +29,10 @@ function BarChart () {
         plugins: {
             legend: {
                 position: 'top',
+                display: false
             },
             title: {
-                display: true,
+                display: false,
                 text: 'Monthly  Motor Third Party Stickers',
             },
         },

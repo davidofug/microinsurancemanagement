@@ -11,15 +11,29 @@ import useAuth from '../contexts/Auth'
 
 function AddUsers() {
     const { authClaims } = useAuth()
-    const addUser = httpsCallable(functions,'addUser')
-    useEffect(() => { document.title = 'Britam - Add Supervisors' }, [])
+    const addUser = httpsCallable(functions, 'addUser')
+    useEffect(() => { document.title = 'Britam - Add Users' }, [])
 
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
     const [mtp, setMTP] = useState(false)
 
+    const [showOrganisation, setShowOrganisation] = useState(false)
+
+    
+
+    const checkedOrganisation = () => {
+        if(document.getElementById('supervisorCheck').checked){
+            setShowOrganisation(true)
+        } else {
+            setShowOrganisation(false)
+        }
+    }
+    
+
     const [fields, handleFieldChange] = useForm({
         user_role: '',
+        organisation: '',
         email: '',
         name: '',
         dob: '',
@@ -31,6 +45,7 @@ function AddUsers() {
         photo: '',
     })
 
+
     const handleSubmit = (event) => {
         event.preventDefault()
         if(comprehensive) fields['comprehensive'] = true
@@ -40,8 +55,10 @@ function AddUsers() {
         fields['added_by_uid'] = authentication.currentUser.uid
         fields['added_by_name'] = authentication.currentUser.displayName
 
+
         addUser(fields).then((results) => {
-            console.log(results)
+            alert(`successfully added ${fields.name}`)
+            document.form3.reset()
         }).catch((err) => {
             console.log(err)
         })
@@ -53,8 +70,8 @@ function AddUsers() {
     return (
         <div className='components'>
             <Header title="Add Users" subtitle="ADD A NEW USER" />
-            <div class="addComponentsData">
-                    <Form onSubmit={handleSubmit}>
+            <div class="shadow-sm table-card">
+                    <Form name='form3' onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
                             <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange}>
@@ -62,10 +79,16 @@ function AddUsers() {
                                 {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
                                 {authClaims.superadmin && <option value="admin">Admin</option>}
                                 {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
-                                {authClaims.supervisor && <option value="agent">Agent</option>}
+                                {(authClaims.supervisor || authClaims.admin) && <option value="agent">Agent</option>}
                                 {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
                             </Form.Select>
                         </Form.Group>
+                        { user_role === 'supervisor' && 
+                            <Form.Group className="mb-3" >
+                                <Form.Label htmlFor='organisation'>Organisation<span className='required'>*</span></Form.Label>
+                                <Form.Control id="organisation" placeholder="organisation" onChange={handleFieldChange} />
+                            </Form.Group>
+                        }
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                             <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} />

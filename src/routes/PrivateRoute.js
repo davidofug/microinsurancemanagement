@@ -2,13 +2,13 @@ import {
     Route,
     Redirect
 } from 'react-router-dom'
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 
 import useAuth from '../contexts/Auth'
 import { onAuthStateChange } from '../helpers/firebase'
 
 function PrivateRoute({ children, ...rest }) {
-    const { currentUser} = useAuth()
+    const { currentUser } = useAuth()
 
     return (
         <Route

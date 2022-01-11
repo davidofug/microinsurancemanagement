@@ -1,7 +1,7 @@
 import Mtp from '../pages/Mtp'
 import Users from '../pages/Users'
 import Claims from '../pages/Claims'
-import Reports from '../pages/Reports'
+import Reports from '../pages/admin/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
 import Settings from '../pages/admin/Settings'
@@ -19,9 +19,11 @@ import AddAgents from '../pages/AddAgents'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddOrganisation from '../pages/admin/AddOrganisation'
-import AddSupervisors from '../pages/admin/AddSupervisors'
 import StickerMgt from '../pages/admin/StickerMgt'
 import AddUsers from '../pages/AddUsers'
+import NewImport from '../pages/NewImport'
+import Transit from '../pages/Transit'
+import AddStickerRange from '../pages/admin/AddStickerRange'
 
 
 function AdminRoutes() {
@@ -42,10 +44,7 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/supervisor" >
                 <Supervisors />
             </PrivateRoute>
-            <PrivateRoute path="/add-supervisors" >
-                <AddSupervisors />
-            </PrivateRoute>
-            <PrivateRoute path="/add-user" >
+            <PrivateRoute path="/admin/add-user" >
                 <AddUsers />
             </PrivateRoute>
             <PrivateRoute path="/admin/agents" >
@@ -59,6 +58,9 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/sticker-management" >
                 <StickerMgt />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/sticker-number" >
+                <AddStickerRange />
             </PrivateRoute>
             <PrivateRoute path="/admin/user-management" >
                 <Users />
@@ -92,6 +94,12 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/comprehensive" >
                 <Comprehensive />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/new-import" >
+                <NewImport />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/transit" >
+                <Transit />
             </PrivateRoute>
             <PrivateRoute path="/add-clients" >
                 <AddClients />

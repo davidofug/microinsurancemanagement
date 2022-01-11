@@ -1,20 +1,44 @@
 import { useState, useEffect } from 'react'
 import useAuth from '../contexts/Auth'
-import { Card, Container, Row, Col, Table} from 'react-bootstrap'
+import { Card, Container, Row, Col} from 'react-bootstrap'
 // import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
 import Header from '../parts/header/Header'
+import { getDocs, collection } from 'firebase/firestore'
+import { functions, db } from '../helpers/firebase';
+import { httpsCallable } from 'firebase/functions';
 
 function Dashboard() {
-    const [claims, setClaims] = useState(0)
+    const [clients, setClients] = useState([]);
+    const [claims, setClaims] = useState([])
     const [stickers, setStickers] = useState(13)
     const [policies, setPolicies] = useState(2)
-    const [claimNotifications, setClaimNotifications] = useState(27)
+    const [claimNotifications, setClaimNotifications] = useState(0)
+    const { authClaims } = useAuth()
+    const claimsCollectionRef = collection(db, "claims");
 
     useEffect(() => {
-        document.title = 'Britam - Welcome'
+        document.title = 'Britam - Dashboard'
+        getClaims()
+        getClients()
     }, [])
+
+    const getClients = () => {
+        const listUsers = httpsCallable(functions, 'listUsers')
+        listUsers().then((results) => {
+            const resultsArray = results.data
+            const myUsers = resultsArray.filter(user => user.role.Customer === true)
+            setClients(myUsers)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const getClaims = async () => {
+        const data = await getDocs(claimsCollectionRef);
+        setClaims(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
 
     return (
             <div className='components'>
@@ -27,7 +51,7 @@ function Dashboard() {
                                     <div className="col">
                                         <div className="custom-card" style={{"background-color":"#804C75"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${claims}`}</div>
+                                                <div className="statistics">{`${claims.length}`}</div>
                                                 <div className="card-text">Claim Settlement</div>
                                             </Card.Body>
                                         </div>
@@ -53,7 +77,7 @@ function Dashboard() {
                                     <div className="col">
                                         <div className="custom-card" style={{"background-color":"#1FBBA6"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${claimNotifications}`}</div>
+                                                <div className="statistics">{`${claims.length}`}</div>
                                                 <div className="card-text">Claim Notifications</div>
                                             </Card.Body>
                                         </div>
@@ -61,24 +85,58 @@ function Dashboard() {
                             </Container>
                         </div>
 
-                        <div className="shadow-sm bg-body rounded first-container" >
-                            {/* Are these supposed to be links or just mere words? */}
+                        <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex", alignItems: "flex-start"}}>
                             <div id="short_stats">
-                                <h3 className="heading">Agent issued reports</h3>
-                                <Table responsive borderless>
-                                    <thead><th></th><th>Grand totals</th></thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Daily</td><td>UGX 10,000,001</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Weekly</td><td>UGX 13,000,001</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Monthly</td><td>UGX 21,000,001</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
+                                {authClaims.admin && <>
+                                    <h5 className="heading">Daily Reports Summary</h5>
+                                    <table>
+                                        <thead><th>Category</th><th>Grand totals</th></thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>MTP</td><td>UGX ___</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Comprehensive</td><td>UGX ___</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Windscreen</td><td>UGX ___</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </>
+                                }
+                                {authClaims.supervisor && <>
+                                    <h5 className="heading">Latest Agents</h5>
+                                    <table>
+                                        <thead><th>Name</th><th>Email Address</th></thead>
+                                        <tbody>
+                                            {clients.map(client => (
+                                                <tr key={client.uid}>
+                                                    <td>{client.name}</td>
+                                                    <td>{client.email}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                    </>
+                                }
+                                {authClaims.agent && <>
+                                    <h5 className="heading">Latest Clients</h5>
+                                    <table>
+                                        <thead>
+                                            <tr><th>Name</th><th>Email</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            {clients.map(client => (
+                                                <tr key={client.uid}>
+                                                    <td>{client.name}</td>
+                                                    <td>{client.email}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>

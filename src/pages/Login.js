@@ -51,12 +51,12 @@ function Login() {
         history.push(from); // had removed claim from the route.
       }
     } catch(err) {
-      // console.log(error.message);
       console.log(err.code)
       setLoading(false)
       const errors = {
         "auth/user-not-found": "User with email is not found",
-        "auth/wrong-password": "Password does not match the email"
+        "auth/wrong-password": "Password does not match the email",
+        "auth/network-request-failed": "something is wrong, check your network connection"
       }
       setError(errors[err.code])
   };

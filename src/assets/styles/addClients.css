@@ -57,7 +57,7 @@ form{
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-    padding: 20px;
+    /* padding: 20px; */
     justify-content: space-between;
 }
 
