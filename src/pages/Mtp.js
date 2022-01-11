@@ -5,24 +5,27 @@ import { FaEllipsisV } from "react-icons/fa";
 import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../components/searchBar/SearchBar'
-import { Table, Alert } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
+import { currencyFormatter } from "../helpers/currency.format";
 
 export default function Mtp() {
   useEffect(() => {
     document.title = "Britam - Motor Third Party";
-    getPolicies()
+    getMTP()
   }, []);
 
   // policies
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
 
-  const getPolicies = async () => {
-      const data = await getDocs(policyCollectionRef);
-      setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
+  const getMTP = async () => {
+    const data = await getDocs(policyCollectionRef);
+    const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    setPolicies(pole.filter(policy => policy.category === 'mtp'))
+  }
+
 
   // pagination
   const [ currentPage, setCurrentPage ] = useState(1)
@@ -30,8 +33,8 @@ export default function Mtp() {
 
   const indexOfLastPolicy = currentPage * policiesPerPage
   const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-  const currentPolicies = data.slice(indexOfFirstPolicy, indexOfLastPolicy)
-  const totalPagesNum = Math.ceil(data.length / policiesPerPage)
+  const currentPolicies = policies.slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
 
   // search by Name
   const [searchText, setSearchText] = useState('')
@@ -75,21 +78,16 @@ export default function Mtp() {
                             <td>{index + 1}</td>
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
+                            <td>cash</td>
+                            <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
+                            <td>{policy.agentName ? policy.agentName : ''}</td>
                             <td>
-                              <Alert style={{
-                        backgroundColor: "#1475cf",
-                        color: "#fff",
-                        padding: "5px",
-                        textAlign: "center",
-                        border: "none",
-                        margin: "0",
-                      }}>NEW</Alert>
+                              <span
+                                style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                              >new</span>
                             </td>
-                            <td></td>
+                            <td>{policy.policyStartDate}</td>
                             <td className="started">
                     <FaEllipsisV
                       className={`actions please${index}`}
@@ -131,7 +129,7 @@ export default function Mtp() {
                             );
                             if (confirmBox === true) {
                               handleDelete(policy.id);
-                              getPolicies();
+                              getMTP()
                             }
                           }}
                         >
@@ -167,7 +165,7 @@ export default function Mtp() {
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentPolicies}
-                    sortedEmployees={data}
+                    sortedEmployees={policies}
                     entries={'Motor Third Party'} />
 
         

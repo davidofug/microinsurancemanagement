@@ -14,7 +14,7 @@ const SearchBar = ({placeholder, handleSearch, value}) => (
                 />
                 <select id="searchBy" name="selectBox">
                     <option>name</option>
-                    <option>amount</option>
+                    <option>category</option>
                 </select>
                 </div>
             </div>
