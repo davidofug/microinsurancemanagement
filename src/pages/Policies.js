@@ -274,7 +274,7 @@ function Policies() {
                     const regex = new RegExp(`${text}`, "gi") 
                     return customer.email.match(regex) || customer.name.match(regex)
                 })
-                console.log(matches)
+                // console.log(matches)
                 setSuggestions(matches)
                 setExistingClient(text)
             }    
@@ -307,7 +307,7 @@ function Policies() {
                         <Row style={{gap:"2vw"}}>
                             <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
                                 <Form.Group className="mb-3" controlId="clientDetails">
-                                    <Form.Control type="text" placeholder="Existing" value={existingClient?.name} onChange={event => {
+                                    <Form.Control type="text" placeholder="Existing" value={existingClient?.name } onChange={event => {
                                         const existingClient = getExistingClient(event.target.value)
                                         setClientDetails(existingClient)
                                     }}/>
