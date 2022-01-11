@@ -35,36 +35,39 @@ function SuperAdminMenu({ setLargeContentClass, largeContentClass }) {
             <MobileNav role={SuperAdmin} user="superadmin" displayName={authentication?.currentUser?.displayName}/>
             {toggleMenu === true 
             ?
-                <div className="sidebar">
-                    <nav>
-                    <div id="brand">
+            <div className="sidebar"> 
+                <nav >
+                    <div id='brand'>
                         <img src={logo} alt="Britam" />
-                        <i
-                        onClick={() => {
-                            setToggeMenu(!toggleMenu);
-                            setLargeContentClass(!largeContentClass);
-                        }}
-                        >
-                        <HiOutlineChevronLeft />
-                        </i>
+                        <div id="arrowCircle" onClick={() => {
+                                setToggeMenu(!toggleMenu)
+                                setLargeContentClass(!largeContentClass)
+                                }}>
+                                
+                                    <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                                
+                                
+                        </div>
                     </div>
-                    <SideBar role={SuperAdmin} user="superadmin" displayName={authentication?.currentUser?.displayName}/>
-                    </nav>
-                </div> 
+                    <SideBar role={SuperAdmin} user="superadmin" displayName={authentication?.currentUser?.displayName} />
+                </nav>
+            </div>
             : 
-                <nav className="sidebar-m">
-                <section id="brand_m">
-                <i
-                    onClick={() => {
-                    setToggeMenu(!toggleMenu);
-                    setLargeContentClass(!largeContentClass);
-                    }}
-                >
-                    <HiOutlineChevronRight />
-                </i>
-                </section>
-                <MinimisedSideBar role={SuperAdmin} displayName={authentication?.currentUser?.displayName}/>
-            </nav>
+            <nav className='sidebar-m'>
+            <section id='brand_m'>
+                <div id="arrowOutCircle" onClick={() => {
+                    setToggeMenu(!toggleMenu)
+                    setLargeContentClass(!largeContentClass)
+                    }}>
+                    
+                        <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                    
+                    
+            </div>
+            </section>
+            <MinimisedSideBar role={SuperAdmin} displayName={authentication?.currentUser?.displayName}/>
+        
+        </nav>
             }
         </div>
     )

@@ -5,6 +5,7 @@ import { Form, Row, Col, Alert } from "react-bootstrap";
 import { MdCheckCircle } from "react-icons/md";
 import Header from "../../parts/header/Header";
 import DefaultAvatar from "../../parts/DefaultAvatar";
+import { authentication } from "../../helpers/firebase";
 
 function Settings() {
   const [selectedTab, setSelectedTab] = useState(1);
@@ -81,7 +82,8 @@ function Settings() {
                   <Form onSubmit={handleEditFormSubmit}>
                     <h2>Edit Profile</h2>
                     <hr />
-                    <img src={profile} alt="profile" />
+                    <DefaultAvatar />
+                    {/* <img src={profile} alt="profile" /> */}
                     <Row className="mb-3">
                       <Form.Group
                         as={Col}
@@ -95,7 +97,7 @@ function Settings() {
                         <Form.Label>Name</Form.Label>
                         <Form.Control
                           name="name"
-                          value={editFormData.name}
+                          value={authentication.currentUser.displayName}
                           onChange={handleEditFormChange}
                         />
                       </Form.Group>
@@ -112,7 +114,7 @@ function Settings() {
                         <Form.Control
                           type="tel"
                           name="number"
-                          value={editFormData.number}
+                          value={authentication.currentUser.phoneNumber}
                           onChange={handleEditFormChange}
                         />
                       </Form.Group>

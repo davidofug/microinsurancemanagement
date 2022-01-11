@@ -5,12 +5,15 @@ import { Form, Row, Col, Alert } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
 import Header from '../../parts/header/Header'
 import DefaultAvatar from '../../parts/DefaultAvatar'
+import { authentication } from "../../helpers/firebase";
 
 function Settings() {
 
     const [ selectedTab, setSelectedTab ] = useState(1)
 
-    useEffect(() => document.title = 'Britam - User Profile', [])
+    useEffect(() => {
+        document.title = 'Britam - User Profile'
+    }, [])
 
     const toggleTab = (index) => setSelectedTab(index);
 
@@ -66,14 +69,14 @@ function Settings() {
                                                     <Form.Label>Name</Form.Label>
                                                     <Form.Control 
                                                     name="name"
-                                                    value={editFormData.name}
+                                                    value={authentication.currentUser.displayName}
                                                     onChange={handleEditFormChange} />
                                                 </Form.Group>
                                                 <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                     <Form.Label>Phone Number</Form.Label>
                                                     <Form.Control type="tel"
                                                         name="number" 
-                                                        value={editFormData.number} 
+                                                        value={authentication.currentUser.phoneNumber} 
                                                         onChange={handleEditFormChange}
                                                     />
                                                 </Form.Group>
@@ -101,7 +104,7 @@ function Settings() {
                                                 <Form.Label>Email</Form.Label>
                                                 <Form.Control onChange={handleEditFormChange}
                                                     name="email"
-                                                    value={editFormData.email} />
+                                                    value={authentication.currentUser.email} />
                                             </Form.Group>
                                             <Form.Group className="mb-3" controlId="formGridAddress1">
                                                 <Form.Label>Address</Form.Label>

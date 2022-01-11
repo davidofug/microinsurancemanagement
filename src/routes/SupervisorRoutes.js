@@ -1,7 +1,7 @@
 import Mtp from '../pages/Mtp'
 import Users from '../pages/Users'
 import Claims from '../pages/Claims'
-import Reports from '../pages/Reports'
+import Reports from '../pages/supervisor/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
 import Settings from '../pages/supervisor/Settings'
@@ -30,7 +30,7 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/add-user" >
+            <PrivateRoute path="/supervisor/add-user" >
                 <AddUsers />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/clients" >

@@ -1,7 +1,7 @@
 import Mtp from '../pages/Mtp'
 import Users from '../pages/Users'
 import Claims from '../pages/Claims'
-import Reports from '../pages/Reports'
+import Reports from '../pages/superAdmin/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
 import Settings from '../pages/admin/Settings'
@@ -15,9 +15,9 @@ import Organisations from '../pages/admin/Organisations'
 import Logs from '../pages/Logs.js'
 import Supervisors from '../pages/admin/Supervisors'
 import Agents from '../pages/Agents'
-import AddSupervisors from '../pages/admin/AddSupervisors'
 import Logout from '../pages/Logout'
 import AddUsers from '../pages/AddUsers'
+import Admins from '../pages/superAdmin/Admins'
 
 
 function SuperAdminRoutes() {
@@ -32,16 +32,16 @@ function SuperAdminRoutes() {
             <PrivateRoute path="/superadmin/view-log-trail" >
                 <Logs />
             </PrivateRoute>
+            <PrivateRoute path="/superadmin/admins" >
+                <Admins />
+            </PrivateRoute>
             <PrivateRoute path="/superadmin/supervisors" >
                 <Supervisors />
-            </PrivateRoute>
-            <PrivateRoute path="/superadmin/add-supervisors" >
-                <AddSupervisors />
             </PrivateRoute>
             <PrivateRoute path="/superadmin/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/add-user" >
+            <PrivateRoute path="/superadmin/add-user" >
                 <AddUsers />
             </PrivateRoute>
             <PrivateRoute path="/superadmin/clients" >
