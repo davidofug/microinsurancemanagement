@@ -67,24 +67,13 @@ export default function StickerMgt() {
                           </thead>
                           <tbody>
                             {data.map((sticker, index) => (
-                              <tr>
+                              <tr key={sticker.id}>
                                 <td>{index+1}</td>
                                 <td>{sticker.category}</td>
                                 <td>{`[00${index+1} - 10${index+2}]`}</td>
                                 <td>{index+2}</td>
                                 <td>{sticker.status}</td>
                                 <td>
-                                {/* <div className="dropdown">
-                                    <FaEllipsisV data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={() => {
-                                    document.getElementById(`mydropdownMenuButton${index}`).setAttribute("class", "showmydropdown-menu")
-                                  }}/>
-                                  <div className="mydropdown-menu" aria-labelledby="dropdownMenuButton" id={`mydropdownMenuButton${index}`}>
-                                    <li className="dropdown-item" href="#">Edit</li>
-                                    <li className="dropdown-item" href="#">Delete</li>
-                                    <hr />
-                                    <li className="dropdown-item" href="#">Close</li>
-                                  </div>
-                                </div> */}
                                 <ClickOut />
                                 </td>
                               </tr>

@@ -1,6 +1,6 @@
 import { CSVLink } from 'react-csv'
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import { MdDownload } from 'react-icons/md'
 import Header from '../components/header/Header';
 import data from '../helpers/mock-data.json'
@@ -140,11 +140,11 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
                               <td>{client.name}</td>
                               <td>{client.email}</td>
                               {meta.filter(user => user.id == client.uid).map(user => (
-                                <>
+                                <Fragment key={user.id}>
                                   <td>{user.gender}</td>
                                   <td>{user.phone}</td>
                                   <td>{user.address}</td>
-                                </>
+                                </Fragment>
                               ))}
                 <td className="started">
                   <FaEllipsisV
