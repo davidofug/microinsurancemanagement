@@ -4,11 +4,11 @@ import { Card, Container, Row, Col} from 'react-bootstrap'
 // import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
-import Header from '../parts/header/Header'
+import Header from '../components/header/Header'
 import { getDocs, collection } from 'firebase/firestore'
 import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import Loader from '../parts/Loader'
+import Loader from '../components/Loader'
 
 function Dashboard() {
     const [clients, setClients] = useState([]);

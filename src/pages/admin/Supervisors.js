@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
-import SearchBar from '../../parts/searchBar/SearchBar';
-import Header from '../../parts/header/Header';
+import SearchBar from '../../components/searchBar/SearchBar';
+import Header from '../../components/header/Header';
 import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { FaEllipsisV } from "react-icons/fa";
@@ -11,7 +11,7 @@ import { Table } from 'react-bootstrap'
 import { getDocs, collection, doc, getDoc, deleteDoc } from 'firebase/firestore'
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
-import ClientModal from '../../parts/ClientModal';
+import ClientModal from '../../components/ClientModal';
 
 function Supervisors() {
 

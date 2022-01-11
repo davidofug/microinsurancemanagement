@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
-import Header from "../parts/header/Header";
+import Header from "../components/header/Header";
 import { FaEllipsisV } from "react-icons/fa";
 import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination'
-import SearchBar from '../parts/searchBar/SearchBar'
+import SearchBar from '../components/searchBar/SearchBar'
 import { Table, Alert } from 'react-bootstrap'
 
 export default function Transit() {

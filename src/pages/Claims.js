@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import data from "../helpers/mock-data.json";
 import Pagination from "../helpers/Pagination";
-import ClaimTable from "../parts/claimTable/ClaimTable";
-import SearchBar from "../parts/searchBar/SearchBar";
-import Header from "../parts/header/Header";
+import ClaimTable from "../components/claimTable/ClaimTable";
+import SearchBar from "../components/searchBar/SearchBar";
+import Header from "../components/header/Header";
 import { Table, Alert, Modal, Form, Col, Row, Button } from "react-bootstrap";
 import { db } from "../helpers/firebase";
 import {
@@ -18,7 +18,7 @@ import {
 import { FaEllipsisV } from "react-icons/fa";
 import { useForm } from "../hooks/useForm";
 import { authentication } from "../helpers/firebase";
-import Loader from "../parts/Loader";
+import Loader from "../components/Loader";
 
 function Claims() {
   const [claims, setClaims] = useState([]);

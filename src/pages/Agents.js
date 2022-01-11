@@ -4,8 +4,8 @@ import data from '../helpers/mock-data.json'
 import { EditableDatable } from '../helpers/DataTable';
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../helpers/Pagination';
-import SearchBar from '../parts/searchBar/SearchBar'
-import Header from '../parts/header/Header';
+import SearchBar from '../components/searchBar/SearchBar'
+import Header from '../components/header/Header';
 import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table } from 'react-bootstrap'

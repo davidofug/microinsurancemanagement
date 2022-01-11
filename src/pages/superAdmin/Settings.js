@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import '../../styles/Settings.css'
 import { Form, Row, Col, Alert } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
-import Header from '../../parts/header/Header'
+import Header from '../../components/header/Header'
 import { authentication } from '../../helpers/firebase'
 
 function Settings() {

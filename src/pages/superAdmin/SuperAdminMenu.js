@@ -1,12 +1,12 @@
-import menuData from '../../parts/menuData'
+import menuData from '../../components/menuData'
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import logo from '../../assets/imgs/britam-logo.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
-import MobileNav from '../../parts/menu/MobileNav'
-import SideBar from '../../parts/menu/SideBar'
-import MinimisedSideBar from '../../parts/menu/MinimisedSideBar'
+import MobileNav from '../../components/menu/MobileNav'
+import SideBar from '../../components/menu/SideBar'
+import MinimisedSideBar from '../../components/menu/MinimisedSideBar'
 import { authentication } from "../../helpers/firebase";
 
 function SuperAdminMenu({ setLargeContentClass, largeContentClass }) {

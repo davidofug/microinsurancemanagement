@@ -2,14 +2,14 @@ import { CSVLink } from "react-csv";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MdDownload } from "react-icons/md";
-import Header from "../../parts/header/Header";
+import Header from "../../components/header/Header";
 import Pagination from "../../helpers/Pagination";
-import SearchBar from "../../parts/searchBar/SearchBar";
+import SearchBar from "../../components/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
 import { collection, getDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { FaEllipsisV } from "react-icons/fa";
-import OrganisationModal from "../../parts/OrganisationModel";
+import OrganisationModal from "../../components/OrganisationModel";
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
 import { authentication } from "../../helpers/firebase";
