@@ -106,8 +106,9 @@ function Dashboard() {
                                     </table>
                                     </>
                                 }
-                                {authClaims.supervisor && 
-                                    clients.length > 0 ? <>
+                                {authClaims.supervisor && <>
+                                    {clients.length > 0 
+                                    ? <>
                                     <h5 className="heading">Latest Agents</h5>
                                     <table>
                                         <thead><th>Name</th><th>Email Address</th></thead>
@@ -121,9 +122,10 @@ function Dashboard() {
                                         </tbody>
                                     </table>
                                     </>
-                                    : <Loader />
+                                    : 
+                                    <Loader />
+                                    }</>}
                                     
-                                }
                                 {authClaims.agent && <>
                                     <h5 className="heading">Latest Clients</h5>
                                     <table>
