@@ -121,7 +121,10 @@ function Policies() {
             currency,
             stickersDetails: stickers,
             clientDetails: existingClient?.name ? existingClient : newClient,
-            uid: authentication.currentUser.uid
+            uid: authentication.currentUser.uid,
+            agentName: authentication.currentUser.displayName,  
+            policyStartDate: policyStartDate, 
+            policyEndDate: policyEndDate
         })
         
         createClient()
@@ -331,6 +334,11 @@ function Policies() {
                                     </Row>
                                 
                             }
+
+                            {
+                                
+                                
+                            }
                             <Col className="add-new-client" style={{display:"flex", justifyContent:"flex-end"}}>
                                 <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button>
                             </Col>
@@ -342,12 +350,12 @@ function Policies() {
                                     <Modal.Body>
                                         <Form.Group className="mb-3" controlId="name">
                                             <Form.Label>Name</Form.Label>
-                                            <Form.Control placeholder="Enter name" id="name" onChange={handleClientDetails}/>
+                                            <Form.Control placeholder="Enter name" value={newClient.name} id="name" onChange={handleClientDetails}/>
                                         </Form.Group>
                                         <Row className="mb-3">
                                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Date of birth</Form.Label>
-                                                <Form.Control type="date" id="DOB" onChange={handleClientDetails}/>
+                                                <Form.Control type="date" id="DOB" value={newClient.DOB} onChange={handleClientDetails}/>
                                             </Form.Group>
                                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Gender</Form.Label>
@@ -367,19 +375,20 @@ function Policies() {
                                         <Row className="mb-3">
                                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Email</Form.Label>
-                                                <Form.Control type="email" placeholder="Enter email" id="email"  onChange={handleClientDetails}/>
+                                                <Form.Control type="email" placeholder="Enter email" value={newClient.email} id="email"  onChange={handleClientDetails}/>
                                             </Form.Group>
                                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Phone Number</Form.Label>
-                                                <Form.Control type="tel" placeholder="Enter phone number" id="phone_number" onChange={handleClientDetails}/>
+                                                <Form.Control type="tel" placeholder="Enter phone number" value={newClient.phone_number} id="phone_number" onChange={handleClientDetails}/>
                                             </Form.Group>
                                         </Row>
                                         <Form.Group className="mb-3">
                                             <Form.Label>Address</Form.Label>
-                                            <Form.Control placeholder="Enter your address" id="address" onChange={handleClientDetails}/>
+                                            <Form.Control placeholder="Enter your address" id="address" value={newClient.address} onChange={handleClientDetails}/>
                                         </Form.Group>
                                     </Modal.Body>
                                     <Modal.Footer>
+
                                         <Button variant="primary" onClick={() => {
                                             handleClose()
                                             console.log( newClient )
@@ -400,7 +409,7 @@ function Policies() {
                                     
                                     }}>
                                     <option>Currency</option>
-                                    {currencies.map((currency, index) => <option value={currencies["code"]}>{currency["code"]}</option>)}  
+                                    {currencies.map((currency, index) => <option value={currency["code"]}>{currency["code"]}</option>)}  
                                 </Form.Select>
                             </Form.Group>
                         </div>
