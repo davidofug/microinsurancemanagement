@@ -12,6 +12,7 @@ import moment from 'moment'
 import { db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { authentication } from '../helpers/firebase'
+import { create } from 'd3'
 
 
 // import AddClient from '../parts/AddClient'
@@ -32,9 +33,10 @@ function Policies() {
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
     const [ suggestions, setSuggestions ] = useState([])
+    const [ client, setClient ] = useState({})
     
     // const [users, setUsers] = useState(null)
-    const [ newClient, handleClientDetails] = useForm({
+    const [ newClient, handleClientDetails ] = useForm({
         name:'',
         DOB:'',
         gender:'',
@@ -121,15 +123,19 @@ function Policies() {
             clientDetails: existingClient?.name ? existingClient : newClient,
             uid: authentication.currentUser.uid
         })
+        
+        createClient()
+
     }
 
     //createClients
     const createClient = async(event) => {
         event.preventDefault()
         await addDoc(clientsRef, {
-            clientDetails,
+            newClient,
             uid: authentication.currentUser.uid
         })
+        handleClose()
     }
     
 
@@ -332,70 +338,43 @@ function Policies() {
                                 <Modal.Header closeButton>
                                 <Modal.Title>Add New Client</Modal.Title>
                                 </Modal.Header>
-                                <Form onSubmit={createClient}>
+                                <Form>
                                     <Modal.Body>
                                         <Form.Group className="mb-3" controlId="name">
                                             <Form.Label>Name</Form.Label>
                                             <Form.Control placeholder="Enter name" id="name" onChange={handleClientDetails}/>
                                         </Form.Group>
                                         <Row className="mb-3">
-                                            <Form.Group as={Col} controlId="email" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Date of birth</Form.Label>
                                                 <Form.Control type="date" id="DOB" onChange={handleClientDetails}/>
                                             </Form.Group>
-                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Gender</Form.Label>
-                                                {/* <div style={{"display": "flex", "gap": "10px"}}>
-                                                    <div>
-                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
+                                                <div style={{"display": "flex", "gap": "10px"}}>
+                                                    <div style={{display: "flex"}}>
+                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} value="male" onChange={handleClientDetails}/>
                                                         <label htmlFor="gender">Male</label>
                                                     </div>
-                                                    <div>
-                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} onChange={handleFieldChange}/>
+                                                    <div style={{display: "flex"}}>
+                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} value="female"onChange={handleClientDetails}/>
                                                         <label htmlFor="gender">Female</label>
                                                     </div>
-                                                </div> */}
-                                                <Row>
-                                                    <Col sm="4">
-                                                        <Form.Check
-                                                        type="radio"
-                                                        label="Male"
-                                                        name="gender"
-                                                        id="gender"
-                                                        value="male"
-                                                        onChange={
-                                                            handleClientDetails
-                                                        }
-                                                        />
-                                                    </Col>
-                                                    <Col sm="4">
-                                                        <Form.Check
-                                                        type="radio"
-                                                        label="Female"
-                                                        name="gender"
-                                                        id="gender"
-                                                        value="female"
-                                                        onChange={
-                                                            handleClientDetails
-                                                        }
-                                                        />
-                                                    </Col>
-                                                </Row>
-
+                                                </div>
                                             </Form.Group>
                                         </Row>
 
                                         <Row className="mb-3">
-                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Email</Form.Label>
                                                 <Form.Control type="email" placeholder="Enter email" id="email"  onChange={handleClientDetails}/>
                                             </Form.Group>
-                                            <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                 <Form.Label>Phone Number</Form.Label>
                                                 <Form.Control type="tel" placeholder="Enter phone number" id="phone_number" onChange={handleClientDetails}/>
                                             </Form.Group>
                                         </Row>
-                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Group className="mb-3">
                                             <Form.Label>Address</Form.Label>
                                             <Form.Control placeholder="Enter your address" id="address" onChange={handleClientDetails}/>
                                         </Form.Group>
@@ -403,8 +382,9 @@ function Policies() {
                                     <Modal.Footer>
                                         <Button variant="primary" onClick={() => {
                                             handleClose()
-                                        }} id="submit" type="submit">
-                                            Submit
+                                            console.log( newClient )
+                                        }}>
+                                            Save
                                         </Button>
                                     </Modal.Footer>
                                 </Form>
