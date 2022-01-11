@@ -152,20 +152,16 @@ const menuData = {
         },
         {
             number: 3,
-            name: "User Management",
+            name: "Users",
             icon: <MdPeople />,
-            link: "/supervisor/user-management",
+            link: "/supervisor/agents",
             subMenu: [
                 {
                     name: "Agents",
                     link: "/supervisor/agents"
                 },
                 {
-                    name: "Add Users",
-                    link: "/supervisor/add-user"
-                },
-                {
-                    name: "View Log Trail",
+                    name: "Log Trail",
                     link: "/supervisor/view-log-trail"
                 }
             ]
