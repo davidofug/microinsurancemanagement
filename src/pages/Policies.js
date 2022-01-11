@@ -444,10 +444,9 @@ function Policies() {
                                             <Form.Group controlId="policyStartDate"  >
                                                 <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                                 <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
+                                            
+                                                    setPolicyEndDate(moment(event.target.value).add(1, 'years').subtract(1, 'days').calender())
                                                     setPolicyStartDate(event.target.value)
-                                                    setPolicyEndDate(moment(event.target.value).add(1, 'years').calendar())
-                                                    // console.log(`end ${policyEndDate}`)
-                                                    // console.log(policyStartDate)
                                                 }}/>
                                             </Form.Group>
                                         </div>
@@ -456,7 +455,7 @@ function Policies() {
                                         <Col>
                                             <Form.Group controlId="policyEndDate" id="policy-end-date" >
                                                 <Form.Label><h5>Policy End Date</h5></Form.Label>
-                                                <Form.Control type="text" name="policy_start_date" value={policyEndDate} readOnly/>
+                                                <Form.Control type="text" name="policy_start_date" value={ policyEndDate } readOnly/>
                                             </Form.Group>
                                         </Col>
                                     </Row>
