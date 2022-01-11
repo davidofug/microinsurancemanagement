@@ -84,8 +84,16 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                         
                 </div>
                 </section>
-                <MinimisedSideBar role={Agent} displayName={authentication?.currentUser?.displayName}/>
-            
+                <MinimisedSideBar role={Agent}/>
+                <footer>
+                        <ul>
+                            <li><Link to="/admin/settings">Settings</Link></li>
+                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                        </ul>
+                    <Link to={'/admin-settings'} id="account">
+                        <DefaultAvatar />
+                    </Link>
+                </footer>
             </nav>
 }
         </div>

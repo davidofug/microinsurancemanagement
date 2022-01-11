@@ -84,8 +84,16 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                         
                 </div>
                 </section>
-                <MinimisedSideBar role={Admin} displayName={authentication?.currentUser?.displayName}/>
-            
+                <MinimisedSideBar role={Admin}/>
+                <footer>
+                        <ul>
+                            <li><Link to="/admin/settings">Settings</Link></li>
+                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                        </ul>
+                    <Link to={'/admin-settings'} id="account">
+                        <DefaultAvatar />
+                    </Link>
+                </footer>
             </nav>
       )}
     </div>
