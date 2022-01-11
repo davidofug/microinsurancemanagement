@@ -368,7 +368,7 @@ tbody, td, tfoot, th, thead, tr{
 
 
 /* 1025px to 1200px: desktop and large screens */
-@media scren and (min-width: 1025px) and (max-width: 1200px) {
+@media screen and (min-width: 1025px) and (max-width: 1200px) {
     .components {
         margin-left: 260px;
     }
@@ -392,6 +392,52 @@ tbody, td, tfoot, th, thead, tr{
     align-items: center;
     color: #fff;
     border-radius: 50%;
+  }
+
+
+
+  .mydropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    display: block;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+.showmydropdown-menu{
+    position: absolute;
+    z-index: 1000;
+    display: block;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+
+.profile-link {
+    cursor: pointer;
+  }
+  .profile-menu {
+    display: block;
+    right: 0;
+    left: auto;
   }
   
 

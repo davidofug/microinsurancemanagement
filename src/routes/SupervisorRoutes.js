@@ -16,6 +16,7 @@ import Agents from '../pages/Agents'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddUsers from '../pages/AddUsers'
+import PolicyDetails from '../pages/PolicyDetails'
 
 
 function SupervisorRoutes() {
@@ -50,6 +51,9 @@ function SupervisorRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/supervisor/reports" >
                 <Reports />
+            </PrivateRoute>
+            <PrivateRoute path="/supervisor/policy-details" >
+                <PolicyDetails />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/settings" >
                 <Settings />

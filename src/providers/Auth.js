@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import { AuthContext } from '../contexts/Auth'
 
+
+
+
 function AuthProvider({ children }) {
 
     const [currentUser, setCurrentUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const [authClaims, setAuthClaims] = useState(null)
 
+    
 
         // //try persisting the log in on refresh
         // useEffect(() => {

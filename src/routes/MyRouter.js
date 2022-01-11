@@ -24,8 +24,9 @@ function MyRouter() {
         localStorage.getItem('user')
     }, [])
 
-    const {currentUser, authClaims } = useAuth()
+    const {currentUser, authClaims, user } = useAuth()
     const [ largeContentClass, setLargeContentClass ] = useState(false)
+
 
     return (
         <Router>

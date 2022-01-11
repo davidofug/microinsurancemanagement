@@ -9,6 +9,9 @@ import MobileNav from '../../parts/menu/MobileNav'
 import SideBar from '../../parts/menu/SideBar'
 import MinimisedSideBar from '../../parts/menu/MinimisedSideBar'
 import { authentication } from "../../helpers/firebase";
+import { Badge } from 'react-bootstrap'
+import { MdLogout } from 'react-icons/md'
+import DefaultAvatar from '../../parts/DefaultAvatar'
 
 function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
 
@@ -38,8 +41,7 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
             <MobileNav role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
             {toggleMenu === true 
             ?
-            <div className="sidebar"> 
-                <nav >
+                <nav className="sidebar">
                     <div id='brand'>
                         <img src={logo} alt="Britam" />
                         <div id="arrowCircle" onClick={() => {
@@ -53,8 +55,23 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                         </div>
                     </div>
                     <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
+                    <footer>
+                <ul>
+                    <li><Link to="/admin/settings">My Profile</Link></li>
+                    <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                </ul>
+                <Link to='/admin/settings'>
+                    <DefaultAvatar />
+                    <div>
+                        <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
+                        <p style={{"color": "#646464"}}>
+                            <Badge bg="success">supervisor</Badge>
+                        </p>
+                    </div>
+                    <div id="eclipse"><div></div><div></div><div></div></div>
+                </Link>
+            </footer>
                 </nav>
-            </div>
             : 
             <nav className='sidebar-m'>
                 <section id='brand_m'>

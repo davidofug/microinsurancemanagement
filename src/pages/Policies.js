@@ -108,8 +108,7 @@ function Policies() {
         // const filteredStickers = stickers.filter(sticker => sticker !== stickers[index])
         // setStickers(filteredStickers)
     }
-
-
+    console.log(stickers)
 
     const renderStickerDetails = (singleSticker, index) => {
         return (
