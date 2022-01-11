@@ -116,14 +116,14 @@ function Claims() {
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
 
 
-      {claims.length > 0 ?
-      <>
       <div id="add_client_group">
         <div></div>
         <Link to="/add-claim">
           <button className="btn btn-primary cta">Add Claim</button>
         </Link>
       </div>
+      {claims.length > 0 ?
+      <>
 
       <Modal show={show} onHide={() => {
         handleClose()
