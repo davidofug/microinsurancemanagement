@@ -41,7 +41,7 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
             {toggleMenu === true 
             ?
                 <nav className="sidebar">
-                    <div id='brand'>
+                    <section id='brand'>
                         <img src={logo} width={150} alt="Britam" />
                         <div id="arrowCircle" onClick={() => {
                                 setToggeMenu(!toggleMenu)
@@ -52,7 +52,7 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                                 
                                 
                         </div>
-                    </div>
+                    </section>
                     <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
                     <footer>
                 <ul>
@@ -85,6 +85,15 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                 </div>
                 </section>
                 <MinimisedSideBar role={SuperVisor} displayName={authentication?.currentUser?.displayName}/>
+                <footer>
+                        <ul>
+                            <li><Link to="/admin/settings">Settings</Link></li>
+                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                        </ul>
+                    <Link to={'/admin-settings'} id="account">
+                        <DefaultAvatar />
+                    </Link>
+                </footer>
             
             </nav>
             }

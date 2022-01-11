@@ -2,7 +2,7 @@ import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { MdLogout  } from 'react-icons/md'
 import { useState, useEffect } from 'react'
-import logo from '../../assets/imgs/britam-logo.png'
+import logo from '../../assets/imgs/britam-logo2.png'
 import { Navbar, Offcanvas, Container, Nav, NavDropdown} from 'react-bootstrap'
 import DefaultAvatar from '../DefaultAvatar'
 
@@ -28,13 +28,13 @@ export default function MobileNav ({role, user, displayName}) {
                     <div>
                         <Navbar.Toggle className='m-3' aria-controls="offcanvasNavbar" />
                         <Navbar.Brand >
-                            <img src={logo} alt="Britam" />
+                            <img src={logo} width={150} alt="Britam" />
                         </Navbar.Brand>
                     </div>
-                    <Navbar.Offcanvas id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" placement="start">
+                    <Navbar.Offcanvas id="offcanvasNavbar" className="mobileSidebar" aria-labelledby="offcanvasNavbarLabel" placement="start">
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title id="offcanvasNavbarLabel">
-                                    <img src={logo} alt="Britam" />
+                                    <img src={logo} width={150} alt="Britam" />
                             </Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
