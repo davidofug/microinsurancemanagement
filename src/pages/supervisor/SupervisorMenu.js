@@ -55,21 +55,21 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                     </section>
                     <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
                     <footer>
-                <ul>
-                    <li><Link to="/admin/settings">My Profile</Link></li>
-                    <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                </ul>
-                <Link to='/admin/settings'>
-                    <DefaultAvatar />
-                    <div>
-                        <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
-                        <p style={{"color": "#646464"}}>
-                            <Badge bg="success">supervisor</Badge>
-                        </p>
-                    </div>
-                    <div id="eclipse"><div></div><div></div><div></div></div>
-                </Link>
-            </footer>
+                        <ul>
+                            <li><Link to="/admin/settings">My Profile</Link></li>
+                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                        </ul>
+                        <Link to='/admin/settings'>
+                            <DefaultAvatar />
+                            <div>
+                                <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
+                                <p style={{"color": "#646464"}}>
+                                    <Badge bg="success">supervisor</Badge>
+                                </p>
+                            </div>
+                            <div id="eclipse"><div></div><div></div><div></div></div>
+                        </Link>
+                    </footer>
                 </nav>
             : 
             <nav className='sidebar-m'>
