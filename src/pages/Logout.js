@@ -13,6 +13,7 @@ function Logout() {
         signOut(authentication)
         setLoading(false)
         history.push('/')
+        localStorage.removeItem('user')
         // document.title = 'Britam - With you every step of the way'
     })
 

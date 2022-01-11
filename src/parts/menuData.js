@@ -124,7 +124,17 @@ const menuData = {
             number: 8,
             name: "Reports",
             icon: <MdAssessment />,
-            link: "/admin/reports"
+            link: "/admin/reports",
+            subMenu: [
+                {
+                    name: "Daily, Weekly, Monthly",
+                    link: "/admin/reports"
+                },
+                {
+                    name: "Status Reports (new,paid,expired,cancelled, deleted)",
+                    link: "/admin/reports"
+                }
+            ]
         }
     ],
     SuperVisor: [
@@ -209,7 +219,7 @@ const menuData = {
         },
         {
             number: 3,
-            name: "User Management",
+            name: "Log Trails",
             icon: <MdPeople />,
             link: "/agent/view-log-trail"
         },

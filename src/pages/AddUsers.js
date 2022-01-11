@@ -151,6 +151,12 @@ function AddUsers() {
                             <Form.Group className="mb-3" controlId="windscreen">
                                 <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
                             </Form.Group>
+                            <Form.Group className="mb-3" controlId="windscreen">
+                                <Form.Check type="checkbox" label="Handle New Imports" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="windscreen">
+                                <Form.Check type="checkbox" label="Handle Transit" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                            </Form.Group>
                         </>
                     }
                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>

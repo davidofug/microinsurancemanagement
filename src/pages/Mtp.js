@@ -74,10 +74,75 @@ export default function Mtp() {
                             <td>{index + 1}</td>
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
-                            <td>{policy.id}</td>
-                            <td>{policy.id}</td>
-                            <td>{policy.id}</td>
-                            <td>{policy.id}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td className="started">
+                    <FaEllipsisV
+                      className={`actions please${index}`}
+                      onClick={() => {
+                        document
+                          .querySelector(`.please${index}`)
+                          .classList.add("hello");
+                      }}
+                    />
+                    <ul id="actionsUl" className="actions-ul">
+                      <li>
+                        <button onClick={() => {
+                          
+                        }}>Details</button>
+                        <Link to="/supervisor/policy-details" >Details</Link>
+                      </li>
+                      <li>
+                        <button>Renew</button>
+                      </li>
+                      <li>
+                        <button>Cancel</button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            document
+                              .querySelector(`.please${index}`)
+                              .classList.remove("hello");
+                            const confirmBox = window.confirm(
+                              `Are you sure you want to delete claim`
+                            );
+                            if (confirmBox === true) {
+                            }
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            document
+                              .querySelector(`.please${index}`)
+                              .classList.remove("hello");
+                          }}
+                        >
+                          Edit
+                        </button>
+                      </li>
+                      <hr style={{ color: "black" }}></hr>
+                      <li>
+                        <button
+                          onClick={() => {
+                            document
+                              .querySelector(`.please${index}`)
+                              .classList.remove("hello");
+                          }}
+                        >
+                          close
+                        </button>
+                      </li>
+                    </ul>
+                  </td>
                           </tr>
                         ))}
                         {/* {searchByName(currentPolicies).map((row, index) => (

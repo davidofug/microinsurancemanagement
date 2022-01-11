@@ -49,29 +49,6 @@ export default function SideBar({role, user, displayName}){
                     ))}
                 </ul>
             </section>
-            
-            <footer>
-                <ul>
-                    <li><Link to={`/${user}/settings`}>My Profile</Link></li>
-                    <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                </ul>
-                <Link to='/admin/settings'>
-                    <DefaultAvatar />
-                    {/* <img src={profile} alt="profile" /> */}
-                    <div>
-                        <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{displayName}</p>
-                        <p style={{"color": "#646464"}}>
-                            {user == 'superadmin' && <Badge bg='danger'>{user}</Badge>}
-                            {user == 'admin' && <Badge bg="warning">{user}</Badge>}
-                            {user == 'supervisor' && <Badge bg="success">{user}</Badge>}
-                            {user == 'agent' && <Badge bg="dark">{user}</Badge>}
-                            
-                        </p>
-                    </div>
-                    <div id="eclipse"><div></div><div></div><div></div></div>
-                </Link>
-            </footer>
-
         </>
     )
 }
