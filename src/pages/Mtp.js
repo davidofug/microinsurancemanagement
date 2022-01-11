@@ -74,7 +74,16 @@ export default function Mtp() {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <td>
+                              <Alert style={{
+                        backgroundColor: "#1475cf",
+                        color: "#fff",
+                        padding: "5px",
+                        textAlign: "center",
+                        border: "none",
+                        margin: "0",
+                      }}>NEW</Alert>
+                            </td>
                             <td></td>
                             <td className="started">
                     <FaEllipsisV
