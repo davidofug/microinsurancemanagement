@@ -118,7 +118,7 @@ function Policies() {
         await addDoc(policiesRef, {
             currency,
             stickersDetails: stickers,
-            clientDetails: existingClient !== null ? existingClient : newClient,
+            clientDetails: existingClient?.name ? existingClient : newClient,
             uid: authentication.currentUser.uid
         })
     }
@@ -307,7 +307,7 @@ function Policies() {
                         <Row style={{gap:"2vw"}}>
                             <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
                                 <Form.Group className="mb-3" controlId="clientDetails">
-                                    <Form.Control type="text" placeholder="Existing" value={existingClient?.name } onChange={event => {
+                                    <Form.Control type="text" placeholder="Existing" value={ existingClient?.name } onChange={event => {
                                         const existingClient = getExistingClient(event.target.value)
                                         setClientDetails(existingClient)
                                     }}/>
@@ -444,7 +444,6 @@ function Policies() {
                                             <Form.Group controlId="policyStartDate"  >
                                                 <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                                 <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
-                                            
                                                     setPolicyEndDate(moment(event.target.value).add(1, 'years').subtract(1, 'days').calender())
                                                     setPolicyStartDate(event.target.value)
                                                 }}/>
