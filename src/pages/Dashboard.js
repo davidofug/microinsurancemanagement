@@ -127,11 +127,11 @@ function Dashboard() {
                                     }</>}
                                     
                                 {authClaims.agent && <>
+                                    {clients.length > 0
+                                    ? <>
                                     <h5 className="heading">Latest Clients</h5>
                                     <table>
-                                        <thead>
-                                            <tr><th>Name</th><th>Email</th></tr>
-                                        </thead>
+                                        <thead><th>Name</th><th>Email Address</th></thead>
                                         <tbody>
                                             {clients.map(client => (
                                                 <tr key={client.uid}>
@@ -142,7 +142,9 @@ function Dashboard() {
                                         </tbody>
                                     </table>
                                     </>
-                                }
+                                    :
+                                    <Loader />
+                                    }</>}
                             </div>
                         </div>
                     </div>
