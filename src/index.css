@@ -249,9 +249,15 @@ tbody, td, tfoot, th, thead, tr{
     margin: 0;
 }
 
-#add_client_group{
-    display: grid;
+
+#add_client_group {
+    display: flex;
     grid-template-columns: 5fr 1fr;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 50px;
+    margin: 0 20px;
 }
 
 #action{

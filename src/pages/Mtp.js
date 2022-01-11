@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
 import Header from "../parts/header/Header";
 import { FaEllipsisV } from "react-icons/fa";
 import data from '../helpers/mock-data.json'
@@ -13,7 +12,6 @@ import { db } from '../helpers/firebase'
 export default function Mtp() {
   useEffect(() => {
     document.title = "Britam - Motor Third Party";
-
     getPolicies()
   }, []);
 
@@ -23,11 +21,8 @@ export default function Mtp() {
 
   const getPolicies = async () => {
       const data = await getDocs(policyCollectionRef);
-      // console.log(data.docs)
       setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
-
-  console.log(policies)
 
   // pagination
   const [ currentPage, setCurrentPage ] = useState(1)
