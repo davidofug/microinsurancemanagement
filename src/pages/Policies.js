@@ -32,6 +32,7 @@ function Policies() {
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
     const [ suggestions, setSuggestions ] = useState([])
+    
     // const [users, setUsers] = useState(null)
     const [ newClient, handleClientDetails] = useForm({
         name:'',
@@ -275,7 +276,9 @@ function Policies() {
                 })
                 console.log(matches)
                 setSuggestions(matches)
+                setExistingClient(text)
             }    
+
     }
     // const handleSubmit = () => 
 
@@ -283,7 +286,6 @@ function Policies() {
     const suggestionHandler = (text) => {
         setSuggestions([])
         setExistingClient(text)
-    
     }
 
 
@@ -305,7 +307,7 @@ function Policies() {
                         <Row style={{gap:"2vw"}}>
                             <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
                                 <Form.Group className="mb-3" controlId="clientDetails">
-                                    <Form.Control type="text" placeholder="Existing" autocomplete="on" data={existingCustomers.map((customer, index) => customer.name)} onChange={event => {
+                                    <Form.Control type="text" placeholder="Existing" value={existingClient?.name} onChange={event => {
                                         const existingClient = getExistingClient(event.target.value)
                                         setClientDetails(existingClient)
                                     }}/>
@@ -315,7 +317,10 @@ function Policies() {
                                 suggestions?.length > 0 && 
                                     <Row>
                                         {
-                                            suggestions.map((suggestion, index) => <div key={index}>{suggestion.name}</div>)
+                                            suggestions.map((suggestion, index) => <div key={index} onClick={() => {
+                                                suggestionHandler(suggestion)
+                                                // console.log(suggestion)
+                                            }}>{suggestion.name}</div>)
                                         }
                                     </Row>
                                 
