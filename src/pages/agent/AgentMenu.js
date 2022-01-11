@@ -2,8 +2,7 @@ import menuData from '../../parts/menuData'
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import profile from '../../assets/imgs/image 2.png'
-import logo from '../../assets/imgs/britam-logo.png'
+import logo from '../../assets/imgs/britam-logo2.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import MobileNav from '../../parts/menu/MobileNav'
 import SideBar from '../../parts/menu/SideBar'
@@ -43,7 +42,7 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
             ?
                     <nav className="sidebar">
                         <div id='brand'>
-                            <img src={logo} alt="Britam" />
+                            <img src={logo} width={150} alt="Britam" />
                             <div id="arrowCircle" onClick={() => {
                                     setToggeMenu(!toggleMenu)
                                     setLargeContentClass(!largeContentClass)
