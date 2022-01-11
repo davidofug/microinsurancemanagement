@@ -10,7 +10,7 @@ import {
 import { Alert } from "react-bootstrap";
 
 import "../assets/styles/login.css";
-import Loader from "../parts/Loader";
+import Loader from "../components/Loader";
 
 function Login() {
   const [user, setUser] = useState({

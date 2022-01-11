@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useHistory, Link } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
 import { authentication } from '../helpers/firebase'
-import Loader from '../parts/Loader'
+import Loader from '../components/Loader'
 import '../assets/styles/login.css'
 
 function Logout() {

@@ -1,11 +1,11 @@
-import Header from "../../parts/header/Header"
-import Badge from "../../parts/Badge"
+import Header from "../../components/header/Header"
+import Badge from "../../components/Badge"
 import { useEffect, useState } from 'react'
 import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import { CSVLink } from "react-csv";
-import SearchBar from '../../parts/searchBar/SearchBar';
+import SearchBar from '../../components/searchBar/SearchBar';
 import { Table } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { MdOutlinePedalBike } from 'react-icons/md'

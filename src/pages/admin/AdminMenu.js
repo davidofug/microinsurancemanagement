@@ -1,15 +1,15 @@
-import menuData from "../../parts/menuData";
+import menuData from "../../components/menuData";
 import "../../assets/styles/menu.css";
 import { useState, useEffect } from "react";
 import logo from "../../assets/imgs/britam-logo2.png";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
-import MobileNav from "../../parts/menu/MobileNav";
-import SideBar from "../../parts/menu/SideBar";
-import MinimisedSideBar from "../../parts/menu/MinimisedSideBar";
+import MobileNav from "../../components/menu/MobileNav";
+import SideBar from "../../components/menu/SideBar";
+import MinimisedSideBar from "../../components/menu/MinimisedSideBar";
 import { authentication } from "../../helpers/firebase";
 import { Link } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
-import DefaultAvatar from "../../parts/DefaultAvatar";
+import DefaultAvatar from "../../components/DefaultAvatar";
 import { Badge } from "react-bootstrap";
 
 export default function AdminMenu({ setLargeContentClass, largeContentClass }) {

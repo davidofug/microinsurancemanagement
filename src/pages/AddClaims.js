@@ -1,7 +1,7 @@
 import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
-import Header from '../parts/header/Header'
+import Header from '../components/header/Header'
 import { authentication, db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../hooks/useForm'

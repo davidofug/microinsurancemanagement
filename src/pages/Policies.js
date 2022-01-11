@@ -5,13 +5,13 @@ import { functions } from '../helpers/firebase'
 import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
-import Header from '../parts/header/Header'
+import Header from '../components/header/Header'
 import '../styles/Policies.css'
 import moment from 'moment'
-import Upload from '../parts/uploader/Upload';
+import Upload from '../components/uploader/Upload';
 
 
-// import AddClient from '../parts/AddClient'
+// import AddClient from '../components/AddClient'
 
 // enlarging the size of + and -
 

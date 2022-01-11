@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import { MdDownload } from 'react-icons/md'
 import { Form } from 'react-bootstrap'
-import Header from '../parts/header/Header'
+import Header from '../components/header/Header'
 
 function Users() {
 
