@@ -39,14 +39,14 @@ function MyRouter() {
                     {authClaims?.agent && <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.superadmin && <SuperAdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                 </div>
+                </>
+                }
                     <main className='displayLeft'>
                         <AdminRoutes />
                         <SupervisorRoutes />
                         <AgentsRoutes />
                         <SuperAdminRoutes />
                     </main>
-                </>
-                }
                 <Switch >
                     <Route path="/forgot-password" component={ForgotPassword} />
                     <Route path="/logout" component={Logout} />
