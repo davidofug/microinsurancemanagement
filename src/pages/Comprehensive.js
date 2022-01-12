@@ -6,12 +6,26 @@ import { Table, Alert } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar'
 import { FaEllipsisV } from "react-icons/fa";
+import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
+import { db } from '../helpers/firebase'
+import { currencyFormatter } from "../helpers/currency.format";
 
 function Comprehensive() {
 
     useEffect(() => {
         document.title = 'Britam - Comprehensive'
+        getComprehensive()
     }, [])
+
+    // policies
+  const [policies, setPolicies] = useState([])
+  const policyCollectionRef = collection(db, "policies");
+
+  const getComprehensive = async () => {
+    const data = await getDocs(policyCollectionRef);
+    const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    setPolicies(pole.filter(policy => policy.category === 'comprehensive'))
+  }
 
     // pagination
     const [ currentPage, setCurrentPage ] = useState(1)
@@ -19,15 +33,20 @@ function Comprehensive() {
 
     const indexOfLastPolicy = currentPage * policiesPerPage
     const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-    const currentPolicies = data.slice(indexOfFirstPolicy, indexOfLastPolicy)
-    const totalPagesNum = Math.ceil(data.length / policiesPerPage)
+    const currentPolicies = policies.slice(indexOfFirstPolicy, indexOfLastPolicy)
+    const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
 
 
     // search by Name
     const [searchText, setSearchText] = useState('')
     const handleSearch = ({ target }) => setSearchText(target.value);
-    const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+    const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
+    // delete a policy
+    const handleDelete = async id => {
+      const policyDoc = doc(db, "policies", id);
+      await deleteDoc(policyDoc);
+    }
 
     return (
         <div className='components'>
@@ -49,38 +68,26 @@ function Comprehensive() {
 
                 <Table striped hover responsive>
                     <thead>
-                        <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
-                        {searchByName(currentPolicies).map((row, index) => (
-                            <tr key={row.id}>
-                                <td>{row.name}</td>
-                                <td>{row.category}</td>
-                                <td>{row.amount}</td>
-                                <td>{row.paymentMethod}</td>
-                                <td>{row.currency}</td>
-                                <td>{row.agentName}</td>
+                        {policies.length > 0 && searchByName(currentPolicies).map((policy, index) => (
+                            <tr key={policy.id}>
+                                <td>{index + 1}</td>
+                                {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
+                                {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
+                                <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
+                                <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
+                                <td>{policy.agentName ? policy.agentName : ''}</td>
                                 
-                                {row.status === 'Active' 
-                                  ? <td>
-                                     <Alert
-                                        style={{backgroundColor: "#1475cf",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
-                                        }}
-                                      >
-                                        {row.status}
-                                      </Alert>
-                                  </td> 
-                                  : <td>
-                                      <Alert
-                                        style={{backgroundColor: "red",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
-                                        }}
-                                      >
-                                        {row.status}
-                                      </Alert>
-                                  </td> }
+                                <td>
+                              <span
+                                style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                              >new</span>
+                            </td>
 
 
-                                <td>{row.createdAt}</td>
+                            <td>{policy.policyStartDate}</td>
                                 <td className="started">
                     <FaEllipsisV
                       className={`actions please${index}`}
@@ -110,6 +117,8 @@ function Comprehensive() {
                               `Are you sure you want to delete claim`
                             );
                             if (confirmBox === true) {
+                              handleDelete(policy.id);
+                              getComprehensive()
                             }
                           }}
                         >
@@ -156,7 +165,7 @@ function Comprehensive() {
                             </tr>
                     </tbody>
                     <tfoot>
-                        <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </tfoot>
                 </Table>
 
@@ -164,7 +173,7 @@ function Comprehensive() {
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentPolicies}
-                    sortedEmployees={data}
+                    sortedEmployees={policies}
                     entries={'Comprehensive policies'} />
 
 

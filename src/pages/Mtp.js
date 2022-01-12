@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "../components/header/Header";
 import { FaEllipsisV } from "react-icons/fa";
-import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../components/searchBar/SearchBar'
 import { Table } from 'react-bootstrap'
@@ -47,6 +46,16 @@ export default function Mtp() {
     await deleteDoc(policyDoc);
   }
 
+  // actions context
+  const [show, setShow] = useState(false)
+    window.onclick = function(event) {
+        if (!event.target.matches('.sharebtn')) {
+            setShow(false)
+        }
+    }
+
+  const [clickedIndex, setClickedIndex] = useState(null)
+
   return (
     <div className="components">
       <Header
@@ -70,7 +79,7 @@ export default function Mtp() {
 
                 <Table striped hover responsive>
                     <thead>
-                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
                         {policies.length > 0 && searchByName(policies).map((policy, index) => (
@@ -79,7 +88,6 @@ export default function Mtp() {
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
                             <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
-                            <td>cash</td>
                             <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                             <td>{policy.agentName ? policy.agentName : ''}</td>
                             <td>
@@ -88,17 +96,20 @@ export default function Mtp() {
                               >new</span>
                             </td>
                             <td>{policy.policyStartDate}</td>
+
+
+
+
                             <td className="started">
-                    <FaEllipsisV
-                      className={`actions please${index}`}
+                    <button
+                      className="sharebtn"
                       onClick={() => {
-                        document
-                          .querySelector(`.please${index}`)
-                          .classList.add("hello");
+                          setClickedIndex(index)
+                          setShow(!show)
                       }}
-                    />
-                    <ul id="actionsUl" className="actions-ul">
-                      <li>
+                    >&#8942;</button>
+                    <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                    <li>
                         <Link to="/supervisor/policy-details" >Details</Link>
                       </li>
                       <li>
@@ -110,20 +121,7 @@ export default function Mtp() {
                       <li>
                         <button
                           onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
+                            setShow()
                             const confirmBox = window.confirm(
                               `Are you sure you want to delete this sticker`
                             );
@@ -136,27 +134,27 @@ export default function Mtp() {
                           Delete
                         </button>
                       </li>
-                      <hr style={{ color: "black" }}></hr>
                       <li>
                         <button
                           onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
+                            
                           }}
                         >
-                          close
+                          Edit
                         </button>
+                      </li>
+                      <hr style={{ color: "black" }}></hr>
+                      <li>
+                        <button onClick={() => {setShow(false)}}>close</button>
                       </li>
                     </ul>
                   </td>
+                    
                           </tr>
                         ))}
-                            <tr>
-                            </tr>
                     </tbody>
                     <tfoot>
-                        <tr><td>#</td><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><td>#</td><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </tfoot>
                 </Table>
 

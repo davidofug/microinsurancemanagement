@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
 import { useHistory, Redirect, Link, useLocation } from "react-router-dom";
-import logo from "../assets/imgs/britam-logo.png";
+import logo from "../assets/imgs/britam-logo2.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
 import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { Alert } from "react-bootstrap";
+import { Alert, Toast } from "react-bootstrap";
 
 import "../assets/styles/login.css";
 import Loader from "../components/Loader";
@@ -20,7 +20,7 @@ function Login() {
   const [password, setPassword] = useState("password");
   const [isVisible, setIsVisible] = useState(false);
 
-  const { currentUser, setCurrentUser, setAuthClaims } = useAuth();
+  const { currentUser, setCurrentUser, authClaims, setAuthClaims } = useAuth();
   const [ error, setError ] = useState('');
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
@@ -64,12 +64,25 @@ function Login() {
 
   if (isLoading) return <Loader />;
 
-  if (currentUser?.loggedIn)
+  if (currentUser?.loggedIn){
+    if(authClaims.admin){
+      return <Redirect to={{ pathname: '/admin/dashboard' }} />;
+    }
+    if(authClaims.agent){
+      return <Redirect to={{ pathname: '/agent/dashboard' }} />;
+    }
+    if(authClaims.supervisor){
+      return <Redirect to={{ pathname: '/supervisor/dashboard' }} />;
+    }
+    if(authClaims.superadmin){
+      return <Redirect to={{ pathname: '/superadmin/dashboard' }} />;
+    }
     return <Redirect to={{ pathname: from }} />;
+  }
 
   return (
     <div className="auth-wrapper">
-      <img src={logo} alt="Britam" />
+      <img src={logo} width={150} alt="Britam" />
       <form action="" onSubmit={handleSignIn}>
         <p>Enter Email and Password to sign in</p>
         {error && <Alert variant="danger">{error}</Alert>}
