@@ -1,10 +1,25 @@
-import React from 'react'
+import AddClient from './forms/AddClient'
+import Modal from 'react-bootstrap'
 
-function Modal() {
+export const handleClose = (display) => false
+export const handleShow = (show) => true
+
+function Modal({ display }) {
+    // const [show, setShow] = useState(false);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
     return (
-        <div>
-            
-        </div>
+        <Modal show={ display } onHide={close}>
+            <Modal.Header closeButton>
+            <Modal.Title>Add New Client</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <AddClient />             
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="primary" onClick={() => { display }}>Save</Button>
+            </Modal.Footer>
+        </Modal>
     )
 }
 
