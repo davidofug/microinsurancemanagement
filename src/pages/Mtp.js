@@ -135,15 +135,6 @@ export default function Mtp() {
                           Delete
                         </button>
                       </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </li>
                       <hr style={{ color: "black" }}></hr>
                       <li>
                         <button onClick={() => {setShow(false)}}>close</button>
