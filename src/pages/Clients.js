@@ -105,7 +105,6 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
             setShowContext(false)
         }
     }
-
   const [clickedIndex, setClickedIndex] = useState(null)
 
     return (
@@ -194,10 +193,6 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
                                     </div>
                               </li>
                   </ul>
-
-
-
-                  
                 </td>
                           </tr>
                           ))}
