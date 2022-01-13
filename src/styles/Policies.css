@@ -160,3 +160,9 @@
 
 
 }
+
+.isInvalid {
+    
+    border:1px solid red;
+    box-shadow: 0 0 13px #719ECE; 
+}

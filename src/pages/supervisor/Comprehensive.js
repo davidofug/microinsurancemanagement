@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import data from '../helpers/mock-data.json'
-import Pagination from '../helpers/Pagination'
-import SearchBar from '../parts/searchBar/SearchBar'
+import data from '../../helpers/mock-data.json'
+import Header from '../../parts/header/Header';
 import { Table, Alert } from 'react-bootstrap'
-import Header from '../parts/header/Header';
+import Pagination from '../../helpers/Pagination';
+import SearchBar from '../../parts/searchBar/SearchBar'
 import { FaEllipsisV } from "react-icons/fa";
 
-function Windscreen() {
+function Comprehensive() {
 
-    useEffect(() => {document.title = 'Britam - Windscreen'}, [])
+    useEffect(() => {
+        document.title = 'Britam - Comprehensive'
+    }, [])
 
     // pagination
     const [ currentPage, setCurrentPage ] = useState(1)
@@ -20,21 +22,22 @@ function Windscreen() {
     const currentPolicies = data.slice(indexOfFirstPolicy, indexOfLastPolicy)
     const totalPagesNum = Math.ceil(data.length / policiesPerPage)
 
+
     // search by Name
     const [searchText, setSearchText] = useState('')
     const handleSearch = ({ target }) => setSearchText(target.value);
     const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
+
     return (
         <div className='components'>
-            <Header title="Windscreen" subtitle="MANAGING WINDSCREEN" />
+            <Header title="Comprehensive" subtitle="MANAGING COMPREHENSIVE" />
 
             <div id="add_client_group">
                 <div></div>
-                {/* <Link to="/admin/add-windscreen">
-                    <button className="btn btn-primary cta">Add Windscreen</button>
-                </Link> */}
-                
+                <Link to="/supervisor/add-comprehensive">
+                    <button className="btn btn-primary cta">Add</button>
+                </Link>
             </div>
 
             <div className="shadow-sm table-card componentsData">   
@@ -42,7 +45,7 @@ function Windscreen() {
                     <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
                     <div></div>
-                </div>
+                  </div>
 
                 <Table striped hover responsive>
                     <thead>
@@ -57,8 +60,8 @@ function Windscreen() {
                                 <td>{row.paymentMethod}</td>
                                 <td>{row.currency}</td>
                                 <td>{row.agentName}</td>
-
-                                  {row.status === 'Active' 
+                                
+                                {row.status === 'Active' 
                                   ? <td>
                                      <Alert
                                         style={{backgroundColor: "#1475cf",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
@@ -78,7 +81,6 @@ function Windscreen() {
 
 
                                 <td>{row.createdAt}</td>
-
                                 <td className="started">
                     <FaEllipsisV
                       className={`actions please${index}`}
@@ -139,9 +141,10 @@ function Windscreen() {
                       </li>
                     </ul>
                   </td>
+                                
                             </tr>
                         ))}
-                            <tr>
+                              <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -162,7 +165,8 @@ function Windscreen() {
                     setCurrentPage={setCurrentPage}
                     currentClients={currentPolicies}
                     sortedEmployees={data}
-                    entries={'Windscreen policies'} />
+                    entries={'Comprehensive policies'} />
+
 
                
             </div>
@@ -170,4 +174,4 @@ function Windscreen() {
     )
 }
 
-export default Windscreen
+export default Comprehensive

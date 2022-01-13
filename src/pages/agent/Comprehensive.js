@@ -21,7 +21,7 @@ function Comprehensive() {
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/admin/add-comprehensive">
+                <Link to="/agent/add-comprehensive">
                     <button className="btn btn-primary cta">Add</button>
                 </Link>
                 

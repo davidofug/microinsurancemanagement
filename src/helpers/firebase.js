@@ -39,3 +39,4 @@ export function onAuthStateChange(userCallback, claimsCallback, loadingCallback 
       }
     });
 }
+
