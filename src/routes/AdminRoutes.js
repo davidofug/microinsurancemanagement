@@ -25,7 +25,7 @@ import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
 import AddStickerRange from '../pages/admin/AddStickerRange'
 import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
-import PolicyRenew from '../pages/PolicyRenew'
+import PolicyRenew from '../pages/PolicyDetails/PolicyRenew'
 
 
 function AdminRoutes() {
