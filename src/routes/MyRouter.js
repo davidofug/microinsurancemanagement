@@ -27,9 +27,16 @@ function MyRouter() {
     const {currentUser, authClaims, user } = useAuth()
     const [ largeContentClass, setLargeContentClass ] = useState(false)
 
-
+/* something */
     return (
         <Router>
+             <Switch >
+                    <Route path="/forgot-password" component={ForgotPassword} />
+                    <Route path="/logout" component={Logout} />
+                    <Route path="/not-logged-in" component={NotLoggedIn} />
+                    <Route path="/" exact component={Login} />     
+                    <Route path="/login" exact component={Login} />
+                </Switch>
             <div className={largeContentClass ? 'top-container-large': `top-container` }>
                 {currentUser?.loggedIn && 
                 <>
@@ -41,20 +48,14 @@ function MyRouter() {
                 </div>
                 </>
                 }
-                    <main className='displayLeft'>
-                        <AdminRoutes />
-                        <SupervisorRoutes />
-                        <AgentsRoutes />
-                        <SuperAdminRoutes />
-                    </main>
-                <Switch >
-                    <Route path="/forgot-password" component={ForgotPassword} />
-                    <Route path="/logout" component={Logout} />
-                    <Route path="/not-logged-in" component={NotLoggedIn} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/" exact component={Login} />     
-                </Switch>
+                <main className='displayLeft'>
+                    <AdminRoutes />
+                    <SupervisorRoutes />
+                    <AgentsRoutes />
+                    <SuperAdminRoutes />
+                </main>
             </div>
+               
         </Router>
     )
 }
