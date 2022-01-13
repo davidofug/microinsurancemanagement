@@ -69,13 +69,13 @@ function AdminRoutes() {
                 <Policies />
             </PrivateRoute>
             <PrivateRoute path="/admin/add-comprehensive" >
-                <Policies category="comprehensive"/>
+                <Policies cat="comprehensive" btn_txt="Process Comprehensive" pol="comprehensive"/>
             </PrivateRoute>
             <PrivateRoute path="/admin/add-windscreen" >
-                <Policies category="windscreen"/>
+                <Policies cat="windscreen" btn_txt="Process Windscreen" pol="windscreen"/>
             </PrivateRoute>
             <PrivateRoute path="/admin/add-mtp" >
-                <Policies category="mtp"/>
+                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
             </PrivateRoute>
             <PrivateRoute path="/admin/claims" >
                 <Claims />

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
 
-import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
+import { Form,Row, Col, Table, Button, Modal, Alert } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
 import Upload from '../parts/uploader/Upload'
@@ -13,14 +13,15 @@ import { db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { authentication } from '../helpers/firebase'
 
-import { create } from 'd3'
+import { create, text } from 'd3'
 import { MdEmojiObjects } from 'react-icons/md'
 
 
 // import AddClient from '../parts/AddClient'
 // enlarging the size of + and -
 
-function Policies({category}) {
+function Policies({cat, btn_txt, pol}) {
+
     const listUsers = httpsCallable(functions,'listUsers')
     const addUser = httpsCallable(functions, 'addUser')
  
@@ -35,6 +36,11 @@ function Policies({category}) {
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
     const [ client, setClient ] = useState({})
+
+    const [ validTotalPremium, setValidTotalPremium ] = useState(true)
+
+    
+
     
     const [ newClient, handleClientDetails ] = useForm({
         user_role: 'Customer',
@@ -73,6 +79,7 @@ function Policies({category}) {
         listUsers().then(({data}) => {
             setExistingClients(data.filter(user => user?.role?.Customer))
             console.log(data.filter(user => user?.role?.Customer))
+            console.log(data)
         }).catch((err) => {
             console.log(err)
         })
@@ -80,7 +87,17 @@ function Policies({category}) {
 
     const handleInputChange = (index, event) => {
         const values = [...stickers]
-        values[index][event.target.name] = event.target.value                                        
+        
+        if(event.target.name === 'totalPremium'){
+            if( Number(event.target.value) >= 0 ) { 
+                values[index][event.target.name] = event.target.value
+            } 
+        }        
+        else{
+            values[index][event.target.name] = event.target.value    
+
+        }
+
         setStickers(values)
     }
 
@@ -126,7 +143,8 @@ function Policies({category}) {
             added_by_name: authentication.currentUser.displayName,  
             policyStartDate: policyStartDate, 
             policyEndDate: policyEndDate,
-            category: category
+            category: cat,
+            // totalValuation: (0.5/100 * basicPremium)  
         })        
 
         client['added_by_uid'] = authentication.currentUser.uid
@@ -135,7 +153,10 @@ function Policies({category}) {
         addUser(client).then((results) => {
             alert(`successfully added ${client.name}`)
             document.policy.reset()
+            setPolicyEndDate('')
+            setPolicyStartDate('')
         }).catch( error => console.log( error ))
+        
     }    
 
 
@@ -144,7 +165,20 @@ function Policies({category}) {
     const [ windscreen, setWindscreen ] = useState(false)
     const [ mtp, setMTP ] = useState(false)
 
-    const renderStickerDetails = (singleSticker, index) => {
+    const generateTotalValuation = ( basic, stickers ) => {
+        const trainingLevy = 0.5 * basic
+        const stickerFee  = 6000
+        const VAT = (18/100) * (basic + trainingLevy + stickerFee)
+
+        let totalPrem = 0
+        for(let i = 0; i < stickers.length; i++) {
+            if(stickers[i]?.totalPremium.length > 0) totalPrem += stickers[i].totalPremium
+        }
+
+        console.log(`TotalPremium ${totalPrem}`)
+    }
+
+    const renderStickerDetails = (singleSticker, index, cate=`${cat}`) => {
         return (
             <React.Fragment key={index}>
                 <tr className="table-row">
@@ -235,7 +269,7 @@ function Policies({category}) {
                             </div>
                             <div>
                                 <Form.Group controlId="totalPremium" >
-                                    <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} />
+                                    <Form.Control type="text" id="totalPremium" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </div>
                         </div>
@@ -249,12 +283,23 @@ function Policies({category}) {
                             </div>
                             <div>
                                 <Form.Group controlId="chasisNo" aria-label="chasisNo">
-                                    <Form.Control type="text" name="chasisNo" placeholder="Chasis No" value={singleSticker.chasisNo} onChange={event => handleInputChange(index, event)}/>
+                                    <Form.Control type="text" name="chasisNo" placeholder="Chasis No" value={singleSticker.chasisNo} onChange={event => {
+                                        handleInputChange(index, event) 
+                                    }}/>
                                 </Form.Group>
                             </div>
-                            <div>
-
-                            </div>
+                            {
+                                cat === 'comprehensive' ?
+                                <div>
+                                    <Form.Group >
+                                        <Form.Control type="text" placeHolder="Basic Premium" readOnly/>
+                                    </Form.Group>
+                                </div>
+                                : 
+                                <div>
+                                    
+                                </div>
+                            }   
                         </div>
                     </td>
                     <td id="form-buttons" className="fifth-cell" style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
@@ -282,7 +327,7 @@ function Policies({category}) {
         <div className='components'>
             <div className='heading'>
                 <h1 className='title'>Policies</h1>
-                <p>MANAGING POLICIES</p>
+                <p>MANAGING {pol.toUpperCase()} POLICIES</p>
             </div>
             <div className="table-card componentsData" style={{paddingBottom:"10vh"}}>
                 <Form name="policy" onSubmit={handleSubmit}>
@@ -292,8 +337,8 @@ function Policies({category}) {
                                 Client
                             </h1>
                         </Row>
-                        <Row style={{gap:"2vw"}}>
-                            <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
+                        <Row >
+                            <Col className="client-details" md={3}>
                                 <Form.Group className="mb-3" controlId="clientDetails">
                                     <Form.Control list="clientNames" placeholder='Existing client' id="existingClient"onChange={()=> {
                                         const list = document.getElementById('clientNames')
@@ -314,10 +359,10 @@ function Policies({category}) {
                             
                             {   
                                 newClient.name.length > 1 && newClient.email.length > 1 ? 
-                                <Col className="add-new-client" >
+                                <Col md={8} className="add-new-client" >
                                     <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Edit Client Details </button>
                                 </Col> : 
-                                <Col className="add-new-client" >
+                                <Col md={8} className="add-new-client" >
                                     <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button>
                                 </Col>
                             }
@@ -467,7 +512,7 @@ function Policies({category}) {
                         <div style={{display:"flex", width:"100%", justifyContent:"flex-end"}}>
                             <div>
                                 <Button variant="primary" type="submit">
-                                    Process 3rd Party
+                                    {btn_txt}
                                 </Button>
                             </div>
                         </div>
