@@ -9,6 +9,7 @@ import { FaEllipsisV } from "react-icons/fa";
 import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
+import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 
 function Comprehensive() {
 
@@ -47,6 +48,16 @@ function Comprehensive() {
       const policyDoc = doc(db, "policies", id);
       await deleteDoc(policyDoc);
     }
+
+    // actions context
+    const [show, setShow] = useState(false)
+    window.onclick = function(event) {
+        if (!event.target.matches('.sharebtn')) {
+            setShow(false)
+        }
+    }
+
+    const [clickedIndex, setClickedIndex] = useState(null)
 
     return (
         <div className='components'>
@@ -88,81 +99,46 @@ function Comprehensive() {
 
 
                             <td>{policy.policyStartDate}</td>
-                                <td className="started">
-                    <FaEllipsisV
-                      className={`actions please${index}`}
-                      onClick={() => {
-                        document
-                          .querySelector(`.please${index}`)
-                          .classList.add("hello");
-                      }}
-                    />
-                    <ul id="actionsUl" className="actions-ul">
-                      <li>
-                        <button>Details</button>
-                      </li>
-                      <li>
-                        <button>Renew</button>
-                      </li>
-                      <li>
-                        <button>Cancel</button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                            const confirmBox = window.confirm(
-                              `Are you sure you want to delete claim`
-                            );
-                            if (confirmBox === true) {
-                              handleDelete(policy.id);
-                              getComprehensive()
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </li>
-                      <hr style={{ color: "black" }}></hr>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          close
-                        </button>
-                      </li>
-                    </ul>
+                            
+                            <td className="started">
+                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+
+                            <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                              <Link to={`/admin/policy-details/${policy.id}`}>
+                                <div className="actionDiv">
+                                  <i><MdInfo /></i> Details
+                                </div>
+                              </Link>
+                              <Link to={`/admin/policy-renew/${policy.id}`}>
+                                <div className="actionDiv">
+                                  <i><MdAutorenew /></i> Renew
+                                </div>
+                              </Link>
+                              <li>
+                                <div className="actionDiv">
+                                  <i><MdCancel /></i> Cancel
+                                </div>
+                              </li>
+                              <li onClick={() => { setShow(false)
+                                      const confirmBox = window.confirm(
+                                        `Are you sure you want to delete this sticker`
+                                      );
+                                      if (confirmBox === true) {
+                                        handleDelete(policy.id);
+                                        getComprehensive()
+                                      }
+                                    }}
+                                  >
+                                    <div className="actionDiv">
+                                      <i><MdDelete/></i> Delete
+                                    </div>
+                              </li>
+                            </ul>
+                    
                   </td>
                                 
                             </tr>
                         ))}
-                              <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
                     </tbody>
                     <tfoot>
                         <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>

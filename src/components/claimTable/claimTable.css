@@ -6,6 +6,8 @@
 
 .started{
     position: relative;
+    width: 8rem;
+    text-align: center;
 }
 
 .onSwitch + ul {
