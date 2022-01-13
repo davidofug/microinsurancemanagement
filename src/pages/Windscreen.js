@@ -9,6 +9,7 @@ import { FaEllipsisV } from "react-icons/fa";
 import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
+import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 
 function Windscreen() {
 
@@ -81,8 +82,7 @@ function Windscreen() {
                     </thead>
                     <tbody>
                         {policies.length > 0 && searchByName(policies).map((policy, index) => 
-                          policy.stickersDetails.length > 0
-                          ? (
+                         (
                             <tr key={policy.id}>
                                 <td>{index + 1}</td>
                                 <td>{policy.clientDetails.name}</td>
@@ -99,137 +99,44 @@ function Windscreen() {
                                 <td>{policy.policyStartDate}</td>
                                 
                                 <td className="started">
-                            <button
-                              className="sharebtn"
-                              onClick={() => {
-                                  setClickedIndex(index)
-                                  setShow(!show)
-                              }}
-                            >&#8942;</button>
-                    <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                    <li>
-                        <Link to="/supervisor/policy-details" >Details</Link>
-                      </li>
-                      <li>
-                        <button>Renew</button>
-                      </li>
-                      <li>
-                        <button>Cancel</button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            setShow()
-                            const confirmBox = window.confirm(
-                              `Are you sure you want to delete this sticker`
-                            );
-                            if (confirmBox === true) {
-                              handleDelete(policy.id);
-                              getWindscreen()
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </li>
-                      <hr style={{ color: "black" }}></hr>
-                      <li>
-                        <button onClick={() => {setShow(false)}}>close</button>
-                      </li>
-                    </ul>
-                  </td></tr>
-                  
-                          ): 
-                            <tr key={policy.id}>
-                                <td>{index + 1}</td>
-                                <td>{policy.clientDetails.name}</td>
-                                <td>{policy.stickersDetails[0].category}</td>
-                                <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
-                                <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
-                                <td>{policy.agentName ? policy.agentName : ''}</td>
-                                <td>
-                              <span
-                                style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                              >new</span>
-                            </td>
+                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
 
+                                <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                  <Link to={`/admin/policy-details/${policy.id}`}>
+                                    <div className="actionDiv">
+                                      <i><MdInfo /></i> Details
+                                    </div>
+                                  </Link>
+                                  <Link to={`/admin/policy-renew/${policy.id}`}>
+                                    <div className="actionDiv">
+                                      <i><MdAutorenew /></i> Renew
+                                    </div>
+                                  </Link>
+                                  <li>
+                                    <div className="actionDiv">
+                                      <i><MdCancel /></i> Cancel
+                                    </div>
+                                  </li>
+                                  <li onClick={() => { setShow(false)
+                                          const confirmBox = window.confirm(
+                                            `Are you sure you want to delete this sticker`
+                                          );
+                                          if (confirmBox === true) {
+                                            handleDelete(policy.id);
+                                            getWindscreen()
+                                          }
+                                        }}
+                                      >
+                                        <div className="actionDiv">
+                                          <i><MdDelete/></i> Delete
+                                        </div>
+                                  </li>
+                                </ul>
 
-                                <td>{policy.policyStartDate}</td>
-
-                                <td className="started">
-                    <button
-                      // className={`actions please${index}`}
-                      className="sharebtn" id="ellipse"
-                      onClick={() => {
-                        // document
-                        //   .querySelector(`.please${index}`)
-                        //   .classList.add("hello");
-                          setShow(!show)
-                      }}
-                    >action</button>
-                    <ul  id="mySharedown" className={show ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                      <li>
-                        <button>Details</button>
-                      </li>
-                      <li>
-                        <button>Renew</button>
-                      </li>
-                      <li>
-                        <button>Cancel</button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                            const confirmBox = window.confirm(
-                              `Are you sure you want to delete claim`
-                            );
-                            if (confirmBox === true) {
-                              handleDelete(policy.id);
-                              getWindscreen()
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </li>
-                      <hr style={{ color: "black" }}></hr>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          close
-                        </button>
-                      </li>
-                    </ul>
                   </td>
                   </tr>
+                  
+                          )
                         
                         )}
                     </tbody>

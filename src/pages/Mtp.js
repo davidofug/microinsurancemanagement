@@ -9,6 +9,7 @@ import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import Modal from "../components/modal/Modal.js";
+import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 
 export default function Mtp() {
   useEffect(() => {
@@ -102,44 +103,39 @@ export default function Mtp() {
                             <td>{policy.policyStartDate}</td>
 
                             <td className="started">
-                            <button
-                              className="sharebtn"
-                              onClick={() => {
-                                  setClickedIndex(index)
-                                  setShow(!show)
-                              }}
-                            >&#8942;</button>
-                    <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                    <li>
-                        <Link to={`/admin/policy-details/${policy.id}`} >Details</Link>
-                      </li>
-                      <li>
-                      <Link to={`/admin/policy-renew/${policy.id}`} >Renew</Link>
-                      </li>
-                      <li>
-                        <button>Cancel</button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            setShow(false)
-                            const confirmBox = window.confirm(
-                              `Are you sure you want to delete this sticker`
-                            );
-                            if (confirmBox === true) {
-                              handleDelete(policy.id);
-                              getMTP()
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                      <hr style={{ color: "black" }}></hr>
-                      <li>
-                        <button onClick={() => {setShow(false)}}>close</button>
-                      </li>
-                    </ul>
+                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+
+                            <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                              <Link to={`/admin/policy-details/${policy.id}`}>
+                                <div className="actionDiv">
+                                  <i><MdInfo /></i> Details
+                                </div>
+                              </Link>
+                              <Link to={`/admin/policy-renew/${policy.id}`}>
+                                <div className="actionDiv">
+                                  <i><MdAutorenew /></i> Renew
+                                </div>
+                              </Link>
+                              <li>
+                                <div className="actionDiv">
+                                  <i><MdCancel /></i> Cancel
+                                </div>
+                              </li>
+                              <li onClick={() => { setShow(false)
+                                      const confirmBox = window.confirm(
+                                        `Are you sure you want to delete this sticker`
+                                      );
+                                      if (confirmBox === true) {
+                                        handleDelete(policy.id);
+                                        getMTP()
+                                      }
+                                    }}
+                                  >
+                                    <div className="actionDiv">
+                                      <i><MdDelete/></i> Delete
+                                    </div>
+                              </li>
+                            </ul>
                   </td>
                     
                           </tr>

@@ -402,49 +402,18 @@ tbody, td, tfoot, th, thead, tr{
 
 
 
-  .mydropdown-menu {
-    position: absolute;
-    z-index: 1000;
-    display: block;
-    min-width: 10rem;
-    padding: .5rem 0;
-    margin: 0;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: .25rem;
-}
 
-.showmydropdown-menu{
-    position: absolute;
-    z-index: 1000;
-    display: block;
-    min-width: 10rem;
-    padding: .5rem 0;
-    margin: 0;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: .25rem;
-}
 
 
 .profile-link {
     cursor: pointer;
-  }
-  .profile-menu {
-    display: block;
-    right: 0;
-    left: auto;
-  }
+}
+
+.profile-menu {
+display: block;
+right: 0;
+left: auto;
+}
 
 
 
@@ -453,9 +422,8 @@ tbody, td, tfoot, th, thead, tr{
   .sharebtn{
       border: none;
       background-color: transparent;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: bolder;
-      /* rotate: 90deg; */
   }
 
 
@@ -471,6 +439,24 @@ tbody, td, tfoot, th, thead, tr{
   hr {
       color: rgba(0,0,0,.15);
   }
+
+  .showmydropdown-menu{
+    position: absolute;
+    z-index: 1000;
+    display: block;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    left: -120px;
+}
   
   .mydropdown-menu {
     position: absolute;
@@ -487,10 +473,28 @@ tbody, td, tfoot, th, thead, tr{
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: .25rem;
+    left: -120px;
   }
 
 #mySharedown li{
     padding: 5px 10px;
+    cursor: pointer;
+}
+
+#mySharedown a{
+    width: 100%;
+    padding: 5px 10px;
+    color: #000;
+    text-decoration: none;
+    display: block;
+}
+
+#mySharedown a:hover{
+    background-color: #fafafa;
+}
+
+#mySharedown li:hover{
+    background-color: #fafafa;
 }
 
 #mySharedown button{
@@ -504,6 +508,19 @@ tbody, td, tfoot, th, thead, tr{
     background-color: #fafafa;
 }
   
+
+.actionDiv{
+    display: flex;
+    align-items: center;
+    /* grid-template-columns: 1fr 1fr; */
+}
+
+.actionDiv i{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    margin-right: 10px;
+}
 
 
 

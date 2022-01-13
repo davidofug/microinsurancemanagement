@@ -38,7 +38,7 @@ function PolicyDetails() {
                     <p>{policy.policyStartDate} 10:49:40 AM</p>
                     <p><b>License No:</b> C04/987</p>
                     <p><b>Company Code:</b> 5643</p>
-                    <span>MOTOR THIRDPARTY</span>
+                    {/* <span>{(policy.category).toUpperCase()}</span> */}
                 </div>
             </div>
 
