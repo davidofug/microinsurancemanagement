@@ -13,6 +13,8 @@ import OrganisationModal from "../../components/OrganisationModel";
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
 import { authentication } from "../../helpers/firebase";
+import { MdEdit, MdDelete } from 'react-icons/md'
+import { AiFillCloseCircle } from 'react-icons/ai'
 
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
@@ -80,6 +82,15 @@ export default function Organisations() {
 
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+    // actions context
+    const [showContext, setShowContext] = useState(false)
+    window.onclick = function(event) {
+        if (!event.target.matches('.sharebtn')) {
+            setShowContext(false)
+        }
+    }
+    const [clickedIndex, setClickedIndex] = useState(null)
 
 
   return (
@@ -164,60 +175,45 @@ export default function Organisations() {
                 <td>{organisation.role}</td>
                 <td>{organisation.contactPhoneNumber}</td>
                 <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
-                <td style={{borderRight: "1px solid #000"}}className="started">
-                    <FaEllipsisV
-                      className={`actions please${index}`}
-                      onClick={() => {
-                        document
-                          .querySelector(`.please${index}`)
-                          .classList.add("hello");
-                      }}
-                    />
-                    <ul id="actionsUl" className="actions-ul">
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                            const confirmBox = window.confirm(
-                              `Are you sure you want to delete ${organisation.name}`);
-                            if (confirmBox === true) {
-                              handleDelete(organisation.id);
-                              getOrganisations()
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                        onClick={() => {
-                          setEditID(organisation.id)
-                          getSingleDoc(organisation.id);
-                          handleShow();
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                        }}>
-                          Edit
-                        </button>
-                      </li>
-                      <hr style={{ color: "black" }}></hr>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          close
-                        </button>
-                      </li>
+                
+                <td className="started">
+                    <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+
+                    <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                <li onClick={() => {
+                                            setShowContext(false)
+                                            const confirmBox = window.confirm(
+                                              `Are you sure you want to ${organisation.name}`
+                                            );
+                                            if (confirmBox === true) {
+                                              handleDelete(organisation.uid)
+                                            }
+                                          }}
+                                    >
+                                      <div className="actionDiv">
+                                        <i><MdDelete/></i> Delete
+                                      </div>
+                                </li>
+                                <li onClick={() => {
+                                        setShowContext(false)
+                                        setEditID(organisation.uid);
+                                        getSingleDoc(organisation.uid)
+                                        handleShow();
+                                      }}
+                                    >
+                                      <div className="actionDiv">
+                                        <i><MdEdit/></i> Edit
+                                      </div>
+                                </li>
+                                <li onClick={() => setShowContext(false)}
+                                    >
+                                      <div className="actionDiv">
+                                        <i><AiFillCloseCircle/></i> Close
+                                      </div>
+                                </li>
                     </ul>
                   </td>
+
               </tr>
             ))}
           </tbody>
