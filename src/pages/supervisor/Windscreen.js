@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import data from '../helpers/mock-data.json'
-import Pagination from '../helpers/Pagination'
-import SearchBar from '../parts/searchBar/SearchBar'
+import data from '../../helpers/mock-data.json'
+import Pagination from '../../helpers/Pagination'
+import SearchBar from '../../parts/searchBar/SearchBar'
 import { Table, Alert } from 'react-bootstrap'
-import Header from '../parts/header/Header';
+import Header from '../../parts/header/Header';
 import { FaEllipsisV } from "react-icons/fa";
 
 function Windscreen() {
@@ -31,9 +31,9 @@ function Windscreen() {
 
             <div id="add_client_group">
                 <div></div>
-                {/* <Link to="/admin/add-windscreen">
+                <Link to="/supervisor/add-windscreen">
                     <button className="btn btn-primary cta">Add Windscreen</button>
-                </Link> */}
+                </Link>
                 
             </div>
 

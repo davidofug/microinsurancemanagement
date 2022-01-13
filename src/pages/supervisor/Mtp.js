@@ -1,43 +1,63 @@
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import data from '../helpers/mock-data.json'
-import Pagination from '../helpers/Pagination'
-import SearchBar from '../parts/searchBar/SearchBar'
-import { Table, Alert } from 'react-bootstrap'
-import Header from '../parts/header/Header';
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
+import Header from "../../parts/header/Header";
 import { FaEllipsisV } from "react-icons/fa";
+import data from '../../helpers/mock-data.json'
+import Pagination from '../../helpers/Pagination'
+import SearchBar from '../../parts/searchBar/SearchBar'
+import { Table, Alert } from 'react-bootstrap'
+import { getDocs, collection } from 'firebase/firestore'
+import { db } from '../../helpers/firebase'
 
-function Windscreen() {
+export default function Mtp() {
+  useEffect(() => {
+    document.title = "Britam - Motor Third Party";
 
-    useEffect(() => {document.title = 'Britam - Windscreen'}, [])
+    getPolicies()
+  }, []);
 
-    // pagination
-    const [ currentPage, setCurrentPage ] = useState(1)
-    const [policiesPerPage] = useState(10)
+  // policies
+  const [policies, setPolicies] = useState([])
+  const policyCollectionRef = collection(db, "policies");
 
-    const indexOfLastPolicy = currentPage * policiesPerPage
-    const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-    const currentPolicies = data.slice(indexOfFirstPolicy, indexOfLastPolicy)
-    const totalPagesNum = Math.ceil(data.length / policiesPerPage)
+  const getPolicies = async () => {
+      const data = await getDocs(policyCollectionRef);
+      // console.log(data.docs)
+      setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
 
-    // search by Name
-    const [searchText, setSearchText] = useState('')
-    const handleSearch = ({ target }) => setSearchText(target.value);
-    const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+  console.log(policies)
 
-    return (
-        <div className='components'>
-            <Header title="Windscreen" subtitle="MANAGING WINDSCREEN" />
+  // pagination
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [policiesPerPage] = useState(10)
 
-            <div id="add_client_group">
-                <div></div>
-                {/* <Link to="/admin/add-windscreen">
-                    <button className="btn btn-primary cta">Add Windscreen</button>
-                </Link> */}
-                
-            </div>
+  const indexOfLastPolicy = currentPage * policiesPerPage
+  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
+  const currentPolicies = data.slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const totalPagesNum = Math.ceil(data.length / policiesPerPage)
 
-            <div className="shadow-sm table-card componentsData">   
+  // search by Name
+  const [searchText, setSearchText] = useState('')
+  const handleSearch = ({ target }) => setSearchText(target.value);
+  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+  return (
+    <div className="components">
+      <Header
+        title="Motor Third Party"
+        subtitle="MANAGING THIRD PARTY POLICIES"
+      />
+
+      <div id="add_client_group">
+        <div></div>
+        <Link to="/supervisor/add-mtp">
+          <button className="btn btn-primary cta">Add MTP</button>
+        </Link>
+      </div>
+
+      <div className="table-card componentsData">
                 <div id="search">
                     <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
@@ -46,10 +66,21 @@ function Windscreen() {
 
                 <Table striped hover responsive>
                     <thead>
-                        <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
-                        {searchByName(currentPolicies).map((row, index) => (
+                        {policies.length > 0 && policies.map((policy, index) => (
+                          <tr key={policy.id}>
+                            <td>{index + 1}</td>
+                            {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
+                            <td>{policy.id}</td>
+                            <td>{policy.id}</td>
+                            <td>{policy.id}</td>
+                            <td>{policy.id}</td>
+                          </tr>
+                        ))}
+                        {/* {searchByName(currentPolicies).map((row, index) => (
                             <tr key={row.id}>
                                 <td>{row.name}</td>
                                 <td>{row.category}</td>
@@ -57,8 +88,8 @@ function Windscreen() {
                                 <td>{row.paymentMethod}</td>
                                 <td>{row.currency}</td>
                                 <td>{row.agentName}</td>
-
-                                  {row.status === 'Active' 
+                                
+                                {row.status === 'Active' 
                                   ? <td>
                                      <Alert
                                         style={{backgroundColor: "#1475cf",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
@@ -78,8 +109,7 @@ function Windscreen() {
 
 
                                 <td>{row.createdAt}</td>
-
-                                <td className="started">
+                            <td className="started">
                     <FaEllipsisV
                       className={`actions please${index}`}
                       onClick={() => {
@@ -140,8 +170,9 @@ function Windscreen() {
                     </ul>
                   </td>
                             </tr>
-                        ))}
+                        ))} */}
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -153,21 +184,20 @@ function Windscreen() {
                             </tr>
                     </tbody>
                     <tfoot>
-                        <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><td>#</td><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </tfoot>
                 </Table>
+
 
                 <Pagination 
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentPolicies}
                     sortedEmployees={data}
-                    entries={'Windscreen policies'} />
+                    entries={'Motor Third Party'} />
 
-               
-            </div>
-        </div>
-    )
+        
+      </div>
+    </div>
+  );
 }
-
-export default Windscreen
