@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "../components/header/Header";
-import { FaEllipsisV } from "react-icons/fa";
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../components/searchBar/SearchBar'
 import { Table } from 'react-bootstrap'
 import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
-import Modal from "../components/modal/Modal.js";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 
 export default function Mtp() {
