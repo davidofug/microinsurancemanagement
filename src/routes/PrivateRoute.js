@@ -59,7 +59,15 @@ function PrivateRoute({ children, ...rest }) {
         return () => unsubscribe()
     }, []);
 
-    return user ? <Route {...rest}>{children}</Route> : <Redirect to="/login" />
+    // return user ? <Route {...rest}>{children}</Route> : <Redirect to="/login" />
+
+    // * by Charles
+    return user ? <Route {...rest} render={
+        props => {
+            localStorage.setItem('onRefresh', props.location.pathname, { path: '/' }) 
+            return children
+        }
+    } /> : <Redirect to='/login' />
 }
 
 /*     return (
