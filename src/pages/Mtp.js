@@ -114,7 +114,7 @@ export default function Mtp() {
                         <Link to={`/admin/policy-details/${policy.id}`} >Details</Link>
                       </li>
                       <li>
-                        <button>Renew</button>
+                      <Link to={`/admin/policy-renew/${policy.id}`} >Renew</Link>
                       </li>
                       <li>
                         <button>Cancel</button>
