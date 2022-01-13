@@ -37,11 +37,10 @@ function Policies({cat, btn_txt, pol}) {
     const [ currency, setCurrency ] = useState({})
     const [ client, setClient ] = useState({})
 
-    const [ validTotalPremium, setValidTotalPremium ] = useState(true)
+    const [ basicPremium, setBasicPremium ] = useState(0)
+    const [ totalPremium, setTotalPremium ] = useState(0)
+    const [ valid, setValid ] = useState(false)
 
-    
-
-    
     const [ newClient, handleClientDetails ] = useForm({
         user_role: 'Customer',
         email:'',
@@ -67,7 +66,8 @@ function Policies({cat, btn_txt, pol}) {
             chasisNo:'',
             motorMake:'',
             vehicleUse:'',
-            totalPremium:''
+            totalPremium:'',
+            basicPremium:''         
         }
     ])
     
@@ -88,7 +88,7 @@ function Policies({cat, btn_txt, pol}) {
     const handleInputChange = (index, event) => {
         const values = [...stickers]
         
-        if(event.target.name === 'totalPremium'){
+        if(event.target.name === 'totalPremium' || event.target.name === 'seatingCapacity' || event.target.name === 'grossWeight' || event.target.name === 'basicPremium' || event.target.name === 'ccPower' ){
             if( Number(event.target.value) >= 0 ) { 
                 values[index][event.target.name] = event.target.value
             } 
@@ -115,7 +115,8 @@ function Policies({cat, btn_txt, pol}) {
                 chasisNo:'',
                 motorMake:'',
                 vehicleUse:'',
-                totalPremium:''
+                totalPremium:'',
+                basicPremium:''
             }
         ])
     }
@@ -125,6 +126,7 @@ function Policies({cat, btn_txt, pol}) {
             const stickersDetails = [...stickers]
             stickersDetails.splice(index, 1)
             setStickers(stickersDetails)
+            
         }
         return
     }
@@ -135,6 +137,8 @@ function Policies({cat, btn_txt, pol}) {
     //createPolicies
     const handleSubmit = async(event) => {
         event.preventDefault()
+        console.log(typeof(stickers.totalPremium))
+
         await addDoc(policiesRef, {
             currency,
             stickersDetails: stickers,
@@ -165,20 +169,27 @@ function Policies({cat, btn_txt, pol}) {
     const [ windscreen, setWindscreen ] = useState(false)
     const [ mtp, setMTP ] = useState(false)
 
-    const generateTotalValuation = ( basic, stickers ) => {
-        const trainingLevy = 0.5 * basic
+    const generateTotalValuation = ( stickers ) => {
+        
         const stickerFee  = 6000
-        const VAT = (18/100) * (basic + trainingLevy + stickerFee)
-
+        const stampDuty = 35000
+        
         let totalPrem = 0
+        let basicPrem = 0
+
         for(let i = 0; i < stickers.length; i++) {
-            if(stickers[i]?.totalPremium.length > 0) totalPrem += stickers[i].totalPremium
+            if( Number(stickers[i]?.totalPremium) > 0) totalPrem += Number(stickers[i].totalPremium)
+            if( Number(stickers[i]?.basicPremium) > 0) basicPrem += Number(stickers[i].basicPremium)
         }
 
-        console.log(`TotalPremium ${totalPrem}`)
+        const trainingLevy = 0.5 * basicPrem
+        const VAT = (18/100) * (basicPrem + trainingLevy + stickerFee)
+
+
+
     }
 
-    const renderStickerDetails = (singleSticker, index, cate=`${cat}`) => {
+    const renderStickerDetails = (singleSticker, index) => {
         return (
             <React.Fragment key={index}>
                 <tr className="table-row">
@@ -187,17 +198,17 @@ function Policies({cat, btn_txt, pol}) {
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="referenceNo">
-                                    <Form.Control type="text" name="referenceNo" placeholder="Reference No" value={singleSticker.referenceNo} onChange={event => handleInputChange(index, event)}/>
+                                    <Form.Control type="text" name="referenceNo" placeholder="Reference No" value={singleSticker.referenceNo} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
                             <div>
                                 <Form.Group controlId="grossWeight">
-                                    <Form.Control type="text" name="grossWeight" placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={event => handleInputChange(index, event)} />
+                                    <Form.Control type="text" name="grossWeight" placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
                             <div>
                                 <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
-                                    <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)}>
+                                    <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)} required>
                                         <option>Motor Make</option>
                                         {make.map((motorMake, index) => <option key={index} value={motorMake[0]}>{motorMake[1]}</option>)}
                                     </Form.Select>
@@ -209,12 +220,12 @@ function Policies({cat, btn_txt, pol}) {
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="plateNo">
-                                    <Form.Control type="text" name="plateNo" placeholder="Plate No" value={singleSticker.plateNo} onChange={event => handleInputChange(index, event)}/>
+                                    <Form.Control type="text" name="plateNo" placeholder="Plate No" value={singleSticker.plateNo} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
                             <div>
                                 <Form.Group controlId="category" >
-                                    <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} onChange={event => {
+                                    <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} required onChange={event => {
                                         handleInputChange(index, event)
 
                                         const result = categories.filter(category => category.label === event.target.value)
@@ -256,7 +267,7 @@ function Policies({cat, btn_txt, pol}) {
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="seatingCapacity">
-                                    <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)}/>
+                                    <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
                             <div>
@@ -269,7 +280,7 @@ function Policies({cat, btn_txt, pol}) {
                             </div>
                             <div>
                                 <Form.Group controlId="totalPremium" >
-                                    <Form.Control type="text" id="totalPremium" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)}/>
+                                    <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
                         </div>
@@ -278,21 +289,23 @@ function Policies({cat, btn_txt, pol}) {
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="ccPower">
-                                    <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)}/>
+                                    <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
                             <div>
                                 <Form.Group controlId="chasisNo" aria-label="chasisNo">
                                     <Form.Control type="text" name="chasisNo" placeholder="Chasis No" value={singleSticker.chasisNo} onChange={event => {
                                         handleInputChange(index, event) 
-                                    }}/>
+                                    }} required/>
                                 </Form.Group>
                             </div>
                             {
                                 cat === 'comprehensive' ?
                                 <div>
-                                    <Form.Group >
-                                        <Form.Control type="text" placeHolder="Basic Premium" readOnly/>
+                                    <Form.Group controlId="chasisNo" aria-label="chasisNo">
+                                        <Form.Control type="text" name="basicPremium" placeholder="BasicPremium" value={singleSticker.basicPremium} onChange={event => {
+                                            handleInputChange(index, event) 
+                                        }} required/>
                                     </Form.Group>
                                 </div>
                                 : 
