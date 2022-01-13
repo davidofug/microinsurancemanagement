@@ -135,8 +135,16 @@ const menuData = {
             link: "/admin/reports",
             subMenu: [
                 {
-                    name: "Daily, Weekly, Monthly",
-                    link: "/admin/reports"
+                    name: "Daily",
+                    link: "/admin/daily-reports"
+                },
+                {
+                    name: "Weekly",
+                    link: "/admin/weekly-reports"
+                },
+                {
+                    name: "Monthly",
+                    link: "/admin/monthly-reports"
                 },
                 {
                     name: "Status Reports (new,paid,expired,cancelled, deleted)",
