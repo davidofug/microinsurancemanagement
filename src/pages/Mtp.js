@@ -8,6 +8,7 @@ import { Table } from 'react-bootstrap'
 import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
+import Modal from "../components/modal/Modal.js";
 
 export default function Mtp() {
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function Mtp() {
   // policies
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
+
 
   const getMTP = async () => {
     const data = await getDocs(policyCollectionRef);
@@ -77,6 +79,8 @@ export default function Mtp() {
                     <div></div>
                 </div>
 
+                
+
                 <Table striped hover responsive>
                     <thead>
                         <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
@@ -97,20 +101,17 @@ export default function Mtp() {
                             </td>
                             <td>{policy.policyStartDate}</td>
 
-
-
-
                             <td className="started">
-                    <button
-                      className="sharebtn"
-                      onClick={() => {
-                          setClickedIndex(index)
-                          setShow(!show)
-                      }}
-                    >&#8942;</button>
+                            <button
+                              className="sharebtn"
+                              onClick={() => {
+                                  setClickedIndex(index)
+                                  setShow(!show)
+                              }}
+                            >&#8942;</button>
                     <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                     <li>
-                        <Link to="/supervisor/policy-details" >Details</Link>
+                        <Link to={`/admin/policy-details/${policy.id}`} >Details</Link>
                       </li>
                       <li>
                         <button>Renew</button>
@@ -121,7 +122,7 @@ export default function Mtp() {
                       <li>
                         <button
                           onClick={() => {
-                            setShow()
+                            setShow(false)
                             const confirmBox = window.confirm(
                               `Are you sure you want to delete this sticker`
                             );

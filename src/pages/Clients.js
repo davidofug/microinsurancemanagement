@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState, Fragment } from 'react'
 import { MdDownload } from 'react-icons/md'
 import Header from '../components/header/Header';
-import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar';
 import { Table } from 'react-bootstrap';

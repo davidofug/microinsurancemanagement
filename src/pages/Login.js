@@ -7,7 +7,7 @@ import { authentication, onAuthStateChange } from "../helpers/firebase";
 import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { Alert, Toast } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 
 import "../assets/styles/login.css";
 import Loader from "../components/Loader";
@@ -26,6 +26,10 @@ function Login() {
   const history = useHistory();
   const location = useLocation();
   const from = location?.pathname || "/admin/dashboard";
+  const pageOnRefresh = localStorage.getItem('onRefresh') || "/admin/dashboard"
+
+
+
 
   useEffect(() => {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
@@ -66,7 +70,7 @@ function Login() {
 
   if (currentUser?.loggedIn){
     if(authClaims.admin){
-      return <Redirect to={{ pathname: '/admin/dashboard' }} />;
+      return <Redirect to={{ pathname: pageOnRefresh }} />;
     }
     if(authClaims.agent){
       return <Redirect to={{ pathname: '/agent/dashboard' }} />;

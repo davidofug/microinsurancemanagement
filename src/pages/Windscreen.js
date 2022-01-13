@@ -54,9 +54,7 @@ function Windscreen() {
         }
     }
 
-
-
-  console.log(policies)
+  const [clickedIndex, setClickedIndex] = useState(null)
 
     return (
         <div className='components'>
@@ -82,7 +80,75 @@ function Windscreen() {
                         <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
-                        {policies.length > 0 && searchByName(policies).map((policy, index) => (
+                        {policies.length > 0 && searchByName(policies).map((policy, index) => 
+                          policy.stickersDetails.length > 0
+                          ? (
+                            <tr key={policy.id}>
+                                <td>{index + 1}</td>
+                                <td>{policy.clientDetails.name}</td>
+                                    <td>{policy.stickersDetails[0].category}</td>
+                                <td><td><b>{currencyFormatter(policy.stickersDetails[1].totalPremium)}</b></td></td>
+                                <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
+                                <td>{policy.agentName ? policy.agentName : ''}</td>
+                                <td>
+                                  <span
+                                    style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                                  >new</span>
+                                </td>
+                                
+                                <td>{policy.policyStartDate}</td>
+                                
+                                <td className="started">
+                            <button
+                              className="sharebtn"
+                              onClick={() => {
+                                  setClickedIndex(index)
+                                  setShow(!show)
+                              }}
+                            >&#8942;</button>
+                    <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                    <li>
+                        <Link to="/supervisor/policy-details" >Details</Link>
+                      </li>
+                      <li>
+                        <button>Renew</button>
+                      </li>
+                      <li>
+                        <button>Cancel</button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            setShow()
+                            const confirmBox = window.confirm(
+                              `Are you sure you want to delete this sticker`
+                            );
+                            if (confirmBox === true) {
+                              handleDelete(policy.id);
+                              getWindscreen()
+                            }
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            
+                          }}
+                        >
+                          Edit
+                        </button>
+                      </li>
+                      <hr style={{ color: "black" }}></hr>
+                      <li>
+                        <button onClick={() => {setShow(false)}}>close</button>
+                      </li>
+                    </ul>
+                  </td></tr>
+                  
+                          ): 
                             <tr key={policy.id}>
                                 <td>{index + 1}</td>
                                 <td>{policy.clientDetails.name}</td>
@@ -164,7 +230,8 @@ function Windscreen() {
                     </ul>
                   </td>
                   </tr>
-                        ))}
+                        
+                        )}
                     </tbody>
                     <tfoot>
                         <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
