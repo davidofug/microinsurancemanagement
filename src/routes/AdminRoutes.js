@@ -25,6 +25,7 @@ import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
 import AddStickerRange from '../pages/admin/AddStickerRange'
 import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
+import PolicyRenew from '../pages/PolicyRenew'
 
 
 function AdminRoutes() {
@@ -89,6 +90,9 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path={`/admin/policy-details/:id`} >
                 <PolicyDetails />
+            </PrivateRoute>
+            <PrivateRoute path={`/admin/policy-renew/:id`} >
+                <PolicyRenew />
             </PrivateRoute>
             <PrivateRoute path="/admin/motor-third-party" >
                 <Mtp />
