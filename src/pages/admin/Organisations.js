@@ -21,7 +21,7 @@ export default function Organisations() {
   useEffect(() => {
     document.title = "Britam - Organisations";
       getOrganisations()
-
+    
   }, []);
 
   const getOrganisations = async () => {

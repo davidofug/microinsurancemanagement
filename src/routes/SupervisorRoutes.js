@@ -16,7 +16,7 @@ import Agents from '../pages/Agents'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddUsers from '../pages/AddUsers'
-import PolicyDetails from '../pages/PolicyDetails'
+import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
 
 
 function SupervisorRoutes() {
