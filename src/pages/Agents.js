@@ -12,6 +12,8 @@ import { Table } from 'react-bootstrap'
 import { FaEllipsisV } from "react-icons/fa";
 import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 import useAuth from '../contexts/Auth';
+import { MdEdit, MdDelete } from 'react-icons/md'
+import { AiFillCloseCircle } from 'react-icons/ai'
 
 function Agents() {
 
@@ -78,6 +80,17 @@ function Agents() {
 
         const handleSearch = ({target}) => setQ(target.value)
 
+    
+    // actions context
+    const [showContext, setShowContext] = useState(false)
+    window.onclick = function(event) {
+        if (!event.target.matches('.sharebtn')) {
+            setShowContext(false)
+        }
+    }
+
+    const [clickedIndex, setClickedIndex] = useState(null)
+
     return (
         <div className='components'>
             <Header title="Agents" subtitle="MANAGING AGENTS" />
@@ -121,59 +134,43 @@ function Agents() {
                                 </Fragment>
                               ))}
                               
-                <td className="started">
-                  <FaEllipsisV
-                    className={`actions please${index}`}
-                    onClick={() => {
-                      document
-                        .querySelector(`.please${index}`)
-                        .classList.add("hello");
-                    }}
-                  />
-                  <ul id="actionsUl" className="actions-ul">
-                  
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                          const confirmBox = window.confirm(
-                            `Are you sure you want to ${agent.name}`
-                          );
-                          if (confirmBox === true) {
-                            handleDelete(agent.uid);
-                          }
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                        }}
-                      >
-                        Edit
-                      </button>
-                    </li>
-                    <hr style={{ color: "black" }}></hr>
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                        }}
-                      >
-                        close
-                      </button>
-                    </li>
-                  </ul>
-                </td>
+                              <td className="started">
+                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+
+                                <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                            <li onClick={() => {
+                                                        setShowContext(false)
+                                                        const confirmBox = window.confirm(
+                                                          `Are you sure you want to ${agent.name}`
+                                                        );
+                                                        if (confirmBox === true) {
+                                                          handleDelete(agent.uid)
+                                                        }
+                                                      }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><MdDelete/></i> Delete
+                                                  </div>
+                                            </li>
+                                            <li onClick={() => {
+                                                    setShowContext(false)
+                                                    // setEditID(agent.uid);
+                                                    // getSingleClient(agent.uid)
+                                                    // handleShow(); 
+                                                  }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><MdEdit/></i> Edit
+                                                  </div>
+                                            </li>
+                                            <li onClick={() => setShowContext(false)}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><AiFillCloseCircle/></i> Close
+                                                  </div>
+                                            </li>
+                                </ul>
+                              </td>
                           </tr>
                           ))}
                           <tr>
