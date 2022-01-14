@@ -40,6 +40,17 @@ function Policies({cat, btn_txt, pol}) {
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
     const [ client, setClient ] = useState({})
+    const [ contactPerson, handleContactPerson ] = useForm({
+        name:'',
+        gender:'',
+        phone:'',
+        address:'',
+        NIN:''
+    })
+
+    
+    const [ comprehensiveClient, setComprehensiveClient ] = useState('') 
+    const [ comprehensiveClientInfo, setComprehensiveClientInfo ] = useState({})
 
     const [ newClient, handleClientDetails ] = useForm({
         user_role: 'Customer',
@@ -53,6 +64,27 @@ function Policies({cat, btn_txt, pol}) {
         NIN: '',
         TIN: '',
         photo:''
+    })
+
+    const [ individualComprehensiveClient, handleIndividualComprehensiveClient ] = useForm({
+        user_role: 'Customer',
+        email:'',
+        name:'',
+        dob:'',
+        gender:'',
+        phone:'',
+        address:'',
+        licenseNo:'',
+        NIN: '',
+        TIN: '',
+        photo:''    
+    })
+
+    const [ corporateComprehensiveEntity, handleCoporateComprehensiveEntity ] = useForm({
+        user_role: 'Customer', 
+        email:'',
+        name:'',
+        entityTIN:''
     })
 
     const [ stickers, setStickers ] = useState([
@@ -156,12 +188,12 @@ function Policies({cat, btn_txt, pol}) {
     //createPolicies
     const handleSubmit = async(event) => {
         event.preventDefault()
-        console.log(stickers)
- 
+        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) : client
+    
         await addDoc(policiesRef, {
             currency,
             stickersDetails: stickers,
-            clientDetails: client,
+            clientDetails: clientInfo,
             added_by_uid: authentication.currentUser.uid,
             added_by_name: authentication.currentUser.displayName,  
             policyStartDate: policyStartDate, 
@@ -173,12 +205,14 @@ function Policies({cat, btn_txt, pol}) {
         client['added_by_uid'] = authentication.currentUser.uid
         client['added_by_name'] = authentication.currentUser.displayName
         
-        addUser(client).then((results) => {
+        
+        addUser(clientInfo).then((results) => {
             alert(`successfully added ${client.name}`)
             document.policy.reset()
             setPolicyEndDate('')
             setPolicyStartDate('')
-        }).catch( error => console.log( error )) 
+        }).catch( error => console.log( error ))
+ 
 
         setStickers([
             {
@@ -198,8 +232,31 @@ function Policies({cat, btn_txt, pol}) {
                 stampDuty: 35000,
             }
         ])
+
+        console.log(
+            {
+                currency,
+                stickersDetails: stickers,
+                clientDetails: cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) : client,
+                added_by_uid: authentication.currentUser.uid,
+                added_by_name: authentication.currentUser.displayName,  
+                policyStartDate: policyStartDate, 
+                policyEndDate: policyEndDate,
+                category: cat,
+                totalValuation: await generateTotalValuation(stickers)
+            }
+        )
     }    
 
+    const handleComprehesiveClientInfo = async (type, individualClient, organisationInfo, contactInfo) => {
+        if(type === "Individual") {
+            return await individualClient
+        } else if (type === "Corporate Entity") {
+            return await { ...organisationInfo, contactPerson : contactInfo}
+        }
+    }
+
+    
 
     const { user_role } = newClient
     const [ comprehensive, setComprehensive ] = useState(false)
@@ -417,85 +474,225 @@ function Policies({cat, btn_txt, pol}) {
                             }
                             <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
-                                <Modal.Title>Add New Client</Modal.Title>
+                                    <Modal.Title>Add New Client</Modal.Title>
                                 </Modal.Header>
                                 
                                 <Modal.Body>
                                     <Form name='form4' onSubmit={handleSubmit}>
-                                        <Form.Group className="mb-3" >
-                                            <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
-                                            <Form.Control id="name" placeholder="Name" value={newClient.name} onChange={handleClientDetails} required/>
-                                        </Form.Group>
-                                        <Row className="mb-3">
-                                            <Form.Group as={Col} className='addFormGroups'>
-                                                <Form.Label htmlFor='dob'>Date of birth</Form.Label>
-                                                <Form.Control type="date" id="dob" value={newClient.dob} onChange={handleClientDetails} />
-                                            </Form.Group>
-                                            <Form.Group as={Col} className='addFormGroups'>
-                                                <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
-                                                <div className='gender-options'>
-                                                    <div>
-                                                    <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleClientDetails}/>
-                                                        <label htmlFor="male">Male</label>
-                                                    </div>
-                                                    <div>
-                                                        <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleClientDetails}/>
-                                                        <label htmlFor="female">Female</label>
-                                                    </div>
-                                                </div>
-                                            </Form.Group>
-                                        </Row>
+                                        { 
+                                            cat ==='comprehensive' ?
+                                            <>
+                                                <Row> 
+                                                    <Form.Group controlId="motorClass" >
+                                                        <Form.Select type="text" name="clientType" aria-label="clientType" onChange={(event) => {
+                                                                setComprehensiveClient(event.target.value)
+                                                            }}>
+                                                            <option>Client Type</option>
+                                                            <option value="Individual">Individual</option>
+                                                            <option value="Corporate Entity">Corporate Entity</option>
+                                                        </Form.Select>
+                                                    </Form.Group>
+                                                </Row>
+                                                {
+                                                    comprehensiveClient === "Corporate Entity" 
+                                                    &&
+                                                    <>                                             
+                                                        <div>
+                                                            Organisation Details
+                                                        </div>
+                                                        <Form.Group className="mb-3" >
+                                                            <Form.Label htmlFor='name'>Entity Name<span className='required'>*</span></Form.Label>
+                                                            <Form.Control id="name" placeholder="Entity Name" value={corporateComprehensiveEntity.name} onChange={handleCoporateComprehensiveEntity} required/>
+                                                        </Form.Group>
+                                                        <Row className="mb-3">
+                                                            <Form.Group as={Col} className="addFormGroups" >
+                                                                <Form.Label htmlFor='TIN'>TIN</Form.Label>
+                                                                <Form.Control id="entityTIN" placeholder="Entity TIN" value={corporateComprehensiveEntity.entityTIN} onChange={handleCoporateComprehensiveEntity}/>
+                                                            </Form.Group>
+                                                            <Form.Group as={Col} className='addFormGroups'>
+                                                                <Form.Label htmlFor='email'>Entity Email</Form.Label>
+                                                                <Form.Control type="email" id="email" placeholder="Entity Email" value={corporateComprehensiveEntity.entityEmail} onChange={handleCoporateComprehensiveEntity} required/>
+                                                            </Form.Group>
+                                                        </Row>
 
-                                        <Row className="mb-3">
-                                            <Form.Group as={Col} className='addFormGroups'>
-                                                <Form.Label htmlFor='email'>Email Address</Form.Label>
-                                                <Form.Control type="email" id="email" placeholder="Enter email" value={newClient.email} onChange={handleClientDetails} required/>
-                                            </Form.Group>
-                                            <Form.Group as={Col} className='addFormGroups'>
-                                                <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
-                                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" value={newClient.phone} onChange={handleClientDetails}/>
-                                            </Form.Group>
-                                        </Row>
-                                        <Form.Group className="mb-3" >
-                                            <Form.Label htmlFor='address'>Address</Form.Label>
-                                            <Form.Control id="address" placeholder="Enter your address" value={newClient.address} onChange={handleClientDetails}/>
-                                        </Form.Group>
-                                        <Row className="mb-3">
-                                            <Form.Group as={Col} className="addFormGroups" >
-                                                <Form.Label htmlFor='NIN'>NIN</Form.Label>
-                                                <Form.Control id="NIN" placeholder="NIN" value={newClient.NIN} onChange={handleClientDetails}/>
-                                            </Form.Group>
-                                        </Row>
-                                        { user_role === 'agent' &&
+                                                        <Row className="mb-3">
+                                                            <div>
+                                                                Contact person Details
+                                                            </div>
+                                                            <Form.Group className="mb-3" >
+                                                                <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
+                                                                <Form.Control id="name" placeholder="Contact Person" value={contactPerson.contactName} onChange={handleContactPerson} required/>
+                                                            </Form.Group>
+                                                            <Form.Group as={Col} className='addFormGroups'>
+                                                                <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
+                                                                <div className='gender-options'>
+                                                                    <div>
+                                                                    <input type="radio" id="gender" value="male" className='addFormRadio' onChange={handleContactPerson}/>
+                                                                        <label htmlFor="male">Male</label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <input type="radio" name="gender" value="female" className='addFormRadio' onChange={handleContactPerson}/>
+                                                                        <label htmlFor="female">Female</label>
+                                                                    </div>
+                                                                </div>
+                                                            </Form.Group>
+                                                        </Row>
+
+                                                        <Row className="mb-3">
+                                                            <Form.Group as={Col} className='addFormGroups'>
+                                                                <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
+                                                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" value={contactPerson.phone} onChange={handleContactPerson}/>
+                                                            </Form.Group>
+                                                        </Row>
+                                                        <Form.Group className="mb-3" >
+                                                            <Form.Label htmlFor='address'>Address</Form.Label>
+                                                            <Form.Control id="address" placeholder="Enter your address" value={contactPerson.address} onChange={handleContactPerson}/>
+                                                        </Form.Group>
+                                                        <Row className="mb-3">
+                                                            <Form.Group as={Col} className="addFormGroups" >
+                                                                <Form.Label htmlFor='NIN'>NIN</Form.Label>
+                                                                <Form.Control id="NIN" placeholder="NIN" value={contactPerson.NIN} onChange={handleContactPerson}/>
+                                                            </Form.Group>
+                                                        </Row>
+                                                    </>
+                                                }    
+                                                {
+                                                    comprehensiveClient === "Individual" &&
+                                                    <>
+                                                        <Form.Group className="mb-3" >
+                                                            <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
+                                                            <Form.Control id="name" placeholder="Name" value={corporateComprehensiveEntity.name} onChange={handleCoporateComprehensiveEntity} required/>
+                                                        </Form.Group>
+                                                        <Row className="mb-3">
+                                                            <Form.Group as={Col} className='addFormGroups'>
+                                                                <Form.Label htmlFor='dob'>Date of birth</Form.Label>
+                                                                <Form.Control type="date" id="dob" value={corporateComprehensiveEntity.dob} onChange={handleCoporateComprehensiveEntity}/>
+                                                            </Form.Group>
+                                                            <Form.Group as={Col} className='addFormGroups'>
+                                                                <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
+                                                                <div className='gender-options'>
+                                                                    <div>
+                                                                    <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleCoporateComprehensiveEntity}/>
+                                                                        <label htmlFor="male">Male</label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleCoporateComprehensiveEntity}/>
+                                                                        <label htmlFor="female">Female</label>
+                                                                    </div>
+                                                                </div>
+                                                            </Form.Group>
+                                                        </Row>
+
+                                                        <Row className="mb-3">
+                                                            <Form.Group as={Col} className='addFormGroups'>
+                                                                <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                                                <Form.Control type="email" id="email" placeholder="Enter email" value={corporateComprehensiveEntity.email} onChange={handleCoporateComprehensiveEntity} required/>
+                                                            </Form.Group>
+                                                            <Form.Group as={Col} className='addFormGroups'>
+                                                                <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
+                                                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" value={corporateComprehensiveEntity.phone} onChange={handleCoporateComprehensiveEntity}/>
+                                                            </Form.Group>
+                                                        </Row>
+                                                        <Form.Group className="mb-3" >
+                                                            <Form.Label htmlFor='address'>Address</Form.Label>
+                                                            <Form.Control id="address" placeholder="Enter your address" value={corporateComprehensiveEntity.address} onChange={handleCoporateComprehensiveEntity}/>
+                                                        </Form.Group>
+                                                        <Row className="mb-3">
+                                                            <Form.Group as={Col} className="addFormGroups" >
+                                                                <Form.Label htmlFor='NIN'>NIN</Form.Label>
+                                                                <Form.Control id="NIN" placeholder="NIN" value={corporateComprehensiveEntity.NIN} onChange={handleCoporateComprehensiveEntity}/>
+                                                            </Form.Group>
+                                                        </Row>
+                                                        <Row className="mb-3">
+                                                            <Form.Group as={Col} className="addFormGroups" >
+                                                                <Form.Label htmlFor='TIN'>TIN</Form.Label>
+                                                                <Form.Control id="TIN" placeholder="TIN" value={corporateComprehensiveEntity.TIN} onChange={handleCoporateComprehensiveEntity}/>
+                                                            </Form.Group>
+                                                        </Row>
+                                                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
+                                                        <Upload />
+                                                    </>
+                                                }
+                                            </>                                                      
+                                            : 
                                             <>
                                                 <Form.Group className="mb-3" >
-                                                    <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
+                                                    <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
+                                                    <Form.Control id="name" placeholder="Name" value={newClient.name} onChange={handleClientDetails} required/>
                                                 </Form.Group>
-                                                <Form.Group className="mb-3" controlId="comprehensive">
-                                                    <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
+                                                <Row className="mb-3">
+                                                    <Form.Group as={Col} className='addFormGroups'>
+                                                        <Form.Label htmlFor='dob'>Date of birth</Form.Label>
+                                                        <Form.Control type="date" id="dob" value={newClient.dob} onChange={handleClientDetails} />
+                                                    </Form.Group>
+                                                    <Form.Group as={Col} className='addFormGroups'>
+                                                        <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
+                                                        <div className='gender-options'>
+                                                            <div>
+                                                            <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleClientDetails}/>
+                                                                <label htmlFor="male">Male</label>
+                                                            </div>
+                                                            <div>
+                                                                <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleClientDetails}/>
+                                                                <label htmlFor="female">Female</label>
+                                                            </div>
+                                                        </div>
+                                                    </Form.Group>
+                                                </Row>
+
+                                                <Row className="mb-3">
+                                                    <Form.Group as={Col} className='addFormGroups'>
+                                                        <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                                        <Form.Control type="email" id="email" placeholder="Enter email" value={newClient.email} onChange={handleClientDetails} required/>
+                                                    </Form.Group>
+                                                    <Form.Group as={Col} className='addFormGroups'>
+                                                        <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
+                                                        <Form.Control type="tel" id="phone" placeholder="Enter phone number" value={newClient.phone} onChange={handleClientDetails}/>
+                                                    </Form.Group>
+                                                </Row>
+                                                <Form.Group className="mb-3" >
+                                                    <Form.Label htmlFor='address'>Address</Form.Label>
+                                                    <Form.Control id="address" placeholder="Enter your address" value={newClient.address} onChange={handleClientDetails}/>
                                                 </Form.Group>
-                                                <Form.Group className="mb-3" controlId="mtp">
-                                                    <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
-                                                </Form.Group>
-                                                <Form.Group className="mb-3" controlId="windscreen">
-                                                    <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
-                                                </Form.Group>
+                                                <Row className="mb-3">
+                                                    <Form.Group as={Col} className="addFormGroups" >
+                                                        <Form.Label htmlFor='NIN'>NIN</Form.Label>
+                                                        <Form.Control id="NIN" placeholder="NIN" value={newClient.NIN} onChange={handleClientDetails}/>
+                                                    </Form.Group>
+                                                </Row>
+                                                { user_role === 'agent' &&
+                                                    <>
+                                                        <Form.Group className="mb-3" >
+                                                            <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3" controlId="comprehensive">
+                                                            <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3" controlId="mtp">
+                                                            <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3" controlId="windscreen">
+                                                            <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                                                        </Form.Group>
+                                                    </>
+                                                }
+                                                <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
+                                                <Upload />
                                             </>
                                         }
-                                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                        <Upload />
+                                        
+                                        
                                     </Form>
-                                    </Modal.Body>
-                                    <Modal.Footer>
+                                </Modal.Body>
 
-                                        <Button variant="primary" onClick={() => {
-                                            handleClose()
-                                            setClient(newClient)
-                                        }}>
-                                            Save
-                                        </Button>
-                                    </Modal.Footer>
-                        
+                                <Modal.Footer>
+                                    <Button variant="primary" onClick={() => {
+                                        handleClose()
+                                        setClient(newClient)
+                                    }}>
+                                        Save
+                                    </Button>
+                                </Modal.Footer>
                             </Modal>
                         </Row>
                     </div>
