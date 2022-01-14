@@ -26,12 +26,12 @@ const menuData = {
                     link: "/superadmin/motor-third-party"
                 },
                 {
-                    name: "Windscreen",
-                    link: "/superadmin/windscreen"
-                },
-                {
                     name: "Comprehensive",
                     link: "/superadmin/comprehensive"
+                },
+                {
+                    name: "Windscreen",
+                    link: "/superadmin/windscreen"
                 },
                 {
                     name: "New imports",
