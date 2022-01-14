@@ -21,7 +21,6 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 function MyRouter() {
 
     useEffect(() => {
-        localStorage.getItem('user')
     }, [])
 
     const {currentUser, authClaims, user } = useAuth()
