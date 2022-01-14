@@ -6,7 +6,6 @@ import { functions } from '../helpers/firebase'
 import { Form,Row, Col, Table, Button, Modal, Alert } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
-import Header from '../components/header/Header'
 import '../styles/Policies.css'
 import moment from 'moment'
 import Upload from '../components/uploader/Upload';
@@ -17,10 +16,6 @@ import Upload from '../components/uploader/Upload';
 import { db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { authentication } from '../helpers/firebase'
-
-import { MdEmojiObjects } from 'react-icons/md'
-
-
 // import AddClient from '../parts/AddClient'
 // enlarging the size of + and -
 
