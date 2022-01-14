@@ -1,7 +1,5 @@
 // import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react";
-import data from "../../helpers/mock-data.json";
-import Datatable from "../../helpers/DataTable";
 import { MdDownload } from "react-icons/md";
 import { CSVLink } from "react-csv";
 import SearchBar from "../../components/searchBar/SearchBar";
@@ -26,7 +24,7 @@ function Reports() {
     setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
   }
 
-  console.log(policies)
+  // console.log(policies)
 
 
   return (
@@ -40,7 +38,7 @@ function Reports() {
             />
             <div></div>
             <CSVLink
-              data={data}
+              data={policies}
               filename={"Britam-Reports.csv"}
               className="btn btn-primary cta"
               target="_blank"
