@@ -561,22 +561,22 @@ function Policies({cat, btn_txt, pol}) {
                                                     <>
                                                         <Form.Group className="mb-3" >
                                                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
-                                                            <Form.Control id="name" placeholder="Name" value={corporateComprehensiveEntity.name} onChange={handleCoporateComprehensiveEntity} required/>
+                                                            <Form.Control id="name" placeholder="Name" value={individualComprehensiveClient.name} onChange={handleIndividualComprehensiveClient} required/>
                                                         </Form.Group>
                                                         <Row className="mb-3">
                                                             <Form.Group as={Col} className='addFormGroups'>
                                                                 <Form.Label htmlFor='dob'>Date of birth</Form.Label>
-                                                                <Form.Control type="date" id="dob" value={corporateComprehensiveEntity.dob} onChange={handleCoporateComprehensiveEntity}/>
+                                                                <Form.Control type="date" id="dob" value={individualComprehensiveClient.dob} onChange={handleIndividualComprehensiveClient}/>
                                                             </Form.Group>
                                                             <Form.Group as={Col} className='addFormGroups'>
                                                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
                                                                 <div className='gender-options'>
                                                                     <div>
-                                                                    <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleCoporateComprehensiveEntity}/>
+                                                                    <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleIndividualComprehensiveClient}/>
                                                                         <label htmlFor="male">Male</label>
                                                                     </div>
                                                                     <div>
-                                                                        <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleCoporateComprehensiveEntity}/>
+                                                                        <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleIndividualComprehensiveClient}/>
                                                                         <label htmlFor="female">Female</label>
                                                                     </div>
                                                                 </div>
@@ -586,27 +586,27 @@ function Policies({cat, btn_txt, pol}) {
                                                         <Row className="mb-3">
                                                             <Form.Group as={Col} className='addFormGroups'>
                                                                 <Form.Label htmlFor='email'>Email Address</Form.Label>
-                                                                <Form.Control type="email" id="email" placeholder="Enter email" value={corporateComprehensiveEntity.email} onChange={handleCoporateComprehensiveEntity} required/>
+                                                                <Form.Control type="email" id="email" placeholder="Enter email" value={individualComprehensiveClient.email} onChange={handleIndividualComprehensiveClient} required/>
                                                             </Form.Group>
                                                             <Form.Group as={Col} className='addFormGroups'>
                                                                 <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
-                                                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" value={corporateComprehensiveEntity.phone} onChange={handleCoporateComprehensiveEntity}/>
+                                                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" value={individualComprehensiveClient.phone} onChange={handleIndividualComprehensiveClient}/>
                                                             </Form.Group>
                                                         </Row>
                                                         <Form.Group className="mb-3" >
                                                             <Form.Label htmlFor='address'>Address</Form.Label>
-                                                            <Form.Control id="address" placeholder="Enter your address" value={corporateComprehensiveEntity.address} onChange={handleCoporateComprehensiveEntity}/>
+                                                            <Form.Control id="address" placeholder="Enter your address" value={individualComprehensiveClient.address} onChange={handleIndividualComprehensiveClient}/>
                                                         </Form.Group>
                                                         <Row className="mb-3">
                                                             <Form.Group as={Col} className="addFormGroups" >
                                                                 <Form.Label htmlFor='NIN'>NIN</Form.Label>
-                                                                <Form.Control id="NIN" placeholder="NIN" value={corporateComprehensiveEntity.NIN} onChange={handleCoporateComprehensiveEntity}/>
+                                                                <Form.Control id="NIN" placeholder="NIN" value={individualComprehensiveClient.NIN} onChange={handleIndividualComprehensiveClient}/>
                                                             </Form.Group>
                                                         </Row>
                                                         <Row className="mb-3">
                                                             <Form.Group as={Col} className="addFormGroups" >
                                                                 <Form.Label htmlFor='TIN'>TIN</Form.Label>
-                                                                <Form.Control id="TIN" placeholder="TIN" value={corporateComprehensiveEntity.TIN} onChange={handleCoporateComprehensiveEntity}/>
+                                                                <Form.Control id="TIN" placeholder="TIN" value={individualComprehensiveClient.TIN} onChange={handleIndividualComprehensiveClient}/>
                                                             </Form.Group>
                                                         </Row>
                                                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
