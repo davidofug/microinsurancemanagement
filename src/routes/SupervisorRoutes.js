@@ -94,7 +94,6 @@ function SupervisorRoutes() {
             <PrivateRoute path="/add-clients" >
                 <AddClients />
             </PrivateRoute>
-            <Route path="/logout" component={Logout} />
         </>
         
     )
