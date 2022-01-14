@@ -24,6 +24,7 @@ function Dashboard() {
         getClaims()
         getClients()
         getAgents()
+        getAdmins()
     }, [])
 
     const getClients = () => {
@@ -45,6 +46,19 @@ function Dashboard() {
             const resultsArray = results.data
             const myUsers = resultsArray.filter(user => user.role.agent === true)
             setAgents(myUsers)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    // getting agents
+    const [ admins, setAdmins ] = useState([])
+    const getAdmins = () => {
+        const listUsers = httpsCallable(functions, 'listUsers')
+        listUsers().then((results) => {
+            const resultsArray = results.data
+            const myUsers = resultsArray.filter(user => user.role.superadmin === true)
+            setAdmins(myUsers)
         }).catch((err) => {
             console.log(err)
         })
@@ -102,6 +116,14 @@ function Dashboard() {
 
                         <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex", alignItems: "flex-start"}}>
                             <div id="short_stats">
+                                {authClaims.superadmin && 
+                                    <>
+                                        {admins.length > 0 
+                                        ? <>
+                                        </>
+                                        : <Loader />}
+                                    </>
+                                }
                                 {authClaims.admin && <>
                                     <h5 className="heading">Daily Reports Summary</h5>
                                     <table>
