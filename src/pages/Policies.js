@@ -41,8 +41,6 @@ function Policies({cat, btn_txt, pol}) {
     const [ currency, setCurrency ] = useState({})
     const [ client, setClient ] = useState({})
 
-    const [ totalValuation, setTotalValuation ] = useState()
-
     const [ newClient, handleClientDetails ] = useForm({
         user_role: 'Customer',
         email:'',
@@ -53,6 +51,7 @@ function Policies({cat, btn_txt, pol}) {
         address:'',
         licenseNo:'',
         NIN: '',
+        TIN: '',
         photo:''
     })
 
@@ -457,9 +456,9 @@ function Policies({cat, btn_txt, pol}) {
                                             <Form.Control id="address" placeholder="Enter your address" value={newClient.address} onChange={handleClientDetails}/>
                                         </Form.Group>
                                         <Row className="mb-3">
-                                        <Form.Group as={Col} className="addFormGroups" >
-                                            <Form.Label htmlFor='NIN'>NIN</Form.Label>
-                                            <Form.Control id="NIN" placeholder="NIN" value={newClient.NIN} onChange={handleClientDetails}/>
+                                            <Form.Group as={Col} className="addFormGroups" >
+                                                <Form.Label htmlFor='NIN'>NIN</Form.Label>
+                                                <Form.Control id="NIN" placeholder="NIN" value={newClient.NIN} onChange={handleClientDetails}/>
                                             </Form.Group>
                                         </Row>
                                         { user_role === 'agent' &&
@@ -500,8 +499,6 @@ function Policies({cat, btn_txt, pol}) {
                             <Form.Group classname="mb-3" controlId="currency">
                                 <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={(event)=>{
                                     setCurrency(event.target.value)
-                                    // console.log(authentication.currentUser.uid)
-                                    
                                     }}>
                                     <option>Currency</option>
                                     {currencies.map((currency, index) => <option value={currency["code"]}>{currency["code"]}</option>)}  
