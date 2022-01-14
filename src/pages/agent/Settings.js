@@ -107,10 +107,8 @@ function Settings() {
                                                 
                                             </div>
                                             <Badge >Agent</Badge>
-
-                                            
-                                            
                                         </form>
+                                        <h6>General Information</h6>
                                 </div>
 
                                 <div id="edit_profile">
