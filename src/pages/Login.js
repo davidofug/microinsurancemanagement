@@ -70,7 +70,6 @@ function Login() {
   };
 }
 
-  console.log(authClaims)
   if (isLoading) return <Loader />;
 
   if (currentUser?.loggedIn){
