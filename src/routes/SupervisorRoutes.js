@@ -1,4 +1,4 @@
-import Mtp from '../pages/Mtp'
+import Mtp from '../pages/supervisor/Mtp'
 import Users from '../pages/Users'
 import Claims from '../pages/Claims'
 import Reports from '../pages/supervisor/Reports'
@@ -9,8 +9,8 @@ import PrivateRoute  from './PrivateRoute'
 import { Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
 import AddClients from '../pages/AddClients'
-import Windscreen from '../pages/Windscreen'
-import Comprehensive from '../pages/Comprehensive'
+import Windscreen from '../pages/supervisor/Windscreen'
+import Comprehensive from '../pages/supervisor/Comprehensive'
 import Logs from '../pages/Logs.js'
 import Agents from '../pages/Agents'
 import Logout from '../pages/Logout'
@@ -58,6 +58,17 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/settings" >
                 <Settings />
             </PrivateRoute>
+
+            <PrivateRoute path="/supervisor/add-comprehensive" >
+                <Policies cat="comprehensive" btn_txt="Process Comprehensive" pol="comprehensive"/>
+            </PrivateRoute>
+            <PrivateRoute path="/supervisor/add-windscreen" >
+                <Policies cat="windscreen" btn_txt="Process Windscreen" pol="windscreen"/>
+            </PrivateRoute>
+            <PrivateRoute path="/supervisor/add-mtp" >
+                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
+            </PrivateRoute>
+
             <PrivateRoute path="/supervisor/motor-third-party" >
                 <Mtp />
             </PrivateRoute>

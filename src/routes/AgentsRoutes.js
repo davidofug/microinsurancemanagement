@@ -54,6 +54,15 @@ function AgentsRoutes() {
             <PrivateRoute path="/agent/comprehensive" >
                 <Comprehensive />
             </PrivateRoute>
+            <PrivateRoute path="/agent/add-comprehensive" >
+                <Policies cat="comprehensive" btn_txt="Process Comprehensive" pol="comprehensive"/>
+            </PrivateRoute>
+            <PrivateRoute path="/agent/add-windscreen" >
+                <Policies cat="windscreen" btn_txt="Process Windscreen" pol="windscreen"/>
+            </PrivateRoute>
+            <PrivateRoute path="/agent/add-mtp" >
+                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
+            </PrivateRoute>
             <PrivateRoute path="/agent/add-clients" >
                 <AddClients />
             </PrivateRoute>

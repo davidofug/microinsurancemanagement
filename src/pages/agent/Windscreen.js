@@ -21,7 +21,7 @@ export default function Windscreen() {
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/admin/add-windscreen">
+                <Link to="/agent/add-windscreen">
                     <button className="btn btn-primary cta">Add</button>
                 </Link>
                 

@@ -1,64 +1,50 @@
 
 import React, { useState, useEffect } from 'react'
 import { httpsCallable } from 'firebase/functions'
-import { functions } from '../helpers/firebase'
+import { functions } from '../../helpers/firebase'
 
-import { Form,Row, Col, Table, Button, Modal, Alert } from 'react-bootstrap'
-import { useForm } from '../hooks/useForm'
-import dynamicFields from '../helpers/multipleChoice'
-import Header from '../components/header/Header'
-import '../styles/Policies.css'
+import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
+import { useForm } from '../../hooks/useForm'
+import dynamicFields from '../../helpers/multipleChoice'
+// import Header from '../parts/header/Header'
+import '../../styles/Policies.css'
 import moment from 'moment'
-import Upload from '../components/uploader/Upload';
-
-
-// import AddClient from '../components/AddClient'
-
-import { db } from '../helpers/firebase'
+import { db } from '../../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
-import { authentication } from '../helpers/firebase'
-
-import { create, text } from 'd3'
+import { authentication } from '../../helpers/firebase'
+import { create } from 'd3'
 import { MdEmojiObjects } from 'react-icons/md'
 
 
 // import AddClient from '../parts/AddClient'
 // enlarging the size of + and -
 
-function Policies({cat, btn_txt, pol}) {
-
+function Mtp({category}) {
     const listUsers = httpsCallable(functions,'listUsers')
-    const addUser = httpsCallable(functions, 'addUser')
  
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const [ existingClients, setExistingClients ] = useState([])
+    const [ existingClient, setExistingClient ] = useState(null)
+    const [ existingCustomers, setExistingCustomers ] = useState([])
     const [ classes, setClasses ] = useState([])
     const [ vehicleUses, setVehicleUses ] = useState([])
     const [ policyStartDate, setPolicyStartDate ] = useState(null)
     const [ policyEndDate, setPolicyEndDate ] = useState(null)
     const [ currency, setCurrency ] = useState({})
+    const [ suggestions, setSuggestions ] = useState([])
     const [ client, setClient ] = useState({})
-
-    const [ basicPremium, setBasicPremium ] = useState(0)
-    const [ totalPremium, setTotalPremium ] = useState(0)
-    const [ valid, setValid ] = useState(false)
-
     const [ newClient, handleClientDetails ] = useForm({
-        user_role: 'Customer',
-        email:'',
         name:'',
-        dob:'',
+        DOB:'',
         gender:'',
-        phone:'',
-        address:'',
-        licenseNo:'',
-        NIN: '',
-        photo:''
+        email:'',
+        phone_number:'',
+        address:''
     })
 
+    const [ clientDetails, setClientDetails ] = useState({})
     const [ stickers, setStickers ] = useState([
         {
             referenceNo:'',
@@ -71,20 +57,18 @@ function Policies({cat, btn_txt, pol}) {
             chasisNo:'',
             motorMake:'',
             vehicleUse:'',
-            totalPremium:'',
-            basicPremium:''         
+            totalPremium:''
         }
     ])
     
     const { currencies, make, categories } = dynamicFields
+    let date = moment().format("l")
 
     useEffect(() => {
         document.title = 'Britam - Policies'
 
         listUsers().then(({data}) => {
-            setExistingClients(data.filter(user => user?.role?.Customer))
-            console.log(data.filter(user => user?.role?.Customer))
-            console.log(data)
+            setExistingCustomers(data.filter(user => user?.role?.Customer))
         }).catch((err) => {
             console.log(err)
         })
@@ -92,17 +76,7 @@ function Policies({cat, btn_txt, pol}) {
 
     const handleInputChange = (index, event) => {
         const values = [...stickers]
-        
-        if(event.target.name === 'totalPremium' || event.target.name === 'seatingCapacity' || event.target.name === 'grossWeight' || event.target.name === 'basicPremium' || event.target.name === 'ccPower' ){
-            if( Number(event.target.value) >= 0 ) { 
-                values[index][event.target.name] = event.target.value
-            } 
-        }        
-        else{
-            values[index][event.target.name] = event.target.value    
-
-        }
-
+        values[index][event.target.name] = event.target.value                                        
         setStickers(values)
     }
 
@@ -120,8 +94,7 @@ function Policies({cat, btn_txt, pol}) {
                 chasisNo:'',
                 motorMake:'',
                 vehicleUse:'',
-                totalPremium:'',
-                basicPremium:''
+                totalPremium:''
             }
         ])
     }
@@ -131,68 +104,38 @@ function Policies({cat, btn_txt, pol}) {
             const stickersDetails = [...stickers]
             stickersDetails.splice(index, 1)
             setStickers(stickersDetails)
-            
         }
         return
     }
 
     // firebase collections
     const policiesRef = collection(db, "policies")
+    const clientsRef = collection(db, "clients")
 
     //createPolicies
-    const handleSubmit = async(event) => {
+    const createPolicies = async(event) => {
         event.preventDefault()
-        console.log(typeof(stickers.totalPremium))
-
         await addDoc(policiesRef, {
             currency,
             stickersDetails: stickers,
-            clientDetails: client,
-            added_by_uid: authentication.currentUser.uid,
-            added_by_name: authentication.currentUser.displayName,  
+            clientDetails: existingClient?.name ? existingClient : newClient,
+            uid: authentication.currentUser.uid,
+            agentName: authentication.currentUser.displayName,  
             policyStartDate: policyStartDate, 
             policyEndDate: policyEndDate,
-            category: cat,
-            // totalValuation: (0.5/100 * basicPremium)  
-        })        
-
-        client['added_by_uid'] = authentication.currentUser.uid
-        client['added_by_name'] = authentication.currentUser.displayName
-        
-        addUser(client).then((results) => {
-            alert(`successfully added ${client.name}`)
-            document.policy.reset()
-            setPolicyEndDate('')
-            setPolicyStartDate('')
-        }).catch( error => console.log( error ))
-        
-    }    
-
-
-    const { user_role } = newClient
-    const [ comprehensive, setComprehensive ] = useState(false)
-    const [ windscreen, setWindscreen ] = useState(false)
-    const [ mtp, setMTP ] = useState(false)
-
-    const generateTotalValuation = ( stickers ) => {
-        
-        const stickerFee  = 6000
-        const stampDuty = 35000
-        
-        let totalPrem = 0
-        let basicPrem = 0
-
-        for(let i = 0; i < stickers.length; i++) {
-            if( Number(stickers[i]?.totalPremium) > 0) totalPrem += Number(stickers[i].totalPremium)
-            if( Number(stickers[i]?.basicPremium) > 0) basicPrem += Number(stickers[i].basicPremium)
-        }
-
-        const trainingLevy = 0.5 * basicPrem
-        const VAT = (18/100) * (basicPrem + trainingLevy + stickerFee)
-
-
-
+            category: category
+        })
     }
+
+    //createClients
+    const createClient = async(event) => {
+        event.preventDefault()
+        await addDoc(clientsRef, {
+            newClient,
+            uid: authentication.currentUser.uid
+        })
+    }
+    
 
     const renderStickerDetails = (singleSticker, index) => {
         return (
@@ -203,17 +146,17 @@ function Policies({cat, btn_txt, pol}) {
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="referenceNo">
-                                    <Form.Control type="text" name="referenceNo" placeholder="Reference No" value={singleSticker.referenceNo} onChange={event => handleInputChange(index, event)} required/>
+                                    <Form.Control type="text" name="referenceNo" placeholder="Reference No" value={singleSticker.referenceNo} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </div>
                             <div>
                                 <Form.Group controlId="grossWeight">
-                                    <Form.Control type="text" name="grossWeight" placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={event => handleInputChange(index, event)} required/>
+                                    <Form.Control type="text" name="grossWeight" placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={event => handleInputChange(index, event)} />
                                 </Form.Group>
                             </div>
                             <div>
                                 <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
-                                    <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)} required>
+                                    <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)}>
                                         <option>Motor Make</option>
                                         {make.map((motorMake, index) => <option key={index} value={motorMake[0]}>{motorMake[1]}</option>)}
                                     </Form.Select>
@@ -225,18 +168,18 @@ function Policies({cat, btn_txt, pol}) {
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="plateNo">
-                                    <Form.Control type="text" name="plateNo" placeholder="Plate No" value={singleSticker.plateNo} onChange={event => handleInputChange(index, event)} required/>
+                                    <Form.Control type="text" name="plateNo" placeholder="Plate No" value={singleSticker.plateNo} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </div>
                             <div>
                                 <Form.Group controlId="category" >
-                                    <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} required onChange={event => {
+                                    <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} onChange={event => {
                                         handleInputChange(index, event)
 
                                         const result = categories.filter(category => category.label === event.target.value)
                                         const [ category ] = result
                                         // eslint-disable-next-line no-lone-blocks
-                                        // console.log(date)
+                                        console.log(date)
 
                                         if(category?.classes?.length > 0) {
                                             const [ {classes} ] = result
@@ -272,7 +215,7 @@ function Policies({cat, btn_txt, pol}) {
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="seatingCapacity">
-                                    <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)} required/>
+                                    <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </div>
                             <div>
@@ -285,7 +228,7 @@ function Policies({cat, btn_txt, pol}) {
                             </div>
                             <div>
                                 <Form.Group controlId="totalPremium" >
-                                    <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} required/>
+                                    <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} />
                                 </Form.Group>
                             </div>
                         </div>
@@ -294,30 +237,17 @@ function Policies({cat, btn_txt, pol}) {
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div>
                                 <Form.Group controlId="ccPower">
-                                    <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)} required/>
+                                    <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </div>
                             <div>
                                 <Form.Group controlId="chasisNo" aria-label="chasisNo">
-                                    <Form.Control type="text" name="chasisNo" placeholder="Chasis No" value={singleSticker.chasisNo} onChange={event => {
-                                        handleInputChange(index, event) 
-                                    }} required/>
+                                    <Form.Control type="text" name="chasisNo" placeholder="Chasis No" value={singleSticker.chasisNo} onChange={event => handleInputChange(index, event)}/>
                                 </Form.Group>
                             </div>
-                            {
-                                cat === 'comprehensive' ?
-                                <div>
-                                    <Form.Group controlId="chasisNo" aria-label="chasisNo">
-                                        <Form.Control type="text" name="basicPremium" placeholder="BasicPremium" value={singleSticker.basicPremium} onChange={event => {
-                                            handleInputChange(index, event) 
-                                        }} required/>
-                                    </Form.Group>
-                                </div>
-                                : 
-                                <div>
-                                    
-                                </div>
-                            }   
+                            <div>
+
+                            </div>
                         </div>
                     </td>
                     <td id="form-buttons" className="fifth-cell" style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
@@ -341,130 +271,129 @@ function Policies({cat, btn_txt, pol}) {
         )
     }
 
+    const getExistingClient = ( text ) => { 
+            if(existingCustomers !== null) {
+                // console.log(existingCustomers)
+                let matches = existingCustomers.filter(customer => {
+                    const regex = new RegExp(`${text}`, "gi") 
+                    return customer.email.match(regex) || customer.name.match(regex)
+                })
+                // console.log(matches)
+                setSuggestions(matches)
+                setExistingClient(text)
+            }    
+
+    }
+    // const handleSubmit = () => 
+
+    // }
+    const suggestionHandler = (text) => {
+        setSuggestions([])
+        setExistingClient(text)
+    }
+    
+    
+
     return (
         <div className='components'>
             <div className='heading'>
                 <h1 className='title'>Policies</h1>
-                <p>MANAGING {pol.toUpperCase()} POLICIES</p>
+                <p>MANAGING POLICIES</p>
             </div>
             <div className="table-card componentsData" style={{paddingBottom:"10vh"}}>
-                <Form name="policy" onSubmit={handleSubmit}>
+                <Form onSubmit={createPolicies}>
                     <div style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                         <Row style={{paddingTop:"2vh"}}>
                             <h1>
                                 Client
                             </h1>
                         </Row>
-                        <Row >
-                            <Col className="client-details" md={3}>
+                        <Row style={{gap:"2vw"}}>
+                            <Col className="client-details" style={{display:"flex", justifyContent:"flex-start"}}>
                                 <Form.Group className="mb-3" controlId="clientDetails">
-                                    <Form.Control list="clientNames" placeholder='Existing client' id="existingClient"onChange={()=> {
-                                        const list = document.getElementById('clientNames')
-                                        for(let clientName = 0; clientName < list.options.length; clientName++) {
-                                            if(list.options[clientName].value === document.getElementById('existingClient').value) {
-                                                setClient(JSON.parse(list.options[clientName].getAttribute('data-value')))   
-                                            }
-                                        }
-                                        console.log(client)
+                                    <Form.Control type="text" placeholder="Existing" value={ existingClient?.name } onChange={event => {
+                                        const existingClient = getExistingClient(event.target.value)
+                                        setClientDetails(existingClient)
                                     }}/>
-                                        <datalist id="clientNames" >
-                                            {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
-                                        </datalist> 
                                 </Form.Group>
                             </Col>
-                            
-                            
-                            
-                            {   
+                            {
+                                suggestions?.length > 0 && 
+                                    <Row>
+                                        {
+                                            suggestions.map((suggestion, index) => <div key={index} onClick={() => {
+                                                suggestionHandler(suggestion)
+                                                // console.log(suggestion)
+                                            }}>{suggestion.name}</div>)
+                                        }
+                                    </Row>
+                                
+                            }
+
+                            {
                                 newClient.name.length > 1 && newClient.email.length > 1 ? 
-                                <Col md={8} className="add-new-client" >
-                                    <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Edit Client Details </button>
+                                <Col className="add-new-client" style={{display:"flex", justifyContent:"flex-end"}}>
+                                    <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Edit Client </button>
                                 </Col> : 
-                                <Col md={8} className="add-new-client" >
-                                    <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> Add New Client </button>
+                                <Col className="add-new-client" style={{display:"flex", justifyContent:"flex-end"}}>
+                                    <button className="new-client-cta  sm btn-primary" variant="primary" type="button" onClick={handleShow}> New Client </button>
                                 </Col>
                             }
+                            
                             <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
-                                <Modal.Title>Add New Client</Modal.Title>
+                                <Modal.Title>New Client</Modal.Title>
                                 </Modal.Header>
-                                
-                                <Modal.Body>
-                                    <Form name='form4' onSubmit={handleSubmit}>
-                                        <Form.Group className="mb-3" >
-                                            <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
-                                            <Form.Control id="name" placeholder="Name" value={newClient.name} onChange={handleClientDetails} />
+                                <Form>
+                                    <Modal.Body>
+                                        <Form.Group className="mb-3" controlId="name">
+                                            <Form.Label>Name</Form.Label>
+                                            <Form.Control placeholder="Enter name" value={newClient.name} id="name" onChange={handleClientDetails}/>
                                         </Form.Group>
                                         <Row className="mb-3">
-                                            <Form.Group as={Col} className='addFormGroups'>
-                                                <Form.Label htmlFor='dob'>Date of birth</Form.Label>
-                                                <Form.Control type="date" id="dob" value={newClient.dob} onChange={handleClientDetails} />
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Date of birth</Form.Label>
+                                                <Form.Control type="date" id="DOB" value={newClient.DOB} onChange={handleClientDetails}/>
                                             </Form.Group>
-                                            <Form.Group as={Col} className='addFormGroups'>
-                                                <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
-                                                <div className='gender-options'>
-                                                    <div>
-                                                    <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleClientDetails}/>
-                                                        <label htmlFor="male">Male</label>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Gender</Form.Label>
+                                                <div style={{"display": "flex", "gap": "10px"}}>
+                                                    <div style={{display: "flex"}}>
+                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} value="male" onChange={handleClientDetails}/>
+                                                        <label htmlFor="gender">Male</label>
                                                     </div>
-                                                    <div>
-                                                        <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleClientDetails}/>
-                                                        <label htmlFor="female">Female</label>
+                                                    <div style={{display: "flex"}}>
+                                                        <input type="radio" name="gender" id="gender" style={{"margin-right": "5px"}} value="female"onChange={handleClientDetails}/>
+                                                        <label htmlFor="gender">Female</label>
                                                     </div>
                                                 </div>
                                             </Form.Group>
                                         </Row>
 
                                         <Row className="mb-3">
-                                            <Form.Group as={Col} className='addFormGroups'>
-                                                <Form.Label htmlFor='email'>Email Address</Form.Label>
-                                                <Form.Control type="email" id="email" placeholder="Enter email" value={newClient.email} onChange={handleClientDetails} />
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Email</Form.Label>
+                                                <Form.Control type="email" placeholder="Enter email" value={newClient.email} id="email"  onChange={handleClientDetails}/>
                                             </Form.Group>
-                                            <Form.Group as={Col} className='addFormGroups'>
-                                                <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
-                                                <Form.Control type="tel" id="phone" placeholder="Enter phone number" value={newClient.phone} onChange={handleClientDetails}/>
+                                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Label>Phone Number</Form.Label>
+                                                <Form.Control type="tel" placeholder="Enter phone number" value={newClient.phone_number} id="phone_number" onChange={handleClientDetails}/>
                                             </Form.Group>
                                         </Row>
-                                        <Form.Group className="mb-3" >
-                                            <Form.Label htmlFor='address'>Address</Form.Label>
-                                            <Form.Control id="address" placeholder="Enter your address" value={newClient.address} onChange={handleClientDetails}/>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Address</Form.Label>
+                                            <Form.Control placeholder="Enter your address" id="address" value={newClient.address} onChange={handleClientDetails}/>
                                         </Form.Group>
-                                        <Row className="mb-3">
-                                        <Form.Group as={Col} className="addFormGroups" >
-                                            <Form.Label htmlFor='NIN'>NIN</Form.Label>
-                                            <Form.Control id="NIN" placeholder="NIN" value={newClient.NIN} onChange={handleClientDetails}/>
-                                            </Form.Group>
-                                        </Row>
-                                        { user_role === 'agent' &&
-                                            <>
-                                                <Form.Group className="mb-3" >
-                                                    <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
-                                                </Form.Group>
-                                                <Form.Group className="mb-3" controlId="comprehensive">
-                                                    <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
-                                                </Form.Group>
-                                                <Form.Group className="mb-3" controlId="mtp">
-                                                    <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
-                                                </Form.Group>
-                                                <Form.Group className="mb-3" controlId="windscreen">
-                                                    <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
-                                                </Form.Group>
-                                            </>
-                                        }
-                                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                        <Upload />
-                                    </Form>
                                     </Modal.Body>
                                     <Modal.Footer>
-
                                         <Button variant="primary" onClick={() => {
                                             handleClose()
-                                            setClient(newClient)
+                                            console.log( newClient )
                                         }}>
                                             Save
                                         </Button>
                                     </Modal.Footer>
-                        
+                                </Form>
                             </Modal>
                         </Row>
                     </div>
@@ -489,6 +418,8 @@ function Policies({cat, btn_txt, pol}) {
                             {stickers.map(renderStickerDetails)}
                         </tbody>
                     </Table>
+                    {/*Sticker form details container.*/}
+
 
                     <div className="dates">
                         {
@@ -498,7 +429,7 @@ function Policies({cat, btn_txt, pol}) {
                                         <div >
                                             <Form.Group controlId="policyStartDate"  >
                                                 <Form.Label><h5>Policy Start Date</h5></Form.Label>
-                                                <Form.Control type="date" name="policy_start_date" value={policyStartDate} onChange={event=> {
+                                                <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
                                                     setPolicyEndDate(moment(event.target.value).add(1, 'years').subtract(1, 'days').calender())
                                                     setPolicyStartDate(event.target.value)
                                                 }}/>
@@ -519,21 +450,26 @@ function Policies({cat, btn_txt, pol}) {
                                     <Col>
                                         <Form.Group controlId="policyStartDate" >
                                             <Form.Label><h5>Policy Start Date</h5></Form.Label>
-                                            <Form.Control type="date" name="policy_start_date" value={policyStartDate} onChange={event=> {
+                                            <Form.Control type="date" name="policy_start_date" value={policyStartDate} defaultValue={date} onChange={event=> {
                                                 setPolicyStartDate(event.target.value)
                                                 setPolicyEndDate(moment(event.target.value).add(1, 'years').subtract(1, 'days').calendar())
+                                                console.log(`end ${policyEndDate}`)
+                                                // console.log(policyStartDate)
                                             }}/>
                                         </Form.Group>
                                     </Col>
                                 </Row>
+
                         }
+
                         <div style={{display:"flex", width:"100%", justifyContent:"flex-end"}}>
                             <div>
                                 <Button variant="primary" type="submit">
-                                    {btn_txt}
+                                    Process 3rd Party
                                 </Button>
                             </div>
                         </div>
+                        {/* {console.log(fields)}   */}
                     </div> 
                 </Form>
             </div>
@@ -541,4 +477,4 @@ function Policies({cat, btn_txt, pol}) {
     )
 }
 
-export default Policies
+export default MTP

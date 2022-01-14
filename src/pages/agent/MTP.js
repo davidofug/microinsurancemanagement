@@ -40,7 +40,7 @@ export default function MTP() {
 
       <div id="add_client_group">
         <div></div>
-        <Link to="/admin/add-mtp">
+        <Link to="/agent/add-mtp">
           <button className="btn btn-primary cta">Add MTP</button>
         </Link>
       </div>
