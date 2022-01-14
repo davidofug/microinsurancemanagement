@@ -23,6 +23,7 @@ function Dashboard() {
         document.title = 'Britam - Dashboard'
         getClaims()
         getClients()
+        getAgents()
     }, [])
 
     const getClients = () => {
@@ -31,6 +32,19 @@ function Dashboard() {
             const resultsArray = results.data
             const myUsers = resultsArray.filter(user => user.role.Customer === true)
             setClients(myUsers)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    // getting agents
+    const [ agents, setAgents ] = useState([])
+    const getAgents = () => {
+        const listUsers = httpsCallable(functions, 'listUsers')
+        listUsers().then((results) => {
+            const resultsArray = results.data
+            const myUsers = resultsArray.filter(user => user.role.agent === true)
+            setAgents(myUsers)
         }).catch((err) => {
             console.log(err)
         })
@@ -113,10 +127,10 @@ function Dashboard() {
                                     <table>
                                         <thead><th>Name</th><th>Email Address</th></thead>
                                         <tbody>
-                                            {clients.map(client => (
-                                                <tr key={client.uid}>
-                                                    <td>{client.name}</td>
-                                                    <td>{client.email}</td>
+                                            {agents.map(agent => (
+                                                <tr key={agent.uid}>
+                                                    <td>{agent.name}</td>
+                                                    <td>{agent.email}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
