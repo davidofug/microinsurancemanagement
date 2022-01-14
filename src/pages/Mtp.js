@@ -66,9 +66,9 @@ export default function Mtp() {
 
       <div id="add_client_group">
         <div></div>
-        {/* <Link to="/admin/add-mtp">
+        <Link to="/admin/add-mtp">
           <button className="btn btn-primary cta">Add MTP</button>
-        </Link> */}
+        </Link>
       </div>
 
       <div className="table-card componentsData">
