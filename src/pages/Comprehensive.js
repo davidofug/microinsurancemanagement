@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import data from '../helpers/mock-data.json'
 import Header from '../components/header/Header';
 import { Table, Alert } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';

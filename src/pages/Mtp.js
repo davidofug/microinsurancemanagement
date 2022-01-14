@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import data from '../helpers/mock-data.json'
 import Header from "../components/header/Header";
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../components/searchBar/SearchBar'
@@ -55,6 +56,8 @@ export default function Mtp() {
         }
     }
 
+    console.log(policies)
+
   const [clickedIndex, setClickedIndex] = useState(null)
 
   return (
@@ -85,7 +88,7 @@ export default function Mtp() {
                         <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
-                        {policies.length > 0 && searchByName(policies).map((policy, index) => (
+                        {policies.length > 0 && policies.map((policy, index) => (
                           <tr key={policy.id}>
                             <td>{index + 1}</td>
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
