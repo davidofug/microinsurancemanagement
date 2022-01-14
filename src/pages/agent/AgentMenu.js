@@ -11,6 +11,7 @@ import { authentication } from "../../helpers/firebase";
 import { MdLogout } from 'react-icons/md'
 import DefaultAvatar from '../../components/DefaultAvatar'
 import { Badge } from 'react-bootstrap'
+import { ImProfile } from 'react-icons/im'
 
 function AgentMenu({setLargeContentClass, largeContentClass}) {
 
@@ -35,6 +36,8 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
 
     const toggleActiveClassStyle = index => selected.Agent[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
 
+    const [ openFooterContext, setOpenFooterContext ] = useState(false)
+
     return (
         <div className='menuSide'>
             <MobileNav role={Agent} user="agent" displayName={authentication?.currentUser?.displayName}/>
@@ -54,12 +57,10 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                             </div>
                         </div>
                         <SideBar role={Agent} user="agent" displayName={authentication?.currentUser?.displayName} />
+
                         <footer>
-                            <ul>
-                                <li><Link to="/admin/settings">My Profile</Link></li>
-                                <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                            </ul>
-                            <Link to='/admin/settings'>
+                            {/* <Link to='/admin/settings'> */}
+                            <div className="footerContext" onClick={() => setOpenFooterContext(!openFooterContext)}>
                                 <DefaultAvatar />
                                 <div>
                                     <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
@@ -67,9 +68,15 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                                         <Badge color='black'>agent</Badge>
                                     </p>
                                 </div>
-                                <div id="eclipse"><div></div><div></div><div></div></div>
-                            </Link>
+                                <h3 style={{color: "#000"}}>&hellip;</h3>
+                            </div>
+                            {/* </Link> */}
+                            <ul className={openFooterContext ? "footerContextShow" : ""} id="contextUl">
+                                <li><Link to="/agent/settings"><ImProfile /> My Profile</Link></li>
+                                <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                            </ul>
                         </footer>
+
                     </nav>
             : 
             <nav className='sidebar-m'>
