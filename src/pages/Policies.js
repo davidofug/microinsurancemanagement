@@ -18,7 +18,6 @@ import { db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { authentication } from '../helpers/firebase'
 
-import { create, text } from 'd3'
 import { MdEmojiObjects } from 'react-icons/md'
 
 
