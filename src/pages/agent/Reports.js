@@ -74,11 +74,11 @@ function Reports() {
                                 <td>{policy.policyStartDate}</td>
                                 <td>{policy.policyEndDate}</td>
                                 <td>1 YR(s)</td>
-                                {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                                {policy.stickersDetails && <td>{policy.stickersDetails[0].basicPremium}</td>}
                                 {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
                                 <td>6,000</td>
-                                <td>11,704</td>
-                                <td>35,000</td>
+                                {policy.stickersDetails && <td>{policy.stickersDetails[0].vat}</td>}
+                                {policy.stickersDetails && <td>{policy.stickersDetails[0].stampDuty}</td>}
                                 <td>2,191</td>
                                 {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
                                 <td></td>
