@@ -63,8 +63,8 @@ function NewImport() {
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/admin/add-windscreen">
-                    <button className="btn btn-primary cta">Add Windscreen</button>
+                <Link to="/agent/add-new-import">
+                    <button className="btn btn-primary cta">Add New Import</button>
                 </Link>
                 
             </div>

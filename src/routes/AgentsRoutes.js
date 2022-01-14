@@ -14,6 +14,8 @@ import Settings from '../pages/agent/Settings'
 import Comprehensive from '../pages/Comprehensive'
 import { Route } from 'react-router-dom'
 import AddUsers from '../pages/agent/AddUsers'
+import NewImport from '../pages/NewImport'
+import Transit from '../pages/Transit'
 
 function AgentsRoutes() {
     return (
@@ -54,6 +56,12 @@ function AgentsRoutes() {
             <PrivateRoute path="/agent/comprehensive" >
                 <Comprehensive />
             </PrivateRoute>
+            <PrivateRoute path="/agent/new-import" >
+                <NewImport />
+            </PrivateRoute>
+            <PrivateRoute path="/agent/transit" >
+                <Transit />
+            </PrivateRoute>
             <PrivateRoute path="/agent/add-comprehensive" >
                 <Policies cat="comprehensive" btn_txt="Process Comprehensive" pol="comprehensive"/>
             </PrivateRoute>
@@ -62,6 +70,12 @@ function AgentsRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/agent/add-mtp" >
                 <Policies cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
+            </PrivateRoute>
+            <PrivateRoute path="/agent/add-new-import" >
+                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="new import"/>
+            </PrivateRoute>
+            <PrivateRoute path="/agent/add-transit" >
+                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="transit"/>
             </PrivateRoute>
             <PrivateRoute path="/agent/add-clients" >
                 <AddClients />

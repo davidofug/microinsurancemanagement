@@ -63,8 +63,8 @@ function Windscreen() {
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/admin/add-windscreen">
-                    <button className="btn btn-primary cta">Add Windscreen</button>
+                <Link to="/agent/add-transit">
+                    <button className="btn btn-primary cta">Add Transit</button>
                 </Link>
                 
             </div>

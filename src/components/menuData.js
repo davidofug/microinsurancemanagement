@@ -248,12 +248,12 @@ const menuData = {
                     link: "/agent/motor-third-party"
                 },
                 {
-                    name: "Windscreen",
-                    link: "/agent/windscreen"
-                },
-                {
                     name: "Comprehensive",
                     link: "/agent/comprehensive"
+                },
+                {
+                    name: "Windscreen",
+                    link: "/agent/windscreen"
                 },
                 {
                     name: "New imports",
