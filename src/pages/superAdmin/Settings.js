@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import '../../styles/Settings.css'
-import profile from '../../assets/imgs/image 2.png'
 import { Form, Row, Col, Alert } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
-import Header from '../../parts/header/Header'
+import Header from '../../components/header/Header'
 import { authentication } from '../../helpers/firebase'
 
 function Settings() {
@@ -59,7 +58,7 @@ function Settings() {
                                         <Form onSubmit={handleEditFormSubmit}>
                                             <h2>Edit Profile</h2>
                                             <hr />
-                                            <img src={profile} alt="profile" />
+                                            {/* <img src={profile} alt="profile" /> */}
                                             <Row className="mb-3">
                                                 <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                                     <Form.Label>Name</Form.Label>

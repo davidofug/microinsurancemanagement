@@ -2,14 +2,34 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import data from '../helpers/mock-data.json'
 import Pagination from '../helpers/Pagination'
-import SearchBar from '../parts/searchBar/SearchBar'
+import SearchBar from '../components/searchBar/SearchBar'
 import { Table, Alert } from 'react-bootstrap'
-import Header from '../parts/header/Header';
+import Header from '../components/header/Header';
 import { FaEllipsisV } from "react-icons/fa";
+import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
+import { db } from '../helpers/firebase'
+import { currencyFormatter } from "../helpers/currency.format";
+import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
+import useAuth from '../contexts/Auth'
 
 function Windscreen() {
 
-    useEffect(() => {document.title = 'Britam - Windscreen'}, [])
+    useEffect(() => {
+      document.title = 'Britam - Windscreen'
+      getWindscreen()
+    }, [])
+
+    const { authClaims } = useAuth()
+
+    // policies
+  const [policies, setPolicies] = useState([])
+  const policyCollectionRef = collection(db, "policies");
+
+  const getWindscreen = async () => {
+    const data = await getDocs(policyCollectionRef);
+    const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    setPolicies(pole.filter(policy => policy.category === 'windscreen'))
+  }
 
     // pagination
     const [ currentPage, setCurrentPage ] = useState(1)
@@ -17,25 +37,42 @@ function Windscreen() {
 
     const indexOfLastPolicy = currentPage * policiesPerPage
     const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-    const currentPolicies = data.slice(indexOfFirstPolicy, indexOfLastPolicy)
-    const totalPagesNum = Math.ceil(data.length / policiesPerPage)
+    const currentPolicies = policies.slice(indexOfFirstPolicy, indexOfLastPolicy)
+    const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
 
     // search by Name
     const [searchText, setSearchText] = useState('')
     const handleSearch = ({ target }) => setSearchText(target.value);
-    const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+    const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+    // delete a policy
+  const handleDelete = async id => {
+    const policyDoc = doc(db, "policies", id);
+    await deleteDoc(policyDoc);
+  }
+
+  const [show, setShow] = useState(false)
+    window.onclick = function(event) {
+        if (!event.target.matches('.sharebtn')) {
+            setShow(false)
+        }
+    }
+
+  const [clickedIndex, setClickedIndex] = useState(null)
 
     return (
         <div className='components'>
             <Header title="Windscreen" subtitle="MANAGING WINDSCREEN" />
 
-            <div id="add_client_group">
-                <div></div>
-                {/* <Link to="/admin/add-windscreen">
-                    <button className="btn btn-primary cta">Add Windscreen</button>
-                </Link> */}
-                
-            </div>
+            {(authClaims.supervisor || authClaims.agent) &&
+              <div id="add_client_group">
+                  <div></div>
+                  <Link to="/agent/add-windscreen">
+                      <button className="btn btn-primary cta">Add Windscreen</button>
+                  </Link>
+              </div>
+            }
+
 
             <div className="shadow-sm table-card componentsData">   
                 <div id="search">
@@ -46,111 +83,67 @@ function Windscreen() {
 
                 <Table striped hover responsive>
                     <thead>
-                        <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
-                        {searchByName(currentPolicies).map((row, index) => (
-                            <tr key={row.id}>
-                                <td>{row.name}</td>
-                                <td>{row.category}</td>
-                                <td>{row.amount}</td>
-                                <td>{row.paymentMethod}</td>
-                                <td>{row.currency}</td>
-                                <td>{row.agentName}</td>
-
-                                  {row.status === 'Active' 
-                                  ? <td>
-                                     <Alert
-                                        style={{backgroundColor: "#1475cf",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
-                                        }}
-                                      >
-                                        {row.status}
-                                      </Alert>
-                                  </td> 
-                                  : <td>
-                                      <Alert
-                                        style={{backgroundColor: "red",color: "#fff",padding: "2px",textAlign: "center",border: "none",margin: "0",
-                                        }}
-                                      >
-                                        {row.status}
-                                      </Alert>
-                                  </td> }
-
-
-                                <td>{row.createdAt}</td>
-
+                        {policies.length > 0 && searchByName(policies).map((policy, index) => 
+                         (
+                            <tr key={policy.id}>
+                                <td>{index + 1}</td>
+                                <td>{policy.clientDetails.name}</td>
+                                    <td>{policy.stickersDetails[0].category}</td>
+                                <td><td><b>{currencyFormatter(policy.stickersDetails[1].totalPremium)}</b></td></td>
+                                <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
+                                <td>{policy.agentName ? policy.agentName : ''}</td>
+                                <td>
+                                  <span
+                                    style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                                  >new</span>
+                                </td>
+                                
+                                <td>{policy.policyStartDate}</td>
+                                
                                 <td className="started">
-                    <FaEllipsisV
-                      className={`actions please${index}`}
-                      onClick={() => {
-                        document
-                          .querySelector(`.please${index}`)
-                          .classList.add("hello");
-                      }}
-                    />
-                    <ul id="actionsUl" className="actions-ul">
-                      <li>
-                        <button>Details</button>
-                      </li>
-                      <li>
-                        <button>Renew</button>
-                      </li>
-                      <li>
-                        <button>Cancel</button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                            const confirmBox = window.confirm(
-                              `Are you sure you want to delete claim`
-                            );
-                            if (confirmBox === true) {
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </li>
-                      <hr style={{ color: "black" }}></hr>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          close
-                        </button>
-                      </li>
-                    </ul>
+                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+
+                                <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                  <Link to={`/admin/policy-details/${policy.id}`}>
+                                    <div className="actionDiv">
+                                      <i><MdInfo /></i> Details
+                                    </div>
+                                  </Link>
+                                  <Link to={`/admin/policy-renew/${policy.id}`}>
+                                    <div className="actionDiv">
+                                      <i><MdAutorenew /></i> Renew
+                                    </div>
+                                  </Link>
+                                  <li>
+                                    <div className="actionDiv">
+                                      <i><MdCancel /></i> Cancel
+                                    </div>
+                                  </li>
+                                  <li onClick={() => { setShow(false)
+                                          const confirmBox = window.confirm(
+                                            `Are you sure you want to delete this sticker`
+                                          );
+                                          if (confirmBox === true) {
+                                            handleDelete(policy.id);
+                                            getWindscreen()
+                                          }
+                                        }}
+                                      >
+                                        <div className="actionDiv">
+                                          <i><MdDelete/></i> Delete
+                                        </div>
+                                  </li>
+                                </ul>
+
                   </td>
-                            </tr>
-                        ))}
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                  </tr>
+                  
+                          )
+                        
+                        )}
                     </tbody>
                     <tfoot>
                         <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
@@ -161,7 +154,7 @@ function Windscreen() {
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
                     currentClients={currentPolicies}
-                    sortedEmployees={data}
+                    sortedEmployees={policies}
                     entries={'Windscreen policies'} />
 
                

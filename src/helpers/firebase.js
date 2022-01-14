@@ -3,6 +3,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { getFunctions } from "firebase/functions"
 import { getFirestore } from '@firebase/firestore'
 
+
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -19,6 +20,7 @@ export const authentication = getAuth(app)
 export const functions = getFunctions(app)
 
 export const db = getFirestore(app)
+
 
 export function onAuthStateChange(userCallback, claimsCallback, loadingCallback = null) {
     loadingCallback(true)

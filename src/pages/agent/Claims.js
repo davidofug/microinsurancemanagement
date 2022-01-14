@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Pagination from "../../helpers/Pagination";
-import SearchBar from "../../parts/searchBar/SearchBar";
-import Header from "../../parts/header/Header";
+import SearchBar from "../../components/searchBar/SearchBar";
+import Header from "../../components/header/Header";
 import { Table, Alert, Modal } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
 import {
@@ -16,7 +16,7 @@ import {
 import { FaEllipsisV } from "react-icons/fa";
 import { useForm } from "../../hooks/useForm";
 import { authentication } from "../../helpers/firebase";
-import Loader from "../../parts/Loader";
+import Loader from "../../components/Loader";
 import ClaimModel from "./ClaimModel";
 
 function Claims() {

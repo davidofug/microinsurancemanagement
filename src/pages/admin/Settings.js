@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import '../../styles/Settings.css'
-import profile from '../../assets/imgs/image 2.png'
 import { Form, Row, Col, Alert } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
-import Header from '../../parts/header/Header'
-import DefaultAvatar from '../../parts/DefaultAvatar'
+import Header from '../../components/header/Header'
+import DefaultAvatar from '../../components/DefaultAvatar'
 import { authentication } from "../../helpers/firebase";
 
 function Settings() {
@@ -63,16 +62,15 @@ function Settings() {
                                             <h2>Edit Profile</h2>
                                             <hr />
                                             <DefaultAvatar />
-                                            {/* <img src={profile} alt="profile" /> */}
                                             <Row className="mb-3">
-                                                <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Group as={Col}  style={{"display": "flex", flexDirection: "column", alignItems: "start"}}>
                                                     <Form.Label>Name</Form.Label>
                                                     <Form.Control 
                                                     name="name"
                                                     value={authentication.currentUser.displayName}
                                                     onChange={handleEditFormChange} />
                                                 </Form.Group>
-                                                <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Group as={Col}  style={{"display": "flex", flexDirection: "column", alignItems: "start"}}>
                                                     <Form.Label>Phone Number</Form.Label>
                                                     <Form.Control type="tel"
                                                         name="number" 
@@ -82,39 +80,39 @@ function Settings() {
                                                 </Form.Group>
                                             </Row>
                                             <Row className="mb-3">
-                                                <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Group as={Col}  style={{"display": "flex", flexDirection: "column", alignItems: "start"}}>
                                                     <Form.Label>Date of birth</Form.Label>
                                                     <Form.Control type="date" name="date" value={editFormData.date} onChange={handleEditFormChange}/>
                                                 </Form.Group>
-                                                <Form.Group as={Col} controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                                                <Form.Group as={Col}  style={{"display": "flex", flexDirection: "column", alignItems: "start"}}>
                                                     <Form.Label>Gender</Form.Label>
                                                     <div style={{"display": "flex", "gap": "10px"}}>
                                                         <div>
-                                                            <input type="radio" name="gender" id="" style={{"margin-right": "5px"}} checked/>
+                                                            <input type="radio" name="gender" style={{marginRight: "5px"}} defaultChecked/>
                                                             <label htmlFor="gender">Male</label>
                                                         </div>
                                                         <div>
-                                                            <input type="radio" name="gender" id="" style={{"margin-right": "5px"}}/>
+                                                            <input type="radio" name="gender"  style={{marginRight: "5px"}}/>
                                                             <label htmlFor="gender">Female</label>
                                                         </div>
                                                     </div>
                                                 </Form.Group>
                                             </Row>
-                                            <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Group className="mb-3" >
                                                 <Form.Label>Email</Form.Label>
                                                 <Form.Control onChange={handleEditFormChange}
                                                     name="email"
                                                     value={authentication.currentUser.email} />
                                             </Form.Group>
-                                            <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Group className="mb-3" >
                                                 <Form.Label>Address</Form.Label>
                                                 <Form.Control value={editFormData.address} name="address" onChange={handleEditFormChange} />
                                             </Form.Group>
-                                            <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Group className="mb-3" >
                                                 <Form.Label>Branch Name</Form.Label>
                                                 <Form.Control value={editFormData.branch} name="branch" onChange={handleEditFormChange} />
                                             </Form.Group>
-                                            <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Group className="mb-3" >
                                                 <Form.Label>Enter Password to confirm</Form.Label>
                                                 <Form.Control type="password" placeholder='Password' />
                                             </Form.Group>
@@ -135,15 +133,15 @@ function Settings() {
                                     <h2>Edit Password</h2>
                                     <hr />
                                     <Form>                            
-                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Group className="mb-3" >
                                             <Form.Label htmlFor='oldPassword'>Old Password</Form.Label>
                                             <Form.Control type="password" id='oldPassword' placeholder="Enter old password" />
                                         </Form.Group>
-                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Group className="mb-3" >
                                             <Form.Label htmlFor='newPassword'>New Password</Form.Label>
                                             <Form.Control type="password" id='newPassword' placeholder="Enter new password" />
                                         </Form.Group>
-                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                        <Form.Group className="mb-3" >
                                             <Form.Label htmlFor='confirmPassword'>Confirm Password</Form.Label>
                                             <Form.Control placeholder="Match password" id='confirmPassword' type="password" />
                                         </Form.Group>

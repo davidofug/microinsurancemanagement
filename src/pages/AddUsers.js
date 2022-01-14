@@ -3,9 +3,9 @@ import { authentication } from '../helpers/firebase'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
 import { useEffect, useState } from 'react'
-import { Form, Row, Col} from 'react-bootstrap'
-import Upload from '../parts/uploader/Upload'
-import Header from '../parts/header/Header'
+import { Form, Row, Col } from 'react-bootstrap'
+import Upload from '../components/uploader/Upload'
+import Header from '../components/header/Header'
 import { useForm } from '../hooks/useForm'
 import useAuth from '../contexts/Auth'
 
@@ -69,7 +69,7 @@ function AddUsers() {
 
     return (
         <div className='components'>
-            <Header title="Add Users" subtitle="ADD A NEW USER" />
+            <Header title="Add User" subtitle="ADD A NEW USER" />
             <div class="shadow-sm table-card">
                     <Form name='form3' onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
@@ -150,6 +150,12 @@ function AddUsers() {
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="windscreen">
                                 <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="windscreen">
+                                <Form.Check type="checkbox" label="Handle New Imports" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="windscreen">
+                                <Form.Check type="checkbox" label="Handle Transit" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
                             </Form.Group>
                         </>
                     }

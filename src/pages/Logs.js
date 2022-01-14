@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Table } from 'react-bootstrap'
-import Header from '../parts/header/Header'
+import Header from '../components/header/Header'
 
 function Logs() {
 

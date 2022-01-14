@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import data from "../helpers/mock-data.json";
 import Pagination from "../helpers/Pagination";
-import ClaimTable from "../parts/claimTable/ClaimTable";
-import SearchBar from "../parts/searchBar/SearchBar";
-import Header from "../parts/header/Header";
+import ClaimTable from "../components/claimTable/ClaimTable";
+import SearchBar from "../components/searchBar/SearchBar";
+import Header from "../components/header/Header";
 import { Table, Alert, Modal, Form, Col, Row, Button } from "react-bootstrap";
 import { db } from "../helpers/firebase";
 import {
@@ -18,7 +18,9 @@ import {
 import { FaEllipsisV } from "react-icons/fa";
 import { useForm } from "../hooks/useForm";
 import { authentication } from "../helpers/firebase";
-import Loader from "../parts/Loader";
+import Loader from "../components/Loader";
+import { MdEdit, MdDelete, MdNotifications } from 'react-icons/md'
+import { AiFillCloseCircle } from 'react-icons/ai'
 
 function Claims() {
   const [claims, setClaims] = useState([]);
@@ -111,19 +113,29 @@ function Claims() {
   const currentClaims = claims.slice(indexOfFirstEmployee, indexOfLastEmployee);
   const totalPagesNum = Math.ceil(data.length / employeesPerPage);
 
+
+  // actions context
+  const [showContext, setShowContext] = useState(false)
+  window.onclick = function(event) {
+      if (!event.target.matches('.sharebtn')) {
+          setShowContext(false)
+      }
+  }
+  const [clickedIndex, setClickedIndex] = useState(null)
+
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
 
 
-      {claims.length > 0 ?
-      <>
       <div id="add_client_group">
         <div></div>
         <Link to="/add-claim">
           <button className="btn btn-primary cta">Add Claim</button>
         </Link>
       </div>
+      {claims.length > 0 ?
+      <>
 
       <Modal show={show} onHide={() => {
         handleClose()
@@ -378,74 +390,68 @@ function Claims() {
                       new
                     </Alert>
                   </td>
+
                   <td className="started">
-                    <FaEllipsisV
-                      className={`actions please${index}`}
-                      onClick={() => {
-                        document
-                          .querySelector(`.please${index}`)
-                          .classList.add("hello");
-                      }}
-                    />
-                    <ul id="actionsUl" className="actions-ul">
-                      <li>
-                        <button>View Notification</button>
-                      </li>
-                      <li>
-                        <button>Claim Settlement</button>
-                      </li>
-                      <li>
-                        <button>View Settlement</button>
-                      </li>
-                      <li>
-                        <button>Cancel</button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                            const confirmBox = window.confirm(
-                              `Are you sure you want to delete ${claim.claimantName}'s claim`
-                            );
-                            if (confirmBox === true) {
-                              handleDelete(claim.id);
-                              getClaims();
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            setEditID(claim.id);
-                            getSingleDoc(claim.id);
-                            handleShow();
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </li>
-                      <hr style={{ color: "black" }}></hr>
-                      <li>
-                        <button
-                          onClick={() => {
-                            document
-                              .querySelector(`.please${index}`)
-                              .classList.remove("hello");
-                          }}
-                        >
-                          close
-                        </button>
-                      </li>
-                    </ul>
-                  </td>
+                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+
+                                <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                            <li>
+                                                  <div className="actionDiv">
+                                                    <i><MdNotifications/></i> View Notification
+                                                  </div>
+                                            </li>
+
+                                            <li onClick={() => setShowContext(false)}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><AiFillCloseCircle/></i> Claim Settlement
+                                                  </div>
+                                            </li>
+
+                                            <li onClick={() => setShowContext(false)}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><AiFillCloseCircle/></i> View Settlement
+                                                  </div>
+                                            </li>
+
+                                            <li onClick={() => setShowContext(false)}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><AiFillCloseCircle/></i> Cancel
+                                                  </div>
+                                            </li>
+
+                                            <li onClick={() => {
+                                                    setShowContext(false)
+                                                    const confirmBox = window.confirm(
+                                                      `Are you sure you want to delete ${claim.claimantName}'s claim`
+                                                    );
+                                                    if (confirmBox === true) {
+                                                      handleDelete(claim.id);
+                                                      getClaims();
+                                                    }
+                                                  }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><MdDelete/></i> Delete
+                                                  </div>
+                                            </li>
+
+                                            <li onClick={() => {
+                                                  setShowContext(false)
+                                                  setEditID(claim.id);
+                                                  getSingleDoc(claim.id);
+                                                  handleShow();
+                                                }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><MdEdit/></i> Edit
+                                                  </div>
+                                            </li>
+                                </ul>
+                              </td>
+
                 </tr>
               ))}
             </tbody>
