@@ -10,11 +10,16 @@ function Logout() {
     const [isLoading, setLoading] = useState(true)
     useEffect(() => {
 
-        signOut(authentication)
-        setLoading(false)
-        history.push('/')
+        const LogOutSign = async () => {
+            signOut(authentication)
+            setLoading(false)
+            history.push('/login')
+        }
+
+        
         localStorage.removeItem('onRefresh')
         sessionStorage.setItem('session1', 1)
+        LogOutSign()
     })
 
     if (isLoading)
