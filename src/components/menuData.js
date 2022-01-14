@@ -238,10 +238,10 @@ const menuData = {
             link: "/agent/clients"
         },
         {
-            number: 4,
+            number: 3,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: null,
+            link: "/agent/motor-third-party",
             subMenu: [
                 {
                     name: "MTP",
@@ -266,13 +266,13 @@ const menuData = {
             ]
         },
         {
-            number: 5,
+            number: 4,
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
             link: "/agent/claims"
         },
         {
-            number: 3,
+            number: 5,
             name: "Log Trails",
             icon: <RiCalendarTodoFill />,
             link: "/agent/view-log-trail"
