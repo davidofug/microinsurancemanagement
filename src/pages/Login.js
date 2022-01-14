@@ -27,8 +27,8 @@ function Login() {
   const location = useLocation();
   const from = location?.pathname || "/admin/dashboard";
 
-  const pageOnRefreshAdmin = localStorage.getItem('onRefresh') || "/admin/dashboard"
   const pageOnRefreshSuperAdmin = localStorage.getItem('onRefresh') || "/superadmin/dashboard"
+  const pageOnRefreshAdmin = localStorage.getItem('onRefresh') || "/admin/dashboard"
   const pageOnRefreshSupervisor = localStorage.getItem('onRefresh') || "/supervisor/dashboard"
   const pageOnRefreshAgent = localStorage.getItem('onRefresh') || "/agent/dashboard"
 
@@ -70,6 +70,7 @@ function Login() {
   };
 }
 
+  console.log(authClaims)
   if (isLoading) return <Loader />;
 
   if (currentUser?.loggedIn){
