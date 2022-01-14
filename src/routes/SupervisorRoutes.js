@@ -1,4 +1,4 @@
-import Mtp from '../pages/supervisor/Mtp'
+import Mtp from '../pages/Mtp'
 import Users from '../pages/Users'
 import Claims from '../pages/Claims'
 import Reports from '../pages/supervisor/Reports'
@@ -9,14 +9,16 @@ import PrivateRoute  from './PrivateRoute'
 import { Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
 import AddClients from '../pages/AddClients'
-import Windscreen from '../pages/supervisor/Windscreen'
-import Comprehensive from '../pages/supervisor/Comprehensive'
+import Windscreen from '../pages/Windscreen'
+import Comprehensive from '../pages/Comprehensive'
 import Logs from '../pages/Logs.js'
 import Agents from '../pages/Agents'
 import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddUsers from '../pages/AddUsers'
 import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
+import NewImport from '../pages/NewImport'
+import Transit from '../pages/Transit'
 
 
 function SupervisorRoutes() {
@@ -68,7 +70,12 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/add-mtp" >
                 <Policies cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
             </PrivateRoute>
-
+            <PrivateRoute path="/supervisor/add-new-import" >
+                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="new import"/>
+            </PrivateRoute>
+            <PrivateRoute path="/supervisor/add-transit" >
+                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="transit"/>
+            </PrivateRoute>
             <PrivateRoute path="/supervisor/motor-third-party" >
                 <Mtp />
             </PrivateRoute>
@@ -77,6 +84,12 @@ function SupervisorRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/supervisor/comprehensive" >
                 <Comprehensive />
+            </PrivateRoute>
+            <PrivateRoute path="/supervisor/new-import" >
+                <NewImport />
+            </PrivateRoute>
+            <PrivateRoute path="/supervisor/transit" >
+                <Transit />
             </PrivateRoute>
             <PrivateRoute path="/add-clients" >
                 <AddClients />
