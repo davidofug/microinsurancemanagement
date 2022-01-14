@@ -180,19 +180,24 @@ function Policies({cat, btn_txt, pol}) {
             setPolicyStartDate('')
         }).catch( error => console.log( error )) 
 
-        console.log(
+        setStickers([
             {
-                currency,
-                stickersDetails: stickers,
-                clientDetails: client,
-                added_by_uid: authentication.currentUser.uid,
-                added_by_name: authentication.currentUser.displayName,  
-                policyStartDate: policyStartDate, 
-                policyEndDate: policyEndDate,
-                category: cat,
-                totalValuation: await generateTotalValuation(stickers)
+                referenceNo:'',
+                plateNo:'',
+                seatingCapacity:'',
+                ccPower:'',
+                grossWeight:'',
+                category:'',
+                motorClass:'',
+                chasisNo:'',
+                motorMake:'',
+                vehicleUse:'',
+                totalPremium:'',
+                basicPremium:'',
+                stickerFee: 6000,
+                stampDuty: 35000,
             }
-        )
+        ])
     }    
 
 
