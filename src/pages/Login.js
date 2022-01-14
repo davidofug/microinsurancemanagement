@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
 import { useHistory, Redirect, Link, useLocation } from "react-router-dom";
-import logo from "../assets/imgs/britam-logo.png";
+import logo from "../assets/imgs/britam-logo2.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
 import {
@@ -10,7 +10,7 @@ import {
 import { Alert } from "react-bootstrap";
 
 import "../assets/styles/login.css";
-import Loader from "../parts/Loader";
+import Loader from "../components/Loader";
 
 function Login() {
   const [user, setUser] = useState({
@@ -20,12 +20,20 @@ function Login() {
   const [password, setPassword] = useState("password");
   const [isVisible, setIsVisible] = useState(false);
 
-  const { currentUser, setCurrentUser, setAuthClaims } = useAuth();
+  const { currentUser, setCurrentUser, authClaims, setAuthClaims } = useAuth();
   const [ error, setError ] = useState('');
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
   const location = useLocation();
   const from = location?.pathname || "/admin/dashboard";
+
+  const pageOnRefreshAdmin = localStorage.getItem('onRefresh') || "/admin/dashboard"
+  const pageOnRefreshSuperAdmin = localStorage.getItem('onRefresh') || "/superadmin/dashboard"
+  const pageOnRefreshSupervisor = localStorage.getItem('onRefresh') || "/supervisor/dashboard"
+  const pageOnRefreshAgent = localStorage.getItem('onRefresh') || "/agent/dashboard"
+
+
+
 
   useEffect(() => {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
@@ -64,12 +72,25 @@ function Login() {
 
   if (isLoading) return <Loader />;
 
-  if (currentUser?.loggedIn)
+  if (currentUser?.loggedIn){
+    if(authClaims.admin){
+      return <Redirect to={{ pathname: pageOnRefreshAdmin }} />;
+    }
+    if(authClaims.agent){
+      return <Redirect to={{ pathname: pageOnRefreshAgent }} />;
+    }
+    if(authClaims.supervisor){
+      return <Redirect to={{ pathname: pageOnRefreshSupervisor }} />;
+    }
+    if(authClaims.superadmin){
+      return <Redirect to={{ pathname: pageOnRefreshSuperAdmin }} />;
+    }
     return <Redirect to={{ pathname: from }} />;
+  }
 
   return (
     <div className="auth-wrapper">
-      <img src={logo} alt="Britam" />
+      <img src={logo} width={150} alt="Britam" />
       <form action="" onSubmit={handleSignIn}>
         <p>Enter Email and Password to sign in</p>
         {error && <Alert variant="danger">{error}</Alert>}

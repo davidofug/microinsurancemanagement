@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
-import SearchBar from '../../parts/searchBar/SearchBar';
-import Header from '../../parts/header/Header';
+import SearchBar from '../../components/searchBar/SearchBar';
+import Header from '../../components/header/Header';
 import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { FaEllipsisV } from "react-icons/fa";
@@ -11,7 +11,9 @@ import { Table } from 'react-bootstrap'
 import { getDocs, collection, doc, getDoc, deleteDoc } from 'firebase/firestore'
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
-import ClientModal from '../../parts/ClientModal';
+import ClientModal from '../../components/ClientModal';
+import { MdEdit, MdDelete } from 'react-icons/md'
+import { AiFillCloseCircle } from 'react-icons/ai'
 
 function Supervisors() {
 
@@ -59,6 +61,7 @@ function Supervisors() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [meta, setMeta] = useState([])
+    const [editID, setEditID] = useState(null);
     const metaCollectionRef = collection(db, "usermeta");
     const getUsersMeta = async () => {
       const data = await getDocs(metaCollectionRef);
@@ -95,6 +98,15 @@ function Supervisors() {
     const [searchText, setSearchText] = useState('')
     const handleSearch = ({ target }) => setSearchText(target.value);
     const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+    // actions context
+  const [showContext, setShowContext] = useState(false)
+  window.onclick = function(event) {
+      if (!event.target.matches('.sharebtn')) {
+          setShowContext(false)
+      }
+  }
+  const [clickedIndex, setClickedIndex] = useState(null)
 
     return (
         <div className='components'>
@@ -133,67 +145,50 @@ function Supervisors() {
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
                               {meta.filter(user => user.id == supervisor.uid).map(user => (
-                                <>
+                                <Fragment key={user.id}>
                                   <td>{user.gender}</td>
                                   <td>{user.phone}</td>
                                   <td>{user.address}</td>
-                                </>
+                                </Fragment>
                               ))}
-                <td className="started">
-                  <FaEllipsisV
-                    className={`actions please${index}`}
-                    onClick={() => {
-                      document
-                        .querySelector(`.please${index}`)
-                        .classList.add("hello");
-                    }}
-                  />
-                  <ul id="actionsUl" className="actions-ul">
-                  
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                          const confirmBox = window.confirm(
-                            `Are you sure you want to delete ${supervisor.name}`
-                          );
-                          if (confirmBox === true) {
-                            handleDelete(supervisor.uid);
-                          }
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => {
-                          getSingleSupervisor(supervisor.uid)
-                          handleShow();
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                        }}
-                      >
-                        Edit
-                      </button>
-                    </li>
-                    <hr style={{ color: "black" }}></hr>
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                        }}
-                      >
-                        close
-                      </button>
-                    </li>
-                  </ul>
-                </td>
+                
+                              <td className="started">
+                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+
+                                <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                            <li onClick={() => {
+                                                        setShowContext(false)
+                                                        const confirmBox = window.confirm(
+                                                          `Are you sure you want to ${supervisor.name}`
+                                                        );
+                                                        if (confirmBox === true) {
+                                                          handleDelete(supervisor.uid)
+                                                        }
+                                                      }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><MdDelete/></i> Delete
+                                                  </div>
+                                            </li>
+                                            <li onClick={() => {
+                                                    setShowContext(false)
+                                                    setEditID(supervisor.uid);
+                                                    getSingleSupervisor(supervisor.uid)
+                                                    handleShow();
+                                                  }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><MdEdit/></i> Edit
+                                                  </div>
+                                            </li>
+                                            <li onClick={() => setShowContext(false)}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><AiFillCloseCircle/></i> Close
+                                                  </div>
+                                            </li>
+                                </ul>
+                              </td>
                           </tr>
                           ))}
                           <tr>

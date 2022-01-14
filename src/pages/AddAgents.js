@@ -1,8 +1,8 @@
 import '../assets/styles/addClients.css'
 import { useEffect } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
-import Upload from '../parts/uploader/Upload'
-import Header from '../parts/header/Header'
+import Upload from '../components/uploader/Upload'
+import Header from '../components/header/Header'
 
 function AddAgents() {
 
