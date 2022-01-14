@@ -37,9 +37,7 @@ function Policies({cat, btn_txt, pol}) {
     const [ currency, setCurrency ] = useState({})
     const [ client, setClient ] = useState({})
 
-    const [ basicPremium, setBasicPremium ] = useState(0)
-    const [ totalPremium, setTotalPremium ] = useState(0)
-    const [ valid, setValid ] = useState(false)
+    const [ totalValuation, setTotalValuation ] = useState()
 
     const [ newClient, handleClientDetails ] = useForm({
         user_role: 'Customer',
@@ -67,7 +65,9 @@ function Policies({cat, btn_txt, pol}) {
             motorMake:'',
             vehicleUse:'',
             totalPremium:'',
-            basicPremium:''         
+            basicPremium:'',
+            stickerFee:6000,
+            stampDuty:35000
         }
     ])
     
@@ -87,6 +87,9 @@ function Policies({cat, btn_txt, pol}) {
 
     const handleInputChange = (index, event) => {
         const values = [...stickers]
+        const stickerFee = 6000
+        let totalSubjectToVat = stickerFee
+        let trainingLevy = 0.005
         
         if(event.target.name === 'totalPremium' || event.target.name === 'seatingCapacity' || event.target.name === 'grossWeight' || event.target.name === 'basicPremium' || event.target.name === 'ccPower' ){
             if( Number(event.target.value) >= 0 ) { 
@@ -95,9 +98,20 @@ function Policies({cat, btn_txt, pol}) {
         }        
         else{
             values[index][event.target.name] = event.target.value    
-
         }
 
+        if(event.target.name === 'basicPremium') { 
+            if(Number(event.target.value) >= 0) {
+                trainingLevy *= Number(event.target.value)
+                values[index]['trainingLevy'] = trainingLevy
+                totalSubjectToVat += (Number(event.target.value) + trainingLevy)
+            } 
+            values[index]['vat'] = 0.18 * totalSubjectToVat
+        } else {
+            values[index]['vat'] = 0.18 * stickerFee
+            values[index]['trainingLevy'] = 0
+        }
+        
         setStickers(values)
     }
 
@@ -116,7 +130,9 @@ function Policies({cat, btn_txt, pol}) {
                 motorMake:'',
                 vehicleUse:'',
                 totalPremium:'',
-                basicPremium:''
+                basicPremium:'',
+                stickerFee: 6000,
+                stampDuty: 35000,
             }
         ])
     }
@@ -137,8 +153,8 @@ function Policies({cat, btn_txt, pol}) {
     //createPolicies
     const handleSubmit = async(event) => {
         event.preventDefault()
-        console.log(typeof(stickers.totalPremium))
-
+        console.log(stickers)
+ 
         await addDoc(policiesRef, {
             currency,
             stickersDetails: stickers,
@@ -148,7 +164,7 @@ function Policies({cat, btn_txt, pol}) {
             policyStartDate: policyStartDate, 
             policyEndDate: policyEndDate,
             category: cat,
-            // totalValuation: (0.5/100 * basicPremium)  
+            totalValuation: await generateTotalValuation(stickers)
         })        
 
         client['added_by_uid'] = authentication.currentUser.uid
@@ -159,8 +175,21 @@ function Policies({cat, btn_txt, pol}) {
             document.policy.reset()
             setPolicyEndDate('')
             setPolicyStartDate('')
-        }).catch( error => console.log( error ))
-        
+        }).catch( error => console.log( error )) 
+
+        console.log(
+            {
+                currency,
+                stickersDetails: stickers,
+                clientDetails: client,
+                added_by_uid: authentication.currentUser.uid,
+                added_by_name: authentication.currentUser.displayName,  
+                policyStartDate: policyStartDate, 
+                policyEndDate: policyEndDate,
+                category: cat,
+                totalValuation: await generateTotalValuation(stickers)
+            }
+        )
     }    
 
 
@@ -169,24 +198,15 @@ function Policies({cat, btn_txt, pol}) {
     const [ windscreen, setWindscreen ] = useState(false)
     const [ mtp, setMTP ] = useState(false)
 
-    const generateTotalValuation = ( stickers ) => {
-        
-        const stickerFee  = 6000
-        const stampDuty = 35000
-        
-        let totalPrem = 0
-        let basicPrem = 0
-
+    const generateTotalValuation = async ( stickers ) => {
+        let totalValuation = 0
         for(let i = 0; i < stickers.length; i++) {
-            if( Number(stickers[i]?.totalPremium) > 0) totalPrem += Number(stickers[i].totalPremium)
-            if( Number(stickers[i]?.basicPremium) > 0) basicPrem += Number(stickers[i].basicPremium)
-        }
+            const { stampDuty, basicPremium, totalPremium, vat, trainingLevy, stickerFee } = stickers[i]
+            const commission = Number(basicPremium >= 0) ? 0.1 * basicPremium : 0
+            totalValuation += (stampDuty + Number(totalPremium) + vat + trainingLevy + stickerFee + commission + (Number(basicPremium >= 0) ? Number(basicPremium) : 0))
+        } 
 
-        const trainingLevy = 0.5 * basicPrem
-        const VAT = (18/100) * (basicPrem + trainingLevy + stickerFee)
-
-
-
+        return await totalValuation    
     }
 
     const renderStickerDetails = (singleSticker, index) => {
@@ -315,22 +335,30 @@ function Policies({cat, btn_txt, pol}) {
                             }   
                         </div>
                     </td>
-                    <td id="form-buttons" className="fifth-cell" style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
-                        <div className="form-buttons">
-                            <div>
-                                <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
-                                    onClick={() => removeStickerMotorDetails(index)}
-                                    type="button"
-                                >-</button>
+                    {
+                        cat === 'comprehensive'
+                        ?
+                        <td id="form-buttons" className="fifth-cell" style={{paddingLeft:"1vh", paddingRight:"1vh", verticalAlign:"middle"}}>
+                            <div className="form-buttons">
+                                <div>
+                                    <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#CF144C", border:"none", color:"white"}}
+                                        onClick={() => removeStickerMotorDetails(index)}
+                                        type="button"
+                                    >-</button>
+                                </div>
+                                <div>
+                                    <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}}
+                                        onClick={() => addStickerMotorDetails()}
+                                        type="button"
+                                    >+</button>
+                                </div>
                             </div>
-                            <div>
-                                <button style={{height:"30px", width:"30px", borderRadius:"50%", backgroundColor:"#1475CF", border:"none", color:"white"}}
-                                    onClick={() => addStickerMotorDetails()}
-                                    type="button"
-                                >+</button>
-                            </div>
-                        </div>
-                    </td>
+                        </td>
+                        : 
+                        <td>
+
+                        </td>
+                    }    
                 </tr>
             </React.Fragment>
         )
@@ -350,7 +378,7 @@ function Policies({cat, btn_txt, pol}) {
                                 Client
                             </h1>
                         </Row>
-                        <Row >
+                        <Row>
                             <Col className="client-details" md={3}>
                                 <Form.Group className="mb-3" controlId="clientDetails">
                                     <Form.Control list="clientNames" placeholder='Existing client' id="existingClient"onChange={()=> {
@@ -388,7 +416,7 @@ function Policies({cat, btn_txt, pol}) {
                                     <Form name='form4' onSubmit={handleSubmit}>
                                         <Form.Group className="mb-3" >
                                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
-                                            <Form.Control id="name" placeholder="Name" value={newClient.name} onChange={handleClientDetails} />
+                                            <Form.Control id="name" placeholder="Name" value={newClient.name} onChange={handleClientDetails} required/>
                                         </Form.Group>
                                         <Row className="mb-3">
                                             <Form.Group as={Col} className='addFormGroups'>
@@ -413,7 +441,7 @@ function Policies({cat, btn_txt, pol}) {
                                         <Row className="mb-3">
                                             <Form.Group as={Col} className='addFormGroups'>
                                                 <Form.Label htmlFor='email'>Email Address</Form.Label>
-                                                <Form.Control type="email" id="email" placeholder="Enter email" value={newClient.email} onChange={handleClientDetails} />
+                                                <Form.Control type="email" id="email" placeholder="Enter email" value={newClient.email} onChange={handleClientDetails} required/>
                                             </Form.Group>
                                             <Form.Group as={Col} className='addFormGroups'>
                                                 <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
