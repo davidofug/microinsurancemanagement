@@ -9,12 +9,16 @@ import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
+import useAuth from '../contexts/Auth'
 
 export default function Mtp() {
   useEffect(() => {
     document.title = "Britam - Motor Third Party";
     getMTP()
   }, []);
+
+  //authClaim
+  const { authClaims } = useAuth()
 
   // policies
   const [policies, setPolicies] = useState([])
@@ -67,12 +71,15 @@ export default function Mtp() {
         subtitle="MANAGING THIRD PARTY POLICIES"
       />
 
-      <div id="add_client_group">
-        <div></div>
-        <Link to="/agent/add-mtp">
-          <button className="btn btn-primary cta">Add MTP</button>
-        </Link>
-      </div>
+      {(authClaims.supervisor || authClaims.agent) &&
+        <div id="add_client_group">
+          <div></div>
+          <Link to="/agent/add-mtp">
+            <button className="btn btn-primary cta">Add MTP</button>
+          </Link>
+        </div>
+      }
+
 
       <div className="table-card componentsData">
                 <div id="search">

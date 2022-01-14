@@ -9,6 +9,7 @@ import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
+import useAuth from '../contexts/Auth'
 
 function Comprehensive() {
 
@@ -16,6 +17,9 @@ function Comprehensive() {
         document.title = 'Britam - Comprehensive'
         getComprehensive()
     }, [])
+
+    //authClaim
+  const { authClaims } = useAuth()
 
     // policies
   const [policies, setPolicies] = useState([])
@@ -62,12 +66,15 @@ function Comprehensive() {
         <div className='components'>
             <Header title="Comprehensive" subtitle="MANAGING COMPREHENSIVE" />
 
-            <div id="add_client_group">
-                <div></div>
-                <Link to="/agent/add-comprehensive">
-                    <button className="btn btn-primary cta">Add</button>
-                </Link>
-            </div>
+            {(authClaims.supervisor || authClaims.agent) &&
+              <div id="add_client_group">
+                  <div></div>
+                  <Link to="/agent/add-comprehensive">
+                      <button className="btn btn-primary cta">Add</button>
+                  </Link>
+              </div>
+            }
+
 
             <div className="shadow-sm table-card componentsData">   
                 <div id="search">

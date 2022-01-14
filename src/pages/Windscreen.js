@@ -10,6 +10,7 @@ import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
+import useAuth from '../contexts/Auth'
 
 function Windscreen() {
 
@@ -17,6 +18,8 @@ function Windscreen() {
       document.title = 'Britam - Windscreen'
       getWindscreen()
     }, [])
+
+    const { authClaims } = useAuth()
 
     // policies
   const [policies, setPolicies] = useState([])
@@ -61,13 +64,15 @@ function Windscreen() {
         <div className='components'>
             <Header title="Windscreen" subtitle="MANAGING WINDSCREEN" />
 
-            <div id="add_client_group">
-                <div></div>
-                <Link to="/agent/add-windscreen">
-                    <button className="btn btn-primary cta">Add Windscreen</button>
-                </Link>
-                
-            </div>
+            {(authClaims.supervisor || authClaims.agent) &&
+              <div id="add_client_group">
+                  <div></div>
+                  <Link to="/agent/add-windscreen">
+                      <button className="btn btn-primary cta">Add Windscreen</button>
+                  </Link>
+              </div>
+            }
+
 
             <div className="shadow-sm table-card componentsData">   
                 <div id="search">
