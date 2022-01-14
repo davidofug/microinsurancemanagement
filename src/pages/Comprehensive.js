@@ -44,7 +44,7 @@ function Comprehensive() {
     // search by Name
     const [searchText, setSearchText] = useState('')
     const handleSearch = ({ target }) => setSearchText(target.value);
-    const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+    // const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
     // delete a policy
     const handleDelete = async id => {
@@ -88,7 +88,7 @@ function Comprehensive() {
                         <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
-                        {policies.length > 0 && searchByName(currentPolicies).map((policy, index) => (
+                        {policies.length > 0 && currentPolicies.map((policy, index) => (
                             <tr key={policy.id}>
                                 <td>{index + 1}</td>
                                 {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
