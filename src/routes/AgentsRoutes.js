@@ -1,7 +1,7 @@
 import MTP from '../pages/Mtp'
 import Users from '../pages/Users'
 import Logs from '../pages/Logs.js'
-import Claims from '../pages/agent/Claims'
+import Claims from '../pages/Claims'
 import Logout from '../pages/Logout'
 import Reports from '../pages/agent/Reports'
 import Clients from '../pages/Clients'
@@ -16,6 +16,7 @@ import { Route } from 'react-router-dom'
 import AddUsers from '../pages/agent/AddUsers'
 import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
+import AddClaims from '../pages/AddClaims'
 
 function AgentsRoutes() {
     return (
@@ -40,6 +41,9 @@ function AgentsRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/agent/claims" >
                 <Claims />
+            </PrivateRoute>
+            <PrivateRoute path="/agent/add-claim" >
+                <AddClaims />
             </PrivateRoute>
             <PrivateRoute path="/agent/reports" >
                 <Reports />
