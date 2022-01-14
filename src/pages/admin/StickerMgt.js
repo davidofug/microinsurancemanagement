@@ -14,6 +14,7 @@ import { AiOutlineCar } from 'react-icons/ai'
 import { BiBus } from 'react-icons/bi'
 import { FaEllipsisV } from "react-icons/fa";
 import ClickOut from "../ClickOut"
+import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 
 
 export default function StickerMgt() {
@@ -29,6 +30,16 @@ export default function StickerMgt() {
     const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
     const currentOrganisations = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(data.length / employeesPerPage)
+
+
+    // actions context
+  const [show, setShow] = useState(false)
+  window.onclick = function(event) {
+      if (!event.target.matches('.sharebtn')) {
+          setShow(false)
+      }
+  }
+  const [clickedIndex, setClickedIndex] = useState(null)
 
 
 
@@ -73,9 +84,41 @@ export default function StickerMgt() {
                                 <td>{`[00${index+1} - 10${index+2}]`}</td>
                                 <td>{index+2}</td>
                                 <td>{sticker.status}</td>
-                                <td>
-                                <ClickOut />
-                                </td>
+                                
+                                <td className="started">
+                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+
+                            <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                              <Link to={`/admin/policy-details`}>
+                                <div className="actionDiv">
+                                  <i><MdInfo /></i> Details
+                                </div>
+                              </Link>
+                              <Link to={`/admin/policy-renew`}>
+                                <div className="actionDiv">
+                                  <i><MdAutorenew /></i> Renew
+                                </div>
+                              </Link>
+                              <li>
+                                <div className="actionDiv">
+                                  <i><MdCancel /></i> Cancel
+                                </div>
+                              </li>
+                              <li onClick={() => { setShow(false)
+                                      const confirmBox = window.confirm(
+                                        `Are you sure you want to delete this sticker`
+                                      );
+                                      if (confirmBox === true) {
+                                      }
+                                    }}
+                                  >
+                                    <div className="actionDiv">
+                                      <i><MdDelete/></i> Delete
+                                    </div>
+                              </li>
+                            </ul>
+                            </td>
+
                               </tr>
                             ))}
                           </tbody>
