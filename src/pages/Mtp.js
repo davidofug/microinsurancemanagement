@@ -59,9 +59,6 @@ export default function Mtp() {
             setShow(false)
         }
     }
-
-    console.log(policies)
-
   const [clickedIndex, setClickedIndex] = useState(null)
 
   return (

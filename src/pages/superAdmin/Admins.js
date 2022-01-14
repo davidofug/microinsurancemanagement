@@ -8,8 +8,8 @@ import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { FaEllipsisV } from "react-icons/fa";
 import { Table } from 'react-bootstrap'
-import useAuth from '../../contexts/Auth';
 import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
+import { MdDelete, MdEdit } from 'react-icons/md'
 
 function Admins() {
 
@@ -80,6 +80,15 @@ function Admins() {
 
         const handleSearch = ({target}) => setQ(target.value)
 
+    // actions context
+  const [show, setShow] = useState(false)
+  window.onclick = function(event) {
+      if (!event.target.matches('.sharebtn')) {
+          setShow(false)
+      }
+  }
+  const [clickedIndex, setClickedIndex] = useState(null)
+
     return (
         <div className='components'>
           <Header title="Admins" subtitle="MANAGING ADMINS" />
@@ -116,59 +125,34 @@ function Admins() {
                                   <td>{user.address}</td>
                                 </>
                               ))}
-                <td className="started">
-                  <FaEllipsisV
-                    className={`actions please${index}`}
-                    onClick={() => {
-                      document
-                        .querySelector(`.please${index}`)
-                        .classList.add("hello");
-                    }}
-                  />
-                  <ul id="actionsUl" className="actions-ul">
-                  
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                          const confirmBox = window.confirm(
-                            `Are you sure you want to ${admin.name}`
-                          );
-                          if (confirmBox === true) {
-                            handleDelete(admin.uid)
-                          }
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                        }}
-                      >
-                        Edit
-                      </button>
-                    </li>
-                    <hr style={{ color: "black" }}></hr>
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                        }}
-                      >
-                        close
-                      </button>
-                    </li>
-                  </ul>
-                </td>
+                
+                            <td className="started">
+                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+
+                            <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                              <li onClick={() => { setShow(false)
+                                      
+                                    }}
+                                  >
+                                    <div className="actionDiv">
+                                      <i><MdEdit /></i> Edit
+                                    </div>
+                              </li>
+                              <li onClick={() => { setShow(false)
+                                      const confirmBox = window.confirm(
+                                        `Are you sure you want to delete ${admin.name}`
+                                      );
+                                      if (confirmBox === true) {
+                                        handleDelete(admin.uid);
+                                      }
+                                    }}
+                                  >
+                                    <div className="actionDiv">
+                                      <i><MdDelete /></i> Delete
+                                    </div>
+                              </li>
+                            </ul>
+                            </td>
                           </tr>
                           ))}
                             
