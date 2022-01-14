@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from '../../parts/header/Header'
+import Header from '../../components/header/Header'
 import { Row, Form, Col } from 'react-bootstrap'
 import { useState } from 'react'
 

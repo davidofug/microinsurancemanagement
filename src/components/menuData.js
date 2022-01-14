@@ -1,4 +1,5 @@
-import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson, MdSettings } from 'react-icons/md'
+import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson, MdStickyNote2 } from 'react-icons/md'
+import { RiCalendarTodoFill } from 'react-icons/ri'
 
 const menuData = {
     SuperAdmin: [
@@ -31,6 +32,14 @@ const menuData = {
                 {
                     name: "Comprehensive",
                     link: "/superadmin/comprehensive"
+                },
+                {
+                    name: "New imports",
+                    link: "/superadmin/new-import"
+                },
+                {
+                    name: "Transit",
+                    link: "/superadmin/transit"
                 }
             ]
         },
@@ -63,7 +72,7 @@ const menuData = {
         {
             number: 4,
             name: "Sticker No.",
-            icon: <MdPerson />,
+            icon: <MdStickyNote2 />,
             link: "/admin/sticker-management"
         },
         {
@@ -124,7 +133,25 @@ const menuData = {
             number: 8,
             name: "Reports",
             icon: <MdAssessment />,
-            link: "/admin/reports"
+            link: "/admin/reports",
+            subMenu: [
+                {
+                    name: "Daily",
+                    link: "/admin/daily-reports"
+                },
+                {
+                    name: "Weekly",
+                    link: "/admin/weekly-reports"
+                },
+                {
+                    name: "Monthly",
+                    link: "/admin/monthly-reports"
+                },
+                {
+                    name: "Status Reports (new,paid,expired,cancelled, deleted)",
+                    link: "/admin/reports"
+                }
+            ]
         }
     ],
     SuperVisor: [
@@ -142,20 +169,16 @@ const menuData = {
         },
         {
             number: 3,
-            name: "User Management",
+            name: "Users",
             icon: <MdPeople />,
-            link: "/supervisor/user-management",
+            link: "/supervisor/agents",
             subMenu: [
                 {
                     name: "Agents",
                     link: "/supervisor/agents"
                 },
                 {
-                    name: "Add Users",
-                    link: "/supervisor/add-user"
-                },
-                {
-                    name: "View Log Trail",
+                    name: "Log Trail",
                     link: "/supervisor/view-log-trail"
                 }
             ]
@@ -177,6 +200,14 @@ const menuData = {
                 {
                     name: "Windscreen",
                     link: "/supervisor/windscreen"
+                },
+                {
+                    name: "New imports",
+                    link: "/supervisor/new-import"
+                },
+                {
+                    name: "Transit",
+                    link: "/supervisor/transit"
                 }
             ]
         },
@@ -198,20 +229,13 @@ const menuData = {
             number: 1,
             name: "Dashboard",
             icon: <MdAccountBalance />,
-            link: "/agent/dashboard",
-            head: "Britam - Dashboard"
+            link: "/agent/dashboard"
         },
         {
             number: 2,
             name: "Clients",
             icon: <MdPerson />,
             link: "/agent/clients"
-        },
-        {
-            number: 3,
-            name: "User Management",
-            icon: <MdPeople />,
-            link: "/agent/view-log-trail"
         },
         {
             number: 4,
@@ -224,12 +248,20 @@ const menuData = {
                     link: "/agent/motor-third-party"
                 },
                 {
+                    name: "Comprehensive",
+                    link: "/agent/comprehensive"
+                },
+                {
                     name: "Windscreen",
                     link: "/agent/windscreen"
                 },
                 {
-                    name: "Comprehensive",
-                    link: "/agent/comprehensive"
+                    name: "New imports",
+                    link: "/agent/new-import"
+                },
+                {
+                    name: "Transit",
+                    link: "/agent/transit"
                 }
             ]
         },
@@ -238,6 +270,12 @@ const menuData = {
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
             link: "/agent/claims"
+        },
+        {
+            number: 3,
+            name: "Log Trails",
+            icon: <RiCalendarTodoFill />,
+            link: "/agent/view-log-trail"
         },
         {
             number: 6,

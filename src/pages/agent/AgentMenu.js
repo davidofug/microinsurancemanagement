@@ -1,14 +1,16 @@
-import menuData from '../../parts/menuData'
+import menuData from '../../components/menuData'
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import profile from '../../assets/imgs/image 2.png'
-import logo from '../../assets/imgs/britam-logo.png'
+import logo from '../../assets/imgs/britam-logo2.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
-import MobileNav from '../../parts/menu/MobileNav'
-import SideBar from '../../parts/menu/SideBar'
-import MinimisedSideBar from '../../parts/menu/MinimisedSideBar'
+import MobileNav from '../../components/menu/MobileNav'
+import SideBar from '../../components/menu/SideBar'
+import MinimisedSideBar from '../../components/menu/MinimisedSideBar'
 import { authentication } from "../../helpers/firebase";
+import { MdLogout } from 'react-icons/md'
+import DefaultAvatar from '../../components/DefaultAvatar'
+import { Badge } from 'react-bootstrap'
 
 function AgentMenu({setLargeContentClass, largeContentClass}) {
 
@@ -38,10 +40,9 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
             <MobileNav role={Agent} user="agent" displayName={authentication?.currentUser?.displayName}/>
             {toggleMenu === true 
             ?
-                <div className="sidebar"> 
-                    <nav >
+                    <nav className="sidebar">
                         <div id='brand'>
-                            <img src={logo} alt="Britam" />
+                            <img src={logo} width={150} alt="Britam" />
                             <div id="arrowCircle" onClick={() => {
                                     setToggeMenu(!toggleMenu)
                                     setLargeContentClass(!largeContentClass)
@@ -53,8 +54,23 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                             </div>
                         </div>
                         <SideBar role={Agent} user="agent" displayName={authentication?.currentUser?.displayName} />
+                        <footer>
+                            <ul>
+                                <li><Link to="/admin/settings">My Profile</Link></li>
+                                <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                            </ul>
+                            <Link to='/admin/settings'>
+                                <DefaultAvatar />
+                                <div>
+                                    <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
+                                    <p style={{"color": "#646464"}}>
+                                        <Badge color='black'>agent</Badge>
+                                    </p>
+                                </div>
+                                <div id="eclipse"><div></div><div></div><div></div></div>
+                            </Link>
+                        </footer>
                     </nav>
-                </div>
             : 
             <nav className='sidebar-m'>
                 <section id='brand_m'>
@@ -68,8 +84,16 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                         
                 </div>
                 </section>
-                <MinimisedSideBar role={Agent} displayName={authentication?.currentUser?.displayName}/>
-            
+                <MinimisedSideBar role={Agent}/>
+                <footer>
+                        <ul>
+                            <li><Link to="/admin/settings">Settings</Link></li>
+                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                        </ul>
+                    <Link to={'/admin-settings'} id="account">
+                        <DefaultAvatar />
+                    </Link>
+                </footer>
             </nav>
 }
         </div>

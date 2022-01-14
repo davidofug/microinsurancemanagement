@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useHistory, Link } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
 import { authentication } from '../helpers/firebase'
-import Loader from '../parts/Loader'
+import Loader from '../components/Loader'
 import '../assets/styles/login.css'
 
 function Logout() {
@@ -13,7 +13,8 @@ function Logout() {
         signOut(authentication)
         setLoading(false)
         history.push('/')
-        // document.title = 'Britam - With you every step of the way'
+        localStorage.removeItem('onRefresh')
+        sessionStorage.setItem('session1', 1)
     })
 
     if (isLoading)
