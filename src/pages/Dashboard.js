@@ -160,7 +160,7 @@ function Dashboard() {
                             </Col>
                         </Row>
                         <Row style={{diplay:"flex", justifyContent:"center"}}>
-                            <Col>Months</Col>
+                            <Col><h6>Months</h6></Col>
                         </Row>
                     </div>
                 </div>  
