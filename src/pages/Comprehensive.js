@@ -45,7 +45,7 @@ function Comprehensive() {
     // search by Name
     const [searchText, setSearchText] = useState('')
     const handleSearch = ({ target }) => setSearchText(target.value);
-    const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+    // const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
     // delete a policy
     const handleDelete = async id => {
@@ -63,6 +63,7 @@ function Comprehensive() {
 
     const [clickedIndex, setClickedIndex] = useState(null)
 
+    console.log()
     return (
         <div className='components'>
             <Header title="Comprehensive" subtitle="MANAGING COMPREHENSIVE" />
@@ -86,17 +87,19 @@ function Comprehensive() {
 
                 <Table striped hover responsive>
                     <thead>
-                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
+                        {!authClaims.agent && <th>Agent</th>}
+                        <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
-                        {policies.length > 0 && searchByName(currentPolicies).map((policy, index) => (
+                        {policies.length > 0 && currentPolicies.map((policy, index) => (
                             <tr key={policy.id}>
                                 <td>{index + 1}</td>
                                 {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                                 {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
                                 <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
                                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
-                                <td>{policy.agentName ? policy.agentName : ''}</td>
+                                {!authClaims.agent && <td>{policy.agentName ? policy.agentName : ''}</td>}
                                 
                                 <td>
                               <span
@@ -148,7 +151,9 @@ function Comprehensive() {
                         ))}
                     </tbody>
                     <tfoot>
-                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
+                        {!authClaims.agent && <th>Agent</th>}
+                        <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </tfoot>
                 </Table>
 
