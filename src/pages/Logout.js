@@ -14,6 +14,7 @@ function Logout() {
         setLoading(false)
         history.push('/')
         localStorage.removeItem('onRefresh')
+        sessionStorage.setItem('session1', 1)
     })
 
     if (isLoading)

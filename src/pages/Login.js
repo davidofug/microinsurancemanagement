@@ -26,7 +26,11 @@ function Login() {
   const history = useHistory();
   const location = useLocation();
   const from = location?.pathname || "/admin/dashboard";
-  const pageOnRefresh = localStorage.getItem('onRefresh') || "/admin/dashboard"
+
+  const pageOnRefreshAdmin = localStorage.getItem('onRefresh') || "/admin/dashboard"
+  const pageOnRefreshSuperAdmin = localStorage.getItem('onRefresh') || "/superadmin/dashboard"
+  const pageOnRefreshSupervisor = localStorage.getItem('onRefresh') || "/supervisor/dashboard"
+  const pageOnRefreshAgent = localStorage.getItem('onRefresh') || "/agent/dashboard"
 
 
 
@@ -70,16 +74,16 @@ function Login() {
 
   if (currentUser?.loggedIn){
     if(authClaims.admin){
-      return <Redirect to={{ pathname: pageOnRefresh }} />;
+      return <Redirect to={{ pathname: pageOnRefreshAdmin }} />;
     }
     if(authClaims.agent){
-      return <Redirect to={{ pathname: '/agent/dashboard' }} />;
+      return <Redirect to={{ pathname: pageOnRefreshAgent }} />;
     }
     if(authClaims.supervisor){
-      return <Redirect to={{ pathname: '/supervisor/dashboard' }} />;
+      return <Redirect to={{ pathname: pageOnRefreshSupervisor }} />;
     }
     if(authClaims.superadmin){
-      return <Redirect to={{ pathname: '/superadmin/dashboard' }} />;
+      return <Redirect to={{ pathname: pageOnRefreshSuperAdmin }} />;
     }
     return <Redirect to={{ pathname: from }} />;
   }
