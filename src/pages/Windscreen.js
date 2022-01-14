@@ -11,6 +11,7 @@ import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 import useAuth from '../contexts/Auth'
+import { authentication } from '../helpers/firebase'
 
 function Windscreen() {
 
@@ -28,7 +29,7 @@ function Windscreen() {
   const getWindscreen = async () => {
     const data = await getDocs(policyCollectionRef);
     const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    setPolicies(pole.filter(policy => policy.category === 'windscreen'))
+    setPolicies(pole.filter(policy => policy.category === 'windscreen').filter(policy => policy.added_by_uid === authentication.currentUser.uid))
   }
 
     // pagination

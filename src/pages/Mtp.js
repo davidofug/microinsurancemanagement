@@ -10,6 +10,7 @@ import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 import useAuth from '../contexts/Auth'
+import { authentication } from "../helpers/firebase";
 
 export default function Mtp() {
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function Mtp() {
   const getMTP = async () => {
     const data = await getDocs(policyCollectionRef);
     const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    setPolicies(pole.filter(policy => policy.category === 'mtp'))
+    setPolicies(pole.filter(policy => policy.category === 'mtp').filter(policy => policy.added_by_uid === authentication.currentUser.uid))
   }
 
 
