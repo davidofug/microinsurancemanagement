@@ -62,6 +62,8 @@ export default function Mtp() {
     }
   const [clickedIndex, setClickedIndex] = useState(null)
 
+  console.log(policies)
+
   return (
     <div className="components">
       <Header

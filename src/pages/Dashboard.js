@@ -9,6 +9,7 @@ import { getDocs, collection } from 'firebase/firestore'
 import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import Loader from '../components/Loader'
+import { authentication } from '../helpers/firebase'
 
 function Dashboard() {
     const [clients, setClients] = useState([]);
@@ -35,7 +36,8 @@ function Dashboard() {
 
     const getPolicies = async () => {
         const data = await getDocs(policyCollectionRef);
-        setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        setPolicies(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
     }
 
     // clients
@@ -63,7 +65,7 @@ function Dashboard() {
         })
     }
 
-    // getting agents
+    // getting admins
     const [ admins, setAdmins ] = useState([])
     const getAdmins = () => {
         const listUsers = httpsCallable(functions, 'listUsers')
@@ -78,7 +80,8 @@ function Dashboard() {
 
     const getClaims = async () => {
         const data = await getDocs(claimsCollectionRef);
-        setClaims(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid))
     };
 
     return (
@@ -139,7 +142,7 @@ function Dashboard() {
                                 {authClaims.admin && <>
                                     <h5 className="heading">Daily Reports Summary</h5>
                                     <table>
-                                        <thead><th>Category</th><th>Grand totals</th></thead>
+                                        <thead><tr><th>Category</th><th>Grand totals</th></tr></thead>
                                         <tbody>
                                             <tr>
                                                 <td>MTP</td><td>UGX ___</td>

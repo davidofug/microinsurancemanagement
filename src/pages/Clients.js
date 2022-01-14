@@ -106,8 +106,6 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
         }
     }
   const [clickedIndex, setClickedIndex] = useState(null)
-  
-  console.log(meta)
 
     return (
         <div className='components'>

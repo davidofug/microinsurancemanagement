@@ -29,8 +29,6 @@ function Reports() {
     setPolicies(policyData.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
     }
 
-    console.log(policies)
-
     return (
         <div className='components'>
             <Header title="Reports" subtitle="AGENT ISSUED STICKER REPORTS" />
