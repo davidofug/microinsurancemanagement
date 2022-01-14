@@ -19,6 +19,7 @@ function AddUsers() {
     const [mtp, setMTP] = useState(false)
 
     const [fields, handleFieldChange] = useForm({
+        added_by_uid: authentication.currentUser.uid,
         user_role: 'Customer',
         email: '',
         name: '',
@@ -37,7 +38,7 @@ function AddUsers() {
         if(mtp) fields['mtp'] = true
         if (windscreen) fields['windscreen'] = true
 
-        fields['added_by_uid'] = authentication.currentUser.uid
+        // fields['added_by_uid'] = authentication.currentUser.uid
         fields['added_by_name'] = authentication.currentUser.displayName
 
         addUser(fields).then((results) => {
