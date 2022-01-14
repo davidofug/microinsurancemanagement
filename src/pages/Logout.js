@@ -13,7 +13,7 @@ function Logout() {
         const LogOutSign = async () => {
             signOut(authentication)
             setLoading(false)
-            history.push('/login')
+            history.push('/')
         }
 
         
