@@ -1,4 +1,5 @@
 import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson, MdSettings } from 'react-icons/md'
+import { RiCalendarTodoFill } from 'react-icons/ri'
 
 const menuData = {
     SuperAdmin: [
@@ -237,12 +238,6 @@ const menuData = {
             link: "/agent/clients"
         },
         {
-            number: 3,
-            name: "Log Trails",
-            icon: <MdPeople />,
-            link: "/agent/view-log-trail"
-        },
-        {
             number: 4,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
@@ -275,6 +270,12 @@ const menuData = {
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
             link: "/agent/claims"
+        },
+        {
+            number: 3,
+            name: "Log Trails",
+            icon: <RiCalendarTodoFill />,
+            link: "/agent/view-log-trail"
         },
         {
             number: 6,
