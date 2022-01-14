@@ -84,7 +84,6 @@ function AgentsRoutes() {
             <PrivateRoute path="/agent/add-clients" >
                 <AddClients />
             </PrivateRoute>
-            <Route path="/logout" component={Logout} />
         </>
 
     )
