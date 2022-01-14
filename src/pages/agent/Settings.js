@@ -41,7 +41,7 @@ function Settings() {
         event.preventDefault();
     }
 
-
+    console.log(authentication.currentUser)
 
     return (
         <div className='components'>
@@ -90,7 +90,7 @@ function Settings() {
         </Form>
       </Modal>
 
-                <div class="componentsData">
+                <div class="componentsData myProfile">
                                 <div id="edit_profile">
                                         <form onSubmit={handleEditFormSubmit}>
                                             <h2>Profile</h2>
@@ -99,11 +99,11 @@ function Settings() {
                                                 <div className="avatarSection">
                                                     <DefaultAvatar />
                                                     <div>
-                                                        <p>{authentication.currentUser.displayName}</p>
+                                                        <h6 style={{margin: "0"}}>{authentication.currentUser.displayName}</h6>
                                                         <p>{authentication.currentUser.email}</p>
                                                     </div>
                                                 </div>
-                                                <button className="btn btn-primary cta" onClick={handleShow}><AiOutlineEdit /> Update Profile</button>
+                                                <button className="btn btn-primary cta" onClick={handleShow}><AiOutlineEdit /></button>
                                                 
                                             </div>
                                             <Badge >Agent</Badge>
@@ -116,7 +116,7 @@ function Settings() {
                                 <div id="edit_profile">
                                         <form onSubmit={handleEditFormSubmit}>
                                             <h2>Notification</h2>
-                                            <p>User Detail</p>
+                                            <Alert variant='success'> <MdCheckCircle /> You don't have any notifications</Alert>
                                             
                                         </form>
                                 </div>

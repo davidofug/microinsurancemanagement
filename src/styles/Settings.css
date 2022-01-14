@@ -60,6 +60,12 @@
 .profileSection{
     display: flex;
     justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
+.myProfile{
+    width: 80%;
 }
 
 
