@@ -1,4 +1,4 @@
-import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson, MdSettings } from 'react-icons/md'
+import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson, MdStickyNote2 } from 'react-icons/md'
 import { RiCalendarTodoFill } from 'react-icons/ri'
 
 const menuData = {
@@ -72,7 +72,7 @@ const menuData = {
         {
             number: 4,
             name: "Sticker No.",
-            icon: <MdPerson />,
+            icon: <MdStickyNote2 />,
             link: "/admin/sticker-management"
         },
         {
