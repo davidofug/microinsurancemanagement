@@ -173,16 +173,6 @@ function Agents() {
                               </td>
                           </tr>
                           ))}
-                          <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            
                         </tbody>
                         <tfoot>
                             <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
