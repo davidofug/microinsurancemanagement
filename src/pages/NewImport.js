@@ -10,6 +10,7 @@ import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
+import useAuth from '../contexts/Auth'
 
 function NewImport() {
 
@@ -17,6 +18,8 @@ function NewImport() {
       document.title = 'Britam - New Imports'
       getWindscreen()
     }, [])
+
+    const { authClaims } = useAuth()
 
     // policies
   const [policies, setPolicies] = useState([])
@@ -61,13 +64,15 @@ function NewImport() {
         <div className='components'>
             <Header title="New Imports" subtitle="MANAGING WINDSCREEN" />
 
-            <div id="add_client_group">
-                <div></div>
-                <Link to="/agent/add-new-import">
-                    <button className="btn btn-primary cta">Add New Import</button>
-                </Link>
-                
-            </div>
+            {(authClaims.supervisor || authClaims.agent) && 
+              <div id="add_client_group">
+                  <div></div>
+                  <Link to="/agent/add-new-import">
+                      <button className="btn btn-primary cta">Add New Import</button>
+                  </Link>
+              </div>
+            }
+
 
             <div className="shadow-sm table-card componentsData">   
                 <div id="search">
