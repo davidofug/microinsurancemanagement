@@ -1,20 +1,21 @@
 import { CSVLink } from 'react-csv'
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import { MdDownload } from 'react-icons/md'
-import Header from '../parts/header/Header';
-import data from '../helpers/mock-data.json'
+import Header from '../components/header/Header';
 import Pagination from '../helpers/Pagination';
-import SearchBar from '../parts/searchBar/SearchBar';
+import SearchBar from '../components/searchBar/SearchBar';
 import { Table } from 'react-bootstrap';
 import { FaEllipsisV } from "react-icons/fa";
 import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
 import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
-import ClientModal from '../parts/ClientModal'
+import ClientModal from '../components/ClientModal'
 import { Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm';
+import { MdEdit, MdDelete } from 'react-icons/md'
+import { AiFillCloseCircle } from 'react-icons/ai'
 
 export default function Clients() {
 
@@ -96,6 +97,16 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
+
+  // actions context
+  const [showContext, setShowContext] = useState(false)
+    window.onclick = function(event) {
+        if (!event.target.matches('.sharebtn')) {
+            setShowContext(false)
+        }
+    }
+  const [clickedIndex, setClickedIndex] = useState(null)
+
     return (
         <div className='components'>
             <Header title="Clients" subtitle="MANAGING CLIENTS" />
@@ -140,66 +151,47 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
                               <td>{client.name}</td>
                               <td>{client.email}</td>
                               {meta.filter(user => user.id == client.uid).map(user => (
-                                <>
+                                <Fragment key={user.id}>
                                   <td>{user.gender}</td>
                                   <td>{user.phone}</td>
                                   <td>{user.address}</td>
-                                </>
+                                </Fragment>
                               ))}
                 <td className="started">
-                  <FaEllipsisV
-                    className={`actions please${index}`}
-                    onClick={() => {
-                      document
-                        .querySelector(`.please${index}`)
-                        .classList.add("hello");
-                    }}
-                  />
-                  <ul id="actionsUl" className="actions-ul">
-                  
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                          const confirmBox = window.confirm(
-                            `Are you sure you want to ${client.name}`
-                          );
-                          if (confirmBox === true) {
-                            handleDelete(client.uid)
-                          }
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => {
-                          setEditID(client.uid);
-                          getSingleClient(client.uid)
-                          handleShow();
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                        }}
-                      >
-                        Edit
-                      </button>
-                    </li>
-                    <hr style={{ color: "black" }}></hr>
-                    <li>
-                      <button
-                        onClick={() => {
-                          document
-                            .querySelector(`.please${index}`)
-                            .classList.remove("hello");
-                        }}
-                      >
-                        close
-                      </button>
-                    </li>
+                  <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+
+                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                              <li onClick={() => {
+                                          setShowContext(false)
+                                          const confirmBox = window.confirm(
+                                            `Are you sure you want to ${client.name}`
+                                          );
+                                          if (confirmBox === true) {
+                                            handleDelete(client.uid)
+                                          }
+                                        }}
+                                  >
+                                    <div className="actionDiv">
+                                      <i><MdDelete/></i> Delete
+                                    </div>
+                              </li>
+                              <li onClick={() => {
+                                      setShowContext(false)
+                                      setEditID(client.uid);
+                                      getSingleClient(client.uid)
+                                      handleShow();
+                                    }}
+                                  >
+                                    <div className="actionDiv">
+                                      <i><MdEdit/></i> Edit
+                                    </div>
+                              </li>
+                              <li onClick={() => setShowContext(false)}
+                                  >
+                                    <div className="actionDiv">
+                                      <i><AiFillCloseCircle/></i> Close
+                                    </div>
+                              </li>
                   </ul>
                 </td>
                           </tr>

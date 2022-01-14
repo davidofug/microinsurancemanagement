@@ -2,7 +2,7 @@ import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { MdLogout  } from 'react-icons/md'
-import DefaultAvatar from '../../parts/DefaultAvatar'
+import DefaultAvatar from '../../components/DefaultAvatar'
 import { Badge, Dropdown, DropdownButton } from 'react-bootstrap'
 import { MdAccountBalance, MdPerson, MdPeople, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdOutlinePowerSettingsNew, MdSettings } from 'react-icons/md'
 

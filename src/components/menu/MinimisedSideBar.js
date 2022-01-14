@@ -1,14 +1,10 @@
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import profile from '../../assets/imgs/image 2.png'
-import { MdLogout  } from 'react-icons/md'
-import DefaultAvatar from '../DefaultAvatar'
 
 export default function MinimisedSideBar({role}){
 
     const [ selected, setSelected ] = useState({ activeObject: null, role })
-    const [ toggleMenu, setToggeMenu ] = useState(true)
 
     useEffect(() => {
         sessionStorage.getItem('session1')
@@ -48,17 +44,6 @@ export default function MinimisedSideBar({role}){
                     ))}
                 </ul>
             </section>
-                    
-            <footer>
-                    <ul>
-                        <li><Link to="/admin/settings">Settings</Link></li>
-                        <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                    </ul>
-                <Link to={'/admin-settings'} id="account">
-                    <DefaultAvatar />
-                    {/* <img src={profile} alt="profile" /> */}
-                </Link>
-            </footer>
 
         </>
     )

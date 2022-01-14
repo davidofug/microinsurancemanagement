@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Form, Table, Alert } from 'react-bootstrap'
-import Header from '../../parts/header/Header';
+import Header from '../../components/header/Header';
 import { FaEllipsisV } from "react-icons/fa";
 
 function Comprehensive() {
