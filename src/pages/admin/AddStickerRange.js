@@ -23,7 +23,7 @@ function AddStickerRange() {
                             <Form.Select aria-label="User role" id='category'>
                                 <option value="hide">--Select Category--</option>
                                 <option value="mtp">Motor Bike</option>
-                                <option value="comprehensive">Motor Transt</option>
+                                <option value="comprehensive">Motor Transit</option>
                                 <option value="windscreen">Motor Private</option>
                                 <option value="windscreen">Motor Commercial</option>
                             </Form.Select>
@@ -31,14 +31,13 @@ function AddStickerRange() {
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Sticker Nos Range</Form.Label>
                                 <Col>
-                                    <Form.Control type="number" id='name' placeholder="From:" required style={{marginRight: "5px"}} value={totalFrom} onChange={(e) => {
+                                    <Form.Control type="number" id='name' placeholder="0" required style={{marginRight: "5px"}} onChange={(e) => {
                                         setTotalFrom(e.target.value)
                                         setTotalSticker(totalTo - totalFrom)
                                         }}/>
-                                    <Form.Control type="number" id='name' placeholder="To:" required style={{marginLeft: "5px"}} value={totalTo} onChange={(e) => {
+                                    <Form.Control type="number" id='name' placeholder="0" required style={{marginLeft: "5px"}} onChange={(e) => {
                                         setTotalTo(e.target.value)
                                         setTotalSticker(totalTo - totalFrom)
-                                        
                                         }}/>
                                 </Col>
                         </Form.Group>
