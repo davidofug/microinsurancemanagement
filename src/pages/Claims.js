@@ -21,6 +21,7 @@ import { authentication } from "../helpers/firebase";
 import Loader from "../components/Loader";
 import { MdEdit, MdDelete, MdNotifications } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import useAuth from "../contexts/Auth";
 
 function Claims() {
   const [claims, setClaims] = useState([]);
@@ -53,9 +54,12 @@ function Claims() {
     getClaims();
   }, []);
 
+  const { authClaims } = useAuth()
+
   const getClaims = async () => {
     const data = await getDocs(claimsCollectionRef);
-    setClaims(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    setClaims(allClaims.filter(userClaim => userClaim.uid === authentication.currentUser.uid))
   };
 
   const updateClaim = async (id) => {
@@ -123,18 +127,31 @@ function Claims() {
   }
   const [clickedIndex, setClickedIndex] = useState(null)
 
+  console.log(claims)
+
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
 
+      {authClaims.agent && 
+        <div id="add_client_group">
+          <div></div>
+          <Link to="/agent/add-claim">
+            <button className="btn btn-primary cta">Add Claim</button>
+          </Link>
+        </div>
+      }
 
-      <div id="add_client_group">
-        <div></div>
-        <Link to="/add-claim">
-          <button className="btn btn-primary cta">Add Claim</button>
-        </Link>
-      </div>
-      {claims.length > 0 ?
+      {authClaims.supervisor && 
+        <div id="add_client_group">
+          <div></div>
+          <Link to="/supervisor/add-claim">
+            <button className="btn btn-primary cta">Add Claim</button>
+          </Link>
+        </div>
+      }
+
+      {claims.length > -1 ?
       <>
 
       <Modal show={show} onHide={() => {

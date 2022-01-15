@@ -9,12 +9,13 @@ import { getDocs, collection } from 'firebase/firestore'
 import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import Loader from '../components/Loader'
+import { authentication } from '../helpers/firebase'
 
 function Dashboard() {
     const [clients, setClients] = useState([]);
     const [claims, setClaims] = useState([])
     const [stickers, setStickers] = useState(13)
-    const [policies, setPolicies] = useState(2)
+    // const [policies, setPolicies] = useState(2)
     const [claimNotifications, setClaimNotifications] = useState(0)
     const { authClaims } = useAuth()
     const claimsCollectionRef = collection(db, "claims");
@@ -24,8 +25,22 @@ function Dashboard() {
         getClaims()
         getClients()
         getAgents()
+        getAdmins()
+        getPolicies()
     }, [])
 
+    // policies
+    const [policies, setPolicies] = useState([])
+    const policyCollectionRef = collection(db, "policies");
+
+
+    const getPolicies = async () => {
+        const data = await getDocs(policyCollectionRef);
+        const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        setPolicies(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+    }
+
+    // clients
     const getClients = () => {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
@@ -50,9 +65,23 @@ function Dashboard() {
         })
     }
 
+    // getting admins
+    const [ admins, setAdmins ] = useState([])
+    const getAdmins = () => {
+        const listUsers = httpsCallable(functions, 'listUsers')
+        listUsers().then((results) => {
+            const resultsArray = results.data
+            const myUsers = resultsArray.filter(user => user.role.superadmin === true)
+            setAdmins(myUsers)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     const getClaims = async () => {
         const data = await getDocs(claimsCollectionRef);
-        setClaims(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid))
     };
 
     return (
@@ -74,7 +103,7 @@ function Dashboard() {
                                     <div className="col">
                                         <div className="custom-card" style={{backgroundColor:"#FFB848"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${policies}`}</div>
+                                                <div className="statistics">{`${policies.length}`}</div>
                                                 <div className="card-text">Policies</div>
                                             </Card.Body>
                                         </div>
@@ -84,7 +113,7 @@ function Dashboard() {
                                     <div className="col">
                                         <div className="custom-card" style={{backgroundColor:"#C82E29"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${stickers}`}</div>
+                                                <div className="statistics">{`${policies.length}`}</div>
                                                 <div className="card-text">Stickers</div>
                                             </Card.Body>
                                         </div>
@@ -102,10 +131,18 @@ function Dashboard() {
 
                         <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex", alignItems: "flex-start"}}>
                             <div id="short_stats">
+                                {authClaims.superadmin && 
+                                    <>
+                                        {admins.length > 0 
+                                        ? <>
+                                        </>
+                                        : <Loader />}
+                                    </>
+                                }
                                 {authClaims.admin && <>
                                     <h5 className="heading">Daily Reports Summary</h5>
                                     <table>
-                                        <thead><th>Category</th><th>Grand totals</th></thead>
+                                        <thead><tr><th>Category</th><th>Grand totals</th></tr></thead>
                                         <tbody>
                                             <tr>
                                                 <td>MTP</td><td>UGX ___</td>

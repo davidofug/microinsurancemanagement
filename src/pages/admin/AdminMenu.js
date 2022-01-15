@@ -10,7 +10,8 @@ import { authentication } from "../../helpers/firebase";
 import { Link } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import DefaultAvatar from "../../components/DefaultAvatar";
-import { Badge } from "react-bootstrap";
+import { Badge } from "react-bootstrap"; 
+import { ImProfile } from 'react-icons/im'
 
 export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
   const { Admin } = menuData;
@@ -36,6 +37,14 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
       ? "nav-linked selected"
       : "nav-linked";
 
+  // foot contextMenu close
+  // window.onclick = function(event) {
+  //   if (!event.target.matches('.footerContext')) {
+  //     setOpenFooterContext(false)
+  //   }
+  // }
+  const [ openFooterContext, setOpenFooterContext ] = useState(false)
+
   return (
     <div className="menuSide">
       <MobileNav role={Admin} user="admin" displayName={authentication?.currentUser?.displayName}/>
@@ -55,11 +64,8 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
             </div>
             <SideBar role={Admin} />
             <footer>
-                <ul>
-                    <li><Link to="/admin/settings">My Profile</Link></li>
-                    <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                </ul>
-                <Link to='/admin/settings'>
+                {/* <Link to='/admin/settings'> */}
+                <div className="footerContext" onClick={() => setOpenFooterContext(!openFooterContext)}>
                     <DefaultAvatar />
                     <div>
                         <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
@@ -67,8 +73,13 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                             <Badge bg="warning">admin</Badge>
                         </p>
                     </div>
-                    <div id="eclipse"><div></div><div></div><div></div></div>
-                </Link>
+                    <h3 style={{color: "#000"}}>&hellip;</h3>
+                </div>
+                {/* </Link> */}
+                <ul className={openFooterContext ? "footerContextShow" : ""} id="contextUl">
+                    <li><Link to="/admin/settings"><ImProfile /> My Profile</Link></li>
+                    <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                </ul>
             </footer>
         </nav>
       ) : (
@@ -99,3 +110,42 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
     </div>
   );
 }
+
+
+{/* <td>{policy.policyStartDate}</td>
+
+<td className="started">
+<button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+
+<ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+  <Link to={`/admin/policy-details/${policy.id}`}>
+    <div className="actionDiv">
+      <i><MdInfo /></i> Details
+    </div>
+  </Link>
+  <Link to={`/admin/policy-renew/${policy.id}`}>
+    <div className="actionDiv">
+      <i><MdAutorenew /></i> Renew
+    </div>
+  </Link>
+  <li>
+    <div className="actionDiv">
+      <i><MdCancel /></i> Cancel
+    </div>
+  </li>
+  <li onClick={() => { setShow(false)
+          const confirmBox = window.confirm(
+            `Are you sure you want to delete this sticker`
+          );
+          if (confirmBox === true) {
+            handleDelete(policy.id);
+            getMTP()
+          }
+        }}
+      >
+        <div className="actionDiv">
+          <i><MdDelete/></i> Delete
+        </div>
+  </li>
+</ul>
+</td> */}
