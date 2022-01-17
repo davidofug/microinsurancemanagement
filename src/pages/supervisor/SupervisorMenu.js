@@ -11,6 +11,7 @@ import { authentication } from "../../helpers/firebase";
 import { Badge } from 'react-bootstrap'
 import { MdLogout } from 'react-icons/md'
 import DefaultAvatar from '../../components/DefaultAvatar'
+import { ImProfile } from 'react-icons/im'
 
 function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
 
@@ -35,6 +36,8 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
 
     const toggleActiveClassStyle = index => selected.SuperVisor[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
 
+    const [ openFooterContext, setOpenFooterContext ] = useState(false)
+
     return (
         <div className="menuSide">
             <MobileNav role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
@@ -54,12 +57,9 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                         </div>
                     </section>
                     <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
+
                     <footer>
-                        <ul>
-                            <li><Link to="/admin/settings">My Profile</Link></li>
-                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                        </ul>
-                        <Link to='/admin/settings'>
+                        <div className="footerContext" onClick={() => setOpenFooterContext(!openFooterContext)}>
                             <DefaultAvatar />
                             <div>
                                 <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
@@ -67,8 +67,12 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                                     <Badge bg="success">supervisor</Badge>
                                 </p>
                             </div>
-                            <div id="eclipse"><div></div><div></div><div></div></div>
-                        </Link>
+                            <h3 style={{color: "#000"}}>&hellip;</h3>
+                        </div>
+                        <ul className={openFooterContext ? "footerContextShow" : ""} id="contextUl">
+                            <li><Link to="/supervisor/settings"><ImProfile /> My Profile</Link></li>
+                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                        </ul>
                     </footer>
                 </nav>
             : 
