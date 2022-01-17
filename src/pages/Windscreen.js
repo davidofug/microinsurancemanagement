@@ -11,6 +11,7 @@ import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 import useAuth from '../contexts/Auth'
+import { authentication } from '../helpers/firebase'
 
 function Windscreen() {
 
@@ -28,7 +29,7 @@ function Windscreen() {
   const getWindscreen = async () => {
     const data = await getDocs(policyCollectionRef);
     const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    setPolicies(pole.filter(policy => policy.category === 'windscreen'))
+    setPolicies(pole.filter(policy => policy.category === 'windscreen').filter(policy => policy.added_by_uid === authentication.currentUser.uid))
   }
 
     // pagination
@@ -83,7 +84,9 @@ function Windscreen() {
 
                 <Table striped hover responsive>
                     <thead>
-                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
+                        {!authClaims.agent && <th>Agent</th>}
+                        <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
                         {policies.length > 0 && searchByName(policies).map((policy, index) => 
@@ -91,10 +94,10 @@ function Windscreen() {
                             <tr key={policy.id}>
                                 <td>{index + 1}</td>
                                 <td>{policy.clientDetails.name}</td>
-                                    <td>{policy.stickersDetails[0].category}</td>
-                                <td><td><b>{currencyFormatter(policy.stickersDetails[1].totalPremium)}</b></td></td>
+                                <td>{policy.stickersDetails[0].category}</td>
+                                <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
                                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
-                                <td>{policy.agentName ? policy.agentName : ''}</td>
+                                {!authClaims.agent && <td>{policy.agentName ? policy.agentName : ''}</td>}
                                 <td>
                                   <span
                                     style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
@@ -146,7 +149,9 @@ function Windscreen() {
                         )}
                     </tbody>
                     <tfoot>
-                        <tr><th>Client</th><th>Category</th><th>Amount</th><th>Payment Method</th><th>Currency</th><th>Agent</th><th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+                        <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
+                        {!authClaims.agent && <th>Agent</th>}
+                        <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </tfoot>
                 </Table>
 

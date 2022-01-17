@@ -396,6 +396,18 @@ footer:hover{
 
 
 
+.footerContext{
+    text-decoration: none;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.footerContextShow{
+    display: block;
+}
 
 /* account context */
 footer ul{
@@ -406,6 +418,10 @@ footer ul{
     z-index: 1001;
     box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
     border-radius: 5px; 
+    position: absolute; 
+    bottom: 65px;
+    left: -15px;
+    width: 97%;
 }
 
 footer ul li{
@@ -413,12 +429,13 @@ footer ul li{
     display: block;
 }
 
-footer:hover > ul{
+/* footer:hover > ul{
     display: block;
     position: absolute; 
     bottom: 60px;
     left: 0;
-}
+} */
+
 
 footer ul li a{
     color: #000;
