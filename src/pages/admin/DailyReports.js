@@ -6,7 +6,6 @@ import Header from "../../components/header/Header";
 import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import { Table, Dropdown, DropdownButton } from 'react-bootstrap'
-import { IoMdArrowDropdown } from 'react-icons/io'
 
 function DailyReports() {
     useEffect(() => {
