@@ -493,9 +493,9 @@ function Policies({cat, btn_txt, pol}) {
                                                     comprehensiveClient === "Corporate Entity" 
                                                     &&
                                                     <>                                             
-                                                        <div>
+                                                        <h5>
                                                             Organisation Details
-                                                        </div>
+                                                        </h5>
                                                         <Form.Group className="mb-3" >
                                                             <Form.Label htmlFor='name'>Entity Name<span className='required'>*</span></Form.Label>
                                                             <Form.Control id="name" placeholder="Entity Name" value={corporateComprehensiveEntity.name} onChange={handleCoporateComprehensiveEntity} required/>
@@ -512,9 +512,9 @@ function Policies({cat, btn_txt, pol}) {
                                                         </Row>
 
                                                         <Row className="mb-3">
-                                                            <div>
+                                                            <h5>
                                                                 Contact person Details
-                                                            </div>
+                                                            </h5>
                                                             <Form.Group className="mb-3" >
                                                                 <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                                                                 <Form.Control id="name" placeholder="Contact Person" value={contactPerson.contactName} onChange={handleContactPerson} required/>
