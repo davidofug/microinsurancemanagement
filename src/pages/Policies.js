@@ -246,9 +246,9 @@ function Policies({cat, btn_txt, pol}) {
 
     const handleComprehesiveClientInfo = async (type, individualClient, organisationInfo, contactInfo) => {
         if(type === "Individual") {
-            return await individualClient
+            return await {...individualClient, type: type}
         } else if (type === "Corporate Entity") {
-            return await { ...organisationInfo, contactPerson : contactInfo}
+            return await { ...organisationInfo, contactPerson : contactInfo, type: type}
         }
     }
 
