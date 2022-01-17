@@ -127,8 +127,6 @@ function Claims() {
   }
   const [clickedIndex, setClickedIndex] = useState(null)
 
-  console.log(claims)
-
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />

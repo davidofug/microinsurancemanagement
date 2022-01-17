@@ -24,9 +24,6 @@ function Reports() {
     setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
   }
 
-  // console.log(policies)
-
-
   return (
     <div className="components">
       <Header title="Reports" subtitle="MANAGING REPORTS" />
