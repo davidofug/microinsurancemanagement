@@ -45,11 +45,11 @@ function DailyReports() {
                 <Table striped hover responsive>
                 <thead>
                 <tr style={{borderBottom: "1px solid #000"}}>
-                    {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>Daily MTP Report</th>}
-                    {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>Daily Comprehensive Report</th>}
-                    {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>Daily Windscreen Report</th>}
-                    {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>Daily New Imports Report</th>}
-                    {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>Daily Transit Report</th>}
+                    {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>Weekly MTP Report</th>}
+                    {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>Weekly Comprehensive Report</th>}
+                    {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>Weekly Windscreen Report</th>}
+                    {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>Weekly New Imports Report</th>}
+                    {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>Weekly Transit Report</th>}
                     
                 </tr>
                 <tr>
