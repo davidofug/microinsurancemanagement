@@ -5,7 +5,7 @@ import SearchBar from "../../components/searchBar/SearchBar";
 import Header from "../../components/header/Header";
 import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
-import { Table, Dropdown, DropdownButton } from 'react-bootstrap'
+import { Table, Dropdown, DropdownButton, Form } from 'react-bootstrap'
 
 function MonthlyReports() {
     useEffect(() => {
@@ -25,7 +25,12 @@ function MonthlyReports() {
 
       // TODO: look for a better way to switch between categories
       const [ switchCategory, setSwitchCategory ] = useState("mtp")
+      // current month
+      const currentMonth = (new Date()).getMonth()
 
+      const monthOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+      const [ selectedMonth, setSelectedMonth ] = useState(currentMonth)
 
     return (
         <div className="components">
@@ -42,14 +47,32 @@ function MonthlyReports() {
                     <Dropdown.Item onClick={() => setSwitchCategory("transit")}>Transit</Dropdown.Item>
                 </DropdownButton>
 
+                <Form.Group className="m-3" width="150px">
+                    <Form.Label htmlFor='category'>Select Month</Form.Label>
+                    <Form.Select aria-label="User role" id='category' defaultValue={currentMonth} onChange={(event) => setSelectedMonth(event.target.value)}>
+                        <option value={0}>January</option>
+                        <option value={1}>February</option>
+                        <option value={2}>March</option>
+                        <option value={3}>April</option>
+                        <option value={4}>May</option>
+                        <option value={5}>June</option>
+                        <option value={6}>July</option>
+                        <option value={7}>August</option>
+                        <option value={8}>september</option>
+                        <option value={9}>October</option>
+                        <option value={10}>november</option>
+                        <option value={11}>December</option>
+                    </Form.Select>
+                </Form.Group>
+
                 <Table striped hover responsive>
                 <thead>
                 <tr style={{borderBottom: "1px solid #000"}}>
-                    {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>Monthly MTP Report</th>}
-                    {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>Monthly Comprehensive Report</th>}
-                    {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>Monthly Windscreen Report</th>}
-                    {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>Monthly New Imports Report</th>}
-                    {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>Monthly Transit Report</th>}
+                    {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} MTP Report`.toUpperCase()}</th>}
+                    {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} comprehensive Report`.toUpperCase()}</th>}
+                    {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} windscreen Report`.toUpperCase()}</th>}
+                    {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} new import Report`.toUpperCase()}</th>}
+                    {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} transit Report`.toUpperCase()}</th>}
                     
                 </tr>
                 <tr>

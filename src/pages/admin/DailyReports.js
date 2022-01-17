@@ -23,8 +23,14 @@ function DailyReports() {
         setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
       }
 
-      // TODO: look for a better way to switch between categories
+   
       const [ switchCategory, setSwitchCategory ] = useState("mtp")
+
+
+
+      console.log(policies)
+
+      const splitDate = (date) => {}
 
 
     return (
