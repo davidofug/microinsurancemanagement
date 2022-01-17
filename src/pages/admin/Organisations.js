@@ -220,13 +220,6 @@ export default function Organisations() {
                                             setOpenToggle(true)
                                             setEditID(organisation.id);
                                             setShowContext(false)
-                                            console.log(organisation.id)
-                                            // const confirmBox = window.confirm(
-                                            //   `Are you sure you want to ${organisation.name}`
-                                            // );
-                                            // if (confirmBox === true) {
-                                            //   handleDelete(organisation.uid)
-                                            // }
                                           }}
                                     >
                                       <div className="actionDiv">

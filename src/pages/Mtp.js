@@ -11,12 +11,14 @@ import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 import useAuth from '../contexts/Auth'
 import { authentication } from "../helpers/firebase";
+import '../components/modal/ConfirmBox.css'
 
 export default function Mtp() {
   useEffect(() => {
     document.title = "Britam - Motor Third Party";
     getMTP()
   }, []);
+
 
   //authClaim
   const { authClaims } = useAuth()
@@ -25,11 +27,23 @@ export default function Mtp() {
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
 
+  const [editID, setEditID] = useState(null);
+
 
   const getMTP = async () => {
     const data = await getDocs(policyCollectionRef);
     const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     setPolicies(pole.filter(policy => policy.category === 'mtp').filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+  }
+
+  // Confirm Box
+  const [ openToggle, setOpenToggle ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggle === true) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggle(false)
+    }
+    }
   }
 
 
@@ -54,15 +68,15 @@ export default function Mtp() {
   }
 
   // actions context
-  const [show, setShow] = useState(false)
+  const [showContext, setShowContext] = useState(false)
+  if(showContext === true){
     window.onclick = function(event) {
         if (!event.target.matches('.sharebtn')) {
-            setShow(false)
+            setShowContext(false)
         }
     }
+  }
   const [clickedIndex, setClickedIndex] = useState(null)
-
-  console.log(policies)
 
   return (
     <div className="components">
@@ -79,6 +93,21 @@ export default function Mtp() {
           </Link>
         </div>
       }
+
+      <div className={openToggle ? 'modal is-active': 'modal'}>
+        <div className="modal__content wack">
+          <h1 className='wack'>Confirm</h1>
+          <p className='wack'>Are you sure you want to delete this user</p>
+          <div className="buttonContainer wack" >
+            <button id="yesButton" onClick={() => {
+              setOpenToggle(false)
+              handleDelete(editID)
+              getMTP()
+              }} className='wack'>Yes</button>
+            <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+          </div>
+        </div>
+      </div>
 
 
       <div className="table-card componentsData">
@@ -113,9 +142,9 @@ export default function Mtp() {
                             <td>{policy.policyStartDate}</td>
 
                             <td className="started">
-                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
 
-                            <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                            <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                               <Link to={`/admin/policy-details/${policy.id}`}>
                                 <div className="actionDiv">
                                   <i><MdInfo /></i> Details
@@ -131,15 +160,12 @@ export default function Mtp() {
                                   <i><MdCancel /></i> Cancel
                                 </div>
                               </li>
-                              <li onClick={() => { setShow(false)
-                                      const confirmBox = window.confirm(
-                                        `Are you sure you want to delete this sticker`
-                                      );
-                                      if (confirmBox === true) {
-                                        handleDelete(policy.id);
-                                        getMTP()
-                                      }
-                                    }}
+                               <li 
+                                    onClick={() => {
+                                            setOpenToggle(true)
+                                            setEditID(policy.id);
+                                            setShowContext(false)
+                                          }}
                                   >
                                     <div className="actionDiv">
                                       <i><MdDelete/></i> Delete
