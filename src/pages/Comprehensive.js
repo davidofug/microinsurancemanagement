@@ -84,11 +84,6 @@ function Comprehensive() {
     return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
   }
 
-  
-
-
-
-
     return (
         <div className='components'>
             <Header title="Comprehensive" subtitle="MANAGING COMPREHENSIVE" />
