@@ -12,10 +12,11 @@ const SearchBar = ({placeholder, handleSearch, value}) => (
                     value={value}
                     onChange={handleSearch}
                 />
-                <select id="searchBy" name="selectBox">
+                <div></div>
+                {/* <select id="searchBy" name="selectBox">
                     <option>name</option>
                     <option>category</option>
-                </select>
+                </select> */}
                 </div>
             </div>
     )

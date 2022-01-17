@@ -6,7 +6,7 @@ import SearchBar from '../components/searchBar/SearchBar'
 import { Table, Alert } from 'react-bootstrap'
 import Header from '../components/header/Header';
 import { FaEllipsisV } from "react-icons/fa";
-import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
+import { getDoc, getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
@@ -30,6 +30,18 @@ function Windscreen() {
     const data = await getDocs(policyCollectionRef);
     const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     setPolicies(pole.filter(policy => policy.category === 'windscreen').filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+  }
+
+  // Confirm Box
+  const [editID, setEditID] = useState(null);
+  const [ openToggle, setOpenToggle ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggle === true) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggle(false)
+        setDeleteName('')
+    }
+    }
   }
 
     // pagination
@@ -59,7 +71,24 @@ function Windscreen() {
         }
     }
 
-  const [clickedIndex, setClickedIndex] = useState(null)
+   // actions context
+   const [showContext, setShowContext] = useState(false)
+   if(showContext === true){
+     window.onclick = function(event) {
+         if (!event.target.matches('.sharebtn')) {
+             setShowContext(false)
+         }
+     }
+   }
+   const [clickedIndex, setClickedIndex] = useState(null)
+
+
+  const [ deleteName, setDeleteName ] = useState('')
+
+  const getPolicy = async (id) => {
+    const policyDoc = doc(db, "policies", id);
+    return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
+  }
 
     return (
         <div className='components'>
@@ -73,6 +102,23 @@ function Windscreen() {
                   </Link>
               </div>
             }
+
+
+          <div className={openToggle ? 'modal is-active': 'modal'}>
+            <div className="modal__content wack">
+              <h1 className='wack'>Confirm</h1>
+              <p className='wack'>Are you sure you want to delete <b>{deleteName}</b></p>
+              <div className="buttonContainer wack" >
+                <button id="yesButton" onClick={() => {
+                  setOpenToggle(false)
+                  handleDelete(editID)
+                  getWindscreen()
+                  setDeleteName('')
+                  }} className='wack'>Yes</button>
+                <button id="noButton" onClick={() => {setOpenToggle(false); setDeleteName('')}} className='wack'>No</button>
+              </div>
+            </div>
+          </div>
 
 
             <div className="shadow-sm table-card componentsData">   
@@ -107,9 +153,9 @@ function Windscreen() {
                                 <td>{policy.policyStartDate}</td>
                                 
                                 <td className="started">
-                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setEditID(policy.id); getPolicy(policy.id)}}>&#8942;</button>
 
-                                <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                                   <Link to={`/admin/policy-details/${policy.id}`}>
                                     <div className="actionDiv">
                                       <i><MdInfo /></i> Details
@@ -125,15 +171,10 @@ function Windscreen() {
                                       <i><MdCancel /></i> Cancel
                                     </div>
                                   </li>
-                                  <li onClick={() => { setShow(false)
-                                          const confirmBox = window.confirm(
-                                            `Are you sure you want to delete this sticker`
-                                          );
-                                          if (confirmBox === true) {
-                                            handleDelete(policy.id);
-                                            getWindscreen()
-                                          }
-                                        }}
+                                  <li onClick={() => {
+                                            setOpenToggle(true)
+                                            setShowContext(false)
+                                          }}
                                       >
                                         <div className="actionDiv">
                                           <i><MdDelete/></i> Delete

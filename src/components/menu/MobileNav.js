@@ -23,7 +23,7 @@ export default function MobileNav ({role, user, displayName}) {
     const toggleActiveClassStyle = index => selected.role[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
     return (
         <div className="mobile-sidebar">
-            <Navbar expand={false} >
+            <Navbar expand={false} className='hideThis' >
                 <Container fluid>
                     <div>
                         <Navbar.Toggle className='m-3' aria-controls="offcanvasNavbar" />
@@ -42,7 +42,11 @@ export default function MobileNav ({role, user, displayName}) {
                                 <ul className="nav flex-column">
                                     { selected.role.map((menuItem, index) => (
                                         <li className='nav-item' key={menuItem.number}>
-                                            <Link to={menuItem.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} >
+                                            <Link to={menuItem.link} className={toggleActiveClassStyle(index)} onClick={() => {
+                                                toggleActive(index)
+                                                document.getElementById('offcanvasNavbar').style.display='none'
+                                                document.getElementsByClassName('show')[0].style.display='none'
+                                                }} >
                                                 <span>{menuItem.icon}</span>{menuItem.name}
                                                 {menuItem?.subMenu && (
                                                     <NavDropdown style={{"color": "#fff"}} id="offcanvasNavbarDropdown">

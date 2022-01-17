@@ -127,6 +127,9 @@ function AdminRoutes() {
             <PrivateRoute path="/add-claim" >
                 <AddClaims />
             </PrivateRoute>
+            <PrivateRoute path="/logout" >
+                <Logout />
+            </PrivateRoute>
         </>
         
     )
