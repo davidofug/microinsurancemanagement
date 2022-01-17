@@ -5,7 +5,7 @@ import Header from "../components/header/Header";
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../components/searchBar/SearchBar'
 import { Table } from 'react-bootstrap'
-import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
+import { getDoc, getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
@@ -78,6 +78,12 @@ export default function Mtp() {
   }
   const [clickedIndex, setClickedIndex] = useState(null)
 
+  const [ deleteName, setDeleteName ] = useState('')
+  const getPolicy = async (id) => {
+    const policyDoc = doc(db, "policies", id);
+    return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
+  }
+
   return (
     <div className="components">
       <Header
@@ -97,7 +103,7 @@ export default function Mtp() {
       <div className={openToggle ? 'modal is-active': 'modal'}>
         <div className="modal__content wack">
           <h1 className='wack'>Confirm</h1>
-          <p className='wack'>Are you sure you want to delete this user</p>
+          <p className='wack'>Are you sure you want to delete <b>{deleteName}</b></p>
           <div className="buttonContainer wack" >
             <button id="yesButton" onClick={() => {
               setOpenToggle(false)
@@ -126,7 +132,7 @@ export default function Mtp() {
                         <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </thead>
                     <tbody>
-                        {policies.length > 0 && policies.map((policy, index) => (
+                        {policies.length > 0 && currentPolicies.map((policy, index) => (
                           <tr key={policy.id}>
                             <td>{index + 1}</td>
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
@@ -142,7 +148,7 @@ export default function Mtp() {
                             <td>{policy.policyStartDate}</td>
 
                             <td className="started">
-                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setEditID(policy.id); getPolicy(policy.id)}}>&#8942;</button>
 
                             <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                               <Link to={`/admin/policy-details/${policy.id}`}>
