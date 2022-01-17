@@ -15,6 +15,7 @@ import { useForm } from "../../hooks/useForm";
 import { authentication } from "../../helpers/firebase";
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import '../../components/modal/ConfirmBox.css'
 
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
@@ -25,6 +26,20 @@ export default function Organisations() {
       getOrganisations()
     
   }, []);
+
+
+  // TODO: working on the Organisation on delete Confirm box
+  const [ openToggle, setOpenToggle ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggle === true) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggle(false)
+    }
+    }
+  }
+  
+
+
 
   const getOrganisations = async () => {
     const data = await getDocs(organisationsCollectionRef)
@@ -85,12 +100,15 @@ export default function Organisations() {
 
     // actions context
     const [showContext, setShowContext] = useState(false)
-    window.onclick = function(event) {
-        if (!event.target.matches('.sharebtn')) {
-            setShowContext(false)
-        }
+    if(showContext === true){
+      window.onclick = function(event) {
+          if (!event.target.matches('.sharebtn')) {
+              setShowContext(false)
+          }
+      }
     }
     const [clickedIndex, setClickedIndex] = useState(null)
+
 
 
   return (
@@ -103,6 +121,23 @@ export default function Organisations() {
           <button className="btn btn-primary cta">Add Organisation</button>
         </Link>
       </div>
+
+      <div className={openToggle ? 'modal is-active': 'modal'}>
+        <div className="modal__content wack">
+          <h1 className='wack'>Confirm</h1>
+          <p className='wack'>Are you sure you want to delete this user</p>
+          <div className="buttonContainer wack" >
+            <button id="yesButton" onClick={() => {
+              setOpenToggle(false)
+              handleDelete(editID)
+              getOrganisations()
+              }} className='wack'>Yes</button>
+            <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+          </div>
+        </div>
+      </div>
+
+
 
       <Modal show={show} onHide={() =>
         {
@@ -180,14 +215,18 @@ export default function Organisations() {
                     <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
 
                     <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                                <li onClick={() => {
+                      
+                                  <li onClick={() => {
+                                            setOpenToggle(true)
+                                            setEditID(organisation.id);
                                             setShowContext(false)
-                                            const confirmBox = window.confirm(
-                                              `Are you sure you want to ${organisation.name}`
-                                            );
-                                            if (confirmBox === true) {
-                                              handleDelete(organisation.uid)
-                                            }
+                                            console.log(organisation.id)
+                                            // const confirmBox = window.confirm(
+                                            //   `Are you sure you want to ${organisation.name}`
+                                            // );
+                                            // if (confirmBox === true) {
+                                            //   handleDelete(organisation.uid)
+                                            // }
                                           }}
                                     >
                                       <div className="actionDiv">
