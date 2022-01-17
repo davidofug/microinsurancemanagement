@@ -23,7 +23,7 @@ function MyRouter() {
     useEffect(() => {
     }, [])
 
-    const {currentUser, authClaims, user } = useAuth()
+    const { currentUser, authClaims, user } = useAuth()
     const [ largeContentClass, setLargeContentClass ] = useState(false)
 
 /* something */
