@@ -6,6 +6,9 @@ import Header from '../../components/header/Header'
 import DefaultAvatar from '../../components/DefaultAvatar'
 import { authentication } from '../../helpers/firebase'
 import { AiOutlineEdit } from 'react-icons/ai'
+import { functions, db } from '../../helpers/firebase';
+import { httpsCallable } from 'firebase/functions';
+import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 
 function Settings() {
 
@@ -14,7 +17,36 @@ function Settings() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-    useEffect(() => document.title = 'Britam - User Profile', [])
+    useEffect(() => {
+        document.title = 'Britam - User Profile'
+        getAgents()
+        getUsersMeta()
+    }, [])
+
+    const [ user, setUser ] = useState([])
+    // get user
+    const getAgents = () => {
+        const listUsers = httpsCallable(functions, 'listUsers')
+          listUsers().then((results) => {
+              const resultsArray = results.data
+              const myUsers = resultsArray.filter(user => user.role.agent === true)
+              setUser(myUsers)
+          }).catch((err) => {
+              console.log(err)
+          })
+      }
+
+      const [meta, setMeta] = useState([])
+    const metaCollectionRef = collection(db, "usermeta");
+
+      const getUsersMeta = async () => {
+        const data = await getDocs(metaCollectionRef);
+        const allData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        setMeta(allData.filter(data => data.id === authentication.currentUser.uid));
+        // setMeta(allData);
+      };
+
+    console.log(meta)
 
     const toggleTab = (index) => setSelectedTab(index);
 
@@ -40,8 +72,6 @@ function Settings() {
     const handleEditFormSubmit = (event) => {
         event.preventDefault();
     }
-
-    console.log(authentication.currentUser)
 
     return (
         <div className='components'>
@@ -106,9 +136,15 @@ function Settings() {
                                                 <button className="btn btn-primary cta" onClick={handleShow}><AiOutlineEdit /></button>
                                                 
                                             </div>
-                                            <Badge >Agent</Badge>
+                                            <Badge>Agent</Badge>
                                         </form>
                                         <h6>General Information</h6>
+
+                                        <tr>
+                                            <th style={{paddingRight: "30px"}}><p>Gender</p></th>
+                                            <td><p>{meta.length > 0 && meta[0].gender}</p></td>
+                                        </tr>
+                                        
                                 </div>
 
                                 <div id="edit_profile">
