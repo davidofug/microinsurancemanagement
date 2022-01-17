@@ -375,9 +375,7 @@ tbody, td, tfoot, th, thead, tr{
 
 /* 1025px to 1200px: desktop and large screens */
 @media screen and (min-width: 1025px) and (max-width: 1200px) {
-    .components {
-        /* margin-left: 260px; */
-    }
+
 
     
 }
