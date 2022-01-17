@@ -23,6 +23,10 @@ body{
     font-size: .875rem;
 }
 
+.form-select {
+    width: 150px;
+}
+
 
 #arrowCircle{
     border: 1px solid #c6c7c8;
@@ -86,7 +90,7 @@ body{
     position: relative;
     /* margin-left: 260px; */
     min-width: 800px;
-    max-width: 1200px;
+    max-width: 1400px;
     overflow: hidden;
 }
 
@@ -367,15 +371,28 @@ tbody, td, tfoot, th, thead, tr{
         width: 98%;
     }
     
-    
 }
+
+/* 950px to 1024px: abit bigger laptops */
+/*
+@media screen and (min-width: 950px) and (max-width: 1024px) {
+    .top-container-large .components{
+        width: 90vw;
+        margin: 0 auto;
+    }
+
+    .top-container .componentsData {
+        border: 1px solid red;
+        width: 72vw;
+    }
+}
+*/
 
 
 
 
 /* 1025px to 1200px: desktop and large screens */
 @media screen and (min-width: 1025px) and (max-width: 1200px) {
-
 
     
 }

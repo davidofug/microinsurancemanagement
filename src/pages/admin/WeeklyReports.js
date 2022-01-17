@@ -27,9 +27,15 @@ function DailyReports() {
       // TODO: look for a better way to switch between categories
       const [ switchCategory, setSwitchCategory ] = useState("mtp")
 
+      const [ dateFrom, setDateFrom ] = useState(null)
+      const [ dateTo, setDateTo ] = useState(null)
+
+      const monthsOfTheYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+      const daysInAWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
     return (
         <div className="components">
-            <Header title="Weekly Reports" subtitle="WEEKLY REPORTS" />
+            <Header title="Weekly Reports" subtitle="REPORTS FOR A GIVEN RANGE" />
 
             <div className="shadow-sm table-card componentsData" style={{ "maxWidth": "80vw", margin: "auto" }}>
                 {/* <button className="btn btn-primary cta">Choose Category <IoMdArrowDropdown /></button> */}
@@ -42,10 +48,34 @@ function DailyReports() {
                     <Dropdown.Item onClick={() => setSwitchCategory("transit")}>Transit</Dropdown.Item>
                 </DropdownButton>
 
+                {/* Date Range */}
+                <div style={{margin: "20px"}}>
+                    <span>from</span>
+                    <input type="date" id="dateFrom" onChange={({target}) => setDateFrom(target.valueAsDate)} />
+                    <span>to</span>
+                    <input type="date" id="dateTo" onChange={({target}) => setDateTo(target.valueAsDate)} />
+                </div>
+
                 <Table striped hover responsive>
                 <thead>
                 <tr style={{borderBottom: "1px solid #000"}}>
-                    {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>Weekly MTP Report</th>}
+                    {switchCategory === "mtp" && 
+                        <th colspan={20} style={{textAlign: "center"}}>
+                            MTP Report {dateFrom !== null && (
+                            <>
+                                <span>FROM </span> 
+                                <span>{daysInAWeek[dateFrom.getDay()]}, {monthsOfTheYear[dateFrom.getMonth()]} {dateFrom.getDate()} {dateFrom.getFullYear()} </span>  
+                            </>
+                        )} 
+                            
+                        { dateTo !== null && (
+                            <>
+                                <span>TO </span>
+                                <span>{daysInAWeek[dateTo.getDay()]}, {monthsOfTheYear[dateTo.getMonth()]} {dateTo.getDate()} {dateTo.getFullYear()} </span> 
+                            </>
+                        )}
+                            
+                        </th>}
                     {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>Weekly Comprehensive Report</th>}
                     {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>Weekly Windscreen Report</th>}
                     {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>Weekly New Imports Report</th>}
