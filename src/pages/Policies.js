@@ -16,6 +16,7 @@ import Upload from '../components/uploader/Upload';
 import { db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { authentication } from '../helpers/firebase'
+import { FaSolarPanel } from 'react-icons/fa'
 // import AddClient from '../parts/AddClient'
 // enlarging the size of + and -
 
@@ -478,7 +479,7 @@ function Policies({cat, btn_txt, pol}) {
                                             cat ==='comprehensive' ?
                                             <>
                                                 <Row> 
-                                                    <Form.Group controlId="motorClass" >
+                                                    <Form.Group controlId="motorClass" className="mb-3">
                                                         <Form.Select type="text" name="clientType" aria-label="clientType" onChange={(event) => {
                                                                 setComprehensiveClient(event.target.value)
                                                             }}>
@@ -520,12 +521,12 @@ function Policies({cat, btn_txt, pol}) {
                                                             </Form.Group>
                                                             <Form.Group as={Col} className='addFormGroups'>
                                                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
-                                                                <div className='gender-options'>
-                                                                    <div>
-                                                                    <input type="radio" id="gender" value="male" className='addFormRadio' onChange={handleContactPerson}/>
+                                                                <div className='gender-options' style={{display:"flex", gap: "5px"}}>
+                                                                    <div style={{display: "flex", gap: "5px", alignItems: "center"}}>
+                                                                        <input type="radio" id="gender" value="male" className='addFormRadio' onChange={handleContactPerson}/>
                                                                         <label htmlFor="male">Male</label>
                                                                     </div>
-                                                                    <div>
+                                                                    <div style={{display: "flex", gap: "5px", alignItems:"center"}}>
                                                                         <input type="radio" name="gender" value="female" className='addFormRadio' onChange={handleContactPerson}/>
                                                                         <label htmlFor="female">Female</label>
                                                                     </div>
@@ -566,11 +567,11 @@ function Policies({cat, btn_txt, pol}) {
                                                             <Form.Group as={Col} className='addFormGroups'>
                                                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
                                                                 <div className='gender-options'>
-                                                                    <div>
-                                                                    <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleIndividualComprehensiveClient}/>
+                                                                    <div style={{display: "flex", gap: "5px", alignItems:"center"}}> 
+                                                                        <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleIndividualComprehensiveClient}/>
                                                                         <label htmlFor="male">Male</label>
                                                                     </div>
-                                                                    <div>
+                                                                    <div style={{display: "flex", gap: "5px", alignItems:"center"}}> 
                                                                         <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleIndividualComprehensiveClient}/>
                                                                         <label htmlFor="female">Female</label>
                                                                     </div>
@@ -623,11 +624,11 @@ function Policies({cat, btn_txt, pol}) {
                                                     <Form.Group as={Col} className='addFormGroups'>
                                                         <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
                                                         <div className='gender-options'>
-                                                            <div>
-                                                            <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleClientDetails}/>
+                                                            <div style={{display: "flex", gap: "5px", alignItems:"center"}}>
+                                                                <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleClientDetails}/>
                                                                 <label htmlFor="male">Male</label>
                                                             </div>
-                                                            <div>
+                                                            <div style={{display: "flex", gap: "5px", alignItems:"center"}}>
                                                                 <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleClientDetails}/>
                                                                 <label htmlFor="female">Female</label>
                                                             </div>
