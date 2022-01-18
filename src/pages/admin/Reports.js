@@ -29,9 +29,17 @@ function Reports() {
   // current month
   const currentMonth = (new Date()).getMonth()
   const monthOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-  const [ selectedMonth, setSelectedMonth ] = useState(currentMonth)
+  const [ selectedMonth, setSelectedMonth ] = useState(null)
 
-  console.log(policies)
+  let today;
+  if((new Date().getMonth() + 1) < 10){
+    today = `${new Date().getFullYear()}-0${new Date().getMonth() + 1}-${new Date().getDate()}`
+  } else {
+    today = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
+  }
+
+  const [ currentDay, setCurrentDay ] = useState(null)
+
 
   return (
     <div className="components">
@@ -54,10 +62,10 @@ function Reports() {
           </div>
 
           <div style={{display: "flex", alignItems: "center"}}>  
-                <Form.Group className="m-3" width="150px">
-                    <Form.Label htmlFor='category'>Category</Form.Label>
+                <Form.Group className="m-3 categories" width="180px">
+                    <Form.Label htmlFor='category'>Policy Category</Form.Label>
                     <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
-                        <option value="">-- Select Category --</option>
+                        <option value={""}>Select a category</option>
                         <option value="mtp">MTP</option>
                         <option value="comprehensive">Comprehensive</option>
                         <option value="windscreen">Windscreen</option>
@@ -66,10 +74,10 @@ function Reports() {
                     </Form.Select>
                 </Form.Group>
 
-                <Form.Group className="m-3" width="150px">
+                <Form.Group className="m-3 categories" width="200px">
                     <Form.Label htmlFor='category'>Status</Form.Label>
                     <Form.Select aria-label="User role" id='category'>
-                        <option value="new">-- select status --</option>
+                        <option value={null}>Select a status</option>
                         <option value="new">New</option>
                         <option value="paid">Paid</option>
                         <option value="cancelled">Cancelled</option>
@@ -77,48 +85,54 @@ function Reports() {
                         <option value="expired">Expired</option>
                     </Form.Select>
                 </Form.Group>
+          </div>
 
-                <Form.Group controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+          <div style={{display: "flex", alignItems: "center"}}>
+          <Form.Group controlId="formGridEmail"  className="m-3" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                     <Form.Label>Today</Form.Label>
-                    <Form.Control type="date" />
+                    <Form.Control type="date" defaultValue={currentDay} onChange={({target: {value}}) => setCurrentDay(value)}/>
                 </Form.Group>
 
                 <Form.Group className="m-3" width="150px">
                     <Form.Label htmlFor='category'>Select Month</Form.Label>
-                    <Form.Select aria-label="User role" id='category' defaultValue={currentMonth} onChange={(event) => setSelectedMonth(event.target.value)}>
-                        <option value={0}>January</option>
-                        <option value={1}>February</option>
-                        <option value={2}>March</option>
-                        <option value={3}>April</option>
-                        <option value={4}>May</option>
-                        <option value={5}>June</option>
-                        <option value={6}>July</option>
-                        <option value={7}>August</option>
-                        <option value={8}>september</option>
-                        <option value={9}>October</option>
-                        <option value={10}>november</option>
-                        <option value={11}>December</option>
+                    <Form.Select aria-label="User role" id='category' onChange={(event) => setSelectedMonth(event.target.value)}>
+                        <option value={""}>Select a month</option>
+                        <option value={"01"}>January</option>
+                        <option value={"02"}>February</option>
+                        <option value={"03"}>March</option>
+                        <option value={"04"}>April</option>
+                        <option value={"05"}>May</option>
+                        <option value={"06"}>June</option>
+                        <option value={"07"}>July</option>
+                        <option value={"08"}>August</option>
+                        <option value={"09"}>september</option>
+                        <option value={"10"}>October</option>
+                        <option value={"11"}>november</option>
+                        <option value={"12"}>December</option>
                     </Form.Select>
                 </Form.Group>
 
                 <Form.Group className="m-3" width="150px">
                     <Form.Label htmlFor='category'>Year</Form.Label>
-                    <Form.Select aria-label="User role" id='category' defaultValue={currentMonth} onChange={(event) => setSelectedMonth(event.target.value)}>
-                        <option value={0}>2022</option>
-                        <option value={1}>2021</option>
-                        <option value={1}>2020</option>
-                        <option value={1}>2019</option>
-                        <option value={1}>2018</option>
-                        <option value={1}>2017</option>
+                    <Form.Select aria-label="User role" id='category'>
+                        <option value="">Select a year</option>
+                        <option value="">2022</option>
+                        <option value="">2021</option>
+                        <option value="">2020</option>
+                        <option value="">2019</option>
+                        <option value="">2018</option>
+                        <option value="">2017</option>
                     </Form.Select>
                 </Form.Group>
 
-                <Form.Group controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control type="date" />
-                </Form.Group>
-
-                
+                {/* <Form.Group controlId="formGridEmail"  className="m-3" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}> */}
+                    <div style={{diplay: "flex", flexDirection: "row"}}>
+                      <Form.Label>Date Range</Form.Label>
+                      <div>
+                        <span>From</span><input type="date" /><span>To</span><input type="date" />
+                      </div>
+                    </div>
+                {/* </Form.Group> */}
           </div>
 
           <Table striped hover responsive>
@@ -135,7 +149,7 @@ function Reports() {
               </tr>
 
               <tr>
-                <th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
+                <th>#</th><th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
               </tr>
             </thead>
             
@@ -143,11 +157,16 @@ function Reports() {
               {policies.length > 0
               ?
                 <>
-                  {switchCategory !== ""
+                  {switchCategory !== undefined
                   ? 
                     <>
-                        {policies.filter(policy => policy.category === switchCategory).map((policy, index) => (
+                        {policies
+                            .filter(policy => !switchCategory || policy.category === switchCategory)
+                            .filter(policy => !currentDay && policy.policyStartDate !== undefined || policy.policyStartDate === currentDay)
+                            .filter(policy => !selectedMonth && policy.policyStartDate !== undefined || policy.policyStartDate.substring(5, 7) === selectedMonth) //month
+                            .map((policy, index) => (
                           <tr key={policy.id}>
+                            <td>{index+1}</td>
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].plateNo}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].motorMake}</td>}
@@ -175,6 +194,7 @@ function Reports() {
                     <>
                       {policies.map((policy, index) => (
                           <tr key={policy.id}>
+                            <td>{index+1}</td>
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].plateNo}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].motorMake}</td>}
@@ -208,7 +228,7 @@ function Reports() {
             </tbody>
             <tfoot>
               <tr>
-                <th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
+              <th>#</th><th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
               </tr>
             </tfoot>
           </Table>
