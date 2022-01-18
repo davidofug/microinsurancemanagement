@@ -72,9 +72,6 @@ export default function Organisations() {
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
 
-  
-
-
     const handleDelete = async (id) => {
       const organisationDoc = doc(db, "organisations", id);
       console.log(organisationDoc)
