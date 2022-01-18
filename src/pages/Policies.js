@@ -40,7 +40,8 @@ function Policies({cat, btn_txt, pol}) {
         gender:'',
         phone:'',
         address:'',
-        NIN:''
+        NIN:'',
+        clientType: cat,
     })
 
     
@@ -58,7 +59,8 @@ function Policies({cat, btn_txt, pol}) {
         licenseNo:'',
         NIN: '',
         TIN: '',
-        photo:''
+        photo:'',
+        clientType: cat,
     })
 
     const [ individualComprehensiveClient, handleIndividualComprehensiveClient ] = useForm({
@@ -72,14 +74,16 @@ function Policies({cat, btn_txt, pol}) {
         licenseNo:'',
         NIN: '',
         TIN: '',
-        photo:''    
+        photo:'',
+        clientType: cat,    
     })
 
     const [ corporateComprehensiveEntity, handleCoporateComprehensiveEntity ] = useForm({
         user_role: 'Customer', 
         email:'',
         name:'',
-        entityTIN:''
+        entityTIN:'',
+        clientType: cat,
     })
 
     const [ stickers, setStickers ] = useState([
