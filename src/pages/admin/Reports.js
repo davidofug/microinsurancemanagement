@@ -8,6 +8,7 @@ import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import { Table, Form } from 'react-bootstrap'
 import Pagination from '../../helpers/Pagination'
+import { currencyFormatter } from "../../helpers/currency.format";
 
 function Reports() {
   useEffect(() => {
@@ -57,6 +58,9 @@ function Reports() {
   const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
   const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
   const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
+
+  // const [ basicTotal, setBasicTotal ] = useState(0)
+  let basicTotal = 0
 
 
   return (
@@ -184,6 +188,8 @@ function Reports() {
                             .filter(policy => !selectedMonth && policy.policyStartDate !== undefined || policy.policyStartDate.substring(5, 7) === selectedMonth)
                             .filter(policy => !selectedYear || policy.policyStartDate.substring(0, 4) === selectedYear)
                             .map((policy, index) => (
+                              <>
+                              {basicTotal += +policy.stickersDetails[0].totalPremium}
                           <tr key={policy.id}>
                             <td>{indexOfFirstPolicy + index + 1}</td>
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
@@ -197,16 +203,17 @@ function Reports() {
                             <td>{policy.policyStartDate}</td>
                             <td>{policy.policyEndDate}</td>
                             <td>1 YR(s)</td>
-                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
-                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                            {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
+                            {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
                             <td>6,000</td>
                             <td>11,704</td>
                             <td>35,000</td>
                             <td>2,191</td>
-                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                            <td>branch location</td>
                             <td>{policy.agentName}</td>
                             <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                           </tr>
+                          </>
                         ))}
                     </>
                   : 
@@ -231,7 +238,7 @@ function Reports() {
                             <td>11,704</td>
                             <td>35,000</td>
                             <td>2,191</td>
-                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                            <td>hello</td>
                             <td>{policy.agentName}</td>
                             <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                           </tr>
@@ -247,11 +254,10 @@ function Reports() {
             </tbody>
             <tfoot>
               <tr>
-              <th>#</th><th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
+                <th colSpan={12}>Grand Total</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(basicTotal)}</th><th>14,000,000</th><th>144,000</th><th>12,000,000</th><th>12,000,000</th><th></th><th></th><th>UGX</th>
               </tr>
             </tfoot>
           </Table>
-
           <Pagination 
                     pages={totalPagesNum}
                     setCurrentPage={setCurrentPage}
