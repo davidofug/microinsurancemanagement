@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
 import { CSVLink } from "react-csv";
 import SearchBar from '../../components/searchBar/SearchBar';
@@ -55,7 +53,7 @@ function Reports() {
                                     <SearchBar placeholder={"Search Reports by Holder"} value={searchText} handleSearch={handleSearch}/>
                                       <div></div>
                                       <CSVLink
-                                        data={data}
+                                        data={policies}
                                         filename={"Issued-Reports.csv"}
                                         className="btn btn-primary cta"
                                         target="_blank"
@@ -68,7 +66,7 @@ function Reports() {
                         <Table responsive hover striped bordered>
                         <thead>
                             <tr>
-                                <th>Policy Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
+                                <th>#</th><th>Policy Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
                             </tr>
                         </thead>
 
@@ -103,7 +101,7 @@ function Reports() {
 
                         <tfoot>
                             <tr>
-                                <th>Policy Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
+                                <th>#</th><th>Policy Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
                             </tr>
                         </tfoot>
 
