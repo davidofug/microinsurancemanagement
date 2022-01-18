@@ -6,7 +6,8 @@ import SearchBar from "../../components/searchBar/SearchBar";
 import Header from "../../components/header/Header";
 import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
-import { Table, Form, DropdownButton, Dropdown } from 'react-bootstrap'
+import { Table, Form } from 'react-bootstrap'
+import Pagination from '../../helpers/Pagination'
 
 function Reports() {
   useEffect(() => {
@@ -29,7 +30,9 @@ function Reports() {
   // current month
   const currentMonth = (new Date()).getMonth()
   const monthOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
   const [ selectedMonth, setSelectedMonth ] = useState(null)
+  const [ selectedYear, setSelectedYear ] = useState(null)
 
   let today;
   if((new Date().getMonth() + 1) < 10){
@@ -40,6 +43,21 @@ function Reports() {
 
   const [ currentDay, setCurrentDay ] = useState(null)
 
+  // search by Name
+  const [searchText, setSearchText] = useState('')
+  const handleSearch = ({ target }) => setSearchText(target.value);
+  const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+
+  // pagination
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [policiesPerPage] = useState(10)
+
+  const indexOfLastPolicy = currentPage * policiesPerPage
+  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
+  const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
+
 
   return (
     <div className="components">
@@ -48,7 +66,7 @@ function Reports() {
       <div className="componentsData  shadow-sm table-card" style={{ "maxWidth": "80vw", margin: "auto" }}>
         <div id="search">
             <SearchBar
-              placeholder={"Search for Report"}
+              placeholder={"Search for Report"} value={searchText} handleSearch={handleSearch}
             />
             <div></div>
             <CSVLink
@@ -114,14 +132,14 @@ function Reports() {
 
                 <Form.Group className="m-3" width="150px">
                     <Form.Label htmlFor='category'>Year</Form.Label>
-                    <Form.Select aria-label="User role" id='category'>
+                    <Form.Select aria-label="User role" id='category' onChange={(event) => setSelectedYear(event.target.value)}>
                         <option value="">Select a year</option>
-                        <option value="">2022</option>
-                        <option value="">2021</option>
-                        <option value="">2020</option>
-                        <option value="">2019</option>
-                        <option value="">2018</option>
-                        <option value="">2017</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
                     </Form.Select>
                 </Form.Group>
 
@@ -160,13 +178,14 @@ function Reports() {
                   {switchCategory !== undefined
                   ? 
                     <>
-                        {policies
+                        {currentPolicies
                             .filter(policy => !switchCategory || policy.category === switchCategory)
                             .filter(policy => !currentDay && policy.policyStartDate !== undefined || policy.policyStartDate === currentDay)
-                            .filter(policy => !selectedMonth && policy.policyStartDate !== undefined || policy.policyStartDate.substring(5, 7) === selectedMonth) //month
+                            .filter(policy => !selectedMonth && policy.policyStartDate !== undefined || policy.policyStartDate.substring(5, 7) === selectedMonth)
+                            .filter(policy => !selectedYear || policy.policyStartDate.substring(0, 4) === selectedYear)
                             .map((policy, index) => (
                           <tr key={policy.id}>
-                            <td>{index+1}</td>
+                            <td>{indexOfFirstPolicy + index + 1}</td>
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].plateNo}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].motorMake}</td>}
@@ -232,6 +251,13 @@ function Reports() {
               </tr>
             </tfoot>
           </Table>
+
+          <Pagination 
+                    pages={totalPagesNum}
+                    setCurrentPage={setCurrentPage}
+                    currentClients={currentPolicies}
+                    sortedEmployees={policies}
+                    entries={'Reports'} />
       
     </div>
     </div>
