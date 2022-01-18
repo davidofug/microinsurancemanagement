@@ -46,7 +46,7 @@ function Policies({cat, btn_txt, pol}) {
 
     
     const [ comprehensiveClient, setComprehensiveClient ] = useState('') 
-    const [ comprehensiveExistingClient, setComprehensiveExistingClient ] = useState(false)
+    const [ policyDisplayEndDate, setPolicyDisplayEndDate ] = useState()
 
     const [ newClient, handleClientDetails ] = useForm({
         user_role: 'Customer',
@@ -101,7 +101,8 @@ function Policies({cat, btn_txt, pol}) {
             totalPremium:'',
             basicPremium:'',
             stickerFee:6000,
-            stampDuty:35000
+            stampDuty:35000, 
+            status: 'new'
         }
     ])
     
@@ -750,7 +751,9 @@ function Policies({cat, btn_txt, pol}) {
                                             <Form.Group controlId="policyStartDate"  >
                                                 <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                                 <Form.Control type="date" name="policy_start_date" value={policyStartDate} onChange={event=> {
-                                                    setPolicyEndDate(moment(event.target.value).add(1, 'years').subtract(1, 'days').calender())
+                                                    const end = moment(event.target.value).add(1, 'years').subtract(1, 'days').calendar()
+                                                    setPolicyEndDate(end)
+                                                    setPolicyDisplayEndDate(moment(end).format('DD/MM/YYYY'))   
                                                     setPolicyStartDate(event.target.value)
                                                 }}/>
                                             </Form.Group>
@@ -760,7 +763,7 @@ function Policies({cat, btn_txt, pol}) {
                                         <Col>
                                             <Form.Group controlId="policyEndDate" id="policy-end-date" >
                                                 <Form.Label><h5>Policy End Date</h5></Form.Label>
-                                                <Form.Control type="text" name="policy_start_date" value={ policyEndDate } readOnly/>
+                                                <Form.Control type="text" name="policy_start_date" value={ policyDisplayEndDate } readOnly/>
                                             </Form.Group>
                                         </Col>
                                     </Row>
@@ -772,7 +775,9 @@ function Policies({cat, btn_txt, pol}) {
                                             <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                             <Form.Control type="date" name="policy_start_date" value={policyStartDate} onChange={event=> {
                                                 setPolicyStartDate(event.target.value)
-                                                setPolicyEndDate(moment(event.target.value).add(1, 'years').subtract(1, 'days').calendar())
+                                                const end = moment(event.target.value).add(1, 'years').subtract(1, 'days').calendar()
+                                                setPolicyEndDate(end)
+                                                setPolicyDisplayEndDate(moment(end).format('DD/MM/YYYY'))
                                             }}/>
                                         </Form.Group>
                                     </Col>
