@@ -64,12 +64,7 @@ function NewImport() {
     await deleteDoc(policyDoc);
   }
 
-  const [show, setShow] = useState(false)
-    window.onclick = function(event) {
-        if (!event.target.matches('.sharebtn')) {
-            setShow(false)
-        }
-    }
+
 
   
    // actions context
