@@ -129,7 +129,7 @@ function Comprehensive() {
                     <tbody>
                         {policies.length > 0 && currentPolicies.map((policy, index) => (
                             <tr key={policy.id}>
-                                <td>{index + 1}</td>
+                                <td>{indexOfFirstPolicy + index + 1}</td>
                                 {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                                 {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
                                 <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
