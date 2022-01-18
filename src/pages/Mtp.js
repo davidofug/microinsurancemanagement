@@ -46,15 +46,6 @@ export default function Mtp() {
   }
 
 
-  // pagination
-  const [ currentPage, setCurrentPage ] = useState(1)
-  const [policiesPerPage] = useState(10)
-
-  const indexOfLastPolicy = currentPage * policiesPerPage
-  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-  const currentPolicies = policies.slice(indexOfFirstPolicy, indexOfLastPolicy)
-  const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
-
   // search by Name
   const [searchText, setSearchText] = useState('')
   const handleSearch = ({ target }) => setSearchText(target.value);
@@ -82,6 +73,15 @@ export default function Mtp() {
     const policyDoc = doc(db, "policies", id);
     return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
   }
+
+  // pagination
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [policiesPerPage] = useState(10)
+
+  const indexOfLastPolicy = currentPage * policiesPerPage
+  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
+  const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
 
   return (
     <div className="components">
