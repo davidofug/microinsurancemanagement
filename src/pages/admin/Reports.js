@@ -25,13 +25,13 @@ function Reports() {
   }
 
   // TODO: look for a better way to switch between categories
-  const [ switchCategory, setSwitchCategory ] = useState("mtp")
+  const [ switchCategory, setSwitchCategory ] = useState("")
   // current month
   const currentMonth = (new Date()).getMonth()
-
   const monthOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-
   const [ selectedMonth, setSelectedMonth ] = useState(currentMonth)
+
+  console.log(policies)
 
   return (
     <div className="components">
@@ -53,19 +53,11 @@ function Reports() {
             </CSVLink>
           </div>
 
-          {/* <DropdownButton id="dropdown-basic-button" title="Choose Category" className="m-3">
-              <Dropdown.Item onClick={() => setSwitchCategory("mtp")}>MTP</Dropdown.Item>
-              <Dropdown.Item onClick={() => setSwitchCategory("comprehensive")}>Comprehensive</Dropdown.Item>
-              <Dropdown.Item onClick={() => setSwitchCategory("windscreen")}>Windscreen</Dropdown.Item>
-              <Dropdown.Item onClick={() => setSwitchCategory("newImports")}>New Imports</Dropdown.Item>
-              <Dropdown.Item onClick={() => setSwitchCategory("transit")}>Transit</Dropdown.Item>
-          </DropdownButton> */}
-
           <div style={{display: "flex", alignItems: "center"}}>  
                 <Form.Group className="m-3" width="150px">
                     <Form.Label htmlFor='category'>Category</Form.Label>
-                    <Form.Select aria-label="User role" id='category' defaultValue={currentMonth} onChange={(event) => setSelectedMonth(event.target.value)}>
-                        <option value="mtp">-- Select Category --</option>
+                    <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
+                        <option value="">-- Select Category --</option>
                         <option value="mtp">MTP</option>
                         <option value="comprehensive">Comprehensive</option>
                         <option value="windscreen">Windscreen</option>
@@ -133,11 +125,12 @@ function Reports() {
             <thead>
 
             <tr style={{borderBottom: "1px solid #000"}}>
-                    {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} MTP Report`.toUpperCase()}</th>}
-                    {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} comprehensive Report`.toUpperCase()}</th>}
-                    {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} windscreen Report`.toUpperCase()}</th>}
-                    {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} new import Report`.toUpperCase()}</th>}
-                    {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>{`${monthOfYear[selectedMonth]} transit Report`.toUpperCase()}</th>}
+                    {switchCategory === "" && <th colspan={20} style={{textAlign: "center"}}>{`All Reports`.toUpperCase()}</th>}
+                    {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>{`MTP Report`.toUpperCase()}</th>}
+                    {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>{`comprehensive Report`.toUpperCase()}</th>}
+                    {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>{`windscreen Report`.toUpperCase()}</th>}
+                    {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>{`new import Report`.toUpperCase()}</th>}
+                    {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>{`transit Report`.toUpperCase()}</th>}
                     
               </tr>
 
@@ -145,33 +138,73 @@ function Reports() {
                 <th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
               </tr>
             </thead>
+            
             <tbody>
-              {policies && policies.map((policy, index) => (
-                  <tr key={policy.id}>
-                    {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
-                    {policy.stickersDetails && <td>{policy.stickersDetails[0].plateNo}</td>}
-                    {policy.stickersDetails && <td>{policy.stickersDetails[0].motorMake}</td>}
-                    {policy.stickersDetails && <td>{policy.stickersDetails[0].seatingCapacity}</td>}
-                    {policy.stickersDetails && <td>{policy.stickersDetails[0].grossWeight}</td>}
-                    <td>{index+3}</td>
-                    <td>{policy.category}</td>
-                    <td>cover</td>
-                    <td>{policy.policyStartDate}</td>
-                    <td>{policy.policyEndDate}</td>
-                    <td>1 YR(s)</td>
-                    {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
-                    {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
-                    <td>6,000</td>
-                    <td>11,704</td>
-                    <td>35,000</td>
-                    <td>2,191</td>
-                    {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
-                    <td>{policy.agentName}</td>
-                    <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
-                </tr>
-              ))
-                  
-                }
+              {policies.length > 0
+              ?
+                <>
+                  {switchCategory !== ""
+                  ? 
+                    <>
+                        {policies.filter(policy => policy.category === switchCategory).map((policy, index) => (
+                          <tr key={policy.id}>
+                            {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].plateNo}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].motorMake}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].seatingCapacity}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].grossWeight}</td>}
+                            <td>{index+3}</td>
+                            <td>{policy.category}</td>
+                            <td>cover</td>
+                            <td>{policy.policyStartDate}</td>
+                            <td>{policy.policyEndDate}</td>
+                            <td>1 YR(s)</td>
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                            <td>6,000</td>
+                            <td>11,704</td>
+                            <td>35,000</td>
+                            <td>2,191</td>
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                            <td>{policy.agentName}</td>
+                            <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
+                          </tr>
+                        ))}
+                    </>
+                  : 
+                    <>
+                      {policies.map((policy, index) => (
+                          <tr key={policy.id}>
+                            {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].plateNo}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].motorMake}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].seatingCapacity}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].grossWeight}</td>}
+                            <td>{index+3}</td>
+                            <td>{policy.category}</td>
+                            <td>cover</td>
+                            <td>{policy.policyStartDate}</td>
+                            <td>{policy.policyEndDate}</td>
+                            <td>1 YR(s)</td>
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                            <td>6,000</td>
+                            <td>11,704</td>
+                            <td>35,000</td>
+                            <td>2,191</td>
+                            {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                            <td>{policy.agentName}</td>
+                            <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
+                          </tr>
+                      ))}
+                    </>
+                  }
+                </>
+              : 
+                <>
+                </>
+              }
+              
             </tbody>
             <tfoot>
               <tr>
