@@ -20,9 +20,6 @@ import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 export default function StickerMgt() {
     useEffect(() => document.title = 'Britam - Stickers Management')
 
-    
-
-    const [q, setQ] = useState('');
     const [ currentPage, setCurrentPage ] = useState(1)
     const [employeesPerPage] = useState(10)
 
@@ -31,21 +28,46 @@ export default function StickerMgt() {
     const currentOrganisations = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(data.length / employeesPerPage)
 
+    // Confirm Box
+  const [ openToggle, setOpenToggle ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggle === true) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggle(false)
+    }
+    }
+  }
+
 
     // actions context
-  const [show, setShow] = useState(false)
-  window.onclick = function(event) {
-      if (!event.target.matches('.sharebtn')) {
-          setShow(false)
+    const [showContext, setShowContext] = useState(false)
+    if(showContext === true){
+      window.onclick = function(event) {
+          if (!event.target.matches('.sharebtn')) {
+              setShowContext(false)
+          }
       }
-  }
-  const [clickedIndex, setClickedIndex] = useState(null)
+    }
+    const [clickedIndex, setClickedIndex] = useState(null)
 
 
 
     return (
         <div className="components">
             <Header title="Sticker No. Management" subtitle="MANAGING STICKER NUMBERS" />
+
+            <div className={openToggle ? 'modal is-active': 'modal'}>
+              <div className="modal__content wack">
+                <h1 className='wack'>Confirm</h1>
+                <p className='wack'>Are you sure you want to delete</p>
+                <div className="buttonContainer wack" >
+                  <button id="yesButton" onClick={() => {
+                    setOpenToggle(false)
+                    }} className='wack'>Yes</button>
+                  <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+                </div>
+              </div>
+            </div>
 
             <div className="componentsData">
                     <div className="sticker-mgt">
@@ -86,9 +108,9 @@ export default function StickerMgt() {
                                 <td>{sticker.status}</td>
                                 
                                 <td className="started">
-                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
 
-                            <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                            <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                               <Link to={`/admin/policy-details`}>
                                 <div className="actionDiv">
                                   <i><MdInfo /></i> Details
@@ -104,13 +126,10 @@ export default function StickerMgt() {
                                   <i><MdCancel /></i> Cancel
                                 </div>
                               </li>
-                              <li onClick={() => { setShow(false)
-                                      const confirmBox = window.confirm(
-                                        `Are you sure you want to delete this sticker`
-                                      );
-                                      if (confirmBox === true) {
-                                      }
-                                    }}
+                              <li onClick={() => {
+                                            setOpenToggle(true)
+                                            setShowContext(false)
+                                          }}
                                   >
                                     <div className="actionDiv">
                                       <i><MdDelete/></i> Delete
