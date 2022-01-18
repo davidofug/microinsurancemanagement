@@ -82,13 +82,7 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
     setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
-  const [ currentPage, setCurrentPage ] = useState(1)
-  const [clientsPerPage] = useState(10)
-
-  const indexOfLastClient = currentPage * clientsPerPage
-  const indexOfFirstClient = indexOfLastClient - clientsPerPage
-  const currentClients = clients.slice(indexOfFirstClient, indexOfLastClient)
-  const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
+  
 
 
   const handleDelete = async (id) => {
@@ -124,6 +118,15 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
   //   const policyDoc = doc(db, "policies", id);
   //   return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
   // }
+
+  // pagination
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [clientsPerPage] = useState(10)
+
+  const indexOfLastClient = currentPage * clientsPerPage
+  const indexOfFirstClient = indexOfLastClient - clientsPerPage
+  const currentClients = searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
+  const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
 
 
     return (
@@ -179,7 +182,7 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
                             <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {searchByName(clients).map((client, index) => (
+                          {currentClients.map((client, index) => (
                               <tr key={client.uid}>
                               <td>{index + 1}</td>
                               <td>{client.name}</td>
