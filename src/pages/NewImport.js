@@ -83,8 +83,6 @@ function NewImport() {
    const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
    const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
    const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
-  
-   console.log(indexOfFirstPolicy)
 
     return (
         <div className='components'>
