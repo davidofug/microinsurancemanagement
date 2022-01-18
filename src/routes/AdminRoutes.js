@@ -26,7 +26,6 @@ import Transit from '../pages/Transit'
 import AddStickerRange from '../pages/admin/AddStickerRange'
 import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
 import PolicyRenew from '../pages/PolicyDetails/PolicyRenew'
-import MonthlyReports from '../pages/admin/MonthlyReports'
 
 
 function AdminRoutes() {
@@ -85,9 +84,6 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/reports" >
                 <Reports />
-            </PrivateRoute>
-            <PrivateRoute path="/admin/monthly-reports" >
-                <MonthlyReports />
             </PrivateRoute>
             <PrivateRoute path="/admin/settings" >
                 <Settings />
