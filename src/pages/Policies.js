@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
@@ -46,7 +45,7 @@ function Policies({cat, btn_txt, pol}) {
 
     
     const [ comprehensiveClient, setComprehensiveClient ] = useState('') 
-    const [ comprehensiveClientInfo, setComprehensiveClientInfo ] = useState({})
+    const [ comprehensiveExistingClient, setComprehensiveExistingClient ] = useState(false)
 
     const [ newClient, handleClientDetails ] = useForm({
         user_role: 'Customer',
@@ -164,6 +163,7 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
+                status: 'new',
             }
         ])
     }
@@ -184,7 +184,7 @@ function Policies({cat, btn_txt, pol}) {
     //createPolicies
     const handleSubmit = async(event) => {
         event.preventDefault()
-        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) : client
+        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client
     
         await addDoc(policiesRef, {
             currency,
@@ -203,7 +203,7 @@ function Policies({cat, btn_txt, pol}) {
         
         
         addUser(clientInfo).then((results) => {
-            alert(`successfully added ${client.name}`)
+            alert(`Successfully created stickers and added ${clientInfo.name}`)
             document.policy.reset()
             setPolicyEndDate('')
             setPolicyStartDate('')
@@ -226,6 +226,7 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
+                status: 'new',
             }
         ])
 
@@ -236,8 +237,8 @@ function Policies({cat, btn_txt, pol}) {
                 clientDetails: cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) : client,
                 added_by_uid: authentication.currentUser.uid,
                 added_by_name: authentication.currentUser.displayName,  
-                policyStartDate: policyStartDate, 
-                policyEndDate: policyEndDate,
+                policyStartDate: moment(policyStartDate).toDate(), 
+                policyEndDate: moment(policyEndDate).toDate(),
                 category: cat,
                 totalValuation: await generateTotalValuation(stickers)
             }
@@ -249,6 +250,8 @@ function Policies({cat, btn_txt, pol}) {
             return await {...individualClient, type: type}
         } else if (type === "Corporate Entity") {
             return await { ...organisationInfo, contactPerson : contactInfo, type: type}
+        } else if (type === "Existing") {
+            return await { ...client }
         }
     }
 
@@ -440,22 +443,44 @@ function Policies({cat, btn_txt, pol}) {
                             </h1>
                         </Row>
                         <Row>
-                            <Col className="client-details" md={3}>
-                                <Form.Group className="mb-3" controlId="clientDetails">
-                                    <Form.Control list="clientNames" placeholder='Existing client' id="existingClient"onChange={()=> {
-                                        const list = document.getElementById('clientNames')
-                                        for(let clientName = 0; clientName < list.options.length; clientName++) {
-                                            if(list.options[clientName].value === document.getElementById('existingClient').value) {
-                                                setClient(JSON.parse(list.options[clientName].getAttribute('data-value')))   
+                            {
+                                cat === "comprehensive" ? 
+                                <Col className="client-details" md={3}>
+                                    <Form.Group className="mb-3" controlId="clientDetails">
+                                        <Form.Control list="clientNames" placeholder='Existing comprehensive client' id="existingClient"onChange={()=> {
+                                            const list = document.getElementById('clientNames')
+                                            for(let clientName = 0; clientName < list.options.length; clientName++) {
+                                                if(list.options[clientName].value === document.getElementById('existingClient').value) {
+                                                    setClient(JSON.parse(list.options[clientName].getAttribute('data-value')))   
+                                                    setComprehensiveClient('Existing')
+                                                }
                                             }
-                                        }
-                                        console.log(client)
-                                    }}/>
-                                        <datalist id="clientNames" >
-                                            {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
-                                        </datalist> 
-                                </Form.Group>
-                            </Col>
+                                            console.log(client)
+                                        }}/>
+                                            <datalist id="clientNames" >
+                                                {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
+                                            </datalist> 
+                                    </Form.Group>
+                                </Col>
+                                :
+                                <Col className="client-details" md={3}>
+                                    <Form.Group className="mb-3" controlId="clientDetails">
+                                        <Form.Control list="clientNames" placeholder='Existing client' id="existingClient"onChange={()=> {
+                                            const list = document.getElementById('clientNames')
+                                            for(let clientName = 0; clientName < list.options.length; clientName++) {
+                                                if(list.options[clientName].value === document.getElementById('existingClient').value) {
+                                                    setClient(JSON.parse(list.options[clientName].getAttribute('data-value')))   
+                                                    
+                                                }
+                                            }
+                                            console.log(client)
+                                        }}/>
+                                            <datalist id="clientNames" >
+                                                {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
+                                            </datalist> 
+                                    </Form.Group>
+                                </Col>
+                            }
                             
                             
                             
