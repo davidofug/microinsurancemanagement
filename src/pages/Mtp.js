@@ -26,7 +26,6 @@ export default function Mtp() {
   // policies
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
-
   const [editID, setEditID] = useState(null);
 
 
