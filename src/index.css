@@ -569,6 +569,14 @@ left: auto;
 }
 
 
+.dateRange {
+    border: 1px solid #1475cf;
+    background-color: #1475cf;
+    color: #fff;
+    border-radius: 3px;
+}
+
+
 
 
 

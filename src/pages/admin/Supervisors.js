@@ -145,7 +145,7 @@ function Supervisors() {
               </div>
             </div>
 
-            <Modal show={show} onHide={() =>
+            <Modal show={show} fade={false} onHide={() =>
               {
                 handleClose()
                 setSingleDoc(fields)
