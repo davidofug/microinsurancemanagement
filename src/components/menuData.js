@@ -133,25 +133,7 @@ const menuData = {
             number: 8,
             name: "Reports",
             icon: <MdAssessment />,
-            link: "/admin/reports",
-            subMenu: [
-                {
-                    name: "Daily",
-                    link: "/admin/daily-reports"
-                },
-                {
-                    name: "Weekly",
-                    link: "/admin/weekly-reports"
-                },
-                {
-                    name: "Monthly",
-                    link: "/admin/monthly-reports"
-                },
-                {
-                    name: "Status Reports (new,paid,expired,cancelled, deleted)",
-                    link: "/admin/reports"
-                }
-            ]
+            link: "/admin/reports"
         }
     ],
     SuperVisor: [
