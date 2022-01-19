@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import data from '../../helpers/mock-data.json'
 import { MdDownload } from 'react-icons/md'
 import { CSVLink } from "react-csv";
 import SearchBar from '../../components/searchBar/SearchBar';
@@ -9,6 +7,7 @@ import { Table } from 'react-bootstrap'
 import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import { authentication } from '../../helpers/firebase'
+import Pagination from '../../helpers/Pagination';
 
 function Reports() {
 
@@ -29,6 +28,20 @@ function Reports() {
     setPolicies(policyData.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
     }
 
+    // search by Name
+    const [searchText, setSearchText] = useState('')
+    const handleSearch = ({ target }) => setSearchText(target.value);
+    const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+    // pagination
+    const [ currentPage, setCurrentPage ] = useState(1)
+    const [policiesPerPage] = useState(10)
+
+    const indexOfLastPolicy = currentPage * policiesPerPage
+    const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
+    const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
+    const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
+
     return (
         <div className='components'>
             <Header title="Reports" subtitle="AGENT ISSUED STICKER REPORTS" />
@@ -37,11 +50,10 @@ function Reports() {
                 <div className="componentsData " style={{"maxWidth": "80vw"}}>
                     <div className="table-card">
                         <div id="search">
-                                    {/* <SearchBar placeholder={"Search for organisation"}/> */}
-                                        <div></div>
+                                    <SearchBar placeholder={"Search Reports by Holder"} value={searchText} handleSearch={handleSearch}/>
                                       <div></div>
                                       <CSVLink
-                                        data={data}
+                                        data={policies}
                                         filename={"Issued-Reports.csv"}
                                         className="btn btn-primary cta"
                                         target="_blank"
@@ -54,13 +66,14 @@ function Reports() {
                         <Table responsive hover striped bordered>
                         <thead>
                             <tr>
-                                <th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
+                                <th>#</th><th>Policy Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                        {policies && policies.map((policy, index) => (
+                        {policies && currentPolicies.map((policy, index) => (
                             <tr key={policy.id}>
+                                <td>{indexOfFirstPolicy + index + 1}</td>
                                 {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                                 {policy.stickersDetails && <td>{policy.stickersDetails[0].plateNo}</td>}
                                 {policy.stickersDetails && <td>{policy.stickersDetails[0].motorMake}</td>}
@@ -88,11 +101,18 @@ function Reports() {
 
                         <tfoot>
                             <tr>
-                                <th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
+                                <th>#</th><th>Policy Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
                             </tr>
                         </tfoot>
 
                         </Table>
+
+                        <Pagination 
+                            pages={totalPagesNum}
+                            setCurrentPage={setCurrentPage}
+                            currentClients={currentPolicies}
+                            sortedEmployees={policies}
+                            entries={'Reports'} />
 
                     </div>
                 

@@ -72,15 +72,6 @@ export default function Organisations() {
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
 
-  const indexOfLastOrganisation = currentPage * organisationsPerPage;
-  const indexOfFirstOrganisation = indexOfLastOrganisation - organisationsPerPage;
-  const currentOrganisations = organisations.slice(
-    indexOfFirstOrganisation,
-    indexOfLastOrganisation
-  );
-  const totalPagesNum = Math.ceil(organisations.length / organisationsPerPage);
-
-
     const handleDelete = async (id) => {
       const organisationDoc = doc(db, "organisations", id);
       console.log(organisationDoc)
@@ -108,6 +99,15 @@ export default function Organisations() {
       }
     }
     const [clickedIndex, setClickedIndex] = useState(null)
+
+    //pagination
+    const indexOfLastOrganisation = currentPage * organisationsPerPage;
+    const indexOfFirstOrganisation = indexOfLastOrganisation - organisationsPerPage;
+    const currentOrganisations = searchByName(organisations).slice(
+      indexOfFirstOrganisation,
+      indexOfLastOrganisation
+    );
+    const totalPagesNum = Math.ceil(organisations.length / organisationsPerPage);
 
 
 
@@ -200,7 +200,7 @@ export default function Organisations() {
           </thead>
 
           <tbody>
-            {searchByName(organisations).map((organisation, index) => (
+            {currentOrganisations.map((organisation, index) => (
               <tr key={organisation.id}>
                 <td>{organisation.logo}</td>
                 <td>{organisation.name}</td>

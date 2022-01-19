@@ -40,6 +40,11 @@ function AddClaims() {
         }
       }
 
+      let today;
+      new Date().getMonth()+1 >= 10 ? today = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+    : today = `${new Date().getFullYear()}-0${new Date().getMonth()+1}-${new Date().getDate()}`
+
+
     return (
         <div className='components'>
             <Header title="Add Claim" subtitle="ADD A NEW CLAIM" />
@@ -50,7 +55,7 @@ function AddClaims() {
                         <h5>Claim Details</h5>
                         <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='stickerNumber'>Reference Number</Form.Label>
-                                <Form.Control type="text" name="" id="refNumber" placeholder="Enter Ref Number" onChange={handleFieldChange}/>
+                                <Form.Control type="text" name="" id="refNumber" placeholder="Enter Ref Number" onChange={handleFieldChange} required/>
                             </Form.Group>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                             </Form.Group>
@@ -64,15 +69,17 @@ function AddClaims() {
                         <h5>Claim Details</h5>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='dateReported'>Date Reported</Form.Label>
-                                <Form.Control type="date" id="dateReported" onChange={handleFieldChange} />
+                                <Form.Control type="date" id="dateReported" onChange={handleFieldChange} max={today} required/>
                             </Form.Group>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='policyType'>Policy</Form.Label>
-                                <Form.Select aria-label="User role" id="policyType" onChange={handleFieldChange}>
+                                <Form.Select aria-label="User role" id="policyType" onChange={handleFieldChange} required>
                                     <option value="hide">--Select Category--</option>
                                     <option value="mtp">MTP</option>
                                     <option value="comprehensive">Comprehensive</option>
                                     <option value="windscreen">Windscreen</option>
+                                    <option value="newImport">New Import</option>
+                                    <option value="transit">Transit</option>
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
@@ -88,7 +95,7 @@ function AddClaims() {
                         <Row className="mb-3">
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='claimantName'>Name</Form.Label>
-                                <Form.Control type="text" name="" id="claimantName" placeholder="Enter Claimant's name" onChange={handleFieldChange}/>
+                                <Form.Control type="text" name="" id="claimantName" placeholder="Enter Claimant's name" onChange={handleFieldChange} required/>
                             </Form.Group>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='claimantEmail'>Email Address</Form.Label>
@@ -100,7 +107,7 @@ function AddClaims() {
                             </Form.Group>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='dateOfIncident'>Date of Incident</Form.Label>
-                                <Form.Control type="date" name="" id="dateOfIncident" onChange={handleFieldChange}/>
+                                <Form.Control type="date" name="" id="dateOfIncident" onChange={handleFieldChange} max={today} />
                             </Form.Group>
                         </Row>
                         <Row className="mb-3">
@@ -112,7 +119,7 @@ function AddClaims() {
                         </Row>
                         <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='detailsOfIncident'>Details of Incident</Form.Label>
-                                <Form.Control type="text" name="" id="detailsOfIncident" placeholder="Enter details of incident" onChange={handleFieldChange}/>
+                                <Form.Control type="text" name="" id="detailsOfIncident" placeholder="Enter details of incident" onChange={handleFieldChange} required/>
                         </Form.Group>
                         
                         <Form.Group className="mb-3">

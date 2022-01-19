@@ -26,7 +26,6 @@ export default function Mtp() {
   // policies
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
-
   const [editID, setEditID] = useState(null);
 
 
@@ -46,15 +45,6 @@ export default function Mtp() {
     }
   }
 
-
-  // pagination
-  const [ currentPage, setCurrentPage ] = useState(1)
-  const [policiesPerPage] = useState(10)
-
-  const indexOfLastPolicy = currentPage * policiesPerPage
-  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-  const currentPolicies = policies.slice(indexOfFirstPolicy, indexOfLastPolicy)
-  const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
 
   // search by Name
   const [searchText, setSearchText] = useState('')
@@ -83,6 +73,15 @@ export default function Mtp() {
     const policyDoc = doc(db, "policies", id);
     return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
   }
+
+  // pagination
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [policiesPerPage] = useState(10)
+
+  const indexOfLastPolicy = currentPage * policiesPerPage
+  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
+  const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
 
   return (
     <div className="components">
@@ -134,7 +133,7 @@ export default function Mtp() {
                     <tbody>
                         {policies.length > 0 && currentPolicies.map((policy, index) => (
                           <tr key={policy.id}>
-                            <td>{index + 1}</td>
+                            <td>{indexOfFirstPolicy + index + 1}</td>
                             {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                             {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
                             <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
