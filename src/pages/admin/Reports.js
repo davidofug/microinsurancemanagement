@@ -56,14 +56,7 @@ function Reports() {
   const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
 
-  // pagination
-  const [ currentPage, setCurrentPage ] = useState(1)
-  const [policiesPerPage] = useState(10)
-
-  const indexOfLastPolicy = currentPage * policiesPerPage
-  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-  const currentPolicies = !policies || searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
-  const totalPagesNum = !policies || Math.ceil(policies.length / policiesPerPage)
+  
 
   let basicTotal = 0
   let vatTotal = 0
@@ -85,11 +78,38 @@ function Reports() {
 
   // {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
 
-  const shownPolicies = currentPolicies
+
+  // filter by range
+  const [ dateFrom, setDateFrom ] = useState(null)
+  const [ dateTo, setDateTo ] = useState(null)
+
+
+
+  // pagination
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [policiesPerPage] = useState(10)
+  const indexOfLastPolicy = currentPage * policiesPerPage
+  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
+  const currentPolicies = !policies || searchByName(policies)
+
+  const shownPolicies = (currentPolicies
                         .filter(policy => !switchCategory || policy.category === switchCategory)
                         .filter(policy => !currentDay && policy.policyStartDate !== undefined || policy.policyStartDate === currentDay)
                         .filter(policy => !selectedMonth && policy.policyStartDate !== undefined || policy.policyStartDate.substring(5, 7) === selectedMonth)
                         .filter(policy => !selectedYear || policy.policyStartDate.substring(0, 4) === selectedYear)
+                        .filter(policy => !dateFrom || policy.policyStartDate >= dateFrom)
+                        .filter(policy => !dateTo || policy.policyStartDate <= dateTo))
+  
+  const paginatedShownPolicies = shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
+
+  
+
+  
+  const totalPagesNum = !policies || Math.ceil(shownPolicies.length / policiesPerPage)
+
+
+  console.log(policies)
+
 
   return (
     <div className="components">
@@ -144,7 +164,7 @@ function Reports() {
             <div style={{display: "flex", alignItems: "center"}}>
             <Form.Group controlId="formGridEmail"  className="m-3" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                       <Form.Label>Today</Form.Label>
-                      <Form.Control type="date" defaultValue={currentDay} onChange={({target: {value}}) => setCurrentDay(value)}/>
+                      <Form.Control type="date" onChange={({target: {value}}) => setCurrentDay(value)}/>
                   </Form.Group>
 
                   <Form.Group className="m-3" width="150px">
@@ -183,7 +203,7 @@ function Reports() {
                       <div style={{diplay: "flex", flexDirection: "row"}}>
                         <Form.Label>Date Range</Form.Label>
                         <div>
-                          <span>From</span><input type="date" /><span>To</span><input type="date" />
+                          <span>From</span><input type="date" onChange={({target: {value}}) => setDateFrom(value)}/><span>To</span><input type="date" onChange={({target: {value}}) => setDateTo(value)}/>
                         </div>
                       </div>
                   {/* </Form.Group> */}
@@ -211,7 +231,7 @@ function Reports() {
               </thead>
               
               <tbody>
-                          {shownPolicies.map((policy, index) => {
+                          {paginatedShownPolicies.map((policy, index) => {
                                 
                                 {basicCurrentTotal += +policy.stickersDetails[0].totalPremium} // total for currentPolicies
                                 {vatCurrentTotal += 11704} // total for  currentPolicies
@@ -263,8 +283,8 @@ function Reports() {
             <Pagination 
                       pages={totalPagesNum}
                       setCurrentPage={setCurrentPage}
-                      currentClients={currentPolicies}
-                      sortedEmployees={policies}
+                      currentClients={paginatedShownPolicies}
+                      sortedEmployees={shownPolicies}
                       entries={'Reports'} />
               </>
             :
