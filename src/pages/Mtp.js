@@ -12,6 +12,8 @@ import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 import useAuth from '../contexts/Auth'
 import { authentication } from "../helpers/firebase";
 import '../components/modal/ConfirmBox.css'
+import Loader from '../components/Loader'
+import { ImFilesEmpty } from 'react-icons/im'
 
 export default function Mtp() {
   useEffect(() => {
@@ -32,7 +34,12 @@ export default function Mtp() {
   const getMTP = async () => {
     const data = await getDocs(policyCollectionRef);
     const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    setPolicies(pole.filter(policy => policy.category === 'mtp').filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+    if((pole.filter(policy => policy.category === 'mtp').filter(policy => policy.added_by_uid === authentication.currentUser.uid).length === 0)){
+      setPolicies(null)
+    } else {
+      setPolicies(pole.filter(policy => policy.category === 'mtp').filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+    }
+    
   }
 
   // Confirm Box
@@ -80,8 +87,8 @@ export default function Mtp() {
 
   const indexOfLastPolicy = currentPage * policiesPerPage
   const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-  const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
-  const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
+  const currentPolicies = !policies || searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const totalPagesNum = !policies || Math.ceil(policies.length / policiesPerPage)
 
   return (
     <div className="components">
@@ -115,16 +122,18 @@ export default function Mtp() {
       </div>
 
 
-      <div className="table-card componentsData">
-                <div id="search">
+      <div className="table-card componentsData" style={{display: "flex",flexDirection: "column", justifyContent: "center", maxWidth: "900px", minWidth: "300px"}}>
+
+                {policies !== null && policies.length > 0 
+                ?
+                  <>
+                  <div id="search">
                     <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
                     <div></div>
-                </div>
+                  </div>
 
-                
-
-                <Table striped hover responsive>
+                  <Table striped hover responsive>
                     <thead>
                         <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
                         {!authClaims.agent && <th>Agent</th>}
@@ -165,7 +174,7 @@ export default function Mtp() {
                                   <i><MdCancel /></i> Cancel
                                 </div>
                               </li>
-                               <li 
+                              <li 
                                     onClick={() => {
                                             setOpenToggle(true)
                                             setEditID(policy.id);
@@ -187,15 +196,31 @@ export default function Mtp() {
                         {!authClaims.agent && <th>Agent</th>}
                         <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
                     </tfoot>
-                </Table>
+                  </Table>
+
+                  <Pagination 
+                  pages={totalPagesNum}
+                  setCurrentPage={setCurrentPage}
+                  currentClients={currentPolicies}
+                  sortedEmployees={policies}
+                  entries={'Motor Third Party'} />
+
+                  </>
+                :
+                  policies === null
+                  ?
+                    <div className="no-table-data">
+                      <i><ImFilesEmpty /></i>
+                      <h4>No data yet</h4>
+                      <p>You have not created any Motor Third Party Stickers Yet</p>
+                    </div>
+                  :
+                    <Loader />
+                }
+                
 
 
-                <Pagination 
-                    pages={totalPagesNum}
-                    setCurrentPage={setCurrentPage}
-                    currentClients={currentPolicies}
-                    sortedEmployees={policies}
-                    entries={'Motor Third Party'} />
+                
 
         
       </div>

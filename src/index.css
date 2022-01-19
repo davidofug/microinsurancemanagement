@@ -552,6 +552,22 @@ left: auto;
     border-color: #0a53be;
 }
 
+.no-table-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-table-data i{
+    font-size: 4rem;
+    color: gray;
+}
+
+.no-table-data p{
+    color: gray;
+}
+
 
 
 

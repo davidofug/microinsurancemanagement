@@ -8,6 +8,8 @@ import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import { authentication } from '../../helpers/firebase'
 import Pagination from '../../helpers/Pagination';
+import Loader from '../../components/Loader';
+import { ImFilesEmpty } from 'react-icons/im'
 
 function Reports() {
 
@@ -25,7 +27,12 @@ function Reports() {
     const policyDoc = await getDocs(policyCollectionRef);
     // setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     const policyData = policyDoc.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    setPolicies(policyData.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+
+    if((policyData.filter(policy => policy.added_by_uid === authentication.currentUser.uid)).length === 0){
+        setPolicies(null)
+    } else{
+        setPolicies(policyData.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+    }
     }
 
     // search by Name
@@ -39,8 +46,8 @@ function Reports() {
 
     const indexOfLastPolicy = currentPage * policiesPerPage
     const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-    const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
-    const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
+    const currentPolicies = !policies || searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
+    const totalPagesNum = !policies || Math.ceil(policies.length / policiesPerPage)
 
     return (
         <div className='components'>
@@ -49,19 +56,23 @@ function Reports() {
                 
                 <div className="componentsData " style={{"maxWidth": "80vw"}}>
                     <div className="table-card">
-                        <div id="search">
-                                    <SearchBar placeholder={"Search Reports by Holder"} value={searchText} handleSearch={handleSearch}/>
-                                      <div></div>
-                                      <CSVLink
-                                        data={policies}
-                                        filename={"Issued-Reports.csv"}
-                                        className="btn btn-primary cta"
-                                        target="_blank"
-                                    >
-                                        Export <MdDownload />
-                                    </CSVLink>
-                        
-                              </div>
+
+                        {policies !== null && policies.length > 0 
+                        ?
+                            <>
+                                <div id="search">
+                            <SearchBar placeholder={"Search Reports by Holder"} value={searchText} handleSearch={handleSearch}/>
+                                <div></div>
+                                <CSVLink
+                                data={policies}
+                                filename={"Issued-Reports.csv"}
+                                className="btn btn-primary cta"
+                                target="_blank"
+                            >
+                                Export <MdDownload />
+                            </CSVLink>
+                
+                        </div>
 
                         <Table responsive hover striped bordered>
                         <thead>
@@ -113,6 +124,20 @@ function Reports() {
                             currentClients={currentPolicies}
                             sortedEmployees={policies}
                             entries={'Reports'} />
+                            </>
+                        :   
+                            policies === null
+                            ?
+                            <div className="no-table-data">
+                                <i><ImFilesEmpty /></i>
+                                <h4>No data yet</h4>
+                                <p>You have not created any Motor Third Party Stickers Yet</p>
+                            </div>
+                            :
+                            <Loader />
+                        }
+
+                        
 
                     </div>
                 
