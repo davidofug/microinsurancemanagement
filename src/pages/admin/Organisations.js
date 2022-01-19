@@ -16,6 +16,8 @@ import { authentication } from "../../helpers/firebase";
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import '../../components/modal/ConfirmBox.css'
+import Loader from '../../components/Loader'
+import { ImFilesEmpty } from 'react-icons/im'
 
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
@@ -24,7 +26,6 @@ export default function Organisations() {
   useEffect(() => {
     document.title = "Britam - Organisations";
       getOrganisations()
-    
   }, []);
 
 
@@ -43,7 +44,13 @@ export default function Organisations() {
 
   const getOrganisations = async () => {
     const data = await getDocs(organisationsCollectionRef)
-    setOrganisations(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    const organisationArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    if(organisationArray.length === 0){
+      setOrganisations(null)
+    } else {
+      setOrganisations(organisationArray)
+    }
+    
   }
 
   const [editID, setEditID] = useState(null);
@@ -87,7 +94,7 @@ export default function Organisations() {
     };
 
   const handleSearch = ({ target }) => setSearchText(target.value);
-  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+  const searchByName = (data) => !data || data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
     // actions context
     const [showContext, setShowContext] = useState(false)
@@ -103,13 +110,13 @@ export default function Organisations() {
     //pagination
     const indexOfLastOrganisation = currentPage * organisationsPerPage;
     const indexOfFirstOrganisation = indexOfLastOrganisation - organisationsPerPage;
-    const currentOrganisations = searchByName(organisations).slice(
+    const currentOrganisations = !organisations || searchByName(organisations).slice(
       indexOfFirstOrganisation,
       indexOfLastOrganisation
     );
-    const totalPagesNum = Math.ceil(organisations.length / organisationsPerPage);
+    const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
 
-
+    console.log(organisations)
 
   return (
     <div className="components">
@@ -122,7 +129,7 @@ export default function Organisations() {
         </Link>
       </div>
 
-      <div className={openToggle ? 'modal is-active': 'modal'}>
+      <div className={openToggle ? 'myModal is-active': 'myModal'}>
         <div className="modal__content wack">
           <h1 className='wack'>Confirm</h1>
           <p className='wack'>Are you sure you want to delete this user</p>
@@ -147,9 +154,17 @@ export default function Organisations() {
         <OrganisationModal fields={fields} singleDoc={singleDoc} handleClose={handleClose} handleFieldChange={handleFieldChange} editID={editID} />
       </Modal>
 
-      {organisations.length <= 0 
+      {organisations === null  || organisations.length <= 0
       ?
-        <p>No organisations yet</p>
+        organisations === null
+        ?
+          <div className="no-table-data">
+            <i><ImFilesEmpty /></i>
+            <h4>No data yet</h4>
+            <p>You have not created any Organisations Yet</p>
+          </div>
+        :
+          <Loader />
       :
       <div className="componentsData">
       <div className="table-card">
