@@ -552,6 +552,37 @@ left: auto;
     border-color: #0a53be;
 }
 
+.no-table-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.no-table-data i{
+    font-size: 4rem;
+    color: gray;
+}
+
+.no-table-data p{
+    color: gray;
+    
+}
+
+
+.dateRange {
+    border: 1px solid #1475cf;
+    background-color: #1475cf;
+    color: #fff;
+    border-radius: 3px;
+}
+
 
 
 
