@@ -14,9 +14,6 @@ import {
     Legend,
 } from 'chart.js';
 
-import graphData from '../helpers/GraphData';
-import { FaObjectUngroup } from 'react-icons/fa'
-
 function BarChart () {
     const [policies, setPolicies] = useState([])
     const [ sales, setSales ] = useState(
