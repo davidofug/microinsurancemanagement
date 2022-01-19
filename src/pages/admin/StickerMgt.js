@@ -62,7 +62,7 @@ export default function StickerMgt() {
         <div className="components">
             <Header title="Sticker No. Management" subtitle="MANAGING STICKER NUMBERS" />
 
-            <div className={openToggle ? 'modal is-active': 'modal'}>
+            <div className={openToggle ? 'myModal is-active': 'myModal'}>
               <div className="modal__content wack">
                 <h1 className='wack'>Confirm</h1>
                 <p className='wack'>Are you sure you want to delete this sticker range</p>
