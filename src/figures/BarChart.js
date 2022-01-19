@@ -15,7 +15,6 @@ import {
 } from 'chart.js';
 
 function BarChart () {
-    const [policies, setPolicies] = useState([])
     const [ sales, setSales ] = useState(
         {
             January: 0,
@@ -48,23 +47,20 @@ function BarChart () {
         December: 0,
     }
 
-
-    useEffect(async(obj=monthlySales) => {
-        setPolicies(await getPolicies(collection(db, "policies"))) 
-        console.log(await getPolicies(collection(db, "policies")))
-        console.log(Object.keys(obj))
-        console.log(Object.values(obj))
-
+    useEffect(
         
+        async(obj=monthlySales) => {
         setSales(generateGraphData(await getPolicies(collection(db, "policies"))))
     }, [])
 
+    
     const getPolicies = async (policyCollectionRef) => {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         return allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid)
     }
 
+    
     const generateGraphData = (policyArray, obj=monthlySales) => {
         policyArray.forEach( policy => {
             if(policy?.policyStartDate && moment(policy.policyStartDate).isValid() === true) {
