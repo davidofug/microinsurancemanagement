@@ -10,7 +10,7 @@ import { FaEllipsisV } from "react-icons/fa";
 import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
-import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
+import { getDoc, getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 import ClientModal from '../components/ClientModal'
 import { Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm';
@@ -67,18 +67,22 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
       })
   }
 
+  // Confirm Box
+  const [ openToggle, setOpenToggle ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggle === true) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggle(false)
+    }
+    }
+  }
+
   const getUsersMeta = async () => {
     const data = await getDocs(metaCollectionRef);
     setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
-  const [ currentPage, setCurrentPage ] = useState(1)
-  const [clientsPerPage] = useState(10)
-
-  const indexOfLastClient = currentPage * clientsPerPage
-  const indexOfFirstClient = indexOfLastClient - clientsPerPage
-  const currentClients = clients.slice(indexOfFirstClient, indexOfLastClient)
-  const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
+  
 
 
   const handleDelete = async (id) => {
@@ -100,12 +104,30 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
 
   // actions context
   const [showContext, setShowContext] = useState(false)
+  if(showContext === true){
     window.onclick = function(event) {
         if (!event.target.matches('.sharebtn')) {
             setShowContext(false)
         }
     }
+  }
   const [clickedIndex, setClickedIndex] = useState(null)
+
+  // const [ deleteName, setDeleteName ] = useState('')
+  // const getPolicy = async (id) => {
+  //   const policyDoc = doc(db, "policies", id);
+  //   return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
+  // }
+
+  // pagination
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [clientsPerPage] = useState(10)
+
+  const indexOfLastClient = currentPage * clientsPerPage
+  const indexOfFirstClient = indexOfLastClient - clientsPerPage
+  const currentClients = searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
+  const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
+
 
     return (
         <div className='components'>
@@ -123,6 +145,21 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
                       <button className='btn btn-primary cta'>Add Client</button>
                   </Link>
                 }
+            </div>
+
+            <div className={openToggle ? 'modal is-active': 'modal'}>
+              <div className="modal__content wack">
+                <h1 className='wack'>Confirm</h1>
+                <p className='wack'>Are you sure you want to delete </p>
+                <div className="buttonContainer wack" >
+                  <button id="yesButton" onClick={() => {
+                    setOpenToggle(false)
+                    handleDelete(editID)
+                    getClients()
+                    }} className='wack'>Yes</button>
+                  <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+                </div>
+              </div>
             </div>
 
             <Modal show={show} onHide={handleClose}>
@@ -145,7 +182,7 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
                             <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {searchByName(clients).map((client, index) => (
+                          {currentClients.map((client, index) => (
                               <tr key={client.uid}>
                               <td>{index + 1}</td>
                               <td>{client.name}</td>
@@ -162,14 +199,10 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
 
                   <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                               <li onClick={() => {
-                                          setShowContext(false)
-                                          const confirmBox = window.confirm(
-                                            `Are you sure you want to ${client.name}`
-                                          );
-                                          if (confirmBox === true) {
-                                            handleDelete(client.uid)
-                                          }
-                                        }}
+                                            setOpenToggle(true)
+                                            setEditID(client.uid);
+                                            setShowContext(false)
+                                          }}
                                   >
                                     <div className="actionDiv">
                                       <i><MdDelete/></i> Delete

@@ -45,20 +45,10 @@ function Comprehensive() {
     }
   }
 
-    // pagination
-    const [ currentPage, setCurrentPage ] = useState(1)
-    const [policiesPerPage] = useState(10)
-
-    const indexOfLastPolicy = currentPage * policiesPerPage
-    const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-    const currentPolicies = policies.slice(indexOfFirstPolicy, indexOfLastPolicy)
-    const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
-
-
     // search by Name
     const [searchText, setSearchText] = useState('')
     const handleSearch = ({ target }) => setSearchText(target.value);
-    // const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+    const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
     // delete a policy
     const handleDelete = async id => {
@@ -83,6 +73,15 @@ function Comprehensive() {
     const policyDoc = doc(db, "policies", id);
     return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
   }
+
+  // pagination
+  const [ currentPage, setCurrentPage ] = useState(1)
+  const [policiesPerPage] = useState(10)
+
+  const indexOfLastPolicy = currentPage * policiesPerPage
+  const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
+  const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
 
     return (
         <div className='components'>
@@ -130,7 +129,7 @@ function Comprehensive() {
                     <tbody>
                         {policies.length > 0 && currentPolicies.map((policy, index) => (
                             <tr key={policy.id}>
-                                <td>{index + 1}</td>
+                                <td>{indexOfFirstPolicy + index + 1}</td>
                                 {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                                 {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
                                 <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
