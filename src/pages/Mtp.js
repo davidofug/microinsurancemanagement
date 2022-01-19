@@ -106,7 +106,7 @@ export default function Mtp() {
         </div>
       }
 
-      <div className={openToggle ? 'modal is-active': 'modal'}>
+      <div className={openToggle ? 'myModal is-active': 'myModal'}>
         <div className="modal__content wack">
           <h1 className='wack'>Confirm</h1>
           <p className='wack'>Are you sure you want to delete <b>{deleteName}</b></p>
@@ -122,11 +122,12 @@ export default function Mtp() {
       </div>
 
 
-      <div className="table-card componentsData" style={{display: "flex",flexDirection: "column", justifyContent: "center", maxWidth: "900px", minWidth: "300px"}}>
+      
 
                 {policies !== null && policies.length > 0 
                 ?
                   <>
+                  <div className="table-card componentsData" style={{display: "flex",flexDirection: "column", justifyContent: "center", maxWidth: "900px", minWidth: "300px"}}>
                   <div id="search">
                     <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
@@ -205,6 +206,7 @@ export default function Mtp() {
                   sortedEmployees={policies}
                   entries={'Motor Third Party'} />
 
+                  </div>
                   </>
                 :
                   policies === null
@@ -223,7 +225,7 @@ export default function Mtp() {
                 
 
         
-      </div>
+      
     </div>
   );
 }
