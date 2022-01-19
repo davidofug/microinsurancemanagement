@@ -48,7 +48,6 @@ function BarChart () {
     }
 
     useEffect(
-        
         async(obj=monthlySales) => {
         setSales(generateGraphData(await getPolicies(collection(db, "policies"))))
     }, [])
