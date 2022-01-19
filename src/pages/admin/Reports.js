@@ -202,7 +202,7 @@ function Reports() {
                   {/* <Form.Group controlId="formGridEmail"  className="m-3" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}> */}
                       <div style={{diplay: "flex", flexDirection: "row"}}>
                         <Form.Label>Date Range</Form.Label>
-                        <div>
+                        <div className="dateRange">
                           <span>From</span><input type="date" onChange={({target: {value}}) => setDateFrom(value)}/><span>To</span><input type="date" onChange={({target: {value}}) => setDateTo(value)}/>
                         </div>
                       </div>
