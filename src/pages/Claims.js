@@ -62,6 +62,16 @@ function Claims() {
     setClaims(allClaims.filter(userClaim => userClaim.uid === authentication.currentUser.uid))
   };
 
+  // Confirm Box
+  const [ openToggle, setOpenToggle ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggle === true) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggle(false)
+    }
+    }
+  }
+
   const updateClaim = async (id) => {
     const userDoc = doc(db, "claims", id);
     await updateDoc(userDoc, { claimantName: singleClaims.claimantName });
@@ -120,14 +130,20 @@ function Claims() {
 
   // actions context
   const [showContext, setShowContext] = useState(false)
-  window.onclick = function(event) {
-      if (!event.target.matches('.sharebtn')) {
-          setShowContext(false)
-      }
+  if(showContext === true){
+    window.onclick = function(event) {
+        if (!event.target.matches('.sharebtn')) {
+            setShowContext(false)
+        }
+    }
   }
   const [clickedIndex, setClickedIndex] = useState(null)
 
-  console.log(claims)
+  const [ deleteName, setDeleteName ] = useState('')
+  const getPolicy = async (id) => {
+    const policyDoc = doc(db, "policies", id);
+    return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
+  }
 
   return (
     <div className="components">
@@ -150,6 +166,21 @@ function Claims() {
           </Link>
         </div>
       }
+
+      <div className={openToggle ? 'modal is-active': 'modal'}>
+        <div className="modal__content wack">
+          <h1 className='wack'>Confirm</h1>
+          <p className='wack'>Are you sure you want to delete</p>
+          <div className="buttonContainer wack" >
+            <button id="yesButton" onClick={() => {
+              setOpenToggle(false)
+              handleDelete(editID)
+              getClaims()
+              }} className='wack'>Yes</button>
+            <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+          </div>
+        </div>
+      </div>
 
       {claims.length > -1 ?
       <>
@@ -370,14 +401,8 @@ function Claims() {
             <Table responsive>
             <thead>
               <tr>
-                <th>Ref Number</th>
-                <th>Claimant Details</th>
-                <th>Date of Incident</th>
-                <th>Number Plate</th>
-                <th>Sticker Number</th>
-                <th>Claim Estimate</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
+                <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -409,7 +434,7 @@ function Claims() {
                   </td>
 
                   <td className="started">
-                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setEditID(claim.id); setShowContext(!showContext)}}>&#8942;</button>
 
                                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                                             <li>
@@ -440,15 +465,10 @@ function Claims() {
                                             </li>
 
                                             <li onClick={() => {
-                                                    setShowContext(false)
-                                                    const confirmBox = window.confirm(
-                                                      `Are you sure you want to delete ${claim.claimantName}'s claim`
-                                                    );
-                                                    if (confirmBox === true) {
-                                                      handleDelete(claim.id);
-                                                      getClaims();
-                                                    }
-                                                  }}
+                                                  setOpenToggle(true)
+                                                  setEditID(claim.id);
+                                                  setShowContext(false)
+                                                }}
                                                 >
                                                   <div className="actionDiv">
                                                     <i><MdDelete/></i> Delete

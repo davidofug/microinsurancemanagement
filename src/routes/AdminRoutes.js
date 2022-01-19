@@ -26,9 +26,6 @@ import Transit from '../pages/Transit'
 import AddStickerRange from '../pages/admin/AddStickerRange'
 import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
 import PolicyRenew from '../pages/PolicyDetails/PolicyRenew'
-import DailyReports from '../pages/admin/DailyReports'
-import WeeklyReports from '../pages/admin/WeeklyReports'
-import MonthlyReports from '../pages/admin/MonthlyReports'
 
 
 function AdminRoutes() {
@@ -88,15 +85,6 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/reports" >
                 <Reports />
             </PrivateRoute>
-            <PrivateRoute path="/admin/daily-reports" >
-                <DailyReports />
-            </PrivateRoute>
-            <PrivateRoute path="/admin/weekly-reports" >
-                <WeeklyReports />
-            </PrivateRoute>
-            <PrivateRoute path="/admin/monthly-reports" >
-                <MonthlyReports />
-            </PrivateRoute>
             <PrivateRoute path="/admin/settings" >
                 <Settings />
             </PrivateRoute>
@@ -126,6 +114,9 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/add-claim" >
                 <AddClaims />
+            </PrivateRoute>
+            <PrivateRoute path="/logout" >
+                <Logout />
             </PrivateRoute>
         </>
         

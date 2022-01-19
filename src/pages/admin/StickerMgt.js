@@ -20,32 +20,60 @@ import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 export default function StickerMgt() {
     useEffect(() => document.title = 'Britam - Stickers Management')
 
-    
+    const [ searchText, setSearchText ] = useState('')
 
-    const [q, setQ] = useState('');
+    // Confirm Box
+    const [ openToggle, setOpenToggle ] = useState(false)
+    window.onclick = (event) => {
+      if(openToggle === true) {
+        if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+          setOpenToggle(false)
+      }
+      }
+    }
+
+
+    // actions context
+    const [showContext, setShowContext] = useState(false)
+    if(showContext === true){
+      window.onclick = function(event) {
+          if (!event.target.matches('.sharebtn')) {
+              setShowContext(false)
+          }
+      }
+    }
+    const [clickedIndex, setClickedIndex] = useState(null)
+
+    const handleSearch = ({ target }) => setSearchText(target.value);
+    const searchByName = (data) => data.filter(row => row.category.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+    // pagination
     const [ currentPage, setCurrentPage ] = useState(1)
     const [employeesPerPage] = useState(10)
 
     const indexOfLastEmployee = currentPage * employeesPerPage
     const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
-    const currentOrganisations = data.slice(indexOfFirstEmployee, indexOfLastEmployee)
+    const currentStickers = searchByName(data).slice(indexOfFirstEmployee, indexOfLastEmployee)
     const totalPagesNum = Math.ceil(data.length / employeesPerPage)
-
-
-    // actions context
-  const [show, setShow] = useState(false)
-  window.onclick = function(event) {
-      if (!event.target.matches('.sharebtn')) {
-          setShow(false)
-      }
-  }
-  const [clickedIndex, setClickedIndex] = useState(null)
 
 
 
     return (
         <div className="components">
             <Header title="Sticker No. Management" subtitle="MANAGING STICKER NUMBERS" />
+
+            <div className={openToggle ? 'modal is-active': 'modal'}>
+              <div className="modal__content wack">
+                <h1 className='wack'>Confirm</h1>
+                <p className='wack'>Are you sure you want to delete this sticker range</p>
+                <div className="buttonContainer wack" >
+                  <button id="yesButton" onClick={() => {
+                    setOpenToggle(false)
+                    }} className='wack'>Yes</button>
+                  <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+                </div>
+              </div>
+            </div>
 
             <div className="componentsData">
                     <div className="sticker-mgt">
@@ -56,7 +84,7 @@ export default function StickerMgt() {
                     </div>
                     <div className="shadow-sm table-card">
                     <div id="search">
-                            <SearchBar placeholder={"Search"}/>
+                            <SearchBar placeholder={"Search Stickers by Category"} value={searchText} handleSearch={handleSearch}/>
                             <div>
                               <Link to="/admin/sticker-number">
                                 <button className="btn btn-primary cta">Add Sticker Nos.</button>
@@ -77,18 +105,18 @@ export default function StickerMgt() {
                             <tr><th>#</th><th>Category</th><th>Sticker Nos</th><th>Total No Received</th><th>Status</th><td>Actions</td></tr>
                           </thead>
                           <tbody>
-                            {data.map((sticker, index) => (
+                            {currentStickers.map((sticker, index) => (
                               <tr key={sticker.id}>
-                                <td>{index+1}</td>
+                                <td>{indexOfFirstEmployee + index + 1}</td>
                                 <td>{sticker.category}</td>
-                                <td>{`[00${index+1} - 10${index+2}]`}</td>
+                                <td>[<span style={{color: "#c82e29"}}>{`00${index+1} - 10${index+2}`}</span>]</td>
                                 <td>{index+2}</td>
                                 <td>{sticker.status}</td>
                                 
                                 <td className="started">
-                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
 
-                            <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                            <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                               <Link to={`/admin/policy-details`}>
                                 <div className="actionDiv">
                                   <i><MdInfo /></i> Details
@@ -104,13 +132,10 @@ export default function StickerMgt() {
                                   <i><MdCancel /></i> Cancel
                                 </div>
                               </li>
-                              <li onClick={() => { setShow(false)
-                                      const confirmBox = window.confirm(
-                                        `Are you sure you want to delete this sticker`
-                                      );
-                                      if (confirmBox === true) {
-                                      }
-                                    }}
+                              <li onClick={() => {
+                                            setOpenToggle(true)
+                                            setShowContext(false)
+                                          }}
                                   >
                                     <div className="actionDiv">
                                       <i><MdDelete/></i> Delete
@@ -132,7 +157,7 @@ export default function StickerMgt() {
                       <Pagination 
                           pages={totalPagesNum}
                           setCurrentPage={setCurrentPage}
-                          currentClients={currentOrganisations}
+                          currentClients={currentStickers}
                           sortedEmployees={data}
                           entries={'Sticker Ranges'} />
                     </div>
