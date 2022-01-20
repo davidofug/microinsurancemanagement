@@ -14,6 +14,8 @@ import { useForm } from "../../hooks/useForm";
 import ClientModal from '../../components/ClientModal';
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import { ImFilesEmpty } from 'react-icons/im'
+import Loader from '../../components/Loader';
 
 function Supervisors() {
 
@@ -28,7 +30,7 @@ function Supervisors() {
       }).catch((err) => {
           console.log(err)
       })
-      getUsersMeta()
+      // getUsersMeta()
 
     }, [])
 
@@ -63,10 +65,11 @@ function Supervisors() {
     const [meta, setMeta] = useState([])
     const [editID, setEditID] = useState(null);
     const metaCollectionRef = collection(db, "usermeta");
-    const getUsersMeta = async () => {
+
+    /* const getUsersMeta = async () => {
       const data = await getDocs(metaCollectionRef);
       setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
+    }; */
 
   const [supervisors, setSuperviors] = useState([]);
 
@@ -153,7 +156,10 @@ function Supervisors() {
               <ClientModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
             </Modal>
 
-            <div className="shadow-sm table-card componentsData">   
+            {supervisors.length > 0 && supervisors !== null
+            ?
+              <>
+                <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                       <SearchBar placeholder={"Search Supervisor by name"} value={searchText} handleSearch={handleSearch}/>
                       <div></div>
@@ -170,13 +176,9 @@ function Supervisors() {
                               <td>{index+1}</td>
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
-                              {meta.filter(user => user.id == supervisor.uid).map(user => (
-                                <Fragment key={user.id}>
-                                  <td>{user.gender}</td>
-                                  <td>{user.phone}</td>
-                                  <td>{user.address}</td>
-                                </Fragment>
-                              ))}
+                              <td>{supervisor.meta.gender}</td>
+                              <td>{supervisor.meta.phone}</td>
+                              <td>{supervisor.meta.address}</td>
                 
                               <td className="started">
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setEditID(supervisor.uid)}}>&#8942;</button>
@@ -213,15 +215,6 @@ function Supervisors() {
                               </td>
                           </tr>
                           ))}
-                          <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
                             
                         </tbody>
                         <tfoot>
@@ -238,6 +231,12 @@ function Supervisors() {
 
                
             </div>
+              </>
+            :
+              <Loader />
+            }
+
+            
         </div>
     )
 }

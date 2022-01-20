@@ -14,6 +14,7 @@ import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 import useAuth from '../contexts/Auth';
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import Loader from '../components/Loader';
 
 function Agents() {
 
@@ -109,7 +110,10 @@ function Agents() {
                 }
             </div>
 
-              <div className="shadow-sm table-card componentsData">   
+            {agents !== null && agents.length > 0
+            ?
+              <>
+                <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                 <SearchBar placeholder={"Search for agent"} value={q} handleSearch={handleSearch}/>
                     <div></div>
@@ -188,6 +192,12 @@ function Agents() {
 
                
             </div>
+              </>
+            :
+              <Loader />
+            }
+
+              
         </div>
     )
 }
