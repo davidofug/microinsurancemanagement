@@ -72,7 +72,7 @@ function AddUsers() {
     return (
         <div className='components'>
             <Header title="Add User" subtitle="ADD A NEW USER" />
-            <div class="shadow-sm table-card">
+            <div className="addComponent shadow-sm table-card">
                     <Form name='form3' onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>

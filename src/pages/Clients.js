@@ -124,8 +124,8 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
 
   const indexOfLastClient = currentPage * clientsPerPage
   const indexOfFirstClient = indexOfLastClient - clientsPerPage
-  const currentClients = searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
-  const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
+  const currentClients = !clients || searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
+  const totalPagesNum = !clients || Math.ceil(clients.length / clientsPerPage)
 
   console.log(clients)
 
