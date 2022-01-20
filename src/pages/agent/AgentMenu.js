@@ -20,28 +20,7 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
 
     const [ selected, setSelected ] = useState({ activeObject: null, Agent_mtp })
     const [ toggleMenu, setToggeMenu ] = useState(true)
-
-    const { authClaims } = useAuth()
-
-    useEffect(() => {
-        if(sessionStorage.getItem('session1')){
-            setSelected({...selected, activeObject: selected.Agent_mtp[sessionStorage.getItem('session1')-1]})
-        }else{
-            setSelected({...selected, activeObject: selected.Agent_mtp[0]})
-        }
-        
-    }, [])
-    
-    const toggleActive = index => {
-        setSelected({...selected, activeObject: selected.Agent_mtp[index]})
-        sessionStorage.setItem('session1', selected.Agent_mtp[index]["number"])
-    }
-
-    const toggleActiveClassStyle = index => selected.Agent_mtp[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
-
     const [ openFooterContext, setOpenFooterContext ] = useState(false)
-
-    console.log(authClaims)
 
     return (
         <div className='menuSide'>

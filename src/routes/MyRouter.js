@@ -42,7 +42,7 @@ function MyRouter() {
                 <div className='MenuSide'>
                     {authClaims?.admin && <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.supervisor && <SupervisorMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
-                    {authClaims?.agent && <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                    {authClaims?.agent &&  <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.superadmin && <SuperAdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                 </div>
                 </>

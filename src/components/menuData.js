@@ -455,6 +455,54 @@ const menuData = {
             icon: <MdAssessment />,
             link: "/agent/reports"
         }
+    ],
+    Agent_mtp_comprehensive: [
+        {
+            number: 1,
+            name: "Dashboard",
+            icon: <MdAccountBalance />,
+            link: "/agent/dashboard"
+        },
+        {
+            number: 2,
+            name: "Clients",
+            icon: <MdPerson />,
+            link: "/agent/clients"
+        },
+        {
+            number: 3,
+            name: "Policies",
+            icon: <MdDirectionsCarFilled />,
+            link: "/agent/motor-third-party",
+            subMenu: [
+                {
+                    name: "MTP",
+                    link: "/agent/motor-third-party"
+                },
+                {
+                    name: "Comprehensive",
+                    link: "/agent/comprehensive"
+                }
+            ]
+        },
+        {
+            number: 4,
+            name: "Claims",
+            icon: <MdAirlineSeatReclineExtra />,
+            link: "/agent/claims"
+        },
+        {
+            number: 5,
+            name: "Log Trails",
+            icon: <RiCalendarTodoFill />,
+            link: "/agent/view-log-trail"
+        },
+        {
+            number: 6,
+            name: "Reports",
+            icon: <MdAssessment />,
+            link: "/agent/reports"
+        }
     ]
 }
 

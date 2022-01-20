@@ -8,7 +8,7 @@ import { Badge } from 'react-bootstrap'
 export default function SideBar({role, user, displayName}){
 
     const [ selected, setSelected ] = useState({ activeObject: null, role })
-    const [ toggleMenu, setToggeMenu ] = useState(true)
+    // const [ toggleMenu, setToggeMenu ] = useState(true)
 
     useEffect(() => {
         sessionStorage.getItem('session1')
@@ -23,6 +23,7 @@ export default function SideBar({role, user, displayName}){
     }
 
     const toggleActiveClassStyle = index => selected.role[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
+
 
     return (
         <>
