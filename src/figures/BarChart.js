@@ -49,65 +49,67 @@ function BarChart () {
 
     useEffect(
         async(obj=monthlySales) => {
-        setSales(generateGraphData(await getPolicies(collection(db, "policies"))))
+        setSales(await generateGraphData(await getPolicies(collection(db, "policies"))))
     }, [])
 
     
     const getPolicies = async (policyCollectionRef) => {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        console.log(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
         return allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid)
     }
 
     
-    const generateGraphData = (policyArray, obj=monthlySales) => {
+    const generateGraphData = async (policyArray, obj={...monthlySales}) => {
+        console.log(policyArray)
         policyArray.forEach( policy => {
-            if(policy?.createdAt && moment(policy.createdAt).isValid() === true) {
-                const { policyStartDate } = policy
-                switch(moment(policyStartDate).toDate().getMonth()) {
+            const {created_at} = policy
+            if(policy?.created_at ) {
+                const { created_at } = policy
+                switch(moment.unix(created_at.seconds).toDate().getMonth()) {
                     case 0:
-                        obj.January = obj.January += policy.stickersDetails.length
+                        obj.January += policy.stickersDetails.length
                         break;
                     case 1:
-                        obj.February = obj.February += policy.stickersDetails.length
+                        obj.February += policy.stickersDetails.length
                         break;
                     case 2:
-                        obj.March = obj.March += policy.stickersDetails.length
+                        obj.March += policy.stickersDetails.length
                         break;
                     case 3:
-                        obj.April = obj.April += policy.stickersDetails.length
+                        obj.April += policy.stickersDetails.length
                         break;
                     case 4: 
-                        obj.May = obj.May += policy.stickersDetails.length
+                        obj.May += policy.stickersDetails.length
                         break;
                     case 5:
-                        obj.June = obj.June += policy.stickerDetails.length
+                        obj.June += policy.stickerDetails.length
                         break;
                     case 6: 
-                        obj.July = obj.July += policy.stickerDetails.length
+                        obj.July += policy.stickerDetails.length
                         break;
                     case 7:
-                        obj.August = obj.August += policy.stickerDetails.length
+                        obj.August += policy.stickerDetails.length
                         break;
                     case 8:
-                        obj.September = obj.September += policy.stickerDetails.length
+                        obj.September += policy.stickerDetails.length
                         break;
                     case 9: 
-                        obj.October = obj.October += policy.StickerDetails.length
+                        obj.October += policy.StickerDetails.length
                         break;
                     case 10:
-                        obj.November = obj.November += policy.StickerDetails.length
+                        obj.November += policy.StickerDetails.length
                         break;
                     case 11: 
-                        obj.December = obj.December += policy.StickerDetails.length
+                        obj.December += policy.StickerDetails.length
                         break;     
                 }
-                
             }
-
+            console.log(obj)
+            console.log(moment.unix(created_at))
         })
-
-        console.log(obj)
+        
         return obj
     }
 
