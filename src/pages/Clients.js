@@ -87,14 +87,16 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
 
   const handleDelete = async (id) => {
     const deleteUser = httpsCallable(functions, 'deleteUser')
-    deleteUser({uid:id}).then().catch(err => {
+    deleteUser({uid:id}).then(
+      () => console.log("done")
+    ).catch(err => {
       console.log(err)
     })
 
-    const userMetaDoc = doc(db, "usermeta", id);
-    await deleteDoc(userMetaDoc);
+    // const userMetaDoc = doc(db, "usermeta", id);
+    // await deleteDoc(userMetaDoc);
 
-    getClients()
+    // getClients()
     getUsersMeta()
   };
 
@@ -128,6 +130,8 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
   const currentClients = searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
   const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
 
+
+  console.log(clients)
 
     return (
         <div className='components'>
