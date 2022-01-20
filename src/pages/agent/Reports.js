@@ -61,12 +61,13 @@ function Reports() {
             <Header title="Reports" subtitle="AGENT ISSUED STICKER REPORTS" />
 
                 
-                <div className="componentsData " style={{"maxWidth": "80vw"}}>
-                    <div className="table-card">
+                
 
                         {policies !== null && policies.length > 0 
                         ?
                             <>
+                            <div className="componentsData " style={{"maxWidth": "80vw"}}>
+                    <div className="table-card">
                                 <div id="search">
                             <SearchBar placeholder={"Search Reports by Policy Holder"} value={searchText} handleSearch={handleSearch}/>
                                 <div></div>
@@ -79,7 +80,7 @@ function Reports() {
                                 Export <MdDownload />
                             </CSVLink>
                 
-                        </div>
+                            </div>
 
                         <Table responsive hover striped bordered>
                         <thead>
@@ -136,6 +137,9 @@ function Reports() {
                             currentClients={currentPolicies}
                             sortedEmployees={policies}
                             entries={'Reports'} />
+                            </div>
+                
+                </div>
                             </>
                         :   
                             policies === null
@@ -151,9 +155,7 @@ function Reports() {
 
                         
 
-                    </div>
-                
-                </div>
+                    
         </div>
     )
 }
