@@ -1,14 +1,17 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import '../../assets/styles/addClients.css'
 import Header from '../../components/header/Header'
 import { authentication, db } from '../../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../../hooks/useForm'
+import Loader from '../../components/Loader'
 
 export default function AddOrganisation() {
 
     useEffect(() => { document.title = 'Britam - Add Organisations'}, [])
+
+    const [ isLoading, setIsLoading ] = useState(false)
 
     const organisationsCollectionRef = collection(db, 'organisations')
     const [fields, handleFieldChange] = useForm({
@@ -29,17 +32,25 @@ export default function AddOrganisation() {
     })
 
     const createOrganisation = async (event) => {
+        setIsLoading(true)
         event.preventDefault()
         await addDoc(organisationsCollectionRef, fields)
+        setIsLoading(false)
         alert(`successfully added ${fields.name}`)
         document.form2.reset()
       }
+
 
     return (
         <div className='components'>
             <Header title="Add Organisations" subtitle="ADD A NEW ORGANISATION" />
 
             <div className="componentsData">
+
+                {isLoading && 
+                        <Loader />
+                }
+
                 <div id="addForm">
                         <Form name='form2' onSubmit={createOrganisation}>
                             <div className='organisation-columns'>

@@ -62,7 +62,7 @@ function BarChart () {
     
     const generateGraphData = (policyArray, obj=monthlySales) => {
         policyArray.forEach( policy => {
-            if(policy?.policyStartDate && moment(policy.policyStartDate).isValid() === true) {
+            if(policy?.createdAt && moment(policy.createdAt).isValid() === true) {
                 const { policyStartDate } = policy
                 switch(moment(policyStartDate).toDate().getMonth()) {
                     case 0:
