@@ -10,6 +10,7 @@ import SuperAdminRoutes from './SuperAdminRoutes'
 import AdminRoutes from './AdminRoutes'
 import SupervisorRoutes from './SupervisorRoutes'
 import AgentsRoutes from './AgentsRoutes'
+import AgentMtpMenu from '../pages/agent/AgentMtpMenu'
 
 //different menus for different roles
 import AdminMenu from '../pages/admin/AdminMenu'
@@ -43,6 +44,7 @@ function MyRouter() {
                     {authClaims?.admin && <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.supervisor && <SupervisorMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.agent &&  <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                    {authClaims?.agent && authClaims?.mtp && !authClaims?.comprehensive &&  <AgentMtpMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.superadmin && <SuperAdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                 </div>
                 </>
