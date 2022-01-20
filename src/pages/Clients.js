@@ -16,16 +16,15 @@ import { Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm';
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import Loader from '../components/Loader'
+import { ImFilesEmpty } from 'react-icons/im'
 
 export default function Clients() {
 
   useEffect(() => 
     {
       document.title = 'Britam - Clients'
-
-      
       getClients()
-      getUsersMeta()
   }, [])
 
   const { authClaims } = useAuth()
@@ -61,7 +60,11 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
       listUsers().then((results) => {
           const resultsArray = results.data
           const myUsers = resultsArray.filter(user => user.role.Customer === true)
-          setClients(myUsers)
+          if(myUsers.length === 0){
+            setClients(null)
+          }else{
+            setClients(myUsers)
+          }
       }).catch((err) => {
           console.log(err)
       })
@@ -92,12 +95,6 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
     ).catch(err => {
       console.log(err)
     })
-
-    // const userMetaDoc = doc(db, "usermeta", id);
-    // await deleteDoc(userMetaDoc);
-
-    // getClients()
-    getUsersMeta()
   };
 
   const handleSearch = ({ target }) => setSearchText(target.value);
@@ -129,7 +126,6 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
   const indexOfFirstClient = indexOfLastClient - clientsPerPage
   const currentClients = searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
   const totalPagesNum = Math.ceil(clients.length / clientsPerPage)
-
 
   console.log(clients)
 
@@ -170,84 +166,103 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
               <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
             </Modal>
 
-            <div className="componentsData">
-              <div className="shadow-sm table-card">
-                  <div id="search">
-                    <SearchBar placeholder={"Search Client by name"} value={searchText} handleSearch={handleSearch}/>
-                    <div></div>
-                    <CSVLink data={clients} filename={"Britam-Clients.csv"} className="btn btn-primary cta">
-                      Export <MdDownload />
-                    </CSVLink>
-                  </div>
+            {clients !== null && clients.length > 0
+            ?
+              <div className="componentsData shadow-sm table-card">
+                <div id="search">
+                  <SearchBar placeholder={"Search Client by name"} value={searchText} handleSearch={handleSearch}/>
+                  <div></div>
+                  <CSVLink data={clients} filename={"Britam-Clients.csv"} className="btn btn-primary cta">
+                    Export <MdDownload />
+                  </CSVLink>
+                </div>
 
 
-                  <Table hover striped responsive className='mt-5'>
-                        <thead>
-                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
-                        </thead>
-                        <tbody>
-                          {currentClients.map((client, index) => (
-                              <tr key={client.uid}>
-                              <td>{index + 1}</td>
-                              <td>{client.name}</td>
-                              <td>{client.email}</td>
-                              {meta.filter(user => user.id == client.uid).map(user => (
-                                <Fragment key={user.id}>
-                                  <td>{user.gender}</td>
-                                  <td>{user.phone}</td>
-                                  <td>{user.address}</td>
-                                </Fragment>
-                              ))}
-                <td className="started">
-                  <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+                {currentClients.length > 0
+                ?
+                  <>
+                    <Table hover striped responsive className='mt-5'>
+                      <thead>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                      </thead>
+                      <tbody>
+                        {currentClients.map((client, index) => (
+                            <tr key={client.uid}>
+                            <td>{index + 1}</td>
+                            <td>{client.name}</td>
+                            <td>{client.email}</td>
+                            <td>{client.meta.gender}</td>
+                            <td>{client.meta.phone}</td>
+                            <td>{client.meta.address}</td>
+              <td className="started">
+                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
 
-                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                              <li onClick={() => {
-                                            setOpenToggle(true)
-                                            setEditID(client.uid);
-                                            setShowContext(false)
-                                          }}
-                                  >
-                                    <div className="actionDiv">
-                                      <i><MdDelete/></i> Delete
-                                    </div>
-                              </li>
-                              <li onClick={() => {
-                                      setShowContext(false)
-                                      setEditID(client.uid);
-                                      getSingleClient(client.uid)
-                                      handleShow();
-                                    }}
-                                  >
-                                    <div className="actionDiv">
-                                      <i><MdEdit/></i> Edit
-                                    </div>
-                              </li>
-                              <li onClick={() => setShowContext(false)}
-                                  >
-                                    <div className="actionDiv">
-                                      <i><AiFillCloseCircle/></i> Close
-                                    </div>
-                              </li>
-                  </ul>
-                </td>
-                          </tr>
-                          ))}
-                            
-                        </tbody>
-                        <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
-                        </tfoot>
-                    </Table>
+                <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                            <li onClick={() => {
+                                          setOpenToggle(true)
+                                          setEditID(client.uid);
+                                          setShowContext(false)
+                                        }}
+                                >
+                                  <div className="actionDiv">
+                                    <i><MdDelete/></i> Delete
+                                  </div>
+                            </li>
+                            <li onClick={() => {
+                                    setShowContext(false)
+                                    setEditID(client.uid);
+                                    getSingleClient(client.uid)
+                                    handleShow();
+                                  }}
+                                >
+                                  <div className="actionDiv">
+                                    <i><MdEdit/></i> Edit
+                                  </div>
+                            </li>
+                            <li onClick={() => setShowContext(false)}
+                                >
+                                  <div className="actionDiv">
+                                    <i><AiFillCloseCircle/></i> Close
+                                  </div>
+                            </li>
+                </ul>
+              </td>
+                        </tr>
+                        ))}
+                          
+                      </tbody>
+                      <tfoot>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                      </tfoot>
+                  </Table>
 
-                  <Pagination 
-                    pages={totalPagesNum}
-                    setCurrentPage={setCurrentPage}
-                    currentClients={currentClients}
-                    sortedEmployees={clients}
-                    entries={'Clients'} />
+                <Pagination 
+                  pages={totalPagesNum}
+                  setCurrentPage={setCurrentPage}
+                  currentClients={currentClients}
+                  sortedEmployees={clients}
+                  entries={'Clients'} />
+            
+                  </>
+                :
+                <div className="no-table-data">
+                  <i><ImFilesEmpty /></i>
+                  <h4>No data yet</h4>
+                  <p>You have not created any Motor Third Party Stickers Yet</p>
+                </div>
+                }
+                </div>
+          :
+            clients === null
+            ?
+              <div className="no-table-data">
+                <i><ImFilesEmpty /></i>
+                <h4>No data yet</h4>
+                <p>You have not created any Motor Third Party Stickers Yet</p>
               </div>
-            </div>
+            :
+              <Loader />
+          }
         </div>
     )
 }
