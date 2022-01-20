@@ -50,6 +50,10 @@ function Reports() {
     const currentPolicies = !policies || searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
     const totalPagesNum = !policies || Math.ceil(policies.length / policiesPerPage)
 
+    let basicTotal = 0
+    let trainingLevyTotal = 0
+    let totalPremiumTotal = 0
+
     console.log(policies)
 
     return (
@@ -85,7 +89,11 @@ function Reports() {
                         </thead>
 
                         <tbody>
-                        {policies && currentPolicies.map((policy, index) => (
+                        {policies && currentPolicies.map((policy, index) => {
+                            {basicTotal += +policy.stickersDetails[0].basicPremium}
+                            {trainingLevyTotal += +policy.stickersDetails[0].trainingLevy}
+                            {totalPremiumTotal += +policy.stickersDetails[0].totalPremium}
+                            return (
                             <tr key={policy.id}>
                                 <td>{indexOfFirstPolicy + index + 1}</td>
                                 {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
@@ -100,7 +108,7 @@ function Reports() {
                                 <td>{policy.policyEndDate}</td>
                                 <td>1 YR(s)</td>
                                 {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].basicPremium)}</td>}
-                                {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
+                                {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].trainingLevy)}</td>}
                                 <td>6,000</td>
                                 {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].vat)}</td>}
                                 {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].stampDuty)}</td>}
@@ -109,13 +117,14 @@ function Reports() {
                                 <td></td>
                                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                             </tr>
-                        ))
+                        )})
                         }
                         </tbody>
 
                         <tfoot>
                             <tr>
-                            <th colSpan={12}>Grand Total</th>
+                            <th colSpan={12}>Grand Total</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevyTotal)}</th>
+                            <th></th><th></th><th></th><th></th><th>{currencyFormatter(totalPremiumTotal)}</th>
                             </tr>
                         </tfoot>
 

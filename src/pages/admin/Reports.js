@@ -163,9 +163,9 @@ function Reports() {
 
             <div style={{display: "flex", alignItems: "center"}}>
             <Form.Group controlId="formGridEmail"  className="m-3" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                      <Form.Label>Today</Form.Label>
-                      <Form.Control type="date" onChange={({target: {value}}) => setCurrentDay(value)}/>
-                  </Form.Group>
+                <Form.Label>Today</Form.Label>
+                <Form.Control type="date" onChange={({target: {value}}) => setCurrentDay(value)}/>
+            </Form.Group>
 
                   <Form.Group className="m-3" width="150px">
                       <Form.Label htmlFor='category'>Select Month</Form.Label>
