@@ -10,6 +10,7 @@ import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import Loader from '../components/Loader'
 import { authentication } from '../helpers/firebase'
+import moment from 'moment'
 
 function Dashboard() {
     const [clients, setClients] = useState([]);
@@ -39,6 +40,7 @@ function Dashboard() {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         setPolicies(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+        console.log(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
         return(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
     }
 
