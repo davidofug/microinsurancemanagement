@@ -90,6 +90,8 @@ export default function Mtp() {
   const currentPolicies = !policies || searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
   const totalPagesNum = !policies || Math.ceil(policies.length / policiesPerPage)
 
+  console.log(policies)
+
   return (
     <div className="components">
       <Header
@@ -152,7 +154,7 @@ export default function Mtp() {
                             <td>
                               <span
                                 style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                              >new</span>
+                              >{policy.stickersDetails[0].status}</span>
                             </td>
                             <td>{policy.policyStartDate}</td>
 
