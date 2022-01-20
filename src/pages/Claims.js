@@ -22,6 +22,7 @@ import Loader from "../components/Loader";
 import { MdEdit, MdDelete, MdNotifications } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import useAuth from "../contexts/Auth";
+import { ImFilesEmpty } from 'react-icons/im'
 
 function Claims() {
   const [claims, setClaims] = useState([]);
@@ -59,7 +60,11 @@ function Claims() {
   const getClaims = async () => {
     const data = await getDocs(claimsCollectionRef);
     const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    setClaims(allClaims.filter(userClaim => userClaim.uid === authentication.currentUser.uid))
+    if(allClaims.filter(userClaim => userClaim.uid === authentication.currentUser.uid).length === 0){
+      setClaims(null)
+    } else {
+      setClaims(allClaims.filter(userClaim => userClaim.uid === authentication.currentUser.uid))
+    }
   };
 
   // Confirm Box
@@ -124,7 +129,7 @@ function Claims() {
 
   const indexOfLastEmployee = currentPage * employeesPerPage;
   const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
-  const currentClaims = claims.slice(indexOfFirstEmployee, indexOfLastEmployee);
+  const currentClaims = !claims || claims.slice(indexOfFirstEmployee, indexOfLastEmployee);
   const totalPagesNum = Math.ceil(data.length / employeesPerPage);
 
 
@@ -182,7 +187,7 @@ function Claims() {
         </div>
       </div>
 
-      {claims.length > -1 ?
+      {claims !== null && claims.length > 0 ?
       <>
 
       <Modal show={show} onHide={() => {
@@ -511,7 +516,17 @@ function Claims() {
         
       </div>
       </>
-      : <Loader />}
+      :
+        claims === null
+        ?
+          <div className="no-table-data">
+            <i><ImFilesEmpty /></i>
+            <h4>No data yet</h4>
+            <p>You have not created any Motor Third Party Stickers Yet</p>
+          </div>
+        :
+          <Loader />
+      }
     </div>
   );
 }
