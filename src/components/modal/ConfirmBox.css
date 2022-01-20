@@ -1,4 +1,4 @@
-.modal {
+.myModal {
     position: fixed;
     top: 0;
     left: 0;
@@ -17,7 +17,8 @@
     overflow-x: hidden;
     padding: 30px;
   }
-  .modal:after {
+  
+  .myModal:after {
     content: "";
     display: inline-block;
     width: 0;
@@ -37,12 +38,12 @@
     width: 80%;
     max-width: 400px;
   }
-  .modal.is-active {
+  .myModal.is-active {
     opacity: 1;
     /* visibility: visible; */
     display: block;
   }
-  .modal.is-active .modal__content {
+  .myModal.is-active .modal__content {
     transform: translateY(0);
   }
   
@@ -78,11 +79,11 @@
     background: #1c7eda;
   }
   
-  .modal h1 {
+  .myModal h1 {
     margin: 0 0 10px;
     font-size: 24px;
   }
-  .modal p {
+  .myModal p {
     margin: 0 0 25px;
     font-size: 15px;
   }

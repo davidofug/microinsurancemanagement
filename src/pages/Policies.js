@@ -201,7 +201,7 @@ function Policies({cat, btn_txt, pol}) {
             policyEndDate: policyEndDate,
             category: cat,
             totalValuation: await generateTotalValuation(stickers),
-            createdAt: moment(),
+            createdAt: await moment().toDate(),
         })        
 
         client['added_by_uid'] = authentication.currentUser.uid
@@ -246,7 +246,8 @@ function Policies({cat, btn_txt, pol}) {
                 policyStartDate: moment(policyStartDate).toDate(), 
                 policyEndDate: moment(policyEndDate).toDate(),
                 category: cat,
-                totalValuation: await generateTotalValuation(stickers)
+                totalValuation: await generateTotalValuation(stickers),
+                createdAt: await moment().toDate(),
             }
         )
     }    
