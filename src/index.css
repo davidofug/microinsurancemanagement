@@ -109,6 +109,7 @@ body{
     background-color: #fff;
     margin-top: 60px;
     border-radius: 10px;
+    position: relative;
 }
 
 
@@ -581,6 +582,16 @@ left: auto;
     background-color: #1475cf;
     color: #fff;
     border-radius: 3px;
+}
+
+
+.loader-wrapper{
+    z-index: 1000;
+    position: absolute;
+    width: 100%;
+    background: rgba(245,245,245,0.8);
+    height: 100%;
+    display: flex;
 }
 
 

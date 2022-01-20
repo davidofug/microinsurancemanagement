@@ -12,35 +12,40 @@ import { MdLogout } from 'react-icons/md'
 import DefaultAvatar from '../../components/DefaultAvatar'
 import { Badge } from 'react-bootstrap'
 import { ImProfile } from 'react-icons/im'
+import useAuth from '../../contexts/Auth'
 
 function AgentMenu({setLargeContentClass, largeContentClass}) {
 
-    const { Agent } = menuData
+    const { Agent_mtp } = menuData
 
-    const [ selected, setSelected ] = useState({ activeObject: null, Agent })
+    const [ selected, setSelected ] = useState({ activeObject: null, Agent_mtp })
     const [ toggleMenu, setToggeMenu ] = useState(true)
+
+    const { authClaims } = useAuth()
 
     useEffect(() => {
         if(sessionStorage.getItem('session1')){
-            setSelected({...selected, activeObject: selected.Agent[sessionStorage.getItem('session1')-1]})
+            setSelected({...selected, activeObject: selected.Agent_mtp[sessionStorage.getItem('session1')-1]})
         }else{
-            setSelected({...selected, activeObject: selected.Agent[0]})
+            setSelected({...selected, activeObject: selected.Agent_mtp[0]})
         }
         
     }, [])
     
     const toggleActive = index => {
-        setSelected({...selected, activeObject: selected.Agent[index]})
-        sessionStorage.setItem('session1', selected.Agent[index]["number"])
+        setSelected({...selected, activeObject: selected.Agent_mtp[index]})
+        sessionStorage.setItem('session1', selected.Agent_mtp[index]["number"])
     }
 
-    const toggleActiveClassStyle = index => selected.Agent[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
+    const toggleActiveClassStyle = index => selected.Agent_mtp[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
 
     const [ openFooterContext, setOpenFooterContext ] = useState(false)
 
+    console.log(authClaims)
+
     return (
         <div className='menuSide'>
-            <MobileNav role={Agent} user="agent" displayName={authentication?.currentUser?.displayName}/>
+            <MobileNav role={Agent_mtp} user="agent" displayName={authentication?.currentUser?.displayName}/>
             {toggleMenu === true 
             ?
                     <nav className="sidebar">
@@ -56,7 +61,7 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                                     
                             </div>
                         </div>
-                        <SideBar role={Agent} user="agent" displayName={authentication?.currentUser?.displayName} />
+                        <SideBar role={Agent_mtp} user="agent" displayName={authentication?.currentUser?.displayName} />
 
                         <footer>
                             {/* <Link to='/admin/settings'> */}
@@ -91,7 +96,7 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                         
                 </div>
                 </section>
-                <MinimisedSideBar role={Agent}/>
+                <MinimisedSideBar role={Agent_mtp}/>
                 <footer>
                         <ul>
                             <li><Link to="/admin/settings">Settings</Link></li>
