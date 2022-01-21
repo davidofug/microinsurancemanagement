@@ -10,23 +10,25 @@ import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import Loader from '../components/Loader'
 import { authentication } from '../helpers/firebase'
+import moment from 'moment'
 
 function Dashboard() {
     const [clients, setClients] = useState([]);
     const [claims, setClaims] = useState([])
-    const [stickers, setStickers] = useState(13)
+    const [stickers, setStickers] = useState(0)
     // const [policies, setPolicies] = useState(2)
     const [claimNotifications, setClaimNotifications] = useState(0)
     const { authClaims } = useAuth()
     const claimsCollectionRef = collection(db, "claims");
 
-    useEffect(() => {
+    useEffect(async () => {
         document.title = 'Britam - Dashboard'
         getClaims()
         getClients()
         getAgents()
         getAdmins()
         getPolicies()
+        setStickers(handlePolicyStickers(await getPolicies()))
     }, [])
 
     // policies
@@ -38,6 +40,7 @@ function Dashboard() {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         setPolicies(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+        return(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
     }
 
     // clients
@@ -84,6 +87,15 @@ function Dashboard() {
         setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid))
     };
 
+    // Total number of stickers
+    const handlePolicyStickers = (pols) => {
+        let sum = 0
+        pols.forEach( pol =>  {
+            sum += pol.stickersDetails.length
+        })
+        return sum     
+    }
+
     return (
             <div className='components'>
                 <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" />
@@ -113,7 +125,7 @@ function Dashboard() {
                                     <div className="col">
                                         <div className="custom-card" style={{backgroundColor:"#C82E29"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${policies.length}`}</div>
+                                                <div className="statistics">{stickers}</div>
                                                 <div className="card-text">Stickers</div>
                                             </Card.Body>
                                         </div>
