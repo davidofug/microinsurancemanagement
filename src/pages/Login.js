@@ -113,6 +113,7 @@ function Login() {
           <div id="password">
             <input
               type={password}
+              autoComplete="off"
               placeholder="Enter password"
               name=""
               id="password_input"

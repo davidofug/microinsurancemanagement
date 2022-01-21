@@ -1,84 +1,63 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState, Fragment } from 'react'
-import data from '../helpers/mock-data.json'
-import { EditableDatable } from '../helpers/DataTable';
+import { useEffect, useState } from 'react'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar'
 import Header from '../components/header/Header';
-import { functions, db } from '../helpers/firebase';
+import { functions, authentication } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table } from 'react-bootstrap'
-import { FaEllipsisV } from "react-icons/fa";
-import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 import useAuth from '../contexts/Auth';
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import Loader from '../components/Loader';
 
 function Agents() {
 
-    useEffect(() => {
-      document.title = 'Britam - Agents'
-
-      getAgents()
-      getUsersMeta()
-    }, [])
-    const [agents, setAgents] = useState([]);
-    const [meta, setMeta] = useState([])
-    const metaCollectionRef = collection(db, "usermeta");
-
-  const [editContactId, setEditContactId] = useState(null);
+  useEffect(() => {document.title = 'Britam - Agents';getAgents()}, [])
+  
   const { authClaims } = useAuth()
-
+  
+  // get agents
+  const [agents, setAgents] = useState([]);
   const getAgents = () => {
     const listUsers = httpsCallable(functions, 'listUsers')
-      listUsers().then((results) => {
-          const resultsArray = results.data
-          const myUsers = resultsArray.filter(user => user.role.agent === true)
-          setAgents(myUsers)
-      }).catch((err) => {
-          console.log(err)
-      })
+    if(authClaims.supervisor){
+      listUsers().then(({data}) => {
+          const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid)
+          setAgents(myAgents)
+      }).catch()
+    } else{
+      listUsers().then(({data}) => {
+        const myAgents = data.filter(user => user.role.agent === true)
+        setAgents(myAgents)
+    }).catch()
+    }
   }
 
-  const getUsersMeta = async () => {
-    const data = await getDocs(metaCollectionRef);
-    setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
+  // search for agent
+  const [searchText, setSearchText] = useState('')
+  const handleSearch = ({ target: {value} }) => setSearchText(value);
+  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
 
 
-  //
-
-    //
+    // Pagination
     const [ currentPage, setCurrentPage ] = useState(1)
-    const [employeesPerPage] = useState(10)
+    const [clientsPerPage] = useState(10)
+    const indexOfLastAgent = currentPage * clientsPerPage
+    const indexOfFirstClient = indexOfLastAgent - clientsPerPage
+    const currentAgents = !agents || searchByName(agents).slice(indexOfFirstClient, indexOfLastAgent)
+    const totalPagesNum = !agents || Math.ceil(agents.length / clientsPerPage)
 
-    const indexOfLastEmployee = currentPage * employeesPerPage
-    const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage
-    const currentAgents = agents.slice(indexOfFirstEmployee, indexOfLastEmployee)
-    const totalPagesNum = Math.ceil(agents.length / employeesPerPage)
-
+    // delete agent
     const handleDelete = async (id) => {
       const deleteUser = httpsCallable(functions, 'deleteUser')
       deleteUser({uid:id}).then().catch(err => {
         console.log(err)
       })
-  
-      const userMetaDoc = doc(db, "usermeta", id);
-      await deleteDoc(userMetaDoc);
-
       getAgents()
-      getUsersMeta()
     };
-
-    const [q, setQ] = useState('');
-
-    const columns = ["id", "contact", "contact", "name", "gender", "contact", "email", "createdAt"]
-    const search = rows => rows.filter(row =>
-        columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
-
-        const handleSearch = ({target}) => setQ(target.value)
 
     
     // actions context
@@ -109,9 +88,12 @@ function Agents() {
                 }
             </div>
 
-              <div className="shadow-sm table-card componentsData">   
+            {agents !== null && agents.length > 0
+            ?
+              <>
+                <div className="shadow-sm table-card componentsData">   
                 <div id="search">
-                <SearchBar placeholder={"Search for agent"} value={q} handleSearch={handleSearch}/>
+                <SearchBar placeholder={"Search for agent"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
                     <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>
@@ -126,13 +108,9 @@ function Agents() {
                               <td>{index + 1}</td>
                               <td>{agent.name}</td>
                               <td>{agent.email}</td>
-                              {meta.filter(user => user.id == agent.uid).map(user => (
-                                <Fragment key={user.id}>
-                                  <td>{user.gender}</td>
-                                  <td>{user.phone}</td>
-                                  <td>{user.address}</td>
-                                </Fragment>
-                              ))}
+                              <td>{agent.meta.gender}</td>
+                              <td>{agent.meta.phone}</td>
+                              <td>{agent.meta.address}</td>
                               
                               <td className="started">
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
@@ -188,6 +166,12 @@ function Agents() {
 
                
             </div>
+              </>
+            :
+              <Loader />
+            }
+
+              
         </div>
     )
 }
