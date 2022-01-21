@@ -63,11 +63,9 @@ function BarChart () {
             
             const listUsers = httpsCallable(functions,'listUsers')
             listUsers().then(({ data }) => {
-                console.log(data)
                 if(authClaims?.supervisor) {
                     const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
                     return agentsIDs
-                    // console.log(authentication.currentUser.uid)
 
                 } else if (authClaims?.admin) {
                     const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
@@ -85,13 +83,12 @@ function BarChart () {
                 } else if (authClaims?.agent) {
                     return[authentication.currentUser.uid]
                 }
+
             }).then(async (userIDs) =>{
                 const policies = await getPolicies(collection(db, 'policies'))
-                // console.log(policies)
-                // console.log(userIDs)
                 return policies.filter(policy => userIDs.includes(policy.added_by_uid))
+
             }).then((policyArray) => {
-                console.log(policyArray)
                 let obj = {
                     January: 0,
                     February: 0,
@@ -112,7 +109,6 @@ function BarChart () {
                     if(policy?.createdAt) {
                         const { createdAt } = policy
                         const date = new Date(createdAt.seconds)
-                        console.log(date)
                         switch(date.getMonth()) {
                             case 0:
                                 obj.January += policy.stickersDetails.length
@@ -152,18 +148,9 @@ function BarChart () {
                                 break;     
                         }
                     }
-                    console.log(obj)
+                    setSales(obj)
                 })
-
-
-                // console.log(policiesByCurrentUser)
-                // policiesByCurrentUser.forEach(policy => {
-                //     stickers += policy?.stickersDetails?.length
-                // })
-                // console.log(stickers)
-
-            })
-            .catch((error) => {
+            }).catch((error) => {
                 console.log(error)
             })
         }, [])
@@ -174,61 +161,6 @@ function BarChart () {
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         return allPolicies
     }
-
-   
-    
-    const generateGraphData = async (policyArray, obj={...monthlySales}) => {
-        // console.log(policyArray)
-        policyArray.forEach( policy => {
-            const {created_at} = policy
-            if(policy?.created_at ) {
-                const { created_at } = policy
-                switch(moment.unix(created_at.seconds).toDate().getMonth()) {
-                    case 0:
-                        obj.January += policy.stickersDetails.length
-                        break;
-                    case 1:
-                        obj.February += policy.stickersDetails.length
-                        break;
-                    case 2:
-                        obj.March += policy.stickersDetails.length
-                        break;
-                    case 3:
-                        obj.April += policy.stickersDetails.length
-                        break;
-                    case 4: 
-                        obj.May += policy.stickersDetails.length
-                        break;
-                    case 5:
-                        obj.June += policy.stickerDetails.length
-                        break;
-                    case 6: 
-                        obj.July += policy.stickerDetails.length
-                        break;
-                    case 7:
-                        obj.August += policy.stickerDetails.length
-                        break;
-                    case 8:
-                        obj.September += policy.stickerDetails.length
-                        break;
-                    case 9: 
-                        obj.October += policy.StickerDetails.length
-                        break;
-                    case 10:
-                        obj.November += policy.StickerDetails.length
-                        break;
-                    case 11: 
-                        obj.December += policy.StickerDetails.length
-                        break;     
-                }
-            }
-            console.log(obj)
-            console.log(moment.unix(created_at))
-        })
-        
-        return obj
-    }
-
 
     const labels = Object.keys(sales)
     ChartJS.register (
