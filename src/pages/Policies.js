@@ -185,7 +185,6 @@ function Policies({cat, btn_txt, pol}) {
 
     // firebase collections
     const policiesRef = collection(db, "policies")
-    const created_at = moment().toString()
 
     //createPolicies
     const handleSubmit = async(event) => {
@@ -202,7 +201,6 @@ function Policies({cat, btn_txt, pol}) {
             policyEndDate: policyEndDate,
             category: cat,
             totalValuation: await generateTotalValuation(stickers),
-            created_at: created_at,
         })        
 
         client['added_by_uid'] = authentication.currentUser.uid
@@ -248,7 +246,6 @@ function Policies({cat, btn_txt, pol}) {
                 policyEndDate: moment(policyEndDate).toDate(),
                 category: cat,
                 totalValuation: await generateTotalValuation(stickers),
-                created_at: created_at,
             }
         )
     }    

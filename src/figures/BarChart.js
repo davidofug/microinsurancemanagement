@@ -21,7 +21,8 @@ import useAuth from '../contexts/Auth'
 
 function BarChart () {
     const { authClaims } = useAuth()
-    // const [ users, setUsers ] = useState([]) 
+    const [ userIDs, setUserIDs ] = useState([])
+
     const [ sales, setSales ] = useState(
         {
             January: 0,
@@ -57,16 +58,16 @@ function BarChart () {
 
     
     useEffect(
-        async(obj=monthlySales) => {
-            setSales(await generateGraphData(await getPolicies(collection(db, "policies"))))
+        async() => {
+            // setSales(await generateGraphData(await getPolicies(collection(db, "policies"))))
             
             const listUsers = httpsCallable(functions,'listUsers')
             listUsers().then(({ data }) => {
                 console.log(data)
                 if(authClaims?.supervisor) {
                     const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
-                    console.log(agentsIDs)
-                    console.log(authentication.currentUser.uid)
+                    return agentsIDs
+                    // console.log(authentication.currentUser.uid)
 
                 } else if (authClaims?.admin) {
                     const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
@@ -79,12 +80,90 @@ function BarChart () {
                     })
                     const agentBySupervisorsIDs = agentsBySupervisors.map(agentBySupervisor => agentBySupervisor.uid)
                     const usersIDsByAddedByAdmins = [...agentBySupervisorsIDs, ...agentsIDs]
-                    console.log(usersIDsByAddedByAdmins)
+                    return usersIDsByAddedByAdmins
                 
                 } else if (authClaims?.agent) {
-                    console.log([authentication.currentUser.uid])
+                    return[authentication.currentUser.uid]
                 }
-            }).catch((error) => {
+            }).then(async (userIDs) =>{
+                const policies = await getPolicies(collection(db, 'policies'))
+                // console.log(policies)
+                // console.log(userIDs)
+                return policies.filter(policy => userIDs.includes(policy.added_by_uid))
+            }).then((policyArray) => {
+                console.log(policyArray)
+                let obj = {
+                    January: 0,
+                    February: 0,
+                    March: 0,
+                    April: 0,
+                    May: 0,
+                    June: 0,
+                    July: 0,
+                    August: 0,
+                    September: 0,
+                    October: 0,
+                    November: 0,
+                    December: 0,
+                }
+
+                policyArray.forEach( policy => {
+                    const {createdAt} = policy
+                    if(policy?.createdAt) {
+                        const { createdAt } = policy
+                        const date = new Date(createdAt.seconds)
+                        console.log(date)
+                        switch(date.getMonth()) {
+                            case 0:
+                                obj.January += policy.stickersDetails.length
+                                break;
+                            case 1:
+                                obj.February += policy.stickersDetails.length
+                                break;
+                            case 2:
+                                obj.March += policy.stickersDetails.length
+                                break;
+                            case 3:
+                                obj.April += policy.stickersDetails.length
+                                break;
+                            case 4: 
+                                obj.May += policy.stickersDetails.length
+                                break;
+                            case 5:
+                                obj.June += policy.stickerDetails.length
+                                break;
+                            case 6: 
+                                obj.July += policy.stickerDetails.length
+                                break;
+                            case 7:
+                                obj.August += policy.stickerDetails.length
+                                break;
+                            case 8:
+                                obj.September += policy.stickerDetails.length
+                                break;
+                            case 9: 
+                                obj.October += policy.StickerDetails.length
+                                break;
+                            case 10:
+                                obj.November += policy.StickerDetails.length
+                                break;
+                            case 11: 
+                                obj.December += policy.StickerDetails.length
+                                break;     
+                        }
+                    }
+                    console.log(obj)
+                })
+
+
+                // console.log(policiesByCurrentUser)
+                // policiesByCurrentUser.forEach(policy => {
+                //     stickers += policy?.stickersDetails?.length
+                // })
+                // console.log(stickers)
+
+            })
+            .catch((error) => {
                 console.log(error)
             })
         }, [])
@@ -93,7 +172,7 @@ function BarChart () {
     const getPolicies = async (policyCollectionRef) => {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        return allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid)
+        return allPolicies
     }
 
    
