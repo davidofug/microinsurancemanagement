@@ -45,27 +45,36 @@ const [singleDoc, setSingleDoc] = useState(fields);
 
 const getSingleClient = async (id) => setSingleDoc(clients.filter(client => client.uid == id)[0])
 
-// getting clients
+// getting Clients under a particular user.
 const getClients = () => {
+  const listUsers = httpsCallable(functions, 'listUsers')
     if(authClaims.agent){
-      const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then(({data}) => {
           const myUsers = data.filter(user => user.role.Customer === true).filter(client => client.meta.added_by_uid === authentication.currentUser.uid)
           myUsers.length === 0 ? setClients(null) : setClients(myUsers)
-      }).catch((err) => {
-          console.log(err)
-      })
-    } else{
-      const listUsers = httpsCallable(functions, 'listUsers')
+      }).catch()
+    } else if(authClaims.supervisor){
       listUsers().then(({data}) => {
           const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
 
-          console.log(myAgents)
-          console.log(data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid))
-          
-          const myUsers = data.filter(user => user.role.Customer === true).filter(client => myAgents.includes(client.meta.added_by_uid) || client.meta.added_by_uid === authentication.currentUser.uid)
+          const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid ]
+
+          const myUsers = data.filter(user => user.role.Customer === true).filter(client => usersUnderSupervisor.includes(client.meta.added_by_uid))
           myUsers.length === 0 ? setClients(null) : setClients(myUsers)
-      }).catch((err) => {})
+      }).catch()
+    } else if(authClaims.admin) {
+      listUsers().then(({data}) => {
+          const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+          
+          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+
+          const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+
+          const usersUnderAdmin = [ ...myAgents, ...mySupervisors, ...agentsUnderMySupervisors, authentication.currentUser.uid ]
+
+          const myUsers = data.filter(user => user.role.Customer === true).filter(client => usersUnderAdmin.includes(client.meta.added_by_uid))
+          myUsers.length === 0 ? setClients(null) : setClients(myUsers)
+      }).catch()
     }
 }
 
