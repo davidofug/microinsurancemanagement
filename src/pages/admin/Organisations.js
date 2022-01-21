@@ -8,7 +8,6 @@ import SearchBar from "../../components/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
 import { collection, getDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
-import { FaEllipsisV } from "react-icons/fa";
 import OrganisationModal from "../../components/OrganisationModel";
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
@@ -115,8 +114,6 @@ export default function Organisations() {
       indexOfLastOrganisation
     );
     const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
-
-    console.log(organisations)
 
   return (
     <div className="components">
