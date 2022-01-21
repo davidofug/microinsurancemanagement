@@ -21,8 +21,6 @@ import useAuth from '../contexts/Auth'
 
 function BarChart () {
     const { authClaims } = useAuth()
-    const [ userIDs, setUserIDs ] = useState([])
-
     const [ sales, setSales ] = useState(
         {
             January: 0,
@@ -67,7 +65,6 @@ function BarChart () {
                 }
 
             }).then(async (userIDs) =>{
-                console.log(userIDs)
                 const policies = await getPolicies(collection(db, 'policies'))
                 return policies.filter(policy => userIDs.includes(policy.added_by_uid))
                 
@@ -136,7 +133,6 @@ function BarChart () {
                             }
                         }
                     }
-                    console.log(obj)
                 })
                 setSales(obj)
             }).catch((error) => {
