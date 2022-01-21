@@ -58,7 +58,12 @@ const getClients = () => {
     } else{
       const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then(({data}) => {
-          const myUsers = data.filter(user => user.role.Customer === true)
+          const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+
+          console.log(myAgents)
+          console.log(data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid))
+          
+          const myUsers = data.filter(user => user.role.Customer === true).filter(client => myAgents.includes(client.meta.added_by_uid) || client.meta.added_by_uid === authentication.currentUser.uid)
           myUsers.length === 0 ? setClients(null) : setClients(myUsers)
       }).catch((err) => {})
     }
