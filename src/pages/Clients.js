@@ -239,8 +239,8 @@ const getClients = () => {
                 :
                 <div className="no-table-data">
                   <i><ImFilesEmpty /></i>
-                  <h4>No data yet</h4>
-                  <p>You have not created any Motor Third Party Stickers Yet</p>
+                  <h4>No match</h4>
+                  <p>There is not current match for client's name</p>
                 </div>
                 }
                 </div>
@@ -250,7 +250,7 @@ const getClients = () => {
               <div className="no-table-data">
                 <i><ImFilesEmpty /></i>
                 <h4>No data yet</h4>
-                <p>You have not created any Motor Third Party Stickers Yet</p>
+                <p>You have not added any client Yet</p>
               </div>
             :
               <Loader />
