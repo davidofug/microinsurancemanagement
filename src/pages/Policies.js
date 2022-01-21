@@ -185,9 +185,10 @@ function Policies({cat, btn_txt, pol}) {
 
     // firebase collections
     const policiesRef = collection(db, "policies")
-
+    
     //createPolicies
     const handleSubmit = async(event) => {
+        const created_at = moment().toString()
         event.preventDefault()
         const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client
     
@@ -201,6 +202,7 @@ function Policies({cat, btn_txt, pol}) {
             policyEndDate: policyEndDate,
             category: cat,
             totalValuation: await generateTotalValuation(stickers),
+            createdAt: created_at
         })        
 
         client['added_by_uid'] = authentication.currentUser.uid
