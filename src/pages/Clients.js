@@ -1,16 +1,14 @@
 import { CSVLink } from 'react-csv'
 import { Link } from 'react-router-dom'
-import { useEffect, useState, Fragment } from 'react'
+import { useEffect, useState } from 'react'
 import { MdDownload } from 'react-icons/md'
 import Header from '../components/header/Header';
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar';
 import { Table } from 'react-bootstrap';
-import { FaEllipsisV } from "react-icons/fa";
-import { functions, db } from '../helpers/firebase';
+import { functions, authentication } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
-import { getDoc, getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 import ClientModal from '../components/ClientModal'
 import { Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm';
@@ -21,21 +19,14 @@ import { ImFilesEmpty } from 'react-icons/im'
 
 export default function Clients() {
 
-  useEffect(() => 
-    {
-      document.title = 'Britam - Clients'
-      getClients()
-  }, [])
+  useEffect(() => {document.title = 'Britam - Clients';getClients()}, [])
 
   const { authClaims } = useAuth()
   const [clients, setClients] = useState([]);
-  const [meta, setMeta] = useState([])
-  const metaCollectionRef = collection(db, "usermeta");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [editID, setEditID] = useState(null);
-  const [searchText, setSearchText] = useState('')
 
   const [fields, handleFieldChange] = useForm({
     user_role: 'Customer',
@@ -47,28 +38,31 @@ export default function Clients() {
     address: '',
     licenseNo: '',
     NIN: '',
-    photo: '',
+    photo: ''
 })
 
 const [singleDoc, setSingleDoc] = useState(fields);
 
 const getSingleClient = async (id) => setSingleDoc(clients.filter(client => client.uid == id)[0])
 
-
-  const getClients = () => {
+// getting clients
+const getClients = () => {
+    if(authClaims.agent){
       const listUsers = httpsCallable(functions, 'listUsers')
-      listUsers().then((results) => {
-          const resultsArray = results.data
-          const myUsers = resultsArray.filter(user => user.role.Customer === true)
-          if(myUsers.length === 0){
-            setClients(null)
-          }else{
-            setClients(myUsers)
-          }
+      listUsers().then(({data}) => {
+          const myUsers = data.filter(user => user.role.Customer === true).filter(client => client.meta.added_by_uid === authentication.currentUser.uid)
+          myUsers.length === 0 ? setClients(null) : setClients(myUsers)
       }).catch((err) => {
           console.log(err)
       })
-  }
+    } else{
+      const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then(({data}) => {
+          const myUsers = data.filter(user => user.role.Customer === true)
+          myUsers.length === 0 ? setClients(null) : setClients(myUsers)
+      }).catch((err) => {})
+    }
+}
 
   // Confirm Box
   const [ openToggle, setOpenToggle ] = useState(false)
@@ -80,30 +74,22 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
     }
   }
 
-  const getUsersMeta = async () => {
-    const data = await getDocs(metaCollectionRef);
-    setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
-
-  
-
-
+  // deleting a user
+  const [ deleteName, setDeleteName ] = useState("")
   const handleDelete = async (id) => {
     const deleteUser = httpsCallable(functions, 'deleteUser')
-    deleteUser({uid:id}).then(
-      () => console.log("done")
-    ).catch(err => {
-      console.log(err)
-    })
+    deleteUser({uid:id}).then().catch()
   };
 
-  const handleSearch = ({ target }) => setSearchText(target.value);
+  // search for client
+  const [searchText, setSearchText] = useState('')
+  const handleSearch = ({ target: {value} }) => setSearchText(value);
   const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
 
   // actions context
   const [showContext, setShowContext] = useState(false)
-  if(showContext === true){
+  if(showContext){
     window.onclick = function(event) {
         if (!event.target.matches('.sharebtn')) {
             setShowContext(false)
@@ -112,22 +98,13 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
   }
   const [clickedIndex, setClickedIndex] = useState(null)
 
-  // const [ deleteName, setDeleteName ] = useState('')
-  // const getPolicy = async (id) => {
-  //   const policyDoc = doc(db, "policies", id);
-  //   return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
-  // }
-
   // pagination
   const [ currentPage, setCurrentPage ] = useState(1)
   const [clientsPerPage] = useState(10)
-
   const indexOfLastClient = currentPage * clientsPerPage
   const indexOfFirstClient = indexOfLastClient - clientsPerPage
   const currentClients = !clients || searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
   const totalPagesNum = !clients || Math.ceil(clients.length / clientsPerPage)
-
-  console.log(clients)
 
     return (
         <div className='components'>
@@ -150,14 +127,14 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
             <div className={openToggle ? 'myModal is-active': 'myModal'}>
               <div className="modal__content wack">
                 <h1 className='wack'>Confirm</h1>
-                <p className='wack'>Are you sure you want to delete </p>
+                <p className='wack'>Are you sure you want to delete <b>{deleteName}</b></p>
                 <div className="buttonContainer wack" >
                   <button id="yesButton" onClick={() => {
                     setOpenToggle(false)
                     handleDelete(editID)
                     getClients()
                     }} className='wack'>Yes</button>
-                  <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+                  <button id="noButton" onClick={() => {setOpenToggle(false); setDeleteName("")}} className='wack'>No</button>
                 </div>
               </div>
             </div>
@@ -202,6 +179,7 @@ const getSingleClient = async (id) => setSingleDoc(clients.filter(client => clie
                                           setOpenToggle(true)
                                           setEditID(client.uid);
                                           setShowContext(false)
+                                          setDeleteName(client.name)
                                         }}
                                 >
                                   <div className="actionDiv">
