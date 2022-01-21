@@ -8,6 +8,7 @@ import Upload from '../components/uploader/Upload'
 import Header from '../components/header/Header'
 import { useForm } from '../hooks/useForm'
 import useAuth from '../contexts/Auth'
+import Loader from '../components/Loader'
 
 function AddUsers() {
     const { authClaims } = useAuth()
@@ -17,6 +18,8 @@ function AddUsers() {
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
     const [mtp, setMTP] = useState(false)
+
+    const [ isLoading, setIsLoading ] = useState(false)
 
     const [showOrganisation, setShowOrganisation] = useState(false)
 
@@ -47,6 +50,7 @@ function AddUsers() {
 
 
     const handleSubmit = (event) => {
+        setIsLoading(true)
         event.preventDefault()
         if(comprehensive) fields['comprehensive'] = true
         if(mtp) fields['mtp'] = true
@@ -57,9 +61,9 @@ function AddUsers() {
 
 
         addUser(fields).then((results) => {
-            alert(`successfully added ${fields.name}`)
+            setIsLoading(false)
             document.form3.reset()
-        }).catch((err) => {
+        }).then(() => alert(`successfully added ${fields.name}`)).catch((err) => {
             console.log(err)
         })
 
@@ -67,16 +71,22 @@ function AddUsers() {
 
     const { user_role } = fields
 
+    console.log(fields)
     
 
     return (
         <div className='components'>
             <Header title="Add User" subtitle="ADD A NEW USER" />
-            <div class="shadow-sm table-card">
+            <div className="addComponentsData shadow-sm">
+                    {isLoading && 
+                        <div className='loader-wrapper'>
+                            <Loader />
+                        </div>
+                    }
                     <Form name='form3' onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
-                            <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange}>
+                            <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange} required>
                                 <option value="hide">--User Role--</option>
                                 {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
                                 {authClaims.superadmin && <option value="admin">Admin</option>}
@@ -88,17 +98,17 @@ function AddUsers() {
                         { user_role === 'supervisor' && 
                             <Form.Group className="mb-3" >
                                 <Form.Label htmlFor='organisation'>Organisation<span className='required'>*</span></Form.Label>
-                                <Form.Control id="organisation" placeholder="organisation" onChange={handleFieldChange} />
+                                <Form.Control id="organisation" placeholder="organisation" onChange={handleFieldChange} required/>
                             </Form.Group>
                         }
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
-                            <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} />
+                            <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
                         </Form.Group>
                         <Row className="mb-3">
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='dob'>Date of birth</Form.Label>
-                            <Form.Control type="date" id="dob" onChange={handleFieldChange} />
+                            <Form.Control type="date" id="dob" onChange={handleFieldChange} required/>
                             </Form.Group>
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
@@ -117,12 +127,12 @@ function AddUsers() {
 
                         <Row className="mb-3">
                             <Form.Group as={Col} className='addFormGroups'>
-                                <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                <Form.Label htmlFor='email'>Email Address <span className='required'>*</span></Form.Label>
                                 <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
                             </Form.Group>
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
-                                <Form.Control type="tel" id="phone" placeholder="Enter phone number"  onChange={handleFieldChange}/>
+                                <Form.Control type="tel" id="phone" placeholder="Enter phone number"  onChange={handleFieldChange} required/>
                             </Form.Group>
                         </Row>
                         <Form.Group className="mb-3" >
@@ -163,7 +173,13 @@ function AddUsers() {
                     }
                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
                         <Upload />
-                    <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' /></div>
+
+                    {fields.name !== "" & fields.email !== ""
+                    ?
+                        <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' /></div>
+                    :
+                        <div id='submit' ><input type="button" value="Submit" className='btn btn-primary cta submitcta' style={{background: "rgba(20, 117, 207, 0.4)", border: "1px solid #a1c8ec"}}/></div>
+                    }
                     </Form>
             </div>
         </div>

@@ -10,6 +10,7 @@ import { authentication } from '../../helpers/firebase'
 import Pagination from '../../helpers/Pagination';
 import Loader from '../../components/Loader';
 import { ImFilesEmpty } from 'react-icons/im'
+import { currencyFormatter } from "../../helpers/currency.format";
 
 function Reports() {
 
@@ -49,19 +50,26 @@ function Reports() {
     const currentPolicies = !policies || searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
     const totalPagesNum = !policies || Math.ceil(policies.length / policiesPerPage)
 
+    let basicTotal = 0
+    let trainingLevyTotal = 0
+    let totalPremiumTotal = 0
+
+    console.log(policies)
+
     return (
         <div className='components'>
             <Header title="Reports" subtitle="AGENT ISSUED STICKER REPORTS" />
 
                 
-                <div className="componentsData " style={{"maxWidth": "80vw"}}>
-                    <div className="table-card">
+                
 
                         {policies !== null && policies.length > 0 
                         ?
                             <>
+                            <div className="componentsData " style={{"maxWidth": "80vw"}}>
+                    <div className="table-card">
                                 <div id="search">
-                            <SearchBar placeholder={"Search Reports by Holder"} value={searchText} handleSearch={handleSearch}/>
+                            <SearchBar placeholder={"Search Reports by Policy Holder"} value={searchText} handleSearch={handleSearch}/>
                                 <div></div>
                                 <CSVLink
                                 data={policies}
@@ -72,7 +80,7 @@ function Reports() {
                                 Export <MdDownload />
                             </CSVLink>
                 
-                        </div>
+                            </div>
 
                         <Table responsive hover striped bordered>
                         <thead>
@@ -82,7 +90,11 @@ function Reports() {
                         </thead>
 
                         <tbody>
-                        {policies && currentPolicies.map((policy, index) => (
+                        {policies && currentPolicies.map((policy, index) => {
+                            {basicTotal += +policy.stickersDetails[0].basicPremium}
+                            {trainingLevyTotal += +policy.stickersDetails[0].trainingLevy}
+                            {totalPremiumTotal += +policy.stickersDetails[0].totalPremium}
+                            return (
                             <tr key={policy.id}>
                                 <td>{indexOfFirstPolicy + index + 1}</td>
                                 {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
@@ -96,23 +108,24 @@ function Reports() {
                                 <td>{policy.policyStartDate}</td>
                                 <td>{policy.policyEndDate}</td>
                                 <td>1 YR(s)</td>
-                                {policy.stickersDetails && <td>{policy.stickersDetails[0].basicPremium}</td>}
-                                {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                                {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].basicPremium)}</td>}
+                                {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].trainingLevy)}</td>}
                                 <td>6,000</td>
-                                {policy.stickersDetails && <td>{policy.stickersDetails[0].vat}</td>}
-                                {policy.stickersDetails && <td>{policy.stickersDetails[0].stampDuty}</td>}
+                                {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].vat)}</td>}
+                                {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].stampDuty)}</td>}
                                 <td>2,191</td>
-                                {policy.stickersDetails && <td>{policy.stickersDetails[0].totalPremium}</td>}
+                                {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
                                 <td></td>
                                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                             </tr>
-                        ))
+                        )})
                         }
                         </tbody>
 
                         <tfoot>
                             <tr>
-                                <th>#</th><th>Policy Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
+                            <th colSpan={12}>Grand Total</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevyTotal)}</th>
+                            <th></th><th></th><th></th><th></th><th>{currencyFormatter(totalPremiumTotal)}</th>
                             </tr>
                         </tfoot>
 
@@ -124,6 +137,9 @@ function Reports() {
                             currentClients={currentPolicies}
                             sortedEmployees={policies}
                             entries={'Reports'} />
+                            </div>
+                
+                </div>
                             </>
                         :   
                             policies === null
@@ -139,9 +155,7 @@ function Reports() {
 
                         
 
-                    </div>
-                
-                </div>
+                    
         </div>
     )
 }

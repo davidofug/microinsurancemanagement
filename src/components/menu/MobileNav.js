@@ -40,7 +40,7 @@ export default function MobileNav ({role, user, displayName}) {
                         <Offcanvas.Body>
                             <Nav className="justify-content-end flex-grow-1 pe-3">
                                 <ul className="nav flex-column">
-                                    { selected.role.map((menuItem, index) => (
+                                    { selected.role !== null && selected.role.map((menuItem, index) => (
                                         <li className='nav-item' key={menuItem.number}>
                                             <Link to={menuItem.link} className={toggleActiveClassStyle(index)} onClick={() => {
                                                 toggleActive(index)

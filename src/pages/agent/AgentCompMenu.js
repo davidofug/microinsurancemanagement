@@ -14,17 +14,17 @@ import { Badge } from 'react-bootstrap'
 import { ImProfile } from 'react-icons/im'
 import useAuth from '../../contexts/Auth'
 
-function AgentMenu({setLargeContentClass, largeContentClass}) {
+function AgentCompMenu({setLargeContentClass, largeContentClass}) {
 
-    const { Agent } = menuData
+    const { Agent_comprehensive } = menuData
 
-    const [ selected, setSelected ] = useState({ activeObject: null, Agent })
+    const [ selected, setSelected ] = useState({ activeObject: null, Agent_comprehensive })
     const [ toggleMenu, setToggeMenu ] = useState(true)
     const [ openFooterContext, setOpenFooterContext ] = useState(false)
 
     return (
         <div className='menuSide'>
-            <MobileNav role={Agent} user="agent" displayName={authentication?.currentUser?.displayName}/>
+            <MobileNav role={Agent_comprehensive} user="agent" displayName={authentication?.currentUser?.displayName}/>
             {toggleMenu === true 
             ?
                     <nav className="sidebar">
@@ -40,7 +40,7 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                                     
                             </div>
                         </div>
-                        <SideBar role={Agent} user="agent" displayName={authentication?.currentUser?.displayName} />
+                        <SideBar role={Agent_comprehensive} user="agent" displayName={authentication?.currentUser?.displayName} />
 
                         <footer>
                             {/* <Link to='/admin/settings'> */}
@@ -75,7 +75,7 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                         
                 </div>
                 </section>
-                <MinimisedSideBar role={Agent}/>
+                <MinimisedSideBar role={Agent_comprehensive}/>
                 <footer>
                         <ul>
                             <li><Link to="/admin/settings">Settings</Link></li>
@@ -91,4 +91,4 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
     )
 }
 
-export default AgentMenu
+export default AgentCompMenu

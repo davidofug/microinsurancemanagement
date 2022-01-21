@@ -8,6 +8,7 @@ import Upload from '../../components/uploader/Upload'
 import Header from '../../components/header/Header'
 import { useForm } from '../../hooks/useForm'
 import useAuth from '../../contexts/Auth'
+import Loader from '../../components/Loader'
 
 function AddUsers() {
     const { authClaims } = useAuth()
@@ -17,6 +18,8 @@ function AddUsers() {
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
     const [mtp, setMTP] = useState(false)
+
+    const [ isLoading, setIsLoading ] = useState(false)
 
     const [fields, handleFieldChange] = useForm({
         added_by_uid: authentication.currentUser.uid,
@@ -32,7 +35,8 @@ function AddUsers() {
         photo: '',
     })
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
+        setIsLoading(true)
         event.preventDefault()
         if(comprehensive) fields['comprehensive'] = true
         if(mtp) fields['mtp'] = true
@@ -41,24 +45,31 @@ function AddUsers() {
         // fields['added_by_uid'] = authentication.currentUser.uid
         fields['added_by_name'] = authentication.currentUser.displayName
 
-        addUser(fields).then((results) => {
-            alert(`successfully added ${fields.name}`)
+        await addUser(fields).then((results) => {
+            setIsLoading(false)
             document.form4.reset()
-        }).catch((err) => {
+        }).then(() => alert(`successfully added ${fields.name}`)).catch((err) => {
             console.log(err)
         })
     }
 
     const { user_role } = fields
 
+    console.log(isLoading)
+
     return (
         <div className='components'>
             <Header title="Add Clients" subtitle="ADD A NEW CLIENT" />
             <div class="addComponentsData">
+                    {isLoading && 
+                        <div className='loader-wrapper'>
+                            <Loader />
+                        </div>
+                    }
                     <Form name='form4' onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
-                            <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} />
+                            <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required />
                         </Form.Group>
                         <Row className="mb-3">
                             <Form.Group as={Col} className='addFormGroups'>
@@ -87,7 +98,7 @@ function AddUsers() {
                             </Form.Group>
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
-                                <Form.Control type="tel" id="phone" placeholder="Enter phone number"  onChange={handleFieldChange}/>
+                                <Form.Control type="tel" id="phone" placeholder="Enter phone number"  onChange={handleFieldChange} required/>
                             </Form.Group>
                         </Row>
                         <Form.Group className="mb-3" >

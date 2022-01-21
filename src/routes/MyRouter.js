@@ -14,7 +14,11 @@ import AgentsRoutes from './AgentsRoutes'
 //different menus for different roles
 import AdminMenu from '../pages/admin/AdminMenu'
 import SupervisorMenu from '../pages/supervisor/SupervisorMenu'
+
 import AgentMenu from '../pages/agent/AgentMenu'
+import AgentMtpMenu from '../pages/agent/AgentMtpMenu'
+import AgentCompMenu from '../pages/agent/AgentCompMenu'
+
 import SuperAdminMenu from '../pages/superAdmin/SuperAdminMenu'
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
@@ -42,7 +46,9 @@ function MyRouter() {
                 <div className='MenuSide'>
                     {authClaims?.admin && <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.supervisor && <SupervisorMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
-                    {authClaims?.agent && <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                    {authClaims?.agent &&  <AgentMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                    {authClaims?.agent && authClaims?.mtp && !authClaims?.comprehensive &&  <AgentMtpMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                    {authClaims?.agent && !authClaims?.mtp && authClaims?.comprehensive &&  <AgentCompMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.superadmin && <SuperAdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                 </div>
                 </>
