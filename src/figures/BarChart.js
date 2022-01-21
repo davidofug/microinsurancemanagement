@@ -91,13 +91,9 @@ function BarChart () {
                     if(policy?.createdAt) {
                         const { createdAt } = policy
                         const date = new Date(createdAt)
+                        
                         const yearCreated = date.getFullYear()
-                        const currentYear = new Date().getFullYear()
-
-                        console.log(currentYear)
-                        console.log(yearCreated)
-
-                    
+                        const currentYear = new Date().getFullYear()   
 
                         if(yearCreated === currentYear) {
                             switch(date.getMonth()) {
