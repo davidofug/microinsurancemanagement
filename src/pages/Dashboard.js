@@ -40,7 +40,6 @@ function Dashboard() {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         setPolicies(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
-        console.log(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
         return(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
     }
 
