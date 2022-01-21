@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Header from '../components/header/Header';
-import { Table, Alert } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar'
-import { FaEllipsisV } from "react-icons/fa";
 import { getDoc, getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 import useAuth from '../contexts/Auth'
 import { authentication } from "../helpers/firebase";
+import Loader from '../components/Loader';
+import { ImFilesEmpty } from 'react-icons/im'
 
 function Comprehensive() {
 
@@ -112,8 +113,10 @@ function Comprehensive() {
             </div>
           </div>
 
-
-            <div className="shadow-sm table-card componentsData">   
+          {policies !== null && policies.length > 0
+          ?
+            <>
+              <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                     <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
@@ -196,6 +199,21 @@ function Comprehensive() {
 
                
             </div>
+            </>
+          :
+            policies === null
+            ?
+              <div className="no-table-data">
+                <i><ImFilesEmpty /></i>
+                <h4>No data yet</h4>
+                <p>You have not created any Comprehensive Stickers Yet</p>
+              </div>
+            :
+              <Loader />
+          }
+
+
+            
         </div>
     )
 }
