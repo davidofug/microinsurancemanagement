@@ -72,7 +72,6 @@ function BarChart () {
                 return policies.filter(policy => userIDs.includes(policy.added_by_uid))
                 
             }).then((policyArray) => {
-                console.log(policyArray)
                 let obj = {
                     January: 0,
                     February: 0,
