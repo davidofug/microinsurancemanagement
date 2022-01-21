@@ -1,11 +1,11 @@
 import logo from '../../assets/imgs/britam-logo2.png'
-import { Table } from 'react-bootstrap'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { getDoc, collection, doc} from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import './PolicyDetails.css'
+import { currencyFormatter } from '../../helpers/currency.format'
 
 function PolicyDetails() {
     useEffect(() => {
@@ -89,17 +89,17 @@ function PolicyDetails() {
                             <td>{policy.stickersDetails[0].vehicleUse}</td>
                             <td>
                                 <tr>
-                                    <button className='btn btn-warning'>Print Sticker</button>
+                                    <button className='btn btn-warning mb-2 mt-2'>Print Sticker</button>
                                 </tr>
                                 <tr>
-                                    <button className='btn btn-danger'>Cancel Sticker</button>
+                                    <button className='btn btn-danger mb-2'>Cancel Sticker</button>
                                 </tr>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <b>Cost of Insurance</b>
-                <p>Total Premium: <b>{policy.currency} </b><span>{policy.stickersDetails[0].totalPremium}</span></p>
+                <p>Total Premium: <b>{policy.currency} </b><span>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</span></p>
             </>
             }
 
