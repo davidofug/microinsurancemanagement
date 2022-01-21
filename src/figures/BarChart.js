@@ -141,8 +141,9 @@ function BarChart () {
                             }
                         }
                     }
-                    setSales(obj)
+                    console.log(obj)
                 })
+                setSales(obj)
             }).catch((error) => {
                 console.log(error)
             })
