@@ -319,7 +319,7 @@ const menuData = {
         },
         {
             number: 3,
-            name: "Comprehensiv",
+            name: "Comprehensive",
             icon: <MdDirectionsCarFilled />,
             link: "/agent/comprehensive"
         },
