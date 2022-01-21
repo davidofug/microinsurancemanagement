@@ -4,6 +4,9 @@ import { authentication } from '../helpers/firebase'
 import { getDocs, collection } from 'firebase/firestore'
 import { Bar } from 'react-chartjs-2'
 import moment from 'moment'
+import { httpsCallable } from 'firebase/functions'
+import { functions } from '../helpers/firebase'
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -13,8 +16,12 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import useAuth from '../contexts/Auth'
+
 
 function BarChart () {
+    const { authClaims } = useAuth()
+    // const [ users, setUsers ] = useState([]) 
     const [ sales, setSales ] = useState(
         {
             January: 0,
@@ -47,22 +54,52 @@ function BarChart () {
         December: 0,
     }
 
+
+    
     useEffect(
         async(obj=monthlySales) => {
-        setSales(await generateGraphData(await getPolicies(collection(db, "policies"))))
-    }, [])
+            setSales(await generateGraphData(await getPolicies(collection(db, "policies"))))
+            
+            const listUsers = httpsCallable(functions,'listUsers')
+            listUsers().then(({ data }) => {
+                console.log(data)
+                if(authClaims?.supervisor) {
+                    const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
+                    console.log(agentsIDs)
+                    console.log(authentication.currentUser.uid)
 
+                } else if (authClaims?.admin) {
+                    const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
+                    const supervisorIDs = data.filter( user => user?.role?.supervisor === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
+
+                    let agentsBySupervisors = []
+                    supervisorIDs.forEach(ID => {
+                        const agents = data.filter(user => user?.role?.agent === true && user?.meta?.added_by_uid === ID)
+                        agentsBySupervisors.push(...[...agents])   
+                    })
+                    const agentBySupervisorsIDs = agentsBySupervisors.map(agentBySupervisor => agentBySupervisor.uid)
+                    const usersIDsByAddedByAdmins = [...agentBySupervisorsIDs, ...agentsIDs]
+                    console.log(usersIDsByAddedByAdmins)
+                
+                } else if (authClaims?.agent) {
+                    console.log([authentication.currentUser.uid])
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
+        }, [])
+        
     
     const getPolicies = async (policyCollectionRef) => {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        console.log(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
         return allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid)
     }
 
+   
     
     const generateGraphData = async (policyArray, obj={...monthlySales}) => {
-        console.log(policyArray)
+        // console.log(policyArray)
         policyArray.forEach( policy => {
             const {created_at} = policy
             if(policy?.created_at ) {
