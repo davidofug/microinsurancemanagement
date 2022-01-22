@@ -18,6 +18,7 @@ import Agents from '../pages/Agents'
 import Logout from '../pages/Logout'
 import AddUsers from '../pages/AddUsers'
 import Admins from '../pages/superAdmin/Admins'
+import NewImport from '../pages/NewImport'
 
 
 function SuperAdminRoutes() {
@@ -70,6 +71,9 @@ function SuperAdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/superadmin/comprehensive" >
                 <Comprehensive />
+            </PrivateRoute>
+            <PrivateRoute path="/superadmin/new-import" >
+                <NewImport />
             </PrivateRoute>
             <PrivateRoute path="/super-add-clients" >
                 <AddClients />
