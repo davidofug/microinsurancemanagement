@@ -594,6 +594,27 @@ left: auto;
     display: flex;
 }
 
+@media print {
+    .top-container{
+        display: none;
+    }
+    .top-container-large{
+        display: none;
+    }
+
+    .hideOnPrint{
+        display: none;
+    }
+
+    #stickerPrint{
+        display: block;
+    }
+
+    .modal-content {
+        border: none;
+      }
+}
+
 
 
 
