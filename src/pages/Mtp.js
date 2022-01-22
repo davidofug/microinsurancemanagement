@@ -30,13 +30,13 @@ export default function Mtp() {
     const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     const mtpPolicies = policiesArray.filter(policy => policy.category === 'mtp')
     
-    // agent policies
+    // agent mtp policies
     if(authClaims.agent){
       const agentMtpPolicies = mtpPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid)
       agentMtpPolicies.length === 0 ? setPolicies(null) : setPolicies(agentMtpPolicies)
     }
 
-    // const [agents, setAgents] = useState([])
+    // supervisor mtp policies
     if(authClaims.supervisor){
       const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then(({data}) => {
@@ -47,11 +47,30 @@ export default function Mtp() {
         const supervisorMtpPolicies = mtpPolicies.filter(policy => usersUnderSupervisor.includes(policy.added_by_uid))
         supervisorMtpPolicies.length === 0 ? setPolicies(null) : setPolicies(supervisorMtpPolicies)
     })
-    
-      // const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
-      
-      // const supervisorMtpPolicies = mtpPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid)
-      // agentMtpPolicies.length === 0 ? setPolicies(null) : setPolicies(agentMtpPolicies)
+    }
+
+    // supervisor mtp policies
+    if(authClaims.admin){
+      const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then(({data}) => {
+        const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+
+        const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+
+        const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+        
+        const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
+
+        console.log(usersUnderAdmin)
+
+        const AdminMtpPolicies = mtpPolicies.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
+        AdminMtpPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminMtpPolicies)
+      })
+    }
+
+    // superAdmin mtp policies
+    if(authClaims.superadmin){
+      mtpPolicies === 0 ? setPolicies(null) : setPolicies(mtpPolicies)
     }
     
   }
