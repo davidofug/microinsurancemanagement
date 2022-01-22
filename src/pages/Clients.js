@@ -15,6 +15,7 @@ import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
+import useDialog from '../hooks/useDialog';
 
 export default function Clients() {
 
@@ -22,9 +23,7 @@ export default function Clients() {
 
   const { authClaims } = useAuth()
   const [clients, setClients] = useState([]);
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [ show, handleShow, handleClose ] = useDialog()
   const [editID, setEditID] = useState(null);
 
   const [fields, handleFieldChange] = useForm({
@@ -40,8 +39,8 @@ export default function Clients() {
     photo: ''
 })
 
+// edit client
 const [singleDoc, setSingleDoc] = useState(fields);
-
 const getSingleClient = async (id) => setSingleDoc(clients.filter(client => client.uid == id)[0])
 
 // getting Clients under a particular user.
@@ -78,13 +77,9 @@ const getClients = () => {
 }
 
   // Confirm Box
-  const [ openToggle, setOpenToggle ] = useState(false)
-  window.onclick = (event) => {
-    if(openToggle === true) {
-      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
-        setOpenToggle(false)
-    }
-    }
+  const [ openToggle, handleShowToggle, handleCloseToggle ] = useDialog()
+  window.onclick = ({target}) => {
+    if(openToggle) {if (!target.matches('.wack') && !target.matches('#myb')) {handleCloseToggle()}}
   }
 
   // deleting a user
@@ -101,11 +96,11 @@ const getClients = () => {
 
 
   // actions context
-  const [showContext, setShowContext] = useState(false)
+  const [ showContext, handleShowContext, handleCloseContext ] = useDialog()
   if(showContext){
     window.onclick = function(event) {
         if (!event.target.matches('.sharebtn')) {
-            setShowContext(false)
+            handleCloseContext()
         }
     }
   }
@@ -143,11 +138,11 @@ const getClients = () => {
                 <p className='wack'>Are you sure you want to delete <b>{deleteName}</b></p>
                 <div className="buttonContainer wack" >
                   <button id="yesButton" onClick={() => {
-                    setOpenToggle(false)
+                    handleCloseToggle()
                     handleDelete(editID)
                     getClients()
                     }} className='wack'>Yes</button>
-                  <button id="noButton" onClick={() => {setOpenToggle(false); setDeleteName("")}} className='wack'>No</button>
+                  <button id="noButton" onClick={() => {handleCloseToggle(); setDeleteName("")}} className='wack'>No</button>
                 </div>
               </div>
             </div>
@@ -185,13 +180,16 @@ const getClients = () => {
                             <td>{client.meta.phone}</td>
                             <td>{client.meta.address}</td>
               <td className="started">
-                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+                <button className="sharebtn" onClick={() => {
+                  setClickedIndex(index);
+                  showContext ? handleCloseContext() : handleShowContext() 
+                  }}>&#8942;</button>
 
                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                             <li onClick={() => {
-                                          setOpenToggle(true)
+                                          handleShowToggle()
                                           setEditID(client.uid);
-                                          setShowContext(false)
+                                          handleCloseContext()
                                           setDeleteName(client.name)
                                         }}
                                 >
@@ -200,7 +198,7 @@ const getClients = () => {
                                   </div>
                             </li>
                             <li onClick={() => {
-                                    setShowContext(false)
+                                    handleCloseContext()
                                     setEditID(client.uid);
                                     getSingleClient(client.uid)
                                     handleShow();
@@ -210,8 +208,7 @@ const getClients = () => {
                                     <i><MdEdit/></i> Edit
                                   </div>
                             </li>
-                            <li onClick={() => setShowContext(false)}
-                                >
+                            <li onClick={handleCloseContext}>
                                   <div className="actionDiv">
                                     <i><AiFillCloseCircle/></i> Close
                                   </div>
