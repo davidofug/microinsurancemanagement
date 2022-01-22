@@ -153,7 +153,7 @@ const getClients = () => {
             </div>
 
             <Modal show={show} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
             </Modal>
 
             {clients !== null && clients.length > 0
