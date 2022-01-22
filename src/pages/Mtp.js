@@ -92,7 +92,7 @@ export default function Mtp() {
   const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
   // delete a policy
-  const handleDelete = async id => {
+  const handleDelete = async (id) => {
     const policyDoc = doc(db, "policies", id);
     await deleteDoc(policyDoc);
   }
