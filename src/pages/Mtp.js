@@ -46,7 +46,7 @@ export default function Mtp() {
 
         const supervisorMtpPolicies = mtpPolicies.filter(policy => usersUnderSupervisor.includes(policy.added_by_uid))
         supervisorMtpPolicies.length === 0 ? setPolicies(null) : setPolicies(supervisorMtpPolicies)
-    })
+      })
     }
 
     // supervisor mtp policies
