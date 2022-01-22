@@ -14,7 +14,7 @@ import { ImFilesEmpty } from 'react-icons/im'
 import '../components/modal/ConfirmBox.css'
 import { httpsCallable } from 'firebase/functions';
 
-export default function Mtp() {
+export default function Windscreen() {
   useEffect(() => { document.title = "Britam - Windscreen"; getWindscreen()}, []);
 
   
@@ -24,19 +24,19 @@ export default function Mtp() {
   const policyCollectionRef = collection(db, "policies");
   const [editID, setEditID] = useState(null);
 
-  // getting mtps under a particular user.
+  // getting Windscreens under a particular user.
   const getWindscreen = async () => {
     const data = await getDocs(policyCollectionRef);
     const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     const windscreenPolicies = policiesArray.filter(policy => policy.category === 'windscreen')
     
-    // agent mtp policies
+    // agent Windscreen policies
     if(authClaims.agent){
       const agentWindscreenPolicies = windscreenPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid)
       agentWindscreenPolicies.length === 0 ? setPolicies(null) : setPolicies(agentWindscreenPolicies)
     }
 
-    // supervisor mtp policies
+    // supervisor Windscreen policies
     if(authClaims.supervisor){
       const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then(({data}) => {
@@ -49,7 +49,7 @@ export default function Mtp() {
       })
     }
 
-    // supervisor mtp policies
+    // supervisor Windscreen policies
     if(authClaims.admin){
       const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then(({data}) => {
@@ -66,7 +66,7 @@ export default function Mtp() {
       })
     }
 
-    // superAdmin mtp policies
+    // superAdmin Windscreen policies
     if(authClaims.superadmin){
       windscreenPolicies === 0 ? setPolicies(null) : setPolicies(windscreenPolicies)
     }
@@ -128,8 +128,8 @@ export default function Mtp() {
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-mtp">
-            <button className="btn btn-primary cta">Add MTP</button>
+          <Link to="/supervisor/add-Windscreen">
+            <button className="btn btn-primary cta">Add Windscreen</button>
           </Link>
         </div>
       }
@@ -137,8 +137,8 @@ export default function Mtp() {
       {authClaims.agent &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/agent/add-mtp">
-            <button className="btn btn-primary cta">Add MTP</button>
+          <Link to="/agent/add-Windscreen">
+            <button className="btn btn-primary cta">Add Windscreen</button>
           </Link>
         </div>
       }
