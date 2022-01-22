@@ -6,14 +6,15 @@ import { getDoc, collection, doc} from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import './PolicyDetails.css'
 import { currencyFormatter } from '../../helpers/currency.format'
+import { Modal } from 'react-bootstrap'
 
 function PolicyDetails() {
-    useEffect(() => {
-        document.title = "Britam - Sticker Details";
+    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP(id)}, []);
 
-        console.log(id)
-        getMTP(id)
-      }, []);
+    const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [editID, setEditID] = useState(null);
 
     const { id } = useParams()  
 
@@ -26,6 +27,8 @@ function PolicyDetails() {
         console.log(data.data())
         setPolicy(data.data())
       }
+
+      
     
     return (
         <div style={{margin: "30px"}}>
@@ -41,6 +44,25 @@ function PolicyDetails() {
                     {/* <span>{(policy.category).toUpperCase()}</span> */}
                 </div>
             </div>
+
+            
+            <Modal show={show} onHide={handleClose} className="hideOnPrint" >
+                <Modal.Header closeButton className='hideOnPrint'>
+                    <Modal.Title className='hideOnPrint'>Print Sticker</Modal.Title>
+                </Modal.Header>
+                <Modal.Body id="stickerPrint">
+                        <p>Number</p>
+                        <p>Sticker Details</p>
+                        <p>10,000</p>
+                </Modal.Body>
+                <Modal.Body className="hideOnPrint">
+                    <button className='btn btn-primary cta hideOnPrint' onClick={() => {
+                        window.print()
+                    }} >Print</button>
+                </Modal.Body>
+            </Modal>
+
+
 
             <div className='fromTo'>
                 <div id='from'>
@@ -89,7 +111,10 @@ function PolicyDetails() {
                             <td>{policy.stickersDetails[0].vehicleUse}</td>
                             <td>
                                 <tr>
-                                    <button className='btn btn-warning mb-2 mt-2'>Print Sticker</button>
+                                    <button className='btn btn-warning mb-2 mt-2' onClick={() => {
+                                        
+                                        handleShow()
+                                    }}>Print Sticker</button>
                                 </tr>
                                 <tr>
                                     <button className='btn btn-danger mb-2'>Cancel Sticker</button>

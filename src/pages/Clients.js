@@ -5,12 +5,11 @@ import { MdDownload } from 'react-icons/md'
 import Header from '../components/header/Header';
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar';
-import { Table } from 'react-bootstrap';
+import { Table, Modal } from 'react-bootstrap';
 import { functions, authentication } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
 import ClientModal from '../components/ClientModal'
-import { Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm';
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
