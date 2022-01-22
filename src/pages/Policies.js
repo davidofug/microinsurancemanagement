@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
@@ -16,6 +15,7 @@ import Upload from '../components/uploader/Upload';
 import { db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { authentication } from '../helpers/firebase'
+import { FaSolarPanel } from 'react-icons/fa'
 // import AddClient from '../parts/AddClient'
 // enlarging the size of + and -
 
@@ -40,12 +40,13 @@ function Policies({cat, btn_txt, pol}) {
         gender:'',
         phone:'',
         address:'',
-        NIN:''
+        NIN:'',
+        clientType: cat,
     })
 
     
     const [ comprehensiveClient, setComprehensiveClient ] = useState('') 
-    const [ comprehensiveClientInfo, setComprehensiveClientInfo ] = useState({})
+    const [ policyDisplayEndDate, setPolicyDisplayEndDate ] = useState()
 
     const [ newClient, handleClientDetails ] = useForm({
         user_role: 'Customer',
@@ -58,7 +59,8 @@ function Policies({cat, btn_txt, pol}) {
         licenseNo:'',
         NIN: '',
         TIN: '',
-        photo:''
+        photo:'',
+        clientType: cat,
     })
 
     const [ individualComprehensiveClient, handleIndividualComprehensiveClient ] = useForm({
@@ -72,14 +74,16 @@ function Policies({cat, btn_txt, pol}) {
         licenseNo:'',
         NIN: '',
         TIN: '',
-        photo:''    
+        photo:'',
+        clientType: cat,    
     })
 
     const [ corporateComprehensiveEntity, handleCoporateComprehensiveEntity ] = useForm({
         user_role: 'Customer', 
         email:'',
         name:'',
-        entityTIN:''
+        entityTIN:'',
+        clientType: cat,
     })
 
     const [ stickers, setStickers ] = useState([
@@ -97,7 +101,8 @@ function Policies({cat, btn_txt, pol}) {
             totalPremium:'',
             basicPremium:'',
             stickerFee:6000,
-            stampDuty:35000
+            stampDuty:35000, 
+            status: 'new'
         }
     ])
     
@@ -163,6 +168,7 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
+                status: 'new',
             }
         ])
     }
@@ -179,11 +185,12 @@ function Policies({cat, btn_txt, pol}) {
 
     // firebase collections
     const policiesRef = collection(db, "policies")
-
+    
     //createPolicies
     const handleSubmit = async(event) => {
+        const created_at = moment().toString()
         event.preventDefault()
-        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) : client
+        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client
     
         await addDoc(policiesRef, {
             currency,
@@ -194,7 +201,8 @@ function Policies({cat, btn_txt, pol}) {
             policyStartDate: policyStartDate, 
             policyEndDate: policyEndDate,
             category: cat,
-            totalValuation: await generateTotalValuation(stickers)
+            totalValuation: await generateTotalValuation(stickers),
+            createdAt: created_at
         })        
 
         client['added_by_uid'] = authentication.currentUser.uid
@@ -202,7 +210,7 @@ function Policies({cat, btn_txt, pol}) {
         
         
         addUser(clientInfo).then((results) => {
-            alert(`successfully added ${client.name}`)
+            alert(`Successfully created stickers and added ${clientInfo.name}`)
             document.policy.reset()
             setPolicyEndDate('')
             setPolicyStartDate('')
@@ -225,6 +233,7 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
+                status: 'new',
             }
         ])
 
@@ -235,19 +244,21 @@ function Policies({cat, btn_txt, pol}) {
                 clientDetails: cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) : client,
                 added_by_uid: authentication.currentUser.uid,
                 added_by_name: authentication.currentUser.displayName,  
-                policyStartDate: policyStartDate, 
-                policyEndDate: policyEndDate,
+                policyStartDate: moment(policyStartDate).toDate(), 
+                policyEndDate: moment(policyEndDate).toDate(),
                 category: cat,
-                totalValuation: await generateTotalValuation(stickers)
+                totalValuation: await generateTotalValuation(stickers),
             }
         )
     }    
 
     const handleComprehesiveClientInfo = async (type, individualClient, organisationInfo, contactInfo) => {
         if(type === "Individual") {
-            return await individualClient
+            return await {...individualClient, type: type}
         } else if (type === "Corporate Entity") {
-            return await { ...organisationInfo, contactPerson : contactInfo}
+            return await { ...organisationInfo, contactPerson : contactInfo, type: type}
+        } else if (type === "Existing") {
+            return await { ...client }
         }
     }
 
@@ -439,22 +450,44 @@ function Policies({cat, btn_txt, pol}) {
                             </h1>
                         </Row>
                         <Row>
-                            <Col className="client-details" md={3}>
-                                <Form.Group className="mb-3" controlId="clientDetails">
-                                    <Form.Control list="clientNames" placeholder='Existing client' id="existingClient"onChange={()=> {
-                                        const list = document.getElementById('clientNames')
-                                        for(let clientName = 0; clientName < list.options.length; clientName++) {
-                                            if(list.options[clientName].value === document.getElementById('existingClient').value) {
-                                                setClient(JSON.parse(list.options[clientName].getAttribute('data-value')))   
+                            {
+                                cat === "comprehensive" ? 
+                                <Col className="client-details" md={3}>
+                                    <Form.Group className="mb-3" controlId="clientDetails">
+                                        <Form.Control list="clientNames" placeholder='Existing comprehensive client' id="existingClient"onChange={()=> {
+                                            const list = document.getElementById('clientNames')
+                                            for(let clientName = 0; clientName < list.options.length; clientName++) {
+                                                if(list.options[clientName].value === document.getElementById('existingClient').value) {
+                                                    setClient(JSON.parse(list.options[clientName].getAttribute('data-value')))   
+                                                    setComprehensiveClient('Existing')
+                                                }
                                             }
-                                        }
-                                        console.log(client)
-                                    }}/>
-                                        <datalist id="clientNames" >
-                                            {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
-                                        </datalist> 
-                                </Form.Group>
-                            </Col>
+                                            console.log(client)
+                                        }}/>
+                                            <datalist id="clientNames" >
+                                                {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
+                                            </datalist> 
+                                    </Form.Group>
+                                </Col>
+                                :
+                                <Col className="client-details" md={3}>
+                                    <Form.Group className="mb-3" controlId="clientDetails">
+                                        <Form.Control list="clientNames" placeholder='Existing client' id="existingClient"onChange={()=> {
+                                            const list = document.getElementById('clientNames')
+                                            for(let clientName = 0; clientName < list.options.length; clientName++) {
+                                                if(list.options[clientName].value === document.getElementById('existingClient').value) {
+                                                    setClient(JSON.parse(list.options[clientName].getAttribute('data-value')))   
+                                                    
+                                                }
+                                            }
+                                            console.log(client)
+                                        }}/>
+                                            <datalist id="clientNames" >
+                                                {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
+                                            </datalist> 
+                                    </Form.Group>
+                                </Col>
+                            }
                             
                             
                             
@@ -478,7 +511,7 @@ function Policies({cat, btn_txt, pol}) {
                                             cat ==='comprehensive' ?
                                             <>
                                                 <Row> 
-                                                    <Form.Group controlId="motorClass" >
+                                                    <Form.Group controlId="motorClass" className="mb-3">
                                                         <Form.Select type="text" name="clientType" aria-label="clientType" onChange={(event) => {
                                                                 setComprehensiveClient(event.target.value)
                                                             }}>
@@ -492,9 +525,9 @@ function Policies({cat, btn_txt, pol}) {
                                                     comprehensiveClient === "Corporate Entity" 
                                                     &&
                                                     <>                                             
-                                                        <div>
+                                                        <h5>
                                                             Organisation Details
-                                                        </div>
+                                                        </h5>
                                                         <Form.Group className="mb-3" >
                                                             <Form.Label htmlFor='name'>Entity Name<span className='required'>*</span></Form.Label>
                                                             <Form.Control id="name" placeholder="Entity Name" value={corporateComprehensiveEntity.name} onChange={handleCoporateComprehensiveEntity} required/>
@@ -511,21 +544,21 @@ function Policies({cat, btn_txt, pol}) {
                                                         </Row>
 
                                                         <Row className="mb-3">
-                                                            <div>
+                                                            <h5>
                                                                 Contact person Details
-                                                            </div>
+                                                            </h5>
                                                             <Form.Group className="mb-3" >
                                                                 <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                                                                 <Form.Control id="name" placeholder="Contact Person" value={contactPerson.contactName} onChange={handleContactPerson} required/>
                                                             </Form.Group>
                                                             <Form.Group as={Col} className='addFormGroups'>
                                                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
-                                                                <div className='gender-options'>
-                                                                    <div>
-                                                                    <input type="radio" id="gender" value="male" className='addFormRadio' onChange={handleContactPerson}/>
+                                                                <div className='gender-options' style={{display:"flex", gap: "5px"}}>
+                                                                    <div style={{display: "flex", gap: "5px", alignItems: "center"}}>
+                                                                        <input type="radio" id="gender" value="male" className='addFormRadio' onChange={handleContactPerson}/>
                                                                         <label htmlFor="male">Male</label>
                                                                     </div>
-                                                                    <div>
+                                                                    <div style={{display: "flex", gap: "5px", alignItems:"center"}}>
                                                                         <input type="radio" name="gender" value="female" className='addFormRadio' onChange={handleContactPerson}/>
                                                                         <label htmlFor="female">Female</label>
                                                                     </div>
@@ -566,11 +599,11 @@ function Policies({cat, btn_txt, pol}) {
                                                             <Form.Group as={Col} className='addFormGroups'>
                                                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
                                                                 <div className='gender-options'>
-                                                                    <div>
-                                                                    <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleIndividualComprehensiveClient}/>
+                                                                    <div style={{display: "flex", gap: "5px", alignItems:"center"}}> 
+                                                                        <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleIndividualComprehensiveClient}/>
                                                                         <label htmlFor="male">Male</label>
                                                                     </div>
-                                                                    <div>
+                                                                    <div style={{display: "flex", gap: "5px", alignItems:"center"}}> 
                                                                         <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleIndividualComprehensiveClient}/>
                                                                         <label htmlFor="female">Female</label>
                                                                     </div>
@@ -623,11 +656,11 @@ function Policies({cat, btn_txt, pol}) {
                                                     <Form.Group as={Col} className='addFormGroups'>
                                                         <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
                                                         <div className='gender-options'>
-                                                            <div>
-                                                            <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleClientDetails}/>
+                                                            <div style={{display: "flex", gap: "5px", alignItems:"center"}}>
+                                                                <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleClientDetails}/>
                                                                 <label htmlFor="male">Male</label>
                                                             </div>
-                                                            <div>
+                                                            <div style={{display: "flex", gap: "5px", alignItems:"center"}}>
                                                                 <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleClientDetails}/>
                                                                 <label htmlFor="female">Female</label>
                                                             </div>
@@ -720,7 +753,9 @@ function Policies({cat, btn_txt, pol}) {
                                             <Form.Group controlId="policyStartDate"  >
                                                 <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                                 <Form.Control type="date" name="policy_start_date" value={policyStartDate} onChange={event=> {
-                                                    setPolicyEndDate(moment(event.target.value).add(1, 'years').subtract(1, 'days').calender())
+                                                    const end = moment(event.target.value).add(1, 'years').subtract(1, 'days').calendar()
+                                                    setPolicyEndDate(end)
+                                                    setPolicyDisplayEndDate(moment(end).format('DD/MM/YYYY'))   
                                                     setPolicyStartDate(event.target.value)
                                                 }}/>
                                             </Form.Group>
@@ -730,7 +765,7 @@ function Policies({cat, btn_txt, pol}) {
                                         <Col>
                                             <Form.Group controlId="policyEndDate" id="policy-end-date" >
                                                 <Form.Label><h5>Policy End Date</h5></Form.Label>
-                                                <Form.Control type="text" name="policy_start_date" value={ policyEndDate } readOnly/>
+                                                <Form.Control type="text" name="policy_start_date" value={ policyDisplayEndDate } readOnly/>
                                             </Form.Group>
                                         </Col>
                                     </Row>
@@ -742,7 +777,9 @@ function Policies({cat, btn_txt, pol}) {
                                             <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                             <Form.Control type="date" name="policy_start_date" value={policyStartDate} onChange={event=> {
                                                 setPolicyStartDate(event.target.value)
-                                                setPolicyEndDate(moment(event.target.value).add(1, 'years').subtract(1, 'days').calendar())
+                                                const end = moment(event.target.value).add(1, 'years').subtract(1, 'days').calendar()
+                                                setPolicyEndDate(end)
+                                                setPolicyDisplayEndDate(moment(end).format('DD/MM/YYYY'))
                                             }}/>
                                         </Form.Group>
                                     </Col>
