@@ -28,7 +28,7 @@ export default function Transit() {
   const getNewImport = async () => {
     const data = await getDocs(policyCollectionRef);
     const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    const newImportPolicies = policiesArray.filter(policy => policy.category === 'newImport')
+    const newImportPolicies = policiesArray.filter(policy => policy.category === 'transit')
     
     // agent Windscreen policies
     if(authClaims.agent){
@@ -123,12 +123,12 @@ export default function Transit() {
 
   return (
     <div className="components">
-      <Header title="New Imports" subtitle="MANAGING NEW IMPORTS POLICIES" />
+      <Header title="Transit" subtitle="MANAGING TRANSIT POLICIES" />
 
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-Windscreen">
+          <Link to="/supervisor/add-transit">
             <button className="btn btn-primary cta">Add Windscreen</button>
           </Link>
         </div>
@@ -137,7 +137,7 @@ export default function Transit() {
       {authClaims.agent &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/agent/add-Windscreen">
+          <Link to="/agent/add-transit">
             <button className="btn btn-primary cta">Add Windscreen</button>
           </Link>
         </div>
