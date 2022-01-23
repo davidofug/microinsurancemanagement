@@ -6,9 +6,7 @@ import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
 import { functions, db, authentication } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import { FaEllipsisV } from "react-icons/fa";
 import { Table } from 'react-bootstrap'
-import { getDocs, collection, doc, getDoc, deleteDoc } from 'firebase/firestore'
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
 import ClientModal from '../../components/ClientModal';
@@ -20,22 +18,25 @@ import useAuth from '../../contexts/Auth';
 
 function Supervisors() {
 
-    useEffect(() => {document.title = 'Britam - Supervisors'}, [])
+    useEffect(() => {document.title = 'Britam - Supervisors'; getSupervisors()}, [])
 
-    const { authClaim } = useAuth()
+    const { authClaims } = useAuth()
+
+
 
     // get Supervisors
+    const [supervisors, setSuperviors] = useState([]);
     const getSupervisors = () => {
       const listUsers = httpsCallable(functions, 'listUsers')
-      if(authClaim.admin){
+      if(authClaims.admin){
         listUsers().then(({data}) => {
-          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(({meta: {uid}}) => uid === authentication.currentUser.uid)
-          setSuperviors(mySupervisors)
+          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(({meta: {added_by_uid}}) => added_by_uid === authentication.currentUser.uid)
+          mySupervisors.length === 0 ? setSuperviors(null) : setSuperviors(mySupervisors)
         }).catch()
-      } else if(authClaim.superAdmin){
+      } else if(authClaims.superAdmin){
         listUsers().then(({data}) => {
           const mySupervisors = data.filter(user => user.role.supervisor === true)
-          setSuperviors(mySupervisors)
+          mySupervisors.length === 0 ? setSuperviors(null) : setSuperviors(mySupervisors)
         }).catch()
       }
     }
@@ -57,27 +58,14 @@ function Supervisors() {
   
   const getSingleSupervisor = async (id) => setSingleDoc(supervisors.filter(supervisor => supervisor.uid == id)[0])
 
-    
-
-    const getSingleDoc = async (id) => {
-      const docRef = doc(db, "organisations", id);
-      const docSnap = await getDoc(docRef);
-      setSingleDoc(docSnap.data());
-    };
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const [meta, setMeta] = useState([])
     const [editID, setEditID] = useState(null);
-    const metaCollectionRef = collection(db, "usermeta");
 
-    /* const getUsersMeta = async () => {
-      const data = await getDocs(metaCollectionRef);
-      setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    }; */
 
-  const [supervisors, setSuperviors] = useState([]);
+  
 
   const [editContactId, setEditContactId] = useState(null);
 
@@ -86,8 +74,8 @@ function Supervisors() {
 
   const indexOfLastSupervisor = currentPage * supervisorsPerPage
   const indexOfFirstSupervisor = indexOfLastSupervisor - supervisorsPerPage
-  const currentSupervisors = supervisors.slice(indexOfFirstSupervisor, indexOfLastSupervisor)
-  const totalPagesNum = Math.ceil(supervisors.length / supervisorsPerPage)
+  const currentSupervisors = !supervisors || supervisors.slice(indexOfFirstSupervisor, indexOfLastSupervisor)
+  const totalPagesNum = !supervisors || Math.ceil(supervisors.length / supervisorsPerPage)
 
 
 
@@ -96,9 +84,6 @@ function Supervisors() {
     deleteUser({uid:id}).then().catch(err => {
       console.log(err)
     })
-
-    const userMetaDoc = doc(db, "usermeta", id);
-    await deleteDoc(userMetaDoc);
   };
 
   // Confirm Box
@@ -162,7 +147,7 @@ function Supervisors() {
               <ClientModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
             </Modal>
 
-            {supervisors.length > 0 && supervisors !== null
+            {supervisors !== null && supervisors.length > 0
             ?
               <>
                 <div className="shadow-sm table-card componentsData">   
@@ -239,7 +224,16 @@ function Supervisors() {
             </div>
               </>
             :
+              supervisors === null
+              ?
+              <div className="no-table-data">
+                <i><ImFilesEmpty /></i>
+                <h4>No data yet</h4>
+                <p>You have not created any Organisations Yet</p>
+              </div>
+              :
               <Loader />
+ 
             }
 
             
