@@ -38,8 +38,8 @@ export default function AddOrganisation() {
         setIsLoading(true)
         event.preventDefault()
         await addDoc(organisationsCollectionRef, fields)
-        setIsLoading(false)
         toast.success(`successfully added ${fields.name}`, {position: "top-center"});
+        setIsLoading(false)
         document.form2.reset()
       }
 
@@ -48,10 +48,12 @@ export default function AddOrganisation() {
         <div className='components'>
             <Header title="Add Organisations" subtitle="ADD A NEW ORGANISATION" />
             <ToastContainer/>
-            <div className="componentsData">
+            <div className="addComponentsData mb-5">
 
                 {isLoading && 
-                        <Loader />
+                        <div className='loader-wrapper'>
+                                <Loader />
+                        </div>
                 }
 
                 <div id="addForm">
