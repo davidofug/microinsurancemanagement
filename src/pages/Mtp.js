@@ -14,6 +14,9 @@ import { ImFilesEmpty } from 'react-icons/im'
 import '../components/modal/ConfirmBox.css'
 import { httpsCallable } from 'firebase/functions';
 
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 export default function Mtp() {
   useEffect(() => { document.title = "Britam - Motor Third Party"; getMTP()}, []);
 
@@ -95,6 +98,7 @@ export default function Mtp() {
   const handleDelete = async (id) => {
     const policyDoc = doc(db, "policies", id);
     await deleteDoc(policyDoc);
+    toast.success('Successfully deleted', {position: "top-center"});
   }
 
   // actions context
@@ -126,7 +130,7 @@ export default function Mtp() {
   return (
     <div className="components">
       <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
-
+      <ToastContainer/>
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>

@@ -18,6 +18,9 @@ import '../../components/modal/ConfirmBox.css'
 import Loader from '../../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
@@ -80,8 +83,8 @@ export default function Organisations() {
 
     const handleDelete = async (id) => {
       const organisationDoc = doc(db, "organisations", id);
-      console.log(organisationDoc)
       await deleteDoc(organisationDoc);
+      toast.success('Successfully deleted', {position: "top-center"});
     };
 
     const [singleDoc, setSingleDoc] = useState(fields);
@@ -118,7 +121,7 @@ export default function Organisations() {
   return (
     <div className="components">
       <Header title="Organisations" subtitle="VIEW COMPANY DETAILS" />
-
+      <ToastContainer/>
       <div id="add_client_group">
         <div></div>
         <Link to="/admin/add-organisations">
