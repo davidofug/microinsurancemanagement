@@ -7,6 +7,9 @@ import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../../hooks/useForm'
 import Loader from '../../components/Loader'
 
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 export default function AddOrganisation() {
 
     useEffect(() => { document.title = 'Britam - Add Organisations'}, [])
@@ -36,7 +39,7 @@ export default function AddOrganisation() {
         event.preventDefault()
         await addDoc(organisationsCollectionRef, fields)
         setIsLoading(false)
-        alert(`successfully added ${fields.name}`)
+        toast.success(`successfully added ${fields.name}`, {position: "top-center"});
         document.form2.reset()
       }
 
@@ -44,7 +47,7 @@ export default function AddOrganisation() {
     return (
         <div className='components'>
             <Header title="Add Organisations" subtitle="ADD A NEW ORGANISATION" />
-
+            <ToastContainer/>
             <div className="componentsData">
 
                 {isLoading && 
