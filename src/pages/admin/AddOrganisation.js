@@ -48,7 +48,7 @@ export default function AddOrganisation() {
         <div className='components'>
             <Header title="Add Organisations" subtitle="ADD A NEW ORGANISATION" />
             <ToastContainer/>
-            <div className="addComponentsData mb-5">
+            <div className="addComponentsData mb-5 shadow-sm">
 
                 {isLoading && 
                         <div className='loader-wrapper'>
