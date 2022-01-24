@@ -125,8 +125,8 @@ function Comprehensive() {
 
   const indexOfLastPolicy = currentPage * policiesPerPage
   const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-  const currentPolicies = searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
-  const totalPagesNum = Math.ceil(policies.length / policiesPerPage)
+  const currentPolicies = !policies || searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const totalPagesNum = !policies || Math.ceil(policies.length / policiesPerPage)
 
     return (
         <div className='components'>
