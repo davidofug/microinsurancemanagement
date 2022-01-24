@@ -6,11 +6,14 @@ import SearchBar from '../components/searchBar/SearchBar'
 import Header from '../components/header/Header';
 import { functions, authentication } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import { Table } from 'react-bootstrap'
+import { Table, Modal } from 'react-bootstrap'
 import useAuth from '../contexts/Auth';
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import Loader from '../components/Loader';
+import ClientModal from '../components/ClientModal';
+import { useForm } from '../hooks/useForm';
+import { useDialog } from '../hooks/useDialog'
 
 function Agents() {
 
@@ -39,6 +42,21 @@ function Agents() {
     }).catch()
     }
   }
+
+  const [fields, handleFieldChange] = useForm({
+    user_role: 'agent',
+    email: '',
+    name: '',
+    dob: '',
+    gender: '',
+    phone: '',
+    address: '',
+    licenseNo: '',
+    NIN: '',
+    photo: '',
+})
+
+const [ open, handleOpen, handleClose ] = useState()
 
   // search for agent
   const [searchText, setSearchText] = useState('')
@@ -90,6 +108,13 @@ function Agents() {
                 }
             </div>
 
+            <Modal show={open} fade={false} onHide={() =>
+              {
+                handleClose()
+              }}>
+              <ClientModal fields={fields} handleFieldChange={handleFieldChange} />
+            </Modal>
+
             {agents !== null && agents.length > 0
             ?
               <>
@@ -136,7 +161,7 @@ function Agents() {
                                                     setShowContext(false)
                                                     // setEditID(agent.uid);
                                                     // getSingleClient(agent.uid)
-                                                    // handleShow(); 
+                                                    handleOpen(); 
                                                   }}
                                                 >
                                                   <div className="actionDiv">
