@@ -18,7 +18,8 @@ function Admins() {
   const getAdmins = () => {
     const listUsers = httpsCallable(functions, 'listUsers')
     listUsers().then(({data}) => {
-        setAdmins(data.filter(user => user.role.admin === true))
+        // setAdmins(data.filter(user => user.role.admin === true))
+        setAdmins(data)
     }).catch()
   }
 
@@ -81,6 +82,9 @@ function Admins() {
                               <td>{index+1}</td>
                               <td>{admin.name}</td>
                               <td>{admin.email}</td>
+                              <td>{admin.meta.gender}</td>
+                              <td>{admin.meta.phone}</td>
+                              <td>{admin.meta.address}</td>
                 
                             <td className="started">
                             <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
