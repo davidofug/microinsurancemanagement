@@ -13,7 +13,7 @@ import { AiFillCloseCircle } from 'react-icons/ai'
 import Loader from '../components/Loader';
 import ClientModal from '../components/ClientModal';
 import { useForm } from '../hooks/useForm';
-import { useDialog } from '../hooks/useDialog'
+import useDialog from '../hooks/useDialog'
 
 function Agents() {
 
@@ -56,7 +56,7 @@ function Agents() {
     photo: '',
 })
 
-const [ open, handleOpen, handleClose ] = useState()
+const [ open, handleOpen, handleClose ] = useDialog()
 
   // search for agent
   const [searchText, setSearchText] = useState('')
@@ -79,6 +79,10 @@ const [ open, handleOpen, handleClose ] = useState()
     })
     getAgents()
   };
+
+  // get a single doc
+  const [singleDoc, setSingleDoc] = useState(fields);
+  const getSingleAgent = async (id) => setSingleDoc(agents.filter(agent => agent.uid == id)[0])
     
   // actions context
   const [showContext, setShowContext] = useState(false)
@@ -108,11 +112,8 @@ const [ open, handleOpen, handleClose ] = useState()
                 }
             </div>
 
-            <Modal show={open} fade={false} onHide={() =>
-              {
-                handleClose()
-              }}>
-              <ClientModal fields={fields} handleFieldChange={handleFieldChange} />
+            <Modal show={open} onHide={handleClose}>
+              <ClientModal singleDoc={singleDoc} fields={fields} handleFieldChange={handleFieldChange} handleClose={handleClose} />
             </Modal>
 
             {agents !== null && agents.length > 0
@@ -160,8 +161,9 @@ const [ open, handleOpen, handleClose ] = useState()
                                             <li onClick={() => {
                                                     setShowContext(false)
                                                     // setEditID(agent.uid);
-                                                    // getSingleClient(agent.uid)
+                                                    getSingleAgent(agent.uid)
                                                     handleOpen(); 
+                                                    console.log(agent.uid)
                                                   }}
                                                 >
                                                   <div className="actionDiv">
