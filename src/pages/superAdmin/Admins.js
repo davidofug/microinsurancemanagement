@@ -4,7 +4,7 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
-import { functions, db } from '../../helpers/firebase';
+import { functions } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table } from 'react-bootstrap'
 import { MdDelete, MdEdit } from 'react-icons/md'
@@ -18,8 +18,7 @@ function Admins() {
   const getAdmins = () => {
     const listUsers = httpsCallable(functions, 'listUsers')
     listUsers().then(({data}) => {
-        // setAdmins(data.filter(user => user.role.admin === true))
-        setAdmins(data)
+        setAdmins(data.filter(user => user.role.admin === true))
     }).catch()
   }
 
