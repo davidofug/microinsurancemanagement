@@ -14,9 +14,9 @@ const Pagination = ({pages, setCurrentPage, currentClients, sortedEmployees, ent
     return (
         <div className="clearfix">
             {/* <div className="hint-text">Showing <b>{currentClients.length}</b> out of <b>{sortedEmployees.length}</b> {entries}</div> */}
-            <div className="hint-text">{currentClients.length} {entries}</div>
+            <div className="hint-text"></div>
             <ul className="pagination">
-
+                <li>{currentClients.length} {entries}</li>
                 {/* previouse */}
                 <li className={`${currentButton === 1 ? 'page-item disabled' : 'page-item'}`}>
                     <button onClick = {() => setCurrentButton(1)}>{'<<'}</button></li>
