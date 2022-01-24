@@ -423,7 +423,11 @@ function Claims() {
                   <td>{claim.numberPlate}</td>
                   <td>{claim.stickerNumber}</td>
                   <td>{claim.estimate}</td>
-                  <td>{claim.status}</td>
+                  <td>
+                    <span
+                      style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                    >{claim.status}</span>
+                  </td>
 
                   <td className="started">
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setEditID(claim.id); setShowContext(!showContext)}}>&#8942;</button>
