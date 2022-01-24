@@ -14,6 +14,7 @@ import Loader from '../components/Loader';
 import ClientModal from '../components/ClientModal';
 import { useForm } from '../hooks/useForm';
 import useDialog from '../hooks/useDialog'
+import { ImFilesEmpty } from 'react-icons/im'
 
 function Agents() {
 
@@ -28,7 +29,7 @@ function Agents() {
     if(authClaims.supervisor){
       listUsers().then(({data}) => {
           const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid)
-          setAgents(myAgents)
+          myAgents.length === 0 ? setAgents(null) : setAgents(myAgents)
       }).catch()
     } else if(authClaims.admin){
       listUsers().then(({data}) => {
@@ -38,7 +39,7 @@ function Agents() {
 
         const myAgents = data.filter(user => user.role.agent === true).filter(agent => agentsUnderAdmin.includes(agent.meta.added_by_uid))
 
-        setAgents(myAgents)
+        myAgents.length === 0 ? setAgents(null) : setAgents(myAgents)
     }).catch()
     }
   }
@@ -117,12 +118,8 @@ const [ open, handleOpen, handleClose ] = useDialog()
   }
 
   const [clickedIndex, setClickedIndex] = useState(null)
-/* 
-  const [ ]
 
-  const idObject = {
-
-  } */
+  console.log(agents)
 
     return (
         <div className='components'>
@@ -156,18 +153,40 @@ const [ open, handleOpen, handleClose ] = useDialog()
                     <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>
 
-                  <Table hover striped responsive>
+                <Form.Group className="m-3 categories" width="180px">
+                      <Form.Label htmlFor='category'>Filter by Category</Form.Label>
+                      <Form.Select aria-label="User role" id='category'>
+                          <option value={""}>Select a category</option>
+                          <option value="mtp">MTP</option>
+                          <option value="comprehensive">Comprehensive</option>
+                          <option value="windscreen">Windscreen</option>
+                          <option value="newImports">New Imports</option>
+                          <option value="transit">Transit</option>
+                      </Form.Select>
+                  </Form.Group>
+
+                  {currentAgents.length > 0
+                  ?
+                    <>
+                      <Table hover striped responsive>
                         <thead>
-                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
+                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {agents.map((agent, index) => (
+                          {currentAgents.map((agent, index) => (
                               <tr key={agent.uid}>
                               <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, agent.uid]) : 
                               setDeleteArray(deleteArray.filter(element => element !== agent.uid))
                             }/></td>
                               <td>{agent.name}</td>
                               <td>{agent.email}</td>
+                              <td>
+                                {agent.role.mtp && <div>MTP</div>}
+                                {agent.role.comprehensive && <div>Comprehensive</div>}
+                                {agent.role.windscreen && <div>Windscreen</div>}
+                                {agent.role.newImport && <div>New Import</div>}
+                                {agent.role.transit && <div>Transit</div>}
+                              </td>
                               <td>{agent.meta.gender}</td>
                               <td>{agent.meta.phone}</td>
                               <td>{agent.meta.address}</td>
@@ -237,9 +256,19 @@ const [ open, handleOpen, handleClose ] = useDialog()
                         </tfoot>
 
                         <tfoot>
-                            <tr><th><input type="checkbox" /></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
+                            <tr><th><input type="checkbox" /></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
                         </tfoot>
                     </Table>
+                    </>
+                  :
+                  <div className="no-table-data">
+                    <i><ImFilesEmpty /></i>
+                    <h4>No match</h4>
+                    <p>There is not current match for agent's name</p>
+                  </div>
+                  }
+
+                  
 
                   
 
@@ -247,7 +276,15 @@ const [ open, handleOpen, handleClose ] = useDialog()
             </div>
               </>
             :
-              <Loader />
+              agents === null
+              ?
+                <div className="no-table-data">
+                  <i><ImFilesEmpty /></i>
+                  <h4>No data yet</h4>
+                  <p>You have not added any client Yet</p>
+                </div>
+              :
+                <Loader />
             }
 
               
