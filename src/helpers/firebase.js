@@ -2,6 +2,7 @@ import {initializeApp} from 'firebase/app'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { getFunctions } from "firebase/functions"
 import { getFirestore } from '@firebase/firestore'
+import { getStorage } from 'firebase/storage'
 
 
 const firebaseConfig = {
@@ -20,6 +21,8 @@ export const authentication = getAuth(app)
 export const functions = getFunctions(app)
 
 export const db = getFirestore(app)
+
+export const storage = getStorage(app)
 
 
 export function onAuthStateChange(userCallback, claimsCallback, loadingCallback = null) {

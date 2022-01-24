@@ -118,6 +118,8 @@ export default function Organisations() {
     );
     const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
 
+    console.log(organisations)
+
   return (
     <div className="components">
       <Header title="Organisations" subtitle="VIEW COMPANY DETAILS" />
@@ -217,7 +219,7 @@ export default function Organisations() {
           <tbody>
             {currentOrganisations.map((organisation, index) => (
               <tr key={organisation.id}>
-                <td>{organisation.logo}</td>
+                <td><img src={organisation.logo} width={40} height={40} style={{borderRadius: "50%"}} /></td>
                 <td>{organisation.name}</td>
                 <td>{organisation.org_email}</td>
                 <td>{organisation.tel}</td>
