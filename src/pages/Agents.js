@@ -6,7 +6,7 @@ import SearchBar from '../components/searchBar/SearchBar'
 import Header from '../components/header/Header';
 import { functions, authentication } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import { Table, Modal } from 'react-bootstrap'
+import { Table, Modal, Form } from 'react-bootstrap'
 import useAuth from '../contexts/Auth';
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
@@ -128,12 +128,12 @@ const [ open, handleOpen, handleClose ] = useDialog()
 
                   <Table hover striped responsive>
                         <thead>
-                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
+                            <tr><th><input type="checkbox" /></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
                         </thead>
                         <tbody>
                           {agents.map((agent, index) => (
                               <tr key={agent.uid}>
-                              <td>{index + 1}</td>
+                              <td><input type="checkbox" /></td>
                               <td>{agent.name}</td>
                               <td>{agent.email}</td>
                               <td>{agent.meta.gender}</td>
@@ -181,17 +181,35 @@ const [ open, handleOpen, handleClose ] = useDialog()
                           </tr>
                           ))}
                         </tbody>
+
                         <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
+                          <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+                            <td colSpan={3}>
+                              <div style={{display: "flex"}}>
+                                <Form.Select aria-label="User role" id='category'>
+                                    <option value={null}>Bulk Action</option>
+                                    <option value="delete">Delete</option>
+                                </Form.Select>
+                                <button className='btn btn-primary cta mx-2'>Apply</button>
+                              </div>
+                            </td>
+                            <td colSpan={4}>
+                              <Pagination 
+                              pages={totalPagesNum}
+                              setCurrentPage={setCurrentPage}
+                              currentClients={currentAgents}
+                              sortedEmployees={agents}
+                              entries={'Agents'} />
+                            </td>
+                          </tr>
+                        </tfoot>
+
+                        <tfoot>
+                            <tr><th><input type="checkbox" /></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
                         </tfoot>
                     </Table>
 
-                  <Pagination 
-                    pages={totalPagesNum}
-                    setCurrentPage={setCurrentPage}
-                    currentClients={currentAgents}
-                    sortedEmployees={agents}
-                    entries={'Agents'} />
+                  
 
                
             </div>
