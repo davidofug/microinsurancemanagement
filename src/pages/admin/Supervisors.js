@@ -4,7 +4,7 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
-import { functions, db } from '../../helpers/firebase';
+import { functions, db, authentication } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { FaEllipsisV } from "react-icons/fa";
 import { Table } from 'react-bootstrap'
@@ -16,23 +16,29 @@ import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { ImFilesEmpty } from 'react-icons/im'
 import Loader from '../../components/Loader';
+import useAuth from '../../contexts/Auth';
 
 function Supervisors() {
 
-    useEffect(() => {
-      document.title = 'Britam - Supervisors'
+    useEffect(() => {document.title = 'Britam - Supervisors'}, [])
 
+    const { authClaim } = useAuth()
+
+    // get Supervisors
+    const getSupervisors = () => {
       const listUsers = httpsCallable(functions, 'listUsers')
-      listUsers().then((results) => {
-          const resultsArray = results.data
-          const myUsers = resultsArray.filter(user => user.role.supervisor === true)
-          setSuperviors(myUsers)
-      }).catch((err) => {
-          console.log(err)
-      })
-      // getUsersMeta()
-
-    }, [])
+      if(authClaim.admin){
+        listUsers().then(({data}) => {
+          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(({meta: {uid}}) => uid === authentication.currentUser.uid)
+          setSuperviors(mySupervisors)
+        }).catch()
+      } else if(authClaim.superAdmin){
+        listUsers().then(({data}) => {
+          const mySupervisors = data.filter(user => user.role.supervisor === true)
+          setSuperviors(mySupervisors)
+        }).catch()
+      }
+    }
 
     const [fields, handleFieldChange] = useForm({
       user_role: '',

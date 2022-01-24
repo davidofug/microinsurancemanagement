@@ -115,10 +115,10 @@ function Reports() {
     <div className="components">
       <Header title="Reports" subtitle="MANAGING REPORTS" />
 
-      <div className="componentsData  shadow-sm table-card" style={{ "maxWidth": "80vw", margin: "auto" }}>
         {policies !== null && policies.length > 0 
         ?
           <>
+        <div className="componentsData  shadow-sm table-card" style={{ "maxWidth": "80vw", margin: "auto" }}>
             
           <div id="search">
               <SearchBar
@@ -297,7 +297,7 @@ function Reports() {
 
             
         
-      
+            </div>
           </>
         : 
           policies === null
@@ -309,8 +309,9 @@ function Reports() {
             </div>
           :
             <Loader />
-        }
-        </div>
+        
+        
+          }
 
       
     </div>

@@ -204,6 +204,7 @@ function Dashboard() {
                                             ))}
                                         </tbody>
                                     </table>
+                                    <h6 className="heading">Total Number of Clients: {clients.length}</h6>
                                     </>
                                     :
                                     <Loader />
