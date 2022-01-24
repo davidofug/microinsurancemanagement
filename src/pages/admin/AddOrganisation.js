@@ -6,6 +6,7 @@ import { authentication, db } from '../../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../../hooks/useForm'
 import Loader from '../../components/Loader'
+import { AiOutlineCopy } from 'react-icons/ai'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -34,9 +35,32 @@ export default function AddOrganisation() {
 
     })
 
+    // generating passwords
+    const [ password, setPassword ] = useState('')
+    const handleGeneratePassword = () => {
+      
+      setPassword(createPassword())
+
+      // console.log(fields)
+    }
+
+    const createPassword = () => {
+      const characterList = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!^+%&/()=?#${[]}|;:><*-@"
+
+      let password = '';
+      const characterListLength = characterList.length;
+      for (let i = 0; i < 12; i++) {
+        const characterIndex = Math.round(Math.random() * characterListLength);
+        password = password + characterList.charAt(characterIndex);
+      }
+      return password;
+    }
+    
+
     const createOrganisation = async (event) => {
         setIsLoading(true)
         event.preventDefault()
+        fields.password = password
         await addDoc(organisationsCollectionRef, fields)
         toast.success(`successfully added ${fields.name}`, {position: "top-center"});
         setIsLoading(false)
@@ -115,9 +139,16 @@ export default function AddOrganisation() {
                                             <Form.Label htmlFor='contact_email'>Contact Email</Form.Label>
                                             <Form.Control id="contact_email" type="email" placeholder="Enter email" onChange={handleFieldChange} />
                                     </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                            <Form.Label htmlFor='password'>Contact Password</Form.Label>
-                                            <Form.Control id="password" type="text" placeholder="Create password" onChange={handleFieldChange} />
+                                    <Form.Group className="mb-3" style={{display: "flex", flexDirection: "column"}}>
+                                            {/* <Form.Control id="password" type="text" placeholder="Create password" onChange={handleFieldChange} /> */}
+                                            {/* <Form.Label htmlFor='password'>Contact Password</Form.Label> */}
+                                            <button type='button' className='btn btn-primary cta mb-3' onClick={handleGeneratePassword}>Generate Password</button>
+                                            <div className='generator__password'>
+                                                <h3>{password}</h3>
+                                                <button type='button' className='copy__btn'>
+                                                <AiOutlineCopy />
+                                                </button>
+                                        </div>
                                     </Form.Group>
                                 </div>
                             </div>
