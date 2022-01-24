@@ -72,9 +72,16 @@ function Supervisors() {
   const [ currentPage, setCurrentPage ] = useState(1)
   const [supervisorsPerPage] = useState(10)
 
+
+  // search by name
+  const [searchText, setSearchText] = useState('')
+  const handleSearch = ({ target }) => setSearchText(target.value);
+  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+
   const indexOfLastSupervisor = currentPage * supervisorsPerPage
   const indexOfFirstSupervisor = indexOfLastSupervisor - supervisorsPerPage
-  const currentSupervisors = !supervisors || supervisors.slice(indexOfFirstSupervisor, indexOfLastSupervisor)
+  const currentSupervisors = !supervisors || searchByName(supervisors.slice(indexOfFirstSupervisor, indexOfLastSupervisor))
   const totalPagesNum = !supervisors || Math.ceil(supervisors.length / supervisorsPerPage)
 
 
@@ -98,10 +105,7 @@ function Supervisors() {
 
 
 
-    // search by name
-    const [searchText, setSearchText] = useState('')
-    const handleSearch = ({ target }) => setSearchText(target.value);
-    const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+    
 
   // actions context
   const [showContext, setShowContext] = useState(false)
@@ -153,12 +157,15 @@ function Supervisors() {
                       <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>
 
+                {currentSupervisors.length > 0
+                ?
+                  <>
                     <Table hover striped responsive className='mt-5'>
                         <thead>
                             <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {searchByName(supervisors).map((supervisor, index) => (
+                          {currentSupervisors.map((supervisor, index) => (
                               <tr key={supervisor.uid}>
                               <td>{index+1}</td>
                               <td>{supervisor.name}</td>
@@ -215,6 +222,16 @@ function Supervisors() {
                     currentClients={currentSupervisors}
                     sortedEmployees={supervisors}
                     entries={'Supervisor'} />
+                  </>
+                :
+                <div className="no-table-data">
+                  <i><ImFilesEmpty /></i>
+                  <h4>No match</h4>
+                  <p>There is not current match for client's name</p>
+                </div>
+                }
+
+                    
 
                
             </div>
