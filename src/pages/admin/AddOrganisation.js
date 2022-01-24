@@ -11,6 +11,10 @@ import { AiOutlineCopy } from 'react-icons/ai'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+// firebase storage..
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../../helpers/firebase'
+
 export default function AddOrganisation() {
 
     useEffect(() => { document.title = 'Britam - Add Organisations'}, [])
@@ -55,17 +59,51 @@ export default function AddOrganisation() {
       }
       return password;
     }
+
+    const [ url, setUrl ] = useState('')
+//       const [ logo, setLogo ] = useState(null)
+      const [ progress, setProgress ] = useState(0)
     
 
     const createOrganisation = async (event) => {
         setIsLoading(true)
         event.preventDefault()
-        fields.password = password
-        await addDoc(organisationsCollectionRef, fields)
-        toast.success(`successfully added ${fields.name}`, {position: "top-center"});
-        setIsLoading(false)
-        document.form2.reset()
+                // fields.logo = url
+                fields.password = password
+                await addDoc(organisationsCollectionRef, fields)
+                toast.success(`successfully added ${fields.name}`, {position: "top-center"});
+                
+                setIsLoading(false)
+                document.form2.reset()
       }
+
+      const uploadLogo = (logo) => {
+              console.log(logo)
+              console.log('nothing happend')
+                const storageRef = ref(storage, `images/${logo.name}`)
+                console.log(storageRef)
+                const uploadTask = uploadBytesResumable(storageRef, logo)
+
+                uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {
+                                const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                                setProgress(prog)
+                        },
+                        (error) => console.log(error),
+                        async () => {
+                                        await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+                                        // setUrl(downloadUrl)
+                                        fields.logo = downloadUrl
+                                        console.log("file available at", downloadUrl)
+                                })
+                        }
+                ) 
+      }
+
+      
+      // firestore upload
+      console.log(url)
 
 
     return (
@@ -114,7 +152,12 @@ export default function AddOrganisation() {
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                             <Form.Label htmlFor='logo'>Upload Logo</Form.Label>
-                                            <Form.Control id='logo' type="file" onChange={handleFieldChange} />
+                                            <Form.Control id='logo' type="file" onChange={(event) => {
+                                                //     setLogo(event.target.files[0])
+                                                        console.log("hello")
+                                                    uploadLogo(event.target.files[0])
+                                            }} />
+                                            {progress}
                                     </Form.Group>
                                 </div>
                                 <div style={{padding: "1rem"}}>
