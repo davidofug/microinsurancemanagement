@@ -101,11 +101,6 @@ export default function AddOrganisation() {
                 ) 
       }
 
-      
-      // firestore upload
-      console.log(url)
-
-
     return (
         <div className='components'>
             <Header title="Add Organisations" subtitle="ADD A NEW ORGANISATION" />

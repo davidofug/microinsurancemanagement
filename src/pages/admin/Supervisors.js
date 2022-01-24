@@ -4,10 +4,9 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
-import { functions, db, authentication } from '../../helpers/firebase';
+import { functions, authentication } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import { Table } from 'react-bootstrap'
-import { Modal } from 'react-bootstrap'
+import { Table, Modal, Form } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
 import ClientModal from '../../components/ClientModal';
 import { MdEdit, MdDelete } from 'react-icons/md'
@@ -104,6 +103,29 @@ function Supervisors() {
   }
 
 
+  const handleAllCheck = () => {
+    if(document.getElementById("firstAgentCheckbox").checked === true){
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
+      setDeleteArray([])
+    } else{
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
+      setDeleteArray(supervisors.map(agent => agent.uid))
+    }
+    
+    
+  }
+
+  // delete multiple agents
+  const [ bulkDelete, setBulkDelete ] = useState(null)
+  const [ deleteArray, setDeleteArray ] = useState([])
+  const [ deleteAllArray, setDeleteAllArray ] = useState([])
+  const handleBulkDelete = async () => {
+    if(bulkDelete){
+      deleteArray.map(agentuid => handleDelete(agentuid))
+    }
+  }
+
+
 
     
 
@@ -162,12 +184,14 @@ function Supervisors() {
                   <>
                     <Table hover striped responsive className='mt-5'>
                         <thead>
-                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {currentSupervisors.map((supervisor, index) => (
                               <tr key={supervisor.uid}>
-                              <td>{index+1}</td>
+                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, supervisor.uid]) : 
+                              setDeleteArray(deleteArray.filter(element => element !== supervisor.uid))
+                            }/></td>
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
                               <td>{supervisor.meta.gender}</td>
@@ -211,17 +235,37 @@ function Supervisors() {
                           ))}
                             
                         </tbody>
+
+
                         <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                          <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+                            <td colSpan={3}>
+                              <div style={{display: "flex"}}>
+                                <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
+                                    <option value="">Bulk Action</option>
+                                    <option value="delete">Delete</option>
+                                </Form.Select>
+                                <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
+                              </div>
+                            </td>
+                            <td colSpan={4}>
+                              <Pagination 
+                              pages={totalPagesNum}
+                              setCurrentPage={setCurrentPage}
+                              currentClients={currentSupervisors}
+                              sortedEmployees={supervisors}
+                              entries={'Supervisor'} />
+                            </td>
+                          </tr>
+                        </tfoot>
+
+
+                        <tfoot>
+                            <tr><th></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 
-                  <Pagination 
-                    pages={totalPagesNum}
-                    setCurrentPage={setCurrentPage}
-                    currentClients={currentSupervisors}
-                    sortedEmployees={supervisors}
-                    entries={'Supervisor'} />
+                  
                   </>
                 :
                 <div className="no-table-data">
