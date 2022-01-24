@@ -19,6 +19,7 @@ import SupervisorMenu from '../pages/supervisor/SupervisorMenu'
 import AgentMtpMenu from '../pages/agent/AgentMtpMenu'
 import AgentCompMenu from '../pages/agent/AgentCompMenu'
 import AgentMtpCompMenu from '../pages/agent/AgentMtpCompMenu'
+import AgentMtpCompWindMenu from '../pages/agent/AgentMtpCompWindMenu'
 
 import SuperAdminMenu from '../pages/superAdmin/SuperAdminMenu'
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
@@ -59,7 +60,10 @@ function MyRouter() {
                     {authClaims?.agent && authClaims?.windscreen && !authClaims?.mtp && !authClaims?.comprehensive &&  <AgentCompMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
 
                     {/* mtp and comprehensive agents */}
-                    {authClaims?.agent && authClaims?.mtp && authClaims?.comprehensive && authClaims?.windscreen &&  <AgentMtpCompMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+                    {authClaims?.agent && authClaims?.mtp && authClaims?.comprehensive && !authClaims?.windscreen &&  <AgentMtpCompMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
+
+                    {/* mtp and comprehensive and windscreen agents */}
+                    {authClaims?.agent && authClaims?.mtp && authClaims?.comprehensive && authClaims?.windscreen &&  <AgentMtpCompWindMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                 </div>
                 </>
                 }
