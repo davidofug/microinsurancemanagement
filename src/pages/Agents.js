@@ -71,7 +71,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
   const currentAgents = !agents || searchByName(agents).slice(indexOfFirstClient, indexOfLastAgent)
   const totalPagesNum = !agents || Math.ceil(agents.length / clientsPerPage)
 
-  // delete agent
+  // delete a single agent
   const handleDelete = async (id) => {
     const deleteUser = httpsCallable(functions, 'deleteUser')
     deleteUser({uid:id}).then().catch(err => {
@@ -79,6 +79,30 @@ const [ open, handleOpen, handleClose ] = useDialog()
     })
     getAgents()
   };
+
+  const handleAllCheck = () => {
+    if(document.getElementById("firstAgentCheckbox").checked === true){
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
+      setDeleteArray([])
+    } else{
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
+      setDeleteArray(agents.map(agent => agent.uid))
+    }
+    
+    
+  }
+
+  // delete multiple agents
+  const [ bulkDelete, setBulkDelete ] = useState(null)
+  const [ deleteArray, setDeleteArray ] = useState([])
+  const [ deleteAllArray, setDeleteAllArray ] = useState([])
+  const handleBulkDelete = async () => {
+    if(bulkDelete){
+      deleteArray.map(agentuid => handleDelete(agentuid))
+    }
+  }
+
+  
 
   // get a single doc
   const [singleDoc, setSingleDoc] = useState(fields);
@@ -93,6 +117,12 @@ const [ open, handleOpen, handleClose ] = useDialog()
   }
 
   const [clickedIndex, setClickedIndex] = useState(null)
+/* 
+  const [ ]
+
+  const idObject = {
+
+  } */
 
     return (
         <div className='components'>
@@ -128,12 +158,14 @@ const [ open, handleOpen, handleClose ] = useDialog()
 
                   <Table hover striped responsive>
                         <thead>
-                            <tr><th><input type="checkbox" /></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
+                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
                         </thead>
                         <tbody>
                           {agents.map((agent, index) => (
                               <tr key={agent.uid}>
-                              <td><input type="checkbox" /></td>
+                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, agent.uid]) : 
+                              setDeleteArray(deleteArray.filter(element => element !== agent.uid))
+                            }/></td>
                               <td>{agent.name}</td>
                               <td>{agent.email}</td>
                               <td>{agent.meta.gender}</td>
@@ -144,6 +176,18 @@ const [ open, handleOpen, handleClose ] = useDialog()
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
 
                                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                            <li onClick={() => {
+                                                    setShowContext(false)
+                                                    // setEditID(agent.uid);
+                                                    getSingleAgent(agent.uid)
+                                                    handleOpen(); 
+                                                    console.log(agent.uid)
+                                                  }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><MdEdit/></i> Edit
+                                                  </div>
+                                            </li>
                                             <li onClick={() => {
                                                         setShowContext(false)
                                                         const confirmBox = window.confirm(
@@ -156,18 +200,6 @@ const [ open, handleOpen, handleClose ] = useDialog()
                                                 >
                                                   <div className="actionDiv">
                                                     <i><MdDelete/></i> Delete
-                                                  </div>
-                                            </li>
-                                            <li onClick={() => {
-                                                    setShowContext(false)
-                                                    // setEditID(agent.uid);
-                                                    getSingleAgent(agent.uid)
-                                                    handleOpen(); 
-                                                    console.log(agent.uid)
-                                                  }}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><MdEdit/></i> Edit
                                                   </div>
                                             </li>
                                             <li onClick={() => setShowContext(false)}
@@ -186,11 +218,11 @@ const [ open, handleOpen, handleClose ] = useDialog()
                           <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
                             <td colSpan={3}>
                               <div style={{display: "flex"}}>
-                                <Form.Select aria-label="User role" id='category'>
-                                    <option value={null}>Bulk Action</option>
+                                <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
+                                    <option value="">Bulk Action</option>
                                     <option value="delete">Delete</option>
                                 </Form.Select>
-                                <button className='btn btn-primary cta mx-2'>Apply</button>
+                                <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
                               </div>
                             </td>
                             <td colSpan={4}>
