@@ -13,6 +13,7 @@ import DefaultAvatar from "../../components/DefaultAvatar";
 import { Badge } from "react-bootstrap"; 
 import { ImProfile } from 'react-icons/im'
 
+
 export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
   const { Admin } = menuData;
   const [selected, setSelected] = useState({ activeObject: null, Admin });
@@ -111,41 +112,3 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
   );
 }
 
-
-{/* <td>{policy.policyStartDate}</td>
-
-<td className="started">
-<button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
-
-<ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-  <Link to={`/admin/policy-details/${policy.id}`}>
-    <div className="actionDiv">
-      <i><MdInfo /></i> Details
-    </div>
-  </Link>
-  <Link to={`/admin/policy-renew/${policy.id}`}>
-    <div className="actionDiv">
-      <i><MdAutorenew /></i> Renew
-    </div>
-  </Link>
-  <li>
-    <div className="actionDiv">
-      <i><MdCancel /></i> Cancel
-    </div>
-  </li>
-  <li onClick={() => { setShow(false)
-          const confirmBox = window.confirm(
-            `Are you sure you want to delete this sticker`
-          );
-          if (confirmBox === true) {
-            handleDelete(policy.id);
-            getMTP()
-          }
-        }}
-      >
-        <div className="actionDiv">
-          <i><MdDelete/></i> Delete
-        </div>
-  </li>
-</ul>
-</td> */}

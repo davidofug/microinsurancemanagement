@@ -8,7 +8,6 @@ import SearchBar from "../../components/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
 import { collection, getDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
-import { FaEllipsisV } from "react-icons/fa";
 import OrganisationModal from "../../components/OrganisationModel";
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
@@ -18,6 +17,9 @@ import { AiFillCloseCircle } from 'react-icons/ai'
 import '../../components/modal/ConfirmBox.css'
 import Loader from '../../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
@@ -81,8 +83,8 @@ export default function Organisations() {
 
     const handleDelete = async (id) => {
       const organisationDoc = doc(db, "organisations", id);
-      console.log(organisationDoc)
       await deleteDoc(organisationDoc);
+      toast.success('Successfully deleted', {position: "top-center"});
     };
 
     const [singleDoc, setSingleDoc] = useState(fields);
@@ -116,12 +118,10 @@ export default function Organisations() {
     );
     const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
 
-    console.log(organisations)
-
   return (
     <div className="components">
       <Header title="Organisations" subtitle="VIEW COMPANY DETAILS" />
-
+      <ToastContainer/>
       <div id="add_client_group">
         <div></div>
         <Link to="/admin/add-organisations">

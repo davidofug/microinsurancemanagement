@@ -6,45 +6,24 @@ import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
 import { functions, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import { FaEllipsisV } from "react-icons/fa";
 import { Table } from 'react-bootstrap'
-import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { MdDelete, MdEdit } from 'react-icons/md'
 
 function Admins() {
 
-    useEffect(() => {
-      document.title = 'Britam - Admins'
-
-      getAdmins()
-      getUsersMeta()
-
-    }, [])
-
-    const [admins, setAdmins] = useState([]);
-    const [meta, setMeta] = useState([])
-    const metaCollectionRef = collection(db, "usermeta");
+  useEffect(() => {document.title = 'Britam - Admins'; getAdmins()}, [])
   
-
-    const getAdmins = () => {
-      const listUsers = httpsCallable(functions, 'listUsers')
-      listUsers().then((results) => {
-          const resultsArray = results.data
-          const myUsers = resultsArray.filter(user => user.role.admin === true)
-          setAdmins(myUsers)
-      }).catch((err) => {
-          console.log(err)
-      })
+  // get Admins
+  const [admins, setAdmins] = useState([]);
+  const getAdmins = () => {
+    const listUsers = httpsCallable(functions, 'listUsers')
+    listUsers().then(({data}) => {
+        setAdmins(data.filter(user => user.role.admin === true))
+    }).catch()
   }
 
-  const getUsersMeta = async () => {
-    const data = await getDocs(metaCollectionRef);
-    setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
 
-  const [editContactId, setEditContactId] = useState(null);
-
-    //
+    // Pagination
     const [ currentPage, setCurrentPage ] = useState(1)
     const [adminsPerPage] = useState(10)
 
@@ -55,32 +34,16 @@ function Admins() {
 
     const handleDelete = (id) => {
       const deleteUser = httpsCallable(functions, 'deleteUser')
-      const userMetaDoc = doc(db, "usermeta", id);
       deleteUser({uid:id}).then((result) => {
         console.log(result)
-        if(result.data !== null) {
-          deleteDoc(userMetaDoc)
-        }
       }
       ).catch(err => {
         console.log(err)
       })
-      
-
       getAdmins()
-      getUsersMeta()
     };
 
-
-    const [q, setQ] = useState('');
-
-    const columns = ["id", "contact", "name", "gender", "email", "contact", "contact", "email", 'address']
-    const search = rows => rows.filter(row =>
-        columns.some(column => row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,));
-
-        const handleSearch = ({target}) => setQ(target.value)
-
-    // actions context
+  // actions context
   const [show, setShow] = useState(false)
   window.onclick = function(event) {
       if (!event.target.matches('.sharebtn')) {
@@ -103,7 +66,7 @@ function Admins() {
 
             <div className="shadow-sm table-card componentsData">   
                 <div id="search">
-                            <SearchBar placeholder={"Search for Supervisor"} value={q} handleSearch={handleSearch}/>
+                            <SearchBar placeholder={"Search for Admins"}/>
                             <div></div>
                             <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                       </div>
@@ -118,13 +81,6 @@ function Admins() {
                               <td>{index+1}</td>
                               <td>{admin.name}</td>
                               <td>{admin.email}</td>
-                              {meta.filter(user => user.id == admin.uid).map(user => (
-                                <>
-                                  <td>{user.gender}</td>
-                                  <td>{user.phone}</td>
-                                  <td>{user.address}</td>
-                                </>
-                              ))}
                 
                             <td className="started">
                             <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>

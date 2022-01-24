@@ -19,7 +19,7 @@ const menuData = {
             number: 3,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: "/superadmin/policies",
+            link: "/superadmin/motor-third-party",
             subMenu: [
                 {
                     name: "MTP",
@@ -99,7 +99,7 @@ const menuData = {
             number: 6,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: "/admin/policies",
+            link: "/admin/motor-third-party",
             subMenu: [
                 {
                     name: "MTP",
@@ -169,7 +169,7 @@ const menuData = {
             number: 4,
             name: "Policies",
             icon: <MdDirectionsCarFilled />,
-            link: "/supervisor/policies",
+            link: "/supervisor/motor-third-party",
             subMenu: [
                 {
                     name: "MTP",
@@ -319,7 +319,7 @@ const menuData = {
         },
         {
             number: 3,
-            name: "Comprehensiv",
+            name: "Comprehensive",
             icon: <MdDirectionsCarFilled />,
             link: "/agent/comprehensive"
         },

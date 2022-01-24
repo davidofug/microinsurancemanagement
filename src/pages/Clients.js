@@ -5,17 +5,17 @@ import { MdDownload } from 'react-icons/md'
 import Header from '../components/header/Header';
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar';
-import { Table } from 'react-bootstrap';
+import { Table, Modal } from 'react-bootstrap';
 import { functions, authentication } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
 import ClientModal from '../components/ClientModal'
-import { Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm';
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
+import useDialog from '../hooks/useDialog';
 
 export default function Clients() {
 
@@ -23,9 +23,7 @@ export default function Clients() {
 
   const { authClaims } = useAuth()
   const [clients, setClients] = useState([]);
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [ show, handleShow, handleClose ] = useDialog()
   const [editID, setEditID] = useState(null);
 
   const [fields, handleFieldChange] = useForm({
@@ -41,37 +39,47 @@ export default function Clients() {
     photo: ''
 })
 
+// edit client
 const [singleDoc, setSingleDoc] = useState(fields);
-
 const getSingleClient = async (id) => setSingleDoc(clients.filter(client => client.uid == id)[0])
 
-// getting clients
+// getting Clients under a particular user.
 const getClients = () => {
+  const listUsers = httpsCallable(functions, 'listUsers')
     if(authClaims.agent){
-      const listUsers = httpsCallable(functions, 'listUsers')
       listUsers().then(({data}) => {
           const myUsers = data.filter(user => user.role.Customer === true).filter(client => client.meta.added_by_uid === authentication.currentUser.uid)
           myUsers.length === 0 ? setClients(null) : setClients(myUsers)
-      }).catch((err) => {
-          console.log(err)
-      })
-    } else{
-      const listUsers = httpsCallable(functions, 'listUsers')
+      }).catch()
+    } else if(authClaims.supervisor){
       listUsers().then(({data}) => {
-          const myUsers = data.filter(user => user.role.Customer === true)
+          const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+
+          const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid ]
+
+          const myUsers = data.filter(user => user.role.Customer === true).filter(client => usersUnderSupervisor.includes(client.meta.added_by_uid))
           myUsers.length === 0 ? setClients(null) : setClients(myUsers)
-      }).catch((err) => {})
+      }).catch()
+    } else if(authClaims.admin) {
+      listUsers().then(({data}) => {
+          const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+          
+          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+
+          const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+
+          const usersUnderAdmin = [ ...myAgents, ...mySupervisors, ...agentsUnderMySupervisors, authentication.currentUser.uid ]
+
+          const myUsers = data.filter(user => user.role.Customer === true).filter(client => usersUnderAdmin.includes(client.meta.added_by_uid))
+          myUsers.length === 0 ? setClients(null) : setClients(myUsers)
+      }).catch()
     }
 }
 
   // Confirm Box
-  const [ openToggle, setOpenToggle ] = useState(false)
-  window.onclick = (event) => {
-    if(openToggle === true) {
-      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
-        setOpenToggle(false)
-    }
-    }
+  const [ openToggle, handleShowToggle, handleCloseToggle ] = useDialog()
+  window.onclick = ({target}) => {
+    if(openToggle) {if (!target.matches('.wack') && !target.matches('#myb')) {handleCloseToggle()}}
   }
 
   // deleting a user
@@ -88,11 +96,11 @@ const getClients = () => {
 
 
   // actions context
-  const [showContext, setShowContext] = useState(false)
+  const [ showContext, handleShowContext, handleCloseContext ] = useDialog()
   if(showContext){
     window.onclick = function(event) {
         if (!event.target.matches('.sharebtn')) {
-            setShowContext(false)
+            handleCloseContext()
         }
     }
   }
@@ -130,17 +138,17 @@ const getClients = () => {
                 <p className='wack'>Are you sure you want to delete <b>{deleteName}</b></p>
                 <div className="buttonContainer wack" >
                   <button id="yesButton" onClick={() => {
-                    setOpenToggle(false)
+                    handleCloseToggle()
                     handleDelete(editID)
                     getClients()
                     }} className='wack'>Yes</button>
-                  <button id="noButton" onClick={() => {setOpenToggle(false); setDeleteName("")}} className='wack'>No</button>
+                  <button id="noButton" onClick={() => {handleCloseToggle(); setDeleteName("")}} className='wack'>No</button>
                 </div>
               </div>
             </div>
 
             <Modal show={show} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
             </Modal>
 
             {clients !== null && clients.length > 0
@@ -172,13 +180,16 @@ const getClients = () => {
                             <td>{client.meta.phone}</td>
                             <td>{client.meta.address}</td>
               <td className="started">
-                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+                <button className="sharebtn" onClick={() => {
+                  setClickedIndex(index);
+                  showContext ? handleCloseContext() : handleShowContext() 
+                  }}>&#8942;</button>
 
                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                             <li onClick={() => {
-                                          setOpenToggle(true)
+                                          handleShowToggle()
                                           setEditID(client.uid);
-                                          setShowContext(false)
+                                          handleCloseContext()
                                           setDeleteName(client.name)
                                         }}
                                 >
@@ -187,7 +198,7 @@ const getClients = () => {
                                   </div>
                             </li>
                             <li onClick={() => {
-                                    setShowContext(false)
+                                    handleCloseContext()
                                     setEditID(client.uid);
                                     getSingleClient(client.uid)
                                     handleShow();
@@ -197,8 +208,7 @@ const getClients = () => {
                                     <i><MdEdit/></i> Edit
                                   </div>
                             </li>
-                            <li onClick={() => setShowContext(false)}
-                                >
+                            <li onClick={handleCloseContext}>
                                   <div className="actionDiv">
                                     <i><AiFillCloseCircle/></i> Close
                                   </div>
@@ -225,8 +235,8 @@ const getClients = () => {
                 :
                 <div className="no-table-data">
                   <i><ImFilesEmpty /></i>
-                  <h4>No data yet</h4>
-                  <p>You have not created any Motor Third Party Stickers Yet</p>
+                  <h4>No match</h4>
+                  <p>There is not current match for client's name</p>
                 </div>
                 }
                 </div>
@@ -236,7 +246,7 @@ const getClients = () => {
               <div className="no-table-data">
                 <i><ImFilesEmpty /></i>
                 <h4>No data yet</h4>
-                <p>You have not created any Motor Third Party Stickers Yet</p>
+                <p>You have not added any client Yet</p>
               </div>
             :
               <Loader />

@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Header from '../components/header/Header';
-import { Table, Alert } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar'
-import { FaEllipsisV } from "react-icons/fa";
 import { getDoc, getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
-import { db } from '../helpers/firebase'
+import { authentication, db, functions } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
 import useAuth from '../contexts/Auth'
-import { authentication } from "../helpers/firebase";
+import Loader from '../components/Loader';
+import { ImFilesEmpty } from 'react-icons/im'
+import { httpsCallable } from 'firebase/functions';
 
 function Comprehensive() {
 
@@ -28,8 +29,52 @@ function Comprehensive() {
 
   const getComprehensive = async () => {
     const data = await getDocs(policyCollectionRef);
-    const pole = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    setPolicies(pole.filter(policy => policy.category === 'comprehensive').filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+    const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    const comprehensivePolicies = policiesArray.filter(policy => policy.category === 'comprehensive')
+
+    // agent comprehensive policies
+    if(authClaims.agent){
+      const agentComprehensivePolicies = comprehensivePolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid)
+      agentComprehensivePolicies.length === 0 ? setPolicies(null) : setPolicies(agentComprehensivePolicies)
+    }
+
+    // supervisor Comprehensive policies
+    if(authClaims.supervisor){
+      const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then(({data}) => {
+        const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+        
+        const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid]
+
+        const supervisorComprehensivePolicies = comprehensivePolicies.filter(policy => usersUnderSupervisor.includes(policy.added_by_uid))
+        supervisorComprehensivePolicies.length === 0 ? setPolicies(null) : setPolicies(supervisorComprehensivePolicies)
+      })
+    }
+
+    // Admin comprehensive policies
+    if(authClaims.admin){
+      const listUsers = httpsCallable(functions, 'listUsers')
+      listUsers().then(({data}) => {
+        const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+
+        const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+
+        const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+        
+        const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
+
+        console.log(usersUnderAdmin)
+
+        const AdminComprehensivePolicies = comprehensivePolicies.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
+        AdminComprehensivePolicies.length === 0 ? setPolicies(null) : setPolicies(AdminComprehensivePolicies)
+      })
+    }
+
+    // superAdmin mtp policies
+    if(authClaims.superadmin){
+      comprehensivePolicies === 0 ? setPolicies(null) : setPolicies(comprehensivePolicies)
+    }
+
   }
 
 
@@ -112,8 +157,10 @@ function Comprehensive() {
             </div>
           </div>
 
-
-            <div className="shadow-sm table-card componentsData">   
+          {policies !== null && policies.length > 0
+          ?
+            <>
+              <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                     <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
                     <div></div>
@@ -134,12 +181,12 @@ function Comprehensive() {
                                 {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
                                 <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
                                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
-                                {!authClaims.agent && <td>{policy.agentName ? policy.agentName : ''}</td>}
+                                {!authClaims.agent && <td>{policy.added_by_name}</td>}
                                 
                                 <td>
                               <span
                                 style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                              >new</span>
+                              >{policy.stickersDetails[0].status}</span>
                             </td>
 
 
@@ -196,6 +243,21 @@ function Comprehensive() {
 
                
             </div>
+            </>
+          :
+            policies === null
+            ?
+              <div className="no-table-data">
+                <i><ImFilesEmpty /></i>
+                <h4>No data yet</h4>
+                <p>You have not created any Comprehensive Stickers Yet</p>
+              </div>
+            :
+              <Loader />
+          }
+
+
+            
         </div>
     )
 }
