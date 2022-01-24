@@ -42,7 +42,7 @@ function Supervisors() {
     }
 
     const [fields, handleFieldChange] = useForm({
-      user_role: '',
+      user_role: 'supervisor',
       email: '',
       name: '',
       dob: '',
@@ -139,12 +139,8 @@ function Supervisors() {
               </div>
             </div>
 
-            <Modal show={show} fade={false} onHide={() =>
-              {
-                handleClose()
-                setSingleDoc(fields)
-              }}>
-              <ClientModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+            <Modal show={show} fade={false} onHide={handleClose}>
+              <ClientModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
             </Modal>
 
             {supervisors !== null && supervisors.length > 0
@@ -186,9 +182,9 @@ function Supervisors() {
                                                   </div>
                                             </li>
                                             <li onClick={() => {
+                                                    getSingleSupervisor(supervisor.uid)
                                                     setShowContext(false)
                                                     setEditID(supervisor.uid);
-                                                    getSingleSupervisor(supervisor.uid)
                                                     handleShow();
                                                   }}
                                                 >
