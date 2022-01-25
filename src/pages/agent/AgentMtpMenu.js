@@ -47,7 +47,7 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
                         <footer>
                             {/* <Link to='/admin/settings'> */}
                             <div className="footerContext" onClick={() => setOpenFooterContext(!openFooterContext)}>
-                                {authentication.currentUser.photoURL
+                                {authentication.currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8"
                                 ?
                                     <img src={authentication.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>
                                 :
