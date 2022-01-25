@@ -157,7 +157,7 @@ export default function Claims() {
   const indexOfLastEmployee = currentPage * employeesPerPage;
   const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
   const currentClaims = !claims || searchByName(claims).slice(indexOfFirstEmployee, indexOfLastEmployee);
-  const totalPagesNum = Math.ceil(claims.length / employeesPerPage);
+  const totalPagesNum = !claims || Math.ceil(claims.length / employeesPerPage);
 
 
   // actions context

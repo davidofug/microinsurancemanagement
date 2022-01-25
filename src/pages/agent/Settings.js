@@ -20,7 +20,6 @@ function Settings() {
     useEffect(() => {
         document.title = 'Britam - User Profile'
         getAgents()
-        getUsersMeta()
     }, [])
 
     const [ user, setUser ] = useState([])
@@ -29,24 +28,12 @@ function Settings() {
         const listUsers = httpsCallable(functions, 'listUsers')
           listUsers().then((results) => {
               const resultsArray = results.data
-              const myUsers = resultsArray.filter(user => user.role.agent === true)
+              const myUsers = resultsArray.filter(user => user.uid === authentication.currentUser.uid)
               setUser(myUsers)
           }).catch((err) => {
               console.log(err)
           })
       }
-
-      const [meta, setMeta] = useState([])
-    const metaCollectionRef = collection(db, "usermeta");
-
-      const getUsersMeta = async () => {
-        const data = await getDocs(metaCollectionRef);
-        const allData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        setMeta(allData.filter(data => data.id === authentication.currentUser.uid));
-        // setMeta(allData);
-      };
-
-    console.log(meta)
 
     const toggleTab = (index) => setSelectedTab(index);
 
@@ -142,7 +129,7 @@ function Settings() {
 
                                         <tr>
                                             <th style={{paddingRight: "30px"}}><p>Gender</p></th>
-                                            <td><p>{meta.length > 0 && meta[0].gender}</p></td>
+                                            <td><p>{user.length > 0 && user[0].meta.gender}</p></td>
                                         </tr>
                                         
                                 </div>

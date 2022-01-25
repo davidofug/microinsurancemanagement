@@ -22,6 +22,8 @@ function AgentMtpCompWindMenu({setLargeContentClass, largeContentClass}) {
     const [ toggleMenu, setToggeMenu ] = useState(true)
     const [ openFooterContext, setOpenFooterContext ] = useState(false)
 
+    console.log(authentication.currentUser)
+
     return (
         <div className='menuSide'>
             <MobileNav role={Agent_mtp_comprehensive_windscreen} user="agent" displayName={authentication?.currentUser?.displayName}/>
