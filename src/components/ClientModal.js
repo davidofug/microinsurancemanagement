@@ -1,6 +1,6 @@
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
 
-function ClientModal({ singleDoc, handleClose }) {
+function ClientModal({ singleDoc, handleClose, handleFieldChange }) {
 
   const modalSubmit = (event) => {
       event.preventDefault()

@@ -616,6 +616,43 @@ left: auto;
 }
 
 
+.generator__password {
+    position: relative;
+    background: rgb(255 255 255);
+    padding: 13px 10px;
+    color: #000;
+    margin-bottom: 15px;
+    word-break: break-word;
+  }
+
+  .generator__password h3 {
+    font-weight: 500;
+    text-align: left;
+    margin: 0;
+    padding: 0px 37px 0 0;
+    font-size: 17px;
+    line-height: 33px;
+    min-height: 20px;
+  }
+
+
+  .copy__btn {
+    position: absolute;
+    background: #1475cf;
+    /* background-image: linear-gradient(to bottom right, #f1bf64 0%, #f71d36 100%) !important; */
+    color: #fff;
+    border: none;
+    height: 42px;
+    padding: 0 12px 0 12px;
+    cursor: pointer;
+    top: 3px;
+    right: 3px;
+  }
+  .copy__btn svg {
+    font-size: 20px;
+  }
+
+
 
 
 

@@ -114,6 +114,7 @@ const getClients = () => {
   const currentClients = !clients || searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
   const totalPagesNum = !clients || Math.ceil(clients.length / clientsPerPage)
 
+
     return (
         <div className='components'>
             <Header title="Clients" subtitle="MANAGING CLIENTS" />
@@ -219,17 +220,24 @@ const getClients = () => {
                         ))}
                           
                       </tbody>
-                      <tfoot>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
-                      </tfoot>
-                  </Table>
 
-                <Pagination 
+                      <tfoot>
+                        <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+                        <td colSpan={7}>
+                      <Pagination 
                   pages={totalPagesNum}
                   setCurrentPage={setCurrentPage}
                   currentClients={currentClients}
                   sortedEmployees={clients}
                   entries={'Clients'} />
+                  </td>
+                        </tr>
+                        </tfoot>
+
+                      <tfoot>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                      </tfoot>
+                  </Table>
             
                   </>
                 :
