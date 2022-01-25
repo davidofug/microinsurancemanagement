@@ -6,8 +6,10 @@ import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
 import { functions } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import { Table } from 'react-bootstrap'
+import { Table, Form } from 'react-bootstrap'
 import { MdDelete, MdEdit } from 'react-icons/md'
+import Loader from '../../components/Loader';
+import { ImFilesEmpty } from 'react-icons/im'
 
 function Admins() {
 
@@ -18,7 +20,8 @@ function Admins() {
   const getAdmins = () => {
     const listUsers = httpsCallable(functions, 'listUsers')
     listUsers().then(({data}) => {
-        setAdmins(data.filter(user => user.role.admin === true))
+        const myAdmins = data.filter(user => user.role.admin === true)
+        myAdmins.length === 0 ? setAdmins(null) : setAdmins(myAdmins)
     }).catch()
   }
 
@@ -29,8 +32,8 @@ function Admins() {
 
     const indexOfLastAdmin = currentPage * adminsPerPage
     const indexOfFirstAdmin = indexOfLastAdmin - adminsPerPage
-    const currentAdmins = admins.slice(indexOfFirstAdmin, indexOfLastAdmin)
-    const totalPagesNum = Math.ceil(admins.length / adminsPerPage)
+    const currentAdmins = !admins || admins.slice(indexOfFirstAdmin, indexOfLastAdmin)
+    const totalPagesNum = !admins || Math.ceil(admins.length / adminsPerPage)
 
     const handleDelete = (id) => {
       const deleteUser = httpsCallable(functions, 'deleteUser')
@@ -64,12 +67,16 @@ function Admins() {
                 
             </div>
 
-            <div className="shadow-sm table-card componentsData">   
+            {admins !== null && admins.length > 0 ?
+              <>
+                <div className="shadow-sm table-card componentsData">   
                 <div id="search">
-                            <SearchBar placeholder={"Search for Admins"}/>
-                            <div></div>
-                            <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
-                      </div>
+                      <SearchBar placeholder={"Search for Admins"}/>
+                      <div></div>
+                      <Form.Group className="m-3 categories" width="200px">
+                        <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
+                      </Form.Group>
+                </div>
 
                 <Table hover striped responsive>
                         <thead>
@@ -127,9 +134,21 @@ function Admins() {
                     currentClients={currentAdmins}
                     sortedEmployees={admins}
                     entries={'Admins'} />
-
-               
             </div>
+              </>
+            :
+              admins === null
+              ?
+                <div className="no-table-data">
+                  <i><ImFilesEmpty /></i>
+                  <h4>No data yet</h4>
+                  <p>You have not created any Motor Third Party Stickers Yet</p>
+                </div>
+              :
+                <Loader />
+          }
+
+            
         </div>
     )
 }
