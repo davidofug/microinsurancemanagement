@@ -15,7 +15,7 @@ import '../components/modal/ConfirmBox.css'
 import { httpsCallable } from 'firebase/functions';
 
 export default function Transit() {
-  useEffect(() => { document.title = "Britam - Windscreen"; getNewImport()}, []);
+  useEffect(() => { document.title = "Britam - Transit"; getNewImport()}, []);
 
   
   // policies
@@ -248,7 +248,7 @@ export default function Transit() {
           <div className="no-table-data">
             <i><ImFilesEmpty /></i>
             <h4>No data yet</h4>
-            <p>You have not created any Windscreen Stickers Yet</p>
+            <p>You have not created any Transit Stickers Yet</p>
           </div>
         :
           <Loader />
