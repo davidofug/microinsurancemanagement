@@ -13,7 +13,7 @@ export default function Upload({uploadLogo}) {
             <div id="form" onClick={() => {
                 document.querySelector(".input-file").click()
             }}>
-                <input type="file" className='input-file' hidden onChange={({target: {files}}) => {
+                <input type="file" className='input-file' hidden id='photo' defaultValue={""} onChange={({target: {files}}) => {
                     uploadLogo(files[0])
                     files[0] && setFileName(files[0].name)
                 }}/>

@@ -99,12 +99,14 @@ function AddUsers() {
                   async () => {
                                   await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
                                   // setUrl(downloadUrl)
-                                  fields.logo = downloadUrl
+                                  fields.photo = downloadUrl
                                   console.log("file available at", downloadUrl)
                           })
                   }
           ) 
     }
+
+    console.log(fields)
 
 
     return (
