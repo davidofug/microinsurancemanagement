@@ -15,7 +15,7 @@ import '../components/modal/ConfirmBox.css'
 import { httpsCallable } from 'firebase/functions';
 
 export default function NewImport() {
-  useEffect(() => { document.title = "Britam - Windscreen"; getNewImport()}, []);
+  useEffect(() => { document.title = "Britam - New Import"; getNewImport()}, []);
 
   
   // policies
@@ -248,18 +248,11 @@ export default function NewImport() {
           <div className="no-table-data">
             <i><ImFilesEmpty /></i>
             <h4>No data yet</h4>
-            <p>You have not created any Windscreen Stickers Yet</p>
+            <p>You have not created any NewImport Stickers Yet</p>
           </div>
         :
           <Loader />
-      }
-                
-
-
-                
-
-        
-      
+      } 
     </div>
   );
 }
