@@ -106,8 +106,6 @@ function AddUsers() {
           ) 
     }
 
-    console.log(fields)
-
 
     return (
         <div className='components'>
