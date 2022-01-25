@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import data from "../helpers/mock-data.json";
 import Pagination from "../helpers/Pagination";
 import ClaimTable from "../components/claimTable/ClaimTable";
 import SearchBar from "../components/searchBar/SearchBar";
@@ -24,14 +23,13 @@ import useAuth from "../contexts/Auth";
 import { ImFilesEmpty } from 'react-icons/im'
 import { httpsCallable } from 'firebase/functions';
 import useDialog from "../hooks/useDialog";
+import {ClaimModelNotification, ClaimModel} from '../components/ClaimModel'
 
 export default function Claims() {
   const [claims, setClaims] = useState([]);
   const claimsCollectionRef = collection(db, "claims");
   const [editID, setEditID] = useState(null);
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [ show, handleShow, handleClose ] = useDialog()
   const [ showNotification, handleShowNotification, handleCloseNotification ] = useDialog()
 
   const [fields, handleFieldChange] = useForm({
@@ -158,7 +156,7 @@ export default function Claims() {
   const indexOfLastEmployee = currentPage * employeesPerPage;
   const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
   const currentClaims = !claims || claims.slice(indexOfFirstEmployee, indexOfLastEmployee);
-  const totalPagesNum = Math.ceil(data.length / employeesPerPage);
+  const totalPagesNum = Math.ceil(claims.length / employeesPerPage);
 
 
   // actions context
@@ -171,12 +169,6 @@ export default function Claims() {
     }
   }
   const [clickedIndex, setClickedIndex] = useState(null)
-
-  const [ deleteName, setDeleteName ] = useState('')
-  const getPolicy = async (id) => {
-    const policyDoc = doc(db, "policies", id);
-    return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
-  }
 
   return (
     <div className="components">
@@ -216,353 +208,17 @@ export default function Claims() {
       </div>
 
       <Modal show={showNotification} onHide={handleCloseNotification}>
-        <Modal.Header closeButton>
-          <Modal.Title>View Claim Settlement</Modal.Title>
-        </Modal.Header>
-        <Form id="update_claim" onSubmit={modalSubmit}>
-          <Modal.Body>
-                <div className="mb-3">
-                  Status:
-                  <span style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                  > {singleDoc.status}</span>
-                </div>
-                
+        <ClaimModelNotification singleDoc={singleDoc}/>
+      </Modal>
 
-          <h5>Client Details</h5>
-            <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantName">Name</Form.Label>
-                <p>{singleDoc.claimantName}</p>
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantEmail">Email Address</Form.Label>
-                <p>{singleDoc.claimantEmail}</p>
-              </Form.Group>
-            </Row>
-
-            <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantPhoneNumber">
-                  Phone Number
-                </Form.Label>
-                <p>{singleDoc.claimantPhoneNumber}</p>
-              </Form.Group>
-
-              <hr />
-            
-
-
-            <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="dateReported">Date Reported</Form.Label>
-                <p>{singleDoc.dateReported}</p>
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="policyType">Policy Type</Form.Label>
-                <p>{singleDoc.policyType}</p>
-              </Form.Group>
-            </Row>
-            <Row className="mb-3">
-              
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="stickerNumber">Sticker No.</Form.Label>
-                <p>{singleDoc.stickerNumber}</p>
-              </Form.Group>
-
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="numberPlate">Plate No.</Form.Label>
-                <p>{singleDoc.numberPlate}</p>
-              </Form.Group>
-            </Row>
-            
-            <Row>
-              
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }} className="mb-3"
-              >
-                <Form.Label htmlFor="dateOfIncident">
-                  Date of Incident
-                </Form.Label>
-                <p>{singleDoc.dateOfIncident}</p>
-              </Form.Group>
-            </Row>
-
-            <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="estimate">Claim Estimate</Form.Label>
-                <p>{singleDoc.estimate}</p>
-              </Form.Group>
-            </Row>
-            
-          </Modal.Body>
-        </Form>
+      <Modal show={show} onHide={handleClose}>
+        <ClaimModel singleDoc={singleDoc} handleClose={handleClose} handleFieldChange={handleFieldChange} modalSubmit={modalSubmit} />
       </Modal>
 
       {claims !== null && claims.length > 0 ?
       <>
 
-      <Modal show={show} onHide={() => {
-        handleClose()
-      }}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit {singleDoc.claimantName}'s Claim</Modal.Title>
-        </Modal.Header>
-        <Form id="update_claim" onSubmit={() => {
-            modalSubmit()
-          }}>
-          <Modal.Body>
-            <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="dateReported">Date Reported</Form.Label>
-                <Form.Control
-                  type="date"
-                  id="dateReported"
-                  defaultValue={singleDoc.dateReported}
-                  onChange={handleFieldChange}
-                />
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="policyType">Policy</Form.Label>
-                <Form.Select
-                  aria-label="User role"
-                  id="policyType"
-                  defaultValue={singleDoc.policyType}
-                  onChange={handleFieldChange}
-                >
-                  <option value="hide">--Select Category--</option>
-                  <option value="mtp">MTP</option>
-                  <option value="comprehensive">Comprehensive</option>
-                  <option value="windscreen">Windscreen</option>
-                </Form.Select>
-              </Form.Group>
-            </Row>
-            <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="numberPlate">Plate No.</Form.Label>
-                <Form.Control
-                  type="text"
-                  name=""
-                  id="numberPlate"
-                  defaultValue={singleDoc.numberPlate}
-                  placeholder="Enter plate No."
-                  onChange={handleFieldChange}
-                />
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="stickerNumber">Sticker No.</Form.Label>
-                <Form.Control
-                  type="text"
-                  name=""
-                  id="stickerNumber"
-                  defaultValue={singleDoc.stickerNumber}
-                  placeholder="Enter Sticker Number"
-                  onChange={handleFieldChange}
-                />
-              </Form.Group>
-            </Row>
-            <h5>Claimant Details</h5>
-            <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantName">Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name=""
-                  id="claimantName"
-                  defaultValue={singleDoc.claimantName}
-                  placeholder="Enter Claimant's name"
-                  onChange={handleFieldChange}
-                />
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantEmail">Email Address</Form.Label>
-                <Form.Control
-                  type="text"
-                  name=""
-                  id="claimantEmail"
-                  placeholder="Enter claimant's email"
-                  defaultValue={singleDoc.claimantEmail}
-                  onChange={handleFieldChange}
-                />
-              </Form.Group>
-            </Row>
-            <Row>
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantPhoneNumber">
-                  Phone Number
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name=""
-                  id="claimantPhoneNumber"
-                  defaultValue={singleDoc.claimantPhoneNumber}
-                  placeholder="Enter Claimant's phone number"
-                  onChange={handleFieldChange}
-                />
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="dateOfIncident">
-                  Date of Incident
-                </Form.Label>
-                <Form.Control
-                  type="date"
-                  name=""
-                  id="dateOfIncident"
-                  defaultValue={singleDoc.dateOfIncident}
-                  onChange={handleFieldChange}
-                />
-              </Form.Group>
-            </Row>
-
-            <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="estimate">Claim Estimate</Form.Label>
-                <Form.Control
-                  type="text"
-                  name=""
-                  id="estimate"
-                  defaultValue={singleDoc.estimate}
-                  placeholder="Enter Claim Estimate"
-                  onChange={handleFieldChange}
-                />
-              </Form.Group>
-            </Row>
-            
-          </Modal.Body>
-          <Modal.Footer>
-          <Button
-              variant="primary"
-              type="submit"
-              onClick={handleClose}
-              id="submit"
-            >
-              Submit
-            </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal>
+      
 
       <div className="table-card componentsData">
         <div id="search">
@@ -611,7 +267,7 @@ export default function Claims() {
                                             }}
                                                 >
                                                   <div className="actionDiv">
-                                                    <i><AiFillCloseCircle/></i> Claim Settlement
+                                                    <i><MdNotifications /></i> Claim Settlement
                                                   </div>
                                             </li>
 
@@ -650,16 +306,24 @@ export default function Claims() {
                 </tr>
               ))}
             </tbody>
+
+            <tfoot>
+              <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+                <td colSpan={7}>
+                <Pagination 
+                pages={totalPagesNum}
+                setCurrentPage={setCurrentPage}
+                currentClients={currentClaims}
+                sortedEmployees={claims}
+                entries={'Claims'} />
+                </td>
+              </tr>
+            </tfoot>                                 
+
             <tfoot>
               <tr>
-                <th>Ref Number</th>
-                <th>Claimant Details</th>
-                <th>Date of Incident</th>
-                <th>Number Plate</th>
-                <th>Sticker Number</th>
-                <th>Claim Estimate</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
+                <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
               </tr>
             </tfoot>
           </Table>
