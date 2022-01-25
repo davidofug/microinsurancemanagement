@@ -63,11 +63,6 @@ function Supervisors() {
     const handleShow = () => setShow(true);
     const [editID, setEditID] = useState(null);
 
-
-  
-
-  const [editContactId, setEditContactId] = useState(null);
-
   const [ currentPage, setCurrentPage ] = useState(1)
   const [supervisorsPerPage] = useState(10)
 
@@ -111,8 +106,6 @@ function Supervisors() {
       Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
       setDeleteArray(supervisors.map(agent => agent.uid))
     }
-    
-    
   }
 
   // delete multiple agents
@@ -174,7 +167,7 @@ function Supervisors() {
               <>
                 <div className="shadow-sm table-card componentsData">   
                 <div id="search">
-                      <SearchBar placeholder={"Search Supervisor by name"} value={searchText} handleSearch={handleSearch}/>
+                      <SearchBar placeholder={"Search Supervisor by name"} value={searchText} handleSearch={handleSearch} />
                       <div></div>
                       <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>

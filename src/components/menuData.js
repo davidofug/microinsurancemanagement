@@ -1,5 +1,6 @@
 import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson, MdStickyNote2 } from 'react-icons/md'
 import { RiCalendarTodoFill } from 'react-icons/ri'
+import { GrSettingsOption } from 'react-icons/gr'
 
 const menuData = {
     SuperAdmin: [
@@ -48,6 +49,12 @@ const menuData = {
             name: "Claims",
             icon: <MdAirlineSeatReclineExtra />,
             link: "/superadmin/claims"
+        },
+        {
+            number: 5,
+            name: "Sytem Logs",
+            icon: <GrSettingsOption />,
+            link: "/superadmin/system-logs"
         }
     ],
     Admin: [
