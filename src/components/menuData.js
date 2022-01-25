@@ -54,7 +54,7 @@ const menuData = {
             number: 5,
             name: "Sytem Logs",
             icon: <GrSettingsOption />,
-            link: "/superadmin/claims"
+            link: "/superadmin/system-logs"
         }
     ],
     Admin: [

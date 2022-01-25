@@ -118,7 +118,6 @@ export default function Claims() {
   const getSingleDoc = async (id) => {
     const docRef = doc(db, "claims", id);
     const docSnap = await getDoc(docRef);
-    // console.log(docSnap.data())
     setSingleDoc(docSnap.data());
   };
 
@@ -173,11 +172,10 @@ export default function Claims() {
 
 
   // filter
-  const [ switchCategory, setSwitchCategory ] = useState("")
-  const shownClaims = (currentClaims
-                          .filter(claim => !switchCategory || claim.status === switchCategory))
+  const [ switchCategory, setSwitchCategory ] = useState(null)
+  const shownClaims = !claims || currentClaims.filter(claim => !switchCategory || claim.status === switchCategory)
 
-  const paginatedShownClaim = shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
+  const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
 
   console.log(claims)
 
