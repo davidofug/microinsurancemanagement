@@ -5,7 +5,7 @@ import Pagination from "../helpers/Pagination";
 import ClaimTable from "../components/claimTable/ClaimTable";
 import SearchBar from "../components/searchBar/SearchBar";
 import Header from "../components/header/Header";
-import { Table, Alert, Modal, Form, Col, Row, Button } from "react-bootstrap";
+import { Table, Modal, Form, Col, Row, Button } from "react-bootstrap";
 import { db } from "../helpers/firebase";
 import {
   collection,
@@ -15,22 +15,24 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-import { FaEllipsisV } from "react-icons/fa";
 import { useForm } from "../hooks/useForm";
-import { authentication } from "../helpers/firebase";
+import { authentication, functions } from "../helpers/firebase";
 import Loader from "../components/Loader";
 import { MdEdit, MdDelete, MdNotifications } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import useAuth from "../contexts/Auth";
 import { ImFilesEmpty } from 'react-icons/im'
+import { httpsCallable } from 'firebase/functions';
+import useDialog from "../hooks/useDialog";
 
-function Claims() {
+export default function Claims() {
   const [claims, setClaims] = useState([]);
   const claimsCollectionRef = collection(db, "claims");
   const [editID, setEditID] = useState(null);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [ showNotification, handleShowNotification, handleCloseNotification ] = useDialog()
 
   const [fields, handleFieldChange] = useForm({
     uid: authentication.currentUser.uid,
@@ -58,14 +60,40 @@ function Claims() {
   const { authClaims } = useAuth()
 
   const getClaims = async () => {
+    const listUsers = httpsCallable(functions, 'listUsers')
     const data = await getDocs(claimsCollectionRef);
     const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    if(allClaims.filter(userClaim => userClaim.uid === authentication.currentUser.uid).length === 0){
-      setClaims(null)
-    } else {
-      setClaims(allClaims.filter(userClaim => userClaim.uid === authentication.currentUser.uid))
+
+    if(authClaims.agent){
+      const agentClaims = allClaims.filter(userClaim => userClaim.uid === authentication.currentUser.uid)
+      agentClaims.length === 0 ? setClaims(null) : setClaims(agentClaims)
+    } else if( authClaims.supervisor){
+      listUsers().then(({data}) => {
+        const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+
+        const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid ]
+
+        const supervisorClaims = allClaims.filter(userClaim => usersUnderSupervisor.includes(userClaim.uid))
+
+        supervisorClaims.length === 0 ? setClaims(null) : setClaims(supervisorClaims)
+    }).catch()
+    } else if( authClaims.admin){
+      listUsers().then(({data}) => {
+        const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+        
+        const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+
+        const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+
+        const usersUnderAdmin = [ ...myAgents, ...mySupervisors, ...agentsUnderMySupervisors, authentication.currentUser.uid ]
+
+        const adminClaims = allClaims.filter(userClaim => usersUnderAdmin.includes(userClaim.uid))
+        adminClaims.length === 0 ? setClaims(null) : setClaims(adminClaims)
+    }).catch()
+    } else if( authClaims.superadmin){
+      allClaims.length === 0 ? setClaims(null) : setClaims(allClaims)
     }
-  };
+  }
 
   // Confirm Box
   const [ openToggle, setOpenToggle ] = useState(false)
@@ -150,6 +178,8 @@ function Claims() {
     return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
   }
 
+  console.log(claims)
+
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
@@ -186,6 +216,159 @@ function Claims() {
           </div>
         </div>
       </div>
+
+      <Modal show={showNotification} onHide={handleCloseNotification}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Claim Notification</Modal.Title>
+        </Modal.Header>
+        <Form id="update_claim" onSubmit={modalSubmit}>
+          <Modal.Body>
+
+          <h5>Client Details</h5>
+            <Row className="mb-3">
+              <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="claimantName">Name</Form.Label>
+                <p>{singleDoc.claimantName}</p>
+              </Form.Group>
+              <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="claimantEmail">Email Address</Form.Label>
+                <p>{singleDoc.claimantEmail}</p>
+              </Form.Group>
+            </Row>
+
+            <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="claimantPhoneNumber">
+                  Phone Number
+                </Form.Label>
+                <p>{singleDoc.claimantPhoneNumber}</p>
+              </Form.Group>
+
+              <hr />
+            
+
+
+            <Row className="mb-3">
+              <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="dateReported">Date Reported</Form.Label>
+                <p>singleDoc.dateReported</p>
+              </Form.Group>
+              <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="policyType">Policy Type</Form.Label>
+                <p>{singleDoc.policyType}</p>
+              </Form.Group>
+            </Row>
+            <Row className="mb-3">
+              
+              <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="stickerNumber">Sticker No.</Form.Label>
+                <p>{singleDoc.stickerNumber}</p>
+              </Form.Group>
+
+              <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="numberPlate">Plate No.</Form.Label>
+                <p>{singleDoc.numberPlate}</p>
+              </Form.Group>
+            </Row>
+            
+            <Row>
+              
+              <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }} className="mb-3"
+              >
+                <Form.Label htmlFor="dateOfIncident">
+                  Date of Incident
+                </Form.Label>
+                <p>{singleDoc.dateOfIncident}</p>
+              </Form.Group>
+            </Row>
+
+            <Row className="mb-3">
+              <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="estimate">Claim Estimate</Form.Label>
+                <p>{singleDoc.estimate}</p>
+              </Form.Group>
+            </Row>
+
+            <Modal.Footer>
+            <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="estimate">Status</Form.Label>
+                <span
+                      style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                    >{singleDoc.status}</span>
+              </Form.Group>
+            </Modal.Footer>
+            
+          </Modal.Body>
+        </Form>
+      </Modal>
 
       {claims !== null && claims.length > 0 ?
       <>
@@ -433,7 +616,12 @@ function Claims() {
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setEditID(claim.id); setShowContext(!showContext)}}>&#8942;</button>
 
                                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                                            <li>
+                                            <li onClick={() => {
+                                                  setShowContext(false)
+                                                  setEditID(claim.id);
+                                                  getSingleDoc(claim.id);
+                                                  handleShowNotification()
+                                                }}>
                                                   <div className="actionDiv">
                                                     <i><MdNotifications/></i> View Notification
                                                   </div>
@@ -521,5 +709,3 @@ function Claims() {
     </div>
   );
 }
-
-export default Claims;
