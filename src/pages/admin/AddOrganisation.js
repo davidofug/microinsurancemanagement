@@ -101,6 +101,26 @@ export default function AddOrganisation() {
                 ) 
       }
 
+
+      // copy password to click board
+      const copyToClipboard = () => {
+        const newTextArea = document.createElement('textarea');
+        newTextArea.innerText = password;
+        document.body.appendChild(newTextArea);
+        newTextArea.select();
+        document.execCommand('copy');
+        newTextArea.remove();
+      }
+
+      const handleCopyPassword = (e) => {
+        if (password === '') {
+          toast.error('Nothing To Copy', {position: "top-center"});
+        } else {
+          copyToClipboard();
+          toast.success('Password successfully copied to clipboard', {position: "top-center"});
+        }
+      }
+
     return (
         <div className='components'>
             <Header title="Add Organisations" subtitle="ADD A NEW ORGANISATION" />
@@ -183,7 +203,7 @@ export default function AddOrganisation() {
                                             <button type='button' className='btn btn-primary cta mb-3' onClick={handleGeneratePassword}>Generate Password</button>
                                             <div className='generator__password'>
                                                 <h3>{password}</h3>
-                                                <button type='button' className='copy__btn'>
+                                                <button type='button' className='copy__btn' onClick={handleCopyPassword}>
                                                 <AiOutlineCopy />
                                                 </button>
                                         </div>
