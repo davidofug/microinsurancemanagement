@@ -20,6 +20,7 @@ import AddUsers from '../pages/AddUsers'
 import Admins from '../pages/superAdmin/Admins'
 import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
+import SystemLogs from '../pages/admin/SystemLogs'
 
 
 function SuperAdminRoutes() {
@@ -63,6 +64,9 @@ function SuperAdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/superadmin/settings" >
                 <Settings />
+            </PrivateRoute>
+            <PrivateRoute path="/superadmin/system-logs" >
+                <SystemLogs />
             </PrivateRoute>
             <PrivateRoute path="/superadmin/motor-third-party" >
                 <Mtp />

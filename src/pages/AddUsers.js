@@ -13,6 +13,10 @@ import Loader from '../components/Loader'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+// firebase storage..
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../helpers/firebase'
+
 function AddUsers() {
     const { authClaims } = useAuth()
     const addUser = httpsCallable(functions, 'addUser')
@@ -75,8 +79,33 @@ function AddUsers() {
 
     const { user_role } = fields
 
-    console.log(fields)
     
+    const [ url, setUrl ] = useState('')
+    //const [ logo, setLogo ] = useState(null)
+    const [ progress, setProgress ] = useState(0)
+
+    const uploadLogo = (logo) => {
+          const storageRef = ref(storage, `images/${logo.name}`)
+          console.log(storageRef)
+          const uploadTask = uploadBytesResumable(storageRef, logo)
+
+          uploadTask.on(
+                  "state_changed",
+                  (snapshot) => {
+                          const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                          setProgress(prog)
+                  },
+                  (error) => console.log(error),
+                  async () => {
+                                  await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+                                  // setUrl(downloadUrl)
+                                  fields.photo = downloadUrl
+                                  console.log("file available at", downloadUrl)
+                          })
+                  }
+          ) 
+    }
+
 
     return (
         <div className='components'>
@@ -177,7 +206,7 @@ function AddUsers() {
                         </>
                     }
                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                        <Upload />
+                        <Upload uploadLogo={uploadLogo}/>
 
                     {fields.name !== "" & fields.email !== ""
                     ?

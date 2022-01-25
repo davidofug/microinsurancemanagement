@@ -4,7 +4,7 @@ import Pagination from "../helpers/Pagination";
 import ClaimTable from "../components/claimTable/ClaimTable";
 import SearchBar from "../components/searchBar/SearchBar";
 import Header from "../components/header/Header";
-import { Table, Modal } from "react-bootstrap";
+import { Table, Modal, Form } from "react-bootstrap";
 import { db } from "../helpers/firebase";
 import {
   collection,
@@ -118,7 +118,6 @@ export default function Claims() {
   const getSingleDoc = async (id) => {
     const docRef = doc(db, "claims", id);
     const docSnap = await getDoc(docRef);
-    // console.log(docSnap.data())
     setSingleDoc(docSnap.data());
   };
 
@@ -153,11 +152,11 @@ export default function Claims() {
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [employeesPerPage] = useState(10);
-  const indexOfLastEmployee = currentPage * employeesPerPage;
-  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
-  const currentClaims = !claims || searchByName(claims).slice(indexOfFirstEmployee, indexOfLastEmployee);
-  const totalPagesNum = Math.ceil(claims.length / employeesPerPage);
+  const [claimsPerPage] = useState(10);
+  const indexOfLastClaim = currentPage * claimsPerPage;
+  const indexOfFirstClaim = indexOfLastClaim - claimsPerPage;
+  const currentClaims = !claims || searchByName(claims);
+  const totalPagesNum = !claims || Math.ceil(claims.length / claimsPerPage);
 
 
   // actions context
@@ -170,6 +169,13 @@ export default function Claims() {
     }
   }
   const [clickedIndex, setClickedIndex] = useState(null)
+
+
+  // filter
+  const [ switchCategory, setSwitchCategory ] = useState(null)
+  const shownClaims = !claims || currentClaims.filter(claim => !switchCategory || claim.status === switchCategory)
+
+  const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
 
   return (
     <div className="components">
@@ -222,7 +228,15 @@ export default function Claims() {
         <div id="search">
           <SearchBar placeholder={"Search for claim"} value={searchText} handleSearch={handleSearch} />
           <div></div>
-          <div></div>
+          <Form.Group className="m-3 categories" width="200px">
+            <Form.Label htmlFor='category'>Status</Form.Label>
+            <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
+                <option value={""}>Filter by status</option>
+                <option value="new">Pending</option>
+                <option value="settled">Settled</option>
+                <option value="closed">Closed</option>
+            </Form.Select>
+          </Form.Group>
         </div>
 
 
@@ -236,7 +250,7 @@ export default function Claims() {
            </tr>
          </thead>
          <tbody>
-           {currentClaims.map((claim, index) => (
+           {paginatedShownClaim.map((claim, index) => (
              <tr key={claim.id}>
                <td>{claim.refNumber}</td>
                <td>

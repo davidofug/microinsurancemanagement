@@ -11,6 +11,8 @@ import Pagination from '../../helpers/Pagination'
 import { currencyFormatter } from "../../helpers/currency.format";
 import Loader from '../../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
+import { httpsCallable } from 'firebase/functions';
+import { authentication, functions } from '../../helpers/firebase'
 
 function Reports() {
   useEffect(() => {
@@ -25,11 +27,33 @@ function Reports() {
 
   const getPolicies = async () => {
     const data = await getDocs(policyCollectionRef);
-    if((data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))).length === 0){
-      setPolicies(null)
-    } else{
-      setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-    }
+    const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+
+    const listUsers = httpsCallable(functions, 'listUsers')
+
+    listUsers().then(({data}) => {
+      const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+
+      const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+
+      const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+      
+      const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
+
+      console.log(usersUnderAdmin)
+
+      const AdminPolicies = policiesArray.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
+      AdminPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminPolicies)
+    })
+
+
+
+  //   const data = await getDocs(policyCollectionRef);
+  //   if((data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))).length === 0){
+  //     setPolicies(null)
+  //   } else{
+  //     setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  //   }
   }
 
   // TODO: look for a better way to switch between categories
@@ -92,7 +116,7 @@ function Reports() {
   const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
   const currentPolicies = !policies || searchByName(policies)
 
-  const shownPolicies = (currentPolicies
+  const shownPolicies = !policies || (currentPolicies
                         .filter(policy => !switchCategory || policy.category === switchCategory)
                         .filter(policy => !currentDay && policy.policyStartDate !== undefined || policy.policyStartDate === currentDay)
                         .filter(policy => !selectedMonth && policy.policyStartDate !== undefined || policy.policyStartDate.substring(5, 7) === selectedMonth)
@@ -100,15 +124,13 @@ function Reports() {
                         .filter(policy => !dateFrom || policy.policyStartDate >= dateFrom)
                         .filter(policy => !dateTo || policy.policyStartDate <= dateTo))
   
-  const paginatedShownPolicies = shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
   
 
   
   const totalPagesNum = !policies || Math.ceil(shownPolicies.length / policiesPerPage)
 
-
-  console.log(policies)
 
 
   return (
@@ -305,7 +327,7 @@ function Reports() {
             <div className="no-table-data">
               <i><ImFilesEmpty /></i>
               <h4>No data yet</h4>
-              <p>You have not created any Motor Third Party Stickers Yet</p>
+              <p>No Stickers Yet</p>
             </div>
           :
             <Loader />

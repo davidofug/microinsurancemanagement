@@ -168,8 +168,6 @@ export default function AddOrganisation() {
                                     <Form.Group className="mb-3">
                                             <Form.Label htmlFor='logo'>Upload Logo</Form.Label>
                                             <Form.Control id='logo' type="file" onChange={(event) => {
-                                                //     setLogo(event.target.files[0])
-                                                        console.log("hello")
                                                     uploadLogo(event.target.files[0])
                                             }} />
                                             {progress}

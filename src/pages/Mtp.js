@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/header/Header";
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../components/searchBar/SearchBar'
-import { Table } from 'react-bootstrap'
+import { Table, Form } from 'react-bootstrap'
 import { getDoc, getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
 import { authentication, db, functions } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
@@ -101,6 +101,26 @@ export default function Mtp() {
     toast.success('Successfully deleted', {position: "top-center"});
   }
 
+  const handleAllCheck = () => {
+    if(document.getElementById("firstAgentCheckbox").checked === true){
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
+      setDeleteArray([])
+    } else{
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
+      setDeleteArray(policies.map(policy => policy.id))
+    }
+  }
+
+  // delete multiple agents
+  const [ bulkDelete, setBulkDelete ] = useState(null)
+  const [ deleteArray, setDeleteArray ] = useState([])
+  const [ deleteAllArray, setDeleteAllArray ] = useState([])
+  const handleBulkDelete = async () => {
+    if(bulkDelete){
+      deleteArray.map(agentuid => handleDelete(agentuid))
+    }
+  }
+
   // actions context
   const [showContext, setShowContext] = useState(false)
   if(showContext === true){
@@ -124,8 +144,14 @@ export default function Mtp() {
 
   const indexOfLastPolicy = currentPage * policiesPerPage
   const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-  const currentPolicies = !policies || searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
+  const currentPolicies = !policies || searchByName(policies)
   const totalPagesNum = !policies || Math.ceil(policies.length / policiesPerPage)
+
+  // filter
+  const [ switchCategory, setSwitchCategory ] = useState(null)
+  const shownPolicies = !policies || currentPolicies.filter(policy => !switchCategory || policy.stickersDetails[0].status === switchCategory)
+
+  const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
   return (
     <div className="components">
@@ -171,80 +197,123 @@ export default function Mtp() {
         <div id="search">
           <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
           <div></div>
-          <div></div>
+          <Form.Group className="m-3 categories" width="200px">
+            <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
+                <option value={""}>Filter by status</option>
+                <option value="new">New</option>
+                <option value="renewed">Renewed</option>
+                <option value="expired">Expired</option>
+                <option value="deleted">Deleted</option>
+                <option value="cancelled">Cancelled</option>
+            </Form.Select>
+          </Form.Group>
         </div>
 
-        <Table striped hover responsive>
-          <thead>
-              <tr><th>#</th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-              {!authClaims.agent && <th>Agent</th>}
-              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
-          </thead>
-          <tbody>
-              {policies.length > 0 && currentPolicies.map((policy, index) => (
-                <tr key={policy.id}>
-                  <td>{indexOfFirstPolicy + index + 1}</td>
-                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
-                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
-                  <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
-                  <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
-                  {!authClaims.agent && <td>{policy.added_by_name}</td>}
-                  <td>
-                    <span
-                      style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                    >{policy.stickersDetails[0].status}</span>
-                  </td>
-                  <td>{policy.policyStartDate}</td>
+        {shownPolicies.length > 0
+         ?
+         <Table striped hover responsive>
+         <thead>
+             <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
+             {!authClaims.agent && <th>Agent</th>}
+             <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+         </thead>
+         <tbody>
+             {paginatedShownPolicies.map((policy, index) => (
+               <tr key={policy.id}>
+                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, policy.id]) : 
+                   setDeleteArray(deleteArray.filter(element => element !== policy.id))
+                 }/></td>
+                 {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
+                 {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
+                 <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
+                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
+                 {!authClaims.agent && <td>{policy.added_by_name}</td>}
+                 <td>
+                   <span
+                     style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                   >{policy.stickersDetails[0].status}</span>
+                 </td>
+                 <td>{policy.policyStartDate}</td>
 
-                  <td className="started">
-                  <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setEditID(policy.id); getPolicy(policy.id)}}>&#8942;</button>
+                 <td className="started">
+                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setEditID(policy.id); getPolicy(policy.id)}}>&#8942;</button>
 
-                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                    <Link to={`/admin/policy-details/${policy.id}`}>
-                      <div className="actionDiv">
-                        <i><MdInfo /></i> Details
-                      </div>
-                    </Link>
-                    <Link to={`/admin/policy-renew/${policy.id}`}>
-                      <div className="actionDiv">
-                        <i><MdAutorenew /></i> Renew
-                      </div>
-                    </Link>
-                    <li>
-                      <div className="actionDiv">
-                        <i><MdCancel /></i> Cancel
-                      </div>
-                    </li>
-                    <li 
-                          onClick={() => {
-                                  setOpenToggle(true)
-                                  setEditID(policy.id);
-                                  setShowContext(false)
-                                }}
-                        >
-                          <div className="actionDiv">
-                            <i><MdDelete/></i> Delete
-                          </div>
-                    </li>
-                  </ul>
-                  </td>
-          
-                </tr>
-              ))}
-          </tbody>
-          <tfoot>
-              <tr><td>#</td><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-              {!authClaims.agent && <th>Agent</th>}
-              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
-          </tfoot>
-        </Table>
+                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                   <Link to={`/admin/policy-details/${policy.id}`}>
+                     <div className="actionDiv">
+                       <i><MdInfo /></i> Details
+                     </div>
+                   </Link>
+                   <Link to={`/admin/policy-renew/${policy.id}`}>
+                     <div className="actionDiv">
+                       <i><MdAutorenew /></i> Renew
+                     </div>
+                   </Link>
+                   <li>
+                     <div className="actionDiv">
+                       <i><MdCancel /></i> Cancel
+                     </div>
+                   </li>
+                   <li 
+                         onClick={() => {
+                                 setOpenToggle(true)
+                                 setEditID(policy.id);
+                                 setShowContext(false)
+                               }}
+                       >
+                         <div className="actionDiv">
+                           <i><MdDelete/></i> Delete
+                         </div>
+                   </li>
+                 </ul>
+                 </td>
+         
+               </tr>
+             ))}
+         </tbody>
 
-        <Pagination 
-        pages={totalPagesNum}
-        setCurrentPage={setCurrentPage}
-        currentClients={currentPolicies}
-        sortedEmployees={policies}
-        entries={'Motor Third Party'} />
+         <tfoot>
+         <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+             
+           <td colSpan={3}>
+             <div style={{display: "flex"}}>
+               <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
+                   <option value="">Bulk Action</option>
+                   <option value="delete">Delete</option>
+               </Form.Select>
+               <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
+             </div>
+           </td>
+
+
+             <td colSpan={4}>
+             <Pagination 
+               pages={totalPagesNum}
+               setCurrentPage={setCurrentPage}
+               currentClients={currentPolicies}
+               sortedEmployees={policies}
+               entries={'Motor Third Party'} />
+             </td>
+           </tr>
+         </tfoot>
+
+         <tfoot>
+             <tr><td></td><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
+             {!authClaims.agent && <th>Agent</th>}
+             <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
+         </tfoot>
+       </Table>
+         :
+          <div className="no-table-data">
+              <i><ImFilesEmpty /></i>
+              <h4>No match</h4>
+              <p>There is no current match for claim</p>
+          </div>
+        }
+
+        
+
+        
 
         </div>
         </>
