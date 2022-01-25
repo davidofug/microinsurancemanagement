@@ -59,8 +59,14 @@ function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }
                     </Row>
                     <div>
                         <img src={singleDoc.logo} alt='logo' width={50} />
-                        <button>change Logo</button>
                     </div>
+
+                    <Row className="mb-3">
+                    <Form.Group className="mb-3">
+                            <Form.Label htmlFor='logo'>Change Logo</Form.Label>
+                            <Form.Control id='logo' type="file" defaultValue={singleDoc.logo} onChange={handleFieldChange} />
+                    </Form.Group>
+                    </Row>
                         
 
                     <Row className="mb-3">
@@ -141,12 +147,7 @@ function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }
                         />
                     </Form.Group>
                     </Row>
-                    <Row className="mb-3">
-                    <Form.Group className="mb-3">
-                            <Form.Label htmlFor='logo'>Logo</Form.Label>
-                            <Form.Control id='logo' type="file" defaultValue={singleDoc.logo} onChange={handleFieldChange} />
-                    </Form.Group>
-                    </Row>
+                    
                     <p style={{color: "#76859a"}}>Contact's Details</p>
                     <Form.Group
                         as={Col}
@@ -256,18 +257,17 @@ function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }
                             />
                         </Form.Group>
                     </Row>
-                    <Button
+                </Modal.Body>
+                <Modal.Footer>
+                <Button
                     variant="primary"
                     type="submit"
-                    onClick={() => {
-                        handleClose();
-                    }}
+                    onClick={handleClose}
                     id="submit"
                     >
                     Submit
                     </Button>
-                </Modal.Body>
-                <Modal.Footer></Modal.Footer>
+                </Modal.Footer>
             </Form>
         </>
     )

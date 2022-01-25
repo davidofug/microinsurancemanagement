@@ -177,8 +177,6 @@ export default function Claims() {
 
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
 
-  console.log(claims)
-
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
@@ -238,7 +236,7 @@ export default function Claims() {
                 <option value="settled">Settled</option>
                 <option value="closed">Closed</option>
             </Form.Select>
-        </Form.Group>
+          </Form.Group>
         </div>
 
 
