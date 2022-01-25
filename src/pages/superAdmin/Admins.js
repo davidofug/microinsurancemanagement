@@ -4,7 +4,7 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
-import { functions, db } from '../../helpers/firebase';
+import { functions } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table } from 'react-bootstrap'
 import { MdDelete, MdEdit } from 'react-icons/md'
@@ -81,6 +81,9 @@ function Admins() {
                               <td>{index+1}</td>
                               <td>{admin.name}</td>
                               <td>{admin.email}</td>
+                              <td>{admin.meta.gender}</td>
+                              <td>{admin.meta.phone}</td>
+                              <td>{admin.meta.address}</td>
                 
                             <td className="started">
                             <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>

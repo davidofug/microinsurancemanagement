@@ -1,14 +1,20 @@
 import '../assets/styles/addClients.css'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import Header from '../components/header/Header'
 import { authentication, db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../hooks/useForm'
+import Loader from '../components/Loader'
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function AddClaims() {
 
     useEffect(() => document.title = 'Britam - Add Claims', [])
+
+    const [ isLoading, setIsLoading ] = useState(false)
 
     const claimsCollectionRef = collection(db, 'claims')
     const [fields, handleFieldChange] = useForm({
@@ -25,15 +31,17 @@ function AddClaims() {
         claimEstimate: '',
         detailsOfIncident: '',
         attachedDocuments: '',
-        status: ''
+        status: 'new'
 
     })
 
     const createClaim = async (event) => {
         try{
+            setIsLoading(true)
             event.preventDefault()
             await addDoc(claimsCollectionRef, fields)
-            alert(`successfully added ${fields.claimantName}'s claim`)
+            toast.success(`successfully added ${fields.claimantName}'s claim`, {position: "top-center"});
+            setIsLoading(false)
             document.form1.reset();
         } catch(error){
             console.log(error)
@@ -48,8 +56,16 @@ function AddClaims() {
     return (
         <div className='components'>
             <Header title="Add Claim" subtitle="ADD A NEW CLAIM" />
+            <ToastContainer/>
+            
 
-            <div className="table-card componentsData">  
+            <div className="addComponentsData mb-5 shadow-sm">  
+            {isLoading && 
+                <div className='loader-wrapper'>
+                        <Loader />
+                </div>
+            }
+                <div>
                     <Form name="form1" onSubmit={createClaim}>
                         <Row className="mb-3">
                         <h5>Claim Details</h5>
@@ -131,6 +147,7 @@ function AddClaims() {
                         
                         <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
                     </Form>
+                    </div>
             </div>
         </div>
     )

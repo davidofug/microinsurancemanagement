@@ -4,12 +4,9 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
-import { functions, db, authentication } from '../../helpers/firebase';
+import { functions, authentication } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import { FaEllipsisV } from "react-icons/fa";
-import { Table } from 'react-bootstrap'
-import { getDocs, collection, doc, getDoc, deleteDoc } from 'firebase/firestore'
-import { Modal } from 'react-bootstrap'
+import { Table, Modal, Form } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
 import ClientModal from '../../components/ClientModal';
 import { MdEdit, MdDelete } from 'react-icons/md'
@@ -20,28 +17,31 @@ import useAuth from '../../contexts/Auth';
 
 function Supervisors() {
 
-    useEffect(() => {document.title = 'Britam - Supervisors'}, [])
+    useEffect(() => {document.title = 'Britam - Supervisors'; getSupervisors()}, [])
 
-    const { authClaim } = useAuth()
+    const { authClaims } = useAuth()
+
+
 
     // get Supervisors
+    const [supervisors, setSuperviors] = useState([]);
     const getSupervisors = () => {
       const listUsers = httpsCallable(functions, 'listUsers')
-      if(authClaim.admin){
+      if(authClaims.admin){
         listUsers().then(({data}) => {
-          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(({meta: {uid}}) => uid === authentication.currentUser.uid)
-          setSuperviors(mySupervisors)
+          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(({meta: {added_by_uid}}) => added_by_uid === authentication.currentUser.uid)
+          mySupervisors.length === 0 ? setSuperviors(null) : setSuperviors(mySupervisors)
         }).catch()
-      } else if(authClaim.superAdmin){
+      } else if(authClaims.superAdmin){
         listUsers().then(({data}) => {
           const mySupervisors = data.filter(user => user.role.supervisor === true)
-          setSuperviors(mySupervisors)
+          mySupervisors.length === 0 ? setSuperviors(null) : setSuperviors(mySupervisors)
         }).catch()
       }
     }
 
     const [fields, handleFieldChange] = useForm({
-      user_role: '',
+      user_role: 'supervisor',
       email: '',
       name: '',
       dob: '',
@@ -57,37 +57,31 @@ function Supervisors() {
   
   const getSingleSupervisor = async (id) => setSingleDoc(supervisors.filter(supervisor => supervisor.uid == id)[0])
 
-    
-
-    const getSingleDoc = async (id) => {
-      const docRef = doc(db, "organisations", id);
-      const docSnap = await getDoc(docRef);
-      setSingleDoc(docSnap.data());
-    };
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const [meta, setMeta] = useState([])
     const [editID, setEditID] = useState(null);
-    const metaCollectionRef = collection(db, "usermeta");
 
-    /* const getUsersMeta = async () => {
-      const data = await getDocs(metaCollectionRef);
-      setMeta(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    }; */
 
-  const [supervisors, setSuperviors] = useState([]);
+  
 
   const [editContactId, setEditContactId] = useState(null);
 
   const [ currentPage, setCurrentPage ] = useState(1)
   const [supervisorsPerPage] = useState(10)
 
+
+  // search by name
+  const [searchText, setSearchText] = useState('')
+  const handleSearch = ({ target }) => setSearchText(target.value);
+  const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+
   const indexOfLastSupervisor = currentPage * supervisorsPerPage
   const indexOfFirstSupervisor = indexOfLastSupervisor - supervisorsPerPage
-  const currentSupervisors = supervisors.slice(indexOfFirstSupervisor, indexOfLastSupervisor)
-  const totalPagesNum = Math.ceil(supervisors.length / supervisorsPerPage)
+  const currentSupervisors = !supervisors || searchByName(supervisors.slice(indexOfFirstSupervisor, indexOfLastSupervisor))
+  const totalPagesNum = !supervisors || Math.ceil(supervisors.length / supervisorsPerPage)
 
 
 
@@ -96,9 +90,6 @@ function Supervisors() {
     deleteUser({uid:id}).then().catch(err => {
       console.log(err)
     })
-
-    const userMetaDoc = doc(db, "usermeta", id);
-    await deleteDoc(userMetaDoc);
   };
 
   // Confirm Box
@@ -112,11 +103,31 @@ function Supervisors() {
   }
 
 
+  const handleAllCheck = () => {
+    if(document.getElementById("firstAgentCheckbox").checked === true){
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
+      setDeleteArray([])
+    } else{
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
+      setDeleteArray(supervisors.map(agent => agent.uid))
+    }
+    
+    
+  }
 
-    // search by name
-    const [searchText, setSearchText] = useState('')
-    const handleSearch = ({ target }) => setSearchText(target.value);
-    const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+  // delete multiple agents
+  const [ bulkDelete, setBulkDelete ] = useState(null)
+  const [ deleteArray, setDeleteArray ] = useState([])
+  const [ deleteAllArray, setDeleteAllArray ] = useState([])
+  const handleBulkDelete = async () => {
+    if(bulkDelete){
+      deleteArray.map(agentuid => handleDelete(agentuid))
+    }
+  }
+
+
+
+    
 
   // actions context
   const [showContext, setShowContext] = useState(false)
@@ -154,15 +165,11 @@ function Supervisors() {
               </div>
             </div>
 
-            <Modal show={show} fade={false} onHide={() =>
-              {
-                handleClose()
-                setSingleDoc(fields)
-              }}>
-              <ClientModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} />
+            <Modal show={show} fade={false} onHide={handleClose}>
+              <ClientModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
             </Modal>
 
-            {supervisors.length > 0 && supervisors !== null
+            {supervisors !== null && supervisors.length > 0
             ?
               <>
                 <div className="shadow-sm table-card componentsData">   
@@ -172,14 +179,19 @@ function Supervisors() {
                       <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>
 
+                {currentSupervisors.length > 0
+                ?
+                  <>
                     <Table hover striped responsive className='mt-5'>
                         <thead>
-                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {searchByName(supervisors).map((supervisor, index) => (
+                          {currentSupervisors.map((supervisor, index) => (
                               <tr key={supervisor.uid}>
-                              <td>{index+1}</td>
+                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, supervisor.uid]) : 
+                              setDeleteArray(deleteArray.filter(element => element !== supervisor.uid))
+                            }/></td>
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
                               <td>{supervisor.meta.gender}</td>
@@ -201,9 +213,9 @@ function Supervisors() {
                                                   </div>
                                             </li>
                                             <li onClick={() => {
+                                                    getSingleSupervisor(supervisor.uid)
                                                     setShowContext(false)
                                                     setEditID(supervisor.uid);
-                                                    getSingleSupervisor(supervisor.uid)
                                                     handleShow();
                                                   }}
                                                 >
@@ -223,23 +235,62 @@ function Supervisors() {
                           ))}
                             
                         </tbody>
+
+
                         <tfoot>
-                            <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                          <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+                            <td colSpan={3}>
+                              <div style={{display: "flex"}}>
+                                <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
+                                    <option value="">Bulk Action</option>
+                                    <option value="delete">Delete</option>
+                                </Form.Select>
+                                <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
+                              </div>
+                            </td>
+                            <td colSpan={4}>
+                              <Pagination 
+                              pages={totalPagesNum}
+                              setCurrentPage={setCurrentPage}
+                              currentClients={currentSupervisors}
+                              sortedEmployees={supervisors}
+                              entries={'Supervisor'} />
+                            </td>
+                          </tr>
+                        </tfoot>
+
+
+                        <tfoot>
+                            <tr><th></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 
-                  <Pagination 
-                    pages={totalPagesNum}
-                    setCurrentPage={setCurrentPage}
-                    currentClients={currentSupervisors}
-                    sortedEmployees={supervisors}
-                    entries={'Supervisor'} />
+                  
+                  </>
+                :
+                <div className="no-table-data">
+                  <i><ImFilesEmpty /></i>
+                  <h4>No match</h4>
+                  <p>There is not current match for client's name</p>
+                </div>
+                }
+
+                    
 
                
             </div>
               </>
             :
+              supervisors === null
+              ?
+              <div className="no-table-data">
+                <i><ImFilesEmpty /></i>
+                <h4>No data yet</h4>
+                <p>You have not created any Organisations Yet</p>
+              </div>
+              :
               <Loader />
+ 
             }
 
             

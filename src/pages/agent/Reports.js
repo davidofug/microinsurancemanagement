@@ -115,7 +115,7 @@ function Reports() {
                                 {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].stampDuty)}</td>}
                                 <td>2,191</td>
                                 {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
-                                <td></td>
+                                {policy.stickersDetails && <td>{currencyFormatter(0.1 * policy.stickersDetails[0].basicPremium)}</td>}
                                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                             </tr>
                         )})
@@ -129,14 +129,18 @@ function Reports() {
                             </tr>
                         </tfoot>
 
+                       
+                        
+
                         </Table>
 
                         <Pagination 
-                            pages={totalPagesNum}
-                            setCurrentPage={setCurrentPage}
-                            currentClients={currentPolicies}
-                            sortedEmployees={policies}
-                            entries={'Reports'} />
+                                pages={totalPagesNum}
+                                setCurrentPage={setCurrentPage}
+                                currentClients={currentPolicies}
+                                sortedEmployees={policies}
+                                entries={'Reports'} />
+                        
                             </div>
                 
                 </div>

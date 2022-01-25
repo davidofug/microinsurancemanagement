@@ -23,16 +23,44 @@
 .pagination li.active a:hover {        
 	background: #0397d6;
 }
+
 .pagination li.disabled i {
 	color: #ccc;
 }
+
+
 .pagination li i {
 	font-size: 16px;
 	padding-top: 6px
 }
+
+
 .hint-text {
 	float: left;
 	margin-top: 10px;
 	font-size: 13px;
-}   
+} 
+
+.clearfix{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.page-item button{
+	background-color: #1475cf;
+	border: 1px solid #1475cf;
+	margin: 0 3px;
+	border-radius: 50%;
+	color: #fff;
+	width: 25px;
+	height: 25px;
+	border: none;
+}
+
+.page-item.disabled button{
+	background-color: #f6f7f7;
+	color: #d2d2d3;
+	border: 1px solid #d2d2d3;
+}
 	

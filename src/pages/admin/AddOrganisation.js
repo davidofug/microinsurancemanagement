@@ -6,9 +6,14 @@ import { authentication, db } from '../../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../../hooks/useForm'
 import Loader from '../../components/Loader'
+import { AiOutlineCopy } from 'react-icons/ai'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
+// firebase storage..
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../../helpers/firebase'
 
 export default function AddOrganisation() {
 
@@ -34,24 +39,98 @@ export default function AddOrganisation() {
 
     })
 
+    // generating passwords
+    const [ password, setPassword ] = useState('')
+    const handleGeneratePassword = () => {
+      
+      setPassword(createPassword())
+
+      // console.log(fields)
+    }
+
+    const createPassword = () => {
+      const characterList = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!^+%&/()=?#${[]}|;:><*-@"
+
+      let password = '';
+      const characterListLength = characterList.length;
+      for (let i = 0; i < 12; i++) {
+        const characterIndex = Math.round(Math.random() * characterListLength);
+        password = password + characterList.charAt(characterIndex);
+      }
+      return password;
+    }
+
+    const [ url, setUrl ] = useState('')
+//       const [ logo, setLogo ] = useState(null)
+      const [ progress, setProgress ] = useState(0)
+    
+
     const createOrganisation = async (event) => {
         setIsLoading(true)
         event.preventDefault()
-        await addDoc(organisationsCollectionRef, fields)
-        setIsLoading(false)
-        toast.success(`successfully added ${fields.name}`, {position: "top-center"});
-        document.form2.reset()
+                // fields.logo = url
+                fields.password = password
+                await addDoc(organisationsCollectionRef, fields)
+                toast.success(`successfully added ${fields.name}`, {position: "top-center"});
+                
+                setIsLoading(false)
+                document.form2.reset()
       }
 
+      const uploadLogo = (logo) => {
+              console.log(logo)
+              console.log('nothing happend')
+                const storageRef = ref(storage, `images/${logo.name}`)
+                console.log(storageRef)
+                const uploadTask = uploadBytesResumable(storageRef, logo)
+
+                uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {
+                                const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                                setProgress(prog)
+                        },
+                        (error) => console.log(error),
+                        async () => {
+                                        await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+                                        // setUrl(downloadUrl)
+                                        fields.logo = downloadUrl
+                                        console.log("file available at", downloadUrl)
+                                })
+                        }
+                ) 
+      }
+
+
+      // copy password to click board
+      const copyToClipboard = () => {
+        const newTextArea = document.createElement('textarea');
+        newTextArea.innerText = password;
+        document.body.appendChild(newTextArea);
+        newTextArea.select();
+        document.execCommand('copy');
+        newTextArea.remove();
+      }
+
+      const handleCopyPassword = (e) => {
+        if (password === '') {
+          toast.error('Nothing To Copy', {position: "top-center"});
+        } else {
+          copyToClipboard();
+          toast.success('Password successfully copied to clipboard', {position: "top-center"});
+        }
+      }
 
     return (
         <div className='components'>
             <Header title="Add Organisations" subtitle="ADD A NEW ORGANISATION" />
             <ToastContainer/>
-            <div className="componentsData">
+            <div className="addComponentsData mb-5 shadow-sm">
 
                 {isLoading && 
-                        <Loader />
+                        <div className='loader-wrapper'>
+                                <Loader />
+                        </div>
                 }
 
                 <div id="addForm">
@@ -88,7 +167,12 @@ export default function AddOrganisation() {
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                             <Form.Label htmlFor='logo'>Upload Logo</Form.Label>
-                                            <Form.Control id='logo' type="file" onChange={handleFieldChange} />
+                                            <Form.Control id='logo' type="file" onChange={(event) => {
+                                                //     setLogo(event.target.files[0])
+                                                        console.log("hello")
+                                                    uploadLogo(event.target.files[0])
+                                            }} />
+                                            {progress}
                                     </Form.Group>
                                 </div>
                                 <div style={{padding: "1rem"}}>
@@ -113,9 +197,16 @@ export default function AddOrganisation() {
                                             <Form.Label htmlFor='contact_email'>Contact Email</Form.Label>
                                             <Form.Control id="contact_email" type="email" placeholder="Enter email" onChange={handleFieldChange} />
                                     </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                            <Form.Label htmlFor='password'>Contact Password</Form.Label>
-                                            <Form.Control id="password" type="text" placeholder="Create password" onChange={handleFieldChange} />
+                                    <Form.Group className="mb-3" style={{display: "flex", flexDirection: "column"}}>
+                                            {/* <Form.Control id="password" type="text" placeholder="Create password" onChange={handleFieldChange} /> */}
+                                            {/* <Form.Label htmlFor='password'>Contact Password</Form.Label> */}
+                                            <button type='button' className='btn btn-primary cta mb-3' onClick={handleGeneratePassword}>Generate Password</button>
+                                            <div className='generator__password'>
+                                                <h3>{password}</h3>
+                                                <button type='button' className='copy__btn' onClick={handleCopyPassword}>
+                                                <AiOutlineCopy />
+                                                </button>
+                                        </div>
                                     </Form.Group>
                                 </div>
                             </div>
