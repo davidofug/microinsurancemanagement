@@ -17,6 +17,7 @@ import { AiFillCloseCircle } from 'react-icons/ai'
 import '../../components/modal/ConfirmBox.css'
 import Loader from '../../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
+import useDialog from "../../hooks/useDialog";
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -56,9 +57,9 @@ export default function Organisations() {
   }
 
   const [editID, setEditID] = useState(null);
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [ show, handleShow, handleClose ] = useDialog();
+
+
   const [ searchText, setSearchText ] = useState('')
 
   const [fields, handleFieldChange] = useForm({
@@ -118,8 +119,6 @@ export default function Organisations() {
     );
     const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
 
-    console.log(organisations)
-
   return (
     <div className="components">
       <Header title="Organisations" subtitle="VIEW COMPANY DETAILS" />
@@ -148,11 +147,7 @@ export default function Organisations() {
 
 
 
-      <Modal show={show} onHide={() =>
-        {
-          handleClose()
-          setSingleDoc(fields)
-        }}>
+      <Modal show={show} onHide={handleClose}>
         <OrganisationModal fields={fields} singleDoc={singleDoc} handleClose={handleClose} handleFieldChange={handleFieldChange} editID={editID} />
       </Modal>
 
@@ -245,8 +240,8 @@ export default function Organisations() {
                                 </li>
                                 <li onClick={() => {
                                         setShowContext(false)
-                                        setEditID(organisation.uid);
-                                        getSingleDoc(organisation.uid)
+                                        setEditID(organisation.id);
+                                        getSingleDoc(organisation.id)
                                         handleShow();
                                       }}
                                     >

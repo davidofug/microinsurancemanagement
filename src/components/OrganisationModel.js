@@ -57,6 +57,12 @@ function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }
                                             </Form.Select>
                     </Form.Group>
                     </Row>
+                    <div>
+                        <img src={singleDoc.logo} alt='logo' width={50} />
+                        <button>change Logo</button>
+                    </div>
+                        
+
                     <Row className="mb-3">
                     <Form.Group
                         as={Col}
