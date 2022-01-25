@@ -4,7 +4,7 @@ import Pagination from "../helpers/Pagination";
 import ClaimTable from "../components/claimTable/ClaimTable";
 import SearchBar from "../components/searchBar/SearchBar";
 import Header from "../components/header/Header";
-import { Table, Modal, Form, Col, Row, Button } from "react-bootstrap";
+import { Table, Modal } from "react-bootstrap";
 import { db } from "../helpers/firebase";
 import {
   collection,
@@ -122,10 +122,6 @@ export default function Claims() {
     setSingleDoc(docSnap.data());
   };
 
-  const functionToCall = () => {
-    updateClaim(editID);
-  };
-
   const [singleClaims, setSingleClaims] = useState({});
 
   const modalSubmit = async (event) => {
@@ -150,12 +146,17 @@ export default function Claims() {
     getClaims();
   };
 
+  // search for client
+  const [searchText, setSearchText] = useState('')
+  const handleSearch = ({ target: {value} }) => setSearchText(value);
+  const searchByName = (data) => data.filter(row => row.claimantName.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+
+  // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [employeesPerPage] = useState(10);
-
   const indexOfLastEmployee = currentPage * employeesPerPage;
   const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
-  const currentClaims = !claims || claims.slice(indexOfFirstEmployee, indexOfLastEmployee);
+  const currentClaims = !claims || searchByName(claims).slice(indexOfFirstEmployee, indexOfLastEmployee);
   const totalPagesNum = Math.ceil(claims.length / employeesPerPage);
 
 
@@ -217,120 +218,122 @@ export default function Claims() {
 
       {claims !== null && claims.length > 0 ?
       <>
-
-      
-
       <div className="table-card componentsData">
         <div id="search">
-          {/* <SearchBar placeholder={"Search for claim"} value={q} handleSearch={handleSearch}/> */}
+          <SearchBar placeholder={"Search for claim"} value={searchText} handleSearch={handleSearch} />
           <div></div>
           <div></div>
         </div>
 
 
-         
-            <Table responsive>
-            <thead>
-              <tr>
-                <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-                <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {claims.map((claim, index) => (
-                <tr key={claim.id}>
-                  <td>{claim.refNumber}</td>
-                  <td>
-                    <b>{claim.claimantName}</b>
-                    <br />
-                    {claim.claimantEmail}
-                  </td>
-                  <td>{claim.dateOfIncident}</td>
-                  <td>{claim.numberPlate}</td>
-                  <td>{claim.stickerNumber}</td>
-                  <td>{claim.estimate}</td>
-                  <td>
-                    <span
-                      style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                    >{claim.status}</span>
-                  </td>
+         {currentClaims.length > 0
+         ?
+         <Table responsive>
+         <thead>
+           <tr>
+             <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
+             <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
+           </tr>
+         </thead>
+         <tbody>
+           {currentClaims.map((claim, index) => (
+             <tr key={claim.id}>
+               <td>{claim.refNumber}</td>
+               <td>
+                 <b>{claim.claimantName}</b>
+                 <br />
+                 {claim.claimantEmail}
+               </td>
+               <td>{claim.dateOfIncident}</td>
+               <td>{claim.numberPlate}</td>
+               <td>{claim.stickerNumber}</td>
+               <td>{claim.estimate}</td>
+               <td>
+                 <span
+                   style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                 >{claim.status}</span>
+               </td>
 
-                  <td className="started">
-                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setEditID(claim.id); setShowContext(!showContext)}}>&#8942;</button>
+               <td className="started">
+                             <button className="sharebtn" onClick={() => {setClickedIndex(index); setEditID(claim.id); setShowContext(!showContext)}}>&#8942;</button>
 
-                                <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                                            <li onClick={() => {
-                                                  setShowContext(false)
-                                                  setEditID(claim.id);
-                                                  getSingleDoc(claim.id);
-                                                  handleShowNotification();
-                                            }}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><MdNotifications /></i> Claim Settlement
-                                                  </div>
-                                            </li>
+                             <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                         <li onClick={() => {
+                                               setShowContext(false)
+                                               setEditID(claim.id);
+                                               getSingleDoc(claim.id);
+                                               handleShowNotification();
+                                         }}
+                                             >
+                                               <div className="actionDiv">
+                                                 <i><MdNotifications /></i> Claim Settlement
+                                               </div>
+                                         </li>
 
-                                            <li onClick={() => {
-                                                  setShowContext(false)
-                                                  setEditID(claim.id);
-                                                  getSingleDoc(claim.id);
-                                                  handleShow();
-                                                }}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><MdEdit/></i> Edit
-                                                  </div>
-                                            </li>
+                                         <li onClick={() => {
+                                               setShowContext(false)
+                                               setEditID(claim.id);
+                                               getSingleDoc(claim.id);
+                                               handleShow();
+                                             }}
+                                             >
+                                               <div className="actionDiv">
+                                                 <i><MdEdit/></i> Edit
+                                               </div>
+                                         </li>
 
-                                            <li onClick={() => setShowContext(false)}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><AiFillCloseCircle/></i> Cancel
-                                                  </div>
-                                            </li>
+                                         <li onClick={() => setShowContext(false)}
+                                             >
+                                               <div className="actionDiv">
+                                                 <i><AiFillCloseCircle/></i> Cancel
+                                               </div>
+                                         </li>
 
-                                            <li onClick={() => {
-                                                  setOpenToggle(true)
-                                                  setEditID(claim.id);
-                                                  setShowContext(false)
-                                                }}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><MdDelete/></i> Delete
-                                                  </div>
-                                            </li>
-                                </ul>
-                              </td>
+                                         <li onClick={() => {
+                                               setOpenToggle(true)
+                                               setEditID(claim.id);
+                                               setShowContext(false)
+                                             }}
+                                             >
+                                               <div className="actionDiv">
+                                                 <i><MdDelete/></i> Delete
+                                               </div>
+                                         </li>
+                             </ul>
+                           </td>
 
-                </tr>
-              ))}
-            </tbody>
+             </tr>
+           ))}
+         </tbody>
 
-            <tfoot>
-              <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
-                <td colSpan={7}>
-                <Pagination 
-                pages={totalPagesNum}
-                setCurrentPage={setCurrentPage}
-                currentClients={currentClaims}
-                sortedEmployees={claims}
-                entries={'Claims'} />
-                </td>
-              </tr>
-            </tfoot>                                 
+         <tfoot>
+           <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+             <td colSpan={7}>
+             <Pagination 
+             pages={totalPagesNum}
+             setCurrentPage={setCurrentPage}
+             currentClients={currentClaims}
+             sortedEmployees={claims}
+             entries={'Claims'} />
+             </td>
+           </tr>
+         </tfoot>                                 
 
-            <tfoot>
-              <tr>
-                <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-                <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
-              </tr>
-            </tfoot>
-          </Table>
-
-  
-
-        
+         <tfoot>
+           <tr>
+             <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
+             <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
+           </tr>
+         </tfoot>
+       </Table>
+          :
+            <div className="no-table-data">
+              <i><ImFilesEmpty /></i>
+              <h4>No match</h4>
+              <p>There is no current match for claim</p>
+            </div>
+          }
+            
       </div>
       </>
       :
