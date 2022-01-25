@@ -178,8 +178,6 @@ export default function Claims() {
     return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
   }
 
-  console.log(claims)
-
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
@@ -219,10 +217,16 @@ export default function Claims() {
 
       <Modal show={showNotification} onHide={handleCloseNotification}>
         <Modal.Header closeButton>
-          <Modal.Title>View Claim Notification</Modal.Title>
+          <Modal.Title>View Claim Settlement</Modal.Title>
         </Modal.Header>
         <Form id="update_claim" onSubmit={modalSubmit}>
           <Modal.Body>
+                <div className="mb-3">
+                  Status:
+                  <span style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                  > {singleDoc.status}</span>
+                </div>
+                
 
           <h5>Client Details</h5>
             <Row className="mb-3">
@@ -278,7 +282,7 @@ export default function Claims() {
                 }}
               >
                 <Form.Label htmlFor="dateReported">Date Reported</Form.Label>
-                <p>singleDoc.dateReported</p>
+                <p>{singleDoc.dateReported}</p>
               </Form.Group>
               <Form.Group
                 as={Col}
@@ -349,22 +353,6 @@ export default function Claims() {
                 <p>{singleDoc.estimate}</p>
               </Form.Group>
             </Row>
-
-            <Modal.Footer>
-            <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="estimate">Status</Form.Label>
-                <span
-                      style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                    >{singleDoc.status}</span>
-              </Form.Group>
-            </Modal.Footer>
             
           </Modal.Body>
         </Form>
@@ -375,10 +363,9 @@ export default function Claims() {
 
       <Modal show={show} onHide={() => {
         handleClose()
-        setSingleDoc(fields)
       }}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Claim</Modal.Title>
+          <Modal.Title>Edit {singleDoc.claimantName}'s Claim</Modal.Title>
         </Modal.Header>
         <Form id="update_claim" onSubmit={() => {
             modalSubmit()
@@ -562,18 +549,18 @@ export default function Claims() {
                 />
               </Form.Group>
             </Row>
-            <Button
+            
+          </Modal.Body>
+          <Modal.Footer>
+          <Button
               variant="primary"
               type="submit"
-              onClick={() => {
-                handleClose();
-              }}
+              onClick={handleClose}
               id="submit"
             >
               Submit
             </Button>
-          </Modal.Body>
-          <Modal.Footer></Modal.Footer>
+          </Modal.Footer>
         </Form>
       </Modal>
 
@@ -620,24 +607,23 @@ export default function Claims() {
                                                   setShowContext(false)
                                                   setEditID(claim.id);
                                                   getSingleDoc(claim.id);
-                                                  handleShowNotification()
-                                                }}>
-                                                  <div className="actionDiv">
-                                                    <i><MdNotifications/></i> View Notification
-                                                  </div>
-                                            </li>
-
-                                            <li onClick={() => setShowContext(false)}
+                                                  handleShowNotification();
+                                            }}
                                                 >
                                                   <div className="actionDiv">
                                                     <i><AiFillCloseCircle/></i> Claim Settlement
                                                   </div>
                                             </li>
 
-                                            <li onClick={() => setShowContext(false)}
+                                            <li onClick={() => {
+                                                  setShowContext(false)
+                                                  setEditID(claim.id);
+                                                  getSingleDoc(claim.id);
+                                                  handleShow();
+                                                }}
                                                 >
                                                   <div className="actionDiv">
-                                                    <i><AiFillCloseCircle/></i> View Settlement
+                                                    <i><MdEdit/></i> Edit
                                                   </div>
                                             </li>
 
@@ -656,18 +642,6 @@ export default function Claims() {
                                                 >
                                                   <div className="actionDiv">
                                                     <i><MdDelete/></i> Delete
-                                                  </div>
-                                            </li>
-
-                                            <li onClick={() => {
-                                                  setShowContext(false)
-                                                  setEditID(claim.id);
-                                                  getSingleDoc(claim.id);
-                                                  handleShow();
-                                                }}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><MdEdit/></i> Edit
                                                   </div>
                                             </li>
                                 </ul>
