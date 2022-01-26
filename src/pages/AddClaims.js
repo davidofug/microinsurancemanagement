@@ -42,6 +42,7 @@ function AddClaims() {
         try{
             setIsLoading(true)
             event.preventDefault()
+            fields["added_by_name"] = authentication.currentUser.displayName
             await addDoc(claimsCollectionRef, fields)
             toast.success(`successfully added ${fields.claimantName}'s claim`, {position: "top-center"});
             setIsLoading(false)

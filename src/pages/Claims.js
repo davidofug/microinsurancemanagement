@@ -177,6 +177,8 @@ export default function Claims() {
 
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
 
+  console.log(claims)
+
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
@@ -245,7 +247,7 @@ export default function Claims() {
          <thead>
            <tr>
              <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-             <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
+             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th>Action</th>
            </tr>
          </thead>
          <tbody>
@@ -261,6 +263,7 @@ export default function Claims() {
                <td>{claim.numberPlate}</td>
                <td>{claim.stickerNumber}</td>
                <td>{claim.estimate}</td>
+               <td>{claim.added_by_name}</td>
                <td>
                  <span
                    style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
@@ -335,7 +338,7 @@ export default function Claims() {
          <tfoot>
            <tr>
              <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-             <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
+             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th>Action</th>
            </tr>
          </tfoot>
        </Table>
