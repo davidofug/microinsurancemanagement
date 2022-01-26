@@ -111,7 +111,7 @@ function AddUsers() {
         <div className='components'>
             <Header title="Add User" subtitle="ADD A NEW USER" />
             <ToastContainer/>
-            <div className="addComponentsData shadow-sm">
+            <div className="addComponentsData shadow-sm mb-3">
                     {isLoading && 
                         <div className='loader-wrapper'>
                             <Loader />
