@@ -6,14 +6,12 @@ import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
 import Settings from '../pages/supervisor/Settings'
 import PrivateRoute  from './PrivateRoute'
-import { Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
 import AddClients from '../pages/AddClients'
 import Windscreen from '../pages/Windscreen'
 import Comprehensive from '../pages/Comprehensive'
 import Logs from '../pages/Logs.js'
 import Agents from '../pages/Agents'
-import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddUsers from '../pages/AddUsers'
 import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
@@ -33,14 +31,11 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor/add-user" >
-                <AddUsers />
-            </PrivateRoute>
             <PrivateRoute path="/supervisor/clients" >
                 <Clients />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/user-management" >
-                <Users />
+                <Agents />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/policies" >
                 <Policies />
@@ -91,8 +86,11 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/transit" >
                 <Transit />
             </PrivateRoute>
-            <PrivateRoute path="/add-clients" >
-                <AddClients />
+            <PrivateRoute path="/supervisor/add-clients" >
+                <AddUsers role="client" />
+            </PrivateRoute>
+            <PrivateRoute path="/supervisor/add-agents" >
+                <AddUsers role="agent" />
             </PrivateRoute>
         </>
         

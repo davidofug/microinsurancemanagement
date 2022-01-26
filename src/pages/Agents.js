@@ -15,7 +15,7 @@ import { useForm } from '../hooks/useForm';
 import useDialog from '../hooks/useDialog'
 import { ImFilesEmpty } from 'react-icons/im'
 
-function Agents() {
+function Agents({role}) {
 
   useEffect(() => {document.title = 'Britam - Agents';getAgents()}, [])
   
@@ -125,8 +125,6 @@ const [ open, handleOpen, handleClose ] = useDialog()
 
   const paginatedShownAgent = !agents || shownAgents.slice(indexOfFirstAgent, indexOfLastAgent)
 
-  console.log(agents)
-
     return (
         <div className='components'>
             <Header title="Agents" subtitle="MANAGING AGENTS" />
@@ -134,12 +132,12 @@ const [ open, handleOpen, handleClose ] = useDialog()
             <div id="add_client_group">
                 <div></div>
                 {authClaims.supervisor && 
-                  <Link to="/supervisor/add-user">
+                  <Link to="/supervisor/add-agents">
                       <button className="btn btn-primary cta">Add Agent</button>
                   </Link>
                 }
                 {authClaims.admin && 
-                  <Link to="/admin/add-user">
+                  <Link to="/admin/add-agent">
                       <button className="btn btn-primary cta">Add Agent</button>
                   </Link>
                 }

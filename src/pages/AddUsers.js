@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../helpers/firebase'
 
-function AddUsers() {
+function AddUsers({role}) {
     const { authClaims } = useAuth()
     const addUser = httpsCallable(functions, 'addUser')
     useEffect(() => { document.title = 'Britam - Add Users' }, [])
@@ -42,7 +42,7 @@ function AddUsers() {
     
 
     const [fields, handleFieldChange] = useForm({
-        user_role: '',
+        user_role: role === "client" ? "Customer" : role,
         organisation: '',
         email: '',
         name: '',
@@ -106,10 +106,9 @@ function AddUsers() {
           ) 
     }
 
-
     return (
         <div className='components'>
-            <Header title="Add User" subtitle="ADD A NEW USER" />
+            <Header title={`Add ${role}`} subtitle={`Add a new ${role}`.toUpperCase()} />
             <ToastContainer/>
             <div className="addComponentsData shadow-sm mb-3">
                     {isLoading && 
@@ -118,18 +117,23 @@ function AddUsers() {
                         </div>
                     }
                     <Form name='form3' onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" >
-                        <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
-                            <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange} required>
-                                <option value="hide">--User Role--</option>
-                                {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
-                                {authClaims.superadmin && <option value="admin">Admin</option>}
-                                {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
-                                {(authClaims.supervisor || authClaims.admin) && <option value="agent">Agent</option>}
-                                {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
-                            </Form.Select>
-                        </Form.Group>
-                        { user_role === 'supervisor' && 
+
+                        {/* {authClaims.superadmin &&
+                            <Form.Group className="mb-3" >
+                                <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
+                                <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange} required>
+                                    <option value="hide">--User Role--</option>
+                                    {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
+                                    {authClaims.superadmin && <option value="admin">Admin</option>}
+                                    {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
+                                    {(authClaims.supervisor || authClaims.admin) && <option value="agent">Agent</option>}
+                                    {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
+                                </Form.Select>
+                            </Form.Group>
+                        } */}
+                        
+
+                        { role === 'supervisor' && 
                             <Form.Group className="mb-3" >
                                 <Form.Label htmlFor='organisation'>Organisation<span className='required'>*</span></Form.Label>
                                 <Form.Control id="organisation" placeholder="organisation" onChange={handleFieldChange} required/>
@@ -183,7 +187,7 @@ function AddUsers() {
                         <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
                         </Form.Group>
                     </Row>
-                    { user_role === 'agent' &&
+                    { (role === "agent") &&
                         <>
                             <Form.Group className="mb-3" >
                                 <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
