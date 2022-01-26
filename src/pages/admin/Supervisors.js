@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState, Fragment } from 'react'
+import { useEffect, useState } from 'react'
 import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
@@ -156,7 +156,7 @@ function Supervisors() {
             </div>
 
             <Modal show={show} fade={false} onHide={handleClose}>
-              <ClientModal fields={fields} singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
+              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
             </Modal>
 
             {supervisors !== null && supervisors.length > 0

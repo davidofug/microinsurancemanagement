@@ -1,10 +1,22 @@
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
+import { getAuth, updateProfile } from "firebase/auth";
+
 
 function ClientModal({ singleDoc, handleClose, handleFieldChange }) {
 
+  const auth = getAuth();
+
   const modalSubmit = (event) => {
       event.preventDefault()
-      console.log("submitted")
+      console.log(singleDoc)
+      
+      updateProfile(auth.currentUser, {
+        displayName: "Default Admin"
+      }).then(() => {
+        
+      }).catch((error) => {
+        console.log(error)
+      });
   }
 
     return (
@@ -25,10 +37,11 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange }) {
                 <Form.Label htmlFor="claimantName">Name</Form.Label>
                 <Form.Control
                   type="text"
-                  name=""
+                  name="name"
                   id="claimantName"
                   placeholder="Enter Client's name"
                   value={singleDoc.name}
+                  onChange={handleFieldChange}
                 />
               </Form.Group>
               <Row className='mb-3'>
