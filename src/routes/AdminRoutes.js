@@ -46,9 +46,6 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/supervisor" >
                 <Supervisors />
             </PrivateRoute>
-            <PrivateRoute path="/admin/add-user" >
-                <AddUsers />
-            </PrivateRoute>
             <PrivateRoute path="/admin/agents" >
                 <Agents />
             </PrivateRoute>
@@ -65,7 +62,7 @@ function AdminRoutes() {
                 <AddStickerRange />
             </PrivateRoute>
             <PrivateRoute path="/admin/user-management" >
-                <Users />
+                <Supervisors />
             </PrivateRoute>
             <PrivateRoute path="/admin/policies" >
                 <Policies />
@@ -117,6 +114,12 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/logout" >
                 <Logout />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-agent" >
+                <AddUsers role="agent" />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-supervisor" >
+                <AddUsers role="supervisor" />
             </PrivateRoute>
         </>
         

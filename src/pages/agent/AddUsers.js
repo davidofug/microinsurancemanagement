@@ -60,13 +60,35 @@ function AddUsers() {
     return (
         <div className='components'>
             <Header title="Add Clients" subtitle="ADD A NEW CLIENT" />
-            <div class="addComponentsData">
+            <div class="addComponentsData mb-3">
                     {isLoading && 
                         <div className='loader-wrapper'>
                             <Loader />
                         </div>
                     }
                     <Form name='form4' onSubmit={handleSubmit}>
+                    <Row>
+                        <Form.Group className="m-3 categories" width="200px">
+                            <Form.Select aria-label="User role" id='category'>
+                                <option value={""}>Policy Type</option>
+                                <option value="mtp">MTP</option>
+                                <option value="comprehensive">Comprehensive</option>
+                                <option value="windscreen">Windscreen</option>
+                                <option value="newImport">New Imports</option>
+                                <option value="transit">Transit</option>
+                            </Form.Select>
+                        </Form.Group>
+                        {authClaims.comprehensive &&
+                            <Form.Group className="m-3 categories" width="200px">
+                                <Form.Select aria-label="User role" id='category'>
+                                    <option value={""}>Type of Client</option>
+                                    <option value="individual">Individual</option>
+                                    <option value="corporateEntity">Corporate Entity</option>
+                                </Form.Select>
+                            </Form.Group>
+                        }
+                    </Row>
+
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                             <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required />
@@ -87,6 +109,12 @@ function AddUsers() {
                                         <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleFieldChange}/>
                                         <label htmlFor="female">Female</label>
                                     </div>
+                                    {authClaims.comprehensive &&
+                                        <div>
+                                            <input type="radio" name="gender" id="gender" value="corporate" className='addFormRadio' onChange={handleFieldChange}/>
+                                            <label htmlFor="female">Corporate Entity</label>
+                                        </div>
+                                    }
                                 </div>
                             </Form.Group>
                         </Row>
