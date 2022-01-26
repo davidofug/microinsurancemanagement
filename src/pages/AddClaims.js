@@ -45,6 +45,11 @@ function AddClaims() {
             fields["added_by_name"] = authentication.currentUser.displayName
             await addDoc(claimsCollectionRef, fields)
             toast.success(`successfully added ${fields.claimantName}'s claim`, {position: "top-center"});
+
+            // send claim to Britam claim team on creation showing agent who created the notification.
+            const sendToClaimTeam = () => {}
+
+
             setIsLoading(false)
             document.form1.reset();
         } catch(error){

@@ -128,7 +128,7 @@ export default function Claims() {
 
     const claimRef = doc(db, "claims", editID);
 
-    const result = await updateDoc(claimRef, {
+    await updateDoc(claimRef, {
       dateReported: event.target.dateReported.value,
       policyType: event.target.policyType.value,
       numberPlate: event.target.numberPlate.value,
@@ -138,9 +138,9 @@ export default function Claims() {
       claimantPhoneNumber: event.target.claimantPhoneNumber.value,
       dateOfIncident: event.target.dateOfIncident.value,
       estimate: event.target.estimate.value,
-      detailsOfIncident: "",
-      attachedDocuments: "",
-      status: "",
+      detailsOfIncident: event.target.detailsOfIncident,
+      attachedDocuments: event.target.attachedDocuments,
+      status: "pending",
     });
     getClaims();
   };
@@ -176,6 +176,9 @@ export default function Claims() {
   const shownClaims = !claims || currentClaims.filter(claim => !switchCategory || claim.status === switchCategory)
 
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
+
+
+  
 
   console.log(claims)
 

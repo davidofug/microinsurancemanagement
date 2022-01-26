@@ -8,6 +8,12 @@ import dynamicFields from '../helpers/multipleChoice'
 import '../styles/Policies.css'
 import moment from 'moment'
 import Upload from '../components/uploader/Upload';
+import Loader from '../components/Loader'
+
+import Header from '../components/header/Header'
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 // import AddClient from '../components/AddClient'
@@ -27,6 +33,8 @@ function Policies({cat, btn_txt, pol}) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [ isLoading, setIsLoading ] = useState(false)
 
     const [ existingClients, setExistingClients ] = useState([])
     const [ classes, setClasses ] = useState([])
@@ -189,6 +197,7 @@ function Policies({cat, btn_txt, pol}) {
     //createPolicies
     const handleSubmit = async(event) => {
         const created_at = moment().toString()
+        setIsLoading(true)
         event.preventDefault()
         const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client
     
@@ -215,6 +224,8 @@ function Policies({cat, btn_txt, pol}) {
             setPolicyEndDate('')
             setPolicyStartDate('')
         }).catch( error => console.log( error ))
+
+        toast.success("succesfully created sticker", {position: "top-center"})
  
 
         setStickers([
@@ -237,7 +248,9 @@ function Policies({cat, btn_txt, pol}) {
             }
         ])
 
-        console.log(
+        setIsLoading(false)
+
+        /* console.log(
             {
                 currency,
                 stickersDetails: stickers,
@@ -249,7 +262,7 @@ function Policies({cat, btn_txt, pol}) {
                 category: cat,
                 totalValuation: await generateTotalValuation(stickers),
             }
-        )
+        ) */
     }    
 
     const handleComprehesiveClientInfo = async (type, individualClient, organisationInfo, contactInfo) => {
@@ -437,11 +450,18 @@ function Policies({cat, btn_txt, pol}) {
 
     return (
         <div className='components'>
-            <div className='heading'>
-                <h1 className='title'>Policies</h1>
-                <p>MANAGING {pol.toUpperCase()} POLICIES</p>
-            </div>
-            <div className="table-card componentsData" style={{paddingBottom:"10vh"}}>
+            <Header title="Policies" subtitle={`MANAGING ${pol} POLICIES`.toUpperCase()}/>
+
+            <ToastContainer />
+
+            <div className="componentsData addComponentsData shadow-sm" style={{paddingBottom:"10vh"}}>
+
+            {isLoading && 
+                <div className='loader-wrapper'>
+                        <Loader />
+                </div>
+            }
+
                 <Form name="policy" onSubmit={handleSubmit}>
                     <div style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                         <Row style={{paddingTop:"2vh"}}>
