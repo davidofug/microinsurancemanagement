@@ -14,6 +14,7 @@ import { AiFillCloseCircle } from 'react-icons/ai'
 import { ImFilesEmpty } from 'react-icons/im'
 import Loader from '../../components/Loader';
 import useAuth from '../../contexts/Auth';
+import { CSVLink } from "react-csv";
 
 function Supervisors() {
 
@@ -29,12 +30,7 @@ function Supervisors() {
       const listUsers = httpsCallable(functions, 'listUsers')
       if(authClaims.admin){
         listUsers().then(({data}) => {
-          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(({meta: {added_by_uid}}) => added_by_uid === authentication.currentUser.uid)
-          mySupervisors.length === 0 ? setSuperviors(null) : setSuperviors(mySupervisors)
-        }).catch()
-      } else if(authClaims.superAdmin){
-        listUsers().then(({data}) => {
-          const mySupervisors = data.filter(user => user.role.supervisor === true)
+          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid)
           mySupervisors.length === 0 ? setSuperviors(null) : setSuperviors(mySupervisors)
         }).catch()
       }
@@ -115,6 +111,7 @@ function Supervisors() {
   const handleBulkDelete = async () => {
     if(bulkDelete){
       deleteArray.map(agentuid => handleDelete(agentuid))
+      getSupervisors()
     }
   }
 
@@ -168,8 +165,14 @@ function Supervisors() {
                 <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                       <SearchBar placeholder={"Search Supervisor by name"} value={searchText} handleSearch={handleSearch} />
-                      <div></div>
-                      <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
+                      <CSVLink
+                        data={supervisors}
+                        filename={"Britam-Supervisors.csv"}
+                        className="btn btn-primary cta"
+                        target="_blank"
+                      >
+                        Export <MdDownload />
+                      </CSVLink>
                 </div>
 
                 {currentSupervisors.length > 0

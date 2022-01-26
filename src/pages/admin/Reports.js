@@ -147,14 +147,14 @@ function Reports() {
                 placeholder={"Search for Report"} value={searchText} handleSearch={handleSearch}
               />
               <div></div>
-              <CSVLink
-                data={policies}
-                filename={"Britam-Reports.csv"}
-                className="btn btn-primary cta"
-                target="_blank"
-              >
-                Export <MdDownload />
-              </CSVLink>
+                <CSVLink
+                  data={policies}
+                  filename={"Britam-Reports.csv"}
+                  className="btn btn-primary cta"
+                  target="_blank"
+                >
+                  Export <MdDownload />
+                </CSVLink>
             </div>
 
             <div style={{display: "flex", alignItems: "center"}}>  
