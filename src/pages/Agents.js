@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { MdDownload } from 'react-icons/md'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar'
 import Header from '../components/header/Header';
@@ -155,7 +154,8 @@ const [ open, handleOpen, handleClose ] = useDialog()
               <>
                 <div className="shadow-sm table-card componentsData">   
                 <div id="search">
-                  <SearchBar placeholder={"Search for agent"} value={searchText} handleSearch={handleSearch}/>
+                  <SearchBar placeholder={"Search for agent's name"} value={searchText} handleSearch={handleSearch}/>
+                  <div></div>
                   <Form.Group className="m-3 categories" width="180px">
                         <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                             <option value={""}>Filter by category</option>
@@ -166,12 +166,11 @@ const [ open, handleOpen, handleClose ] = useDialog()
                             <option value="transit">Transit</option>
                         </Form.Select>
                     </Form.Group>
-                    <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>
 
                 
 
-                  {currentAgents.length > 0
+                  {paginatedShownAgent.length > 0
                   ?
                     <>
                       <Table hover striped responsive>
@@ -262,7 +261,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
                         </tfoot>
 
                         <tfoot>
-                            <tr><th><input type="checkbox" /></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
+                            <tr><th></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
                         </tfoot>
                     </Table>
                     </>
@@ -270,7 +269,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
                   <div className="no-table-data">
                     <i><ImFilesEmpty /></i>
                     <h4>No match</h4>
-                    <p>There is not current match for agent's name</p>
+                    <p>There is no match for current search</p>
                   </div>
                   }
 
