@@ -1,11 +1,9 @@
-import { useState } from 'react'
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
 import { db } from '../helpers/firebase';
 import { doc, updateDoc } from 'firebase/firestore'
 import { authentication } from '../helpers/firebase';
 
 function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }) {
-    const [show, setShow] = useState(false);
   
     const modalSubmit = async (event) => {
         event.preventDefault()
@@ -58,7 +56,7 @@ function OrganisationModal({ handleFieldChange, singleDoc, handleClose, editID }
                     </Form.Group>
                     </Row>
                     <div>
-                        <img src={singleDoc.logo} alt='logo' width={50} />
+                        <img src={singleDoc.logo} alt='logo' id='logo' width={50} />
                     </div>
 
                     <Row className="mb-3">

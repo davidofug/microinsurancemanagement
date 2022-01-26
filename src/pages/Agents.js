@@ -68,8 +68,8 @@ const [ open, handleOpen, handleClose ] = useDialog()
   const [ currentPage, setCurrentPage ] = useState(1)
   const [clientsPerPage] = useState(10)
   const indexOfLastAgent = currentPage * clientsPerPage
-  const indexOfFirstClient = indexOfLastAgent - clientsPerPage
-  const currentAgents = !agents || searchByName(agents).slice(indexOfFirstClient, indexOfLastAgent)
+  const indexOfFirstAgent = indexOfLastAgent - clientsPerPage
+  const currentAgents = !agents || searchByName(agents).slice(indexOfFirstAgent, indexOfLastAgent)
   const totalPagesNum = !agents || Math.ceil(agents.length / clientsPerPage)
 
   // delete a single agent
@@ -100,6 +100,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
   const handleBulkDelete = async () => {
     if(bulkDelete){
       deleteArray.map(agentuid => handleDelete(agentuid))
+      getAgents()
     }
   }
 
@@ -118,6 +119,12 @@ const [ open, handleOpen, handleClose ] = useDialog()
   }
 
   const [clickedIndex, setClickedIndex] = useState(null)
+
+  // filter
+  const [ switchCategory, setSwitchCategory ] = useState(null)
+  const shownAgents = !agents || currentAgents.filter(agent => !switchCategory || agent.role[switchCategory])
+
+  const paginatedShownAgent = !agents || shownAgents.slice(indexOfFirstAgent, indexOfLastAgent)
 
   console.log(agents)
 
@@ -148,22 +155,21 @@ const [ open, handleOpen, handleClose ] = useDialog()
               <>
                 <div className="shadow-sm table-card componentsData">   
                 <div id="search">
-                <SearchBar placeholder={"Search for agent"} value={searchText} handleSearch={handleSearch}/>
-                    <div></div>
+                  <SearchBar placeholder={"Search for agent"} value={searchText} handleSearch={handleSearch}/>
+                  <Form.Group className="m-3 categories" width="180px">
+                        <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
+                            <option value={""}>Filter by category</option>
+                            <option value="mtp">MTP</option>
+                            <option value="comprehensive">Comprehensive</option>
+                            <option value="windscreen">Windscreen</option>
+                            <option value="newImports">New Imports</option>
+                            <option value="transit">Transit</option>
+                        </Form.Select>
+                    </Form.Group>
                     <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
                 </div>
 
-                <Form.Group className="m-3 categories" width="180px">
-                      <Form.Label htmlFor='category'>Filter by Category</Form.Label>
-                      <Form.Select aria-label="User role" id='category'>
-                          <option value={""}>Select a category</option>
-                          <option value="mtp">MTP</option>
-                          <option value="comprehensive">Comprehensive</option>
-                          <option value="windscreen">Windscreen</option>
-                          <option value="newImports">New Imports</option>
-                          <option value="transit">Transit</option>
-                      </Form.Select>
-                  </Form.Group>
+                
 
                   {currentAgents.length > 0
                   ?
@@ -173,7 +179,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
                             <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
                         </thead>
                         <tbody>
-                          {currentAgents.map((agent, index) => (
+                          {paginatedShownAgent.map((agent, index) => (
                               <tr key={agent.uid}>
                               <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, agent.uid]) : 
                               setDeleteArray(deleteArray.filter(element => element !== agent.uid))
