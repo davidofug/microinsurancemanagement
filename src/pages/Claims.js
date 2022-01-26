@@ -229,7 +229,6 @@ export default function Claims() {
           <SearchBar placeholder={"Search for claim"} value={searchText} handleSearch={handleSearch} />
           <div></div>
           <Form.Group className="m-3 categories" width="200px">
-            <Form.Label htmlFor='category'>Status</Form.Label>
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
                 <option value="new">Pending</option>
