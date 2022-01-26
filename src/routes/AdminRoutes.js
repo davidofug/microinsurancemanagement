@@ -1,5 +1,4 @@
 import Mtp from '../pages/Mtp'
-import Users from '../pages/Users'
 import Claims from '../pages/Claims'
 import Reports from '../pages/admin/Reports'
 import Clients from '../pages/Clients'
@@ -7,7 +6,6 @@ import Policies from '../pages/Policies'
 import Settings from '../pages/Settings'
 import PrivateRoute  from './PrivateRoute'
 import Dashboard from '../pages/Dashboard'
-import AddClients from '../pages/AddClients'
 import Windscreen from '../pages/Windscreen'
 import Comprehensive from '../pages/Comprehensive'
 import Organisations from '../pages/admin/Organisations'
@@ -104,9 +102,6 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/transit" >
                 <Transit />
-            </PrivateRoute>
-            <PrivateRoute path="/add-clients" >
-                <AddClients />
             </PrivateRoute>
             <PrivateRoute path="/add-claim" >
                 <AddClaims />

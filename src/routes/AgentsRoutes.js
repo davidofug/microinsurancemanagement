@@ -9,7 +9,6 @@ import Policies from '../pages/Policies'
 import PrivateRoute  from './PrivateRoute'
 import Dashboard from '../pages/Dashboard'
 import Windscreen from '../pages/Windscreen'
-import AddClients from '../pages/AddClients'
 import Settings from '../pages/agent/Settings'
 import Comprehensive from '../pages/Comprehensive'
 import { Route } from 'react-router-dom'
@@ -80,9 +79,6 @@ function AgentsRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/agent/add-transit" >
                 <Policies cat="mtp" btn_txt="Process 3rd Party" pol="transit"/>
-            </PrivateRoute>
-            <PrivateRoute path="/agent/add-clients" >
-                <AddClients />
             </PrivateRoute>
         </>
 
