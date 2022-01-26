@@ -219,7 +219,6 @@ function Policies({cat, btn_txt, pol}) {
         
         
         addUser(clientInfo).then((results) => {
-            alert(`Successfully created stickers and added ${clientInfo.name}`)
             document.policy.reset()
             setPolicyEndDate('')
             setPolicyStartDate('')

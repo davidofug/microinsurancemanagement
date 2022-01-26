@@ -169,7 +169,7 @@ const getClients = () => {
                   <>
                     <Table hover striped responsive className='mt-5'>
                       <thead>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}<th>Action</th></tr>
                       </thead>
                       <tbody>
                         {currentClients.map((client, index) => (
@@ -180,6 +180,7 @@ const getClients = () => {
                             <td>{client.meta.gender}</td>
                             <td>{client.meta.phone}</td>
                             <td>{client.meta.address}</td>
+                            <td>{client.meta.added_by_name}</td>
               <td className="started">
                 <button className="sharebtn" onClick={() => {
                   setClickedIndex(index);
@@ -235,7 +236,7 @@ const getClients = () => {
                         </tfoot>
 
                       <tfoot>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}<th>Action</th></tr>
                       </tfoot>
                   </Table>
             

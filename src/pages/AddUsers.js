@@ -139,15 +139,19 @@ function AddUsers({role}) {
                                 <Form.Control id="organisation" placeholder="organisation" onChange={handleFieldChange} required/>
                             </Form.Group>
                         }
+
+                        {/* {authClaims.agent} */}
+
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                             <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
                         </Form.Group>
                         <Row className="mb-3">
                             <Form.Group as={Col} className='addFormGroups'>
-                                <Form.Label htmlFor='dob'>Date of birth</Form.Label>
-                            <Form.Control type="date" id="dob" onChange={handleFieldChange} required/>
+                                <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
                             </Form.Group>
+                            
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
                                 <div className='gender-options'>
@@ -165,8 +169,8 @@ function AddUsers({role}) {
 
                         <Row className="mb-3">
                             <Form.Group as={Col} className='addFormGroups'>
-                                <Form.Label htmlFor='email'>Email Address <span className='required'>*</span></Form.Label>
-                                <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
+                                <Form.Label htmlFor='tinNumber'>Tin Number</Form.Label>
+                                <Form.Control type="number" id="tinNumber" placeholder="Enter TIN" onChange={handleFieldChange} />
                             </Form.Group>
                             <Form.Group as={Col} className='addFormGroups'>
                                 <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
@@ -178,10 +182,18 @@ function AddUsers({role}) {
                             <Form.Control id="address" placeholder="Enter your address"  onChange={handleFieldChange}/>
                     </Form.Group>
                     <Row className="mb-3">
-                    <Form.Group as={Col} className="addFormGroups" >
-                        <Form.Label htmlFor='license'>License No.</Form.Label>
-                        <Form.Control id="licenseNo" placeholder="license No." onChange={handleFieldChange} />
-                    </Form.Group>
+                        {role !== 'client' &&
+                        <Form.Group as={Col} className="addFormGroups" >
+                            <Form.Label htmlFor='license'>License No.</Form.Label>
+                            <Form.Control id="licenseNo" placeholder="license No." onChange={handleFieldChange} />
+                        </Form.Group>
+                        }
+                        {role === "client" && 
+                            <Form.Group as={Col} className="addFormGroups" >
+                                <Form.Label htmlFor='driverLicense'>Driver's License</Form.Label>
+                                <Form.Control id="driverLicense" placeholder="Driver's License" onChange={handleFieldChange} />
+                            </Form.Group>
+                        }
                     <Form.Group as={Col} className="addFormGroups" >
                         <Form.Label htmlFor='nin'>NIN</Form.Label>
                         <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
