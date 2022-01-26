@@ -43,7 +43,7 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/claims" >
                 <Claims />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-add-claims" >
+            <PrivateRoute path="/supervisor/add-claim" >
                 <AddClaims />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/reports" >
@@ -55,7 +55,6 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/settings" >
                 <Settings />
             </PrivateRoute>
-
             <PrivateRoute path="/supervisor/add-comprehensive" >
                 <Policies cat="comprehensive" btn_txt="Process Comprehensive" pol="comprehensive"/>
             </PrivateRoute>
