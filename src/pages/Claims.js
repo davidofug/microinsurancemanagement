@@ -226,12 +226,12 @@ export default function Claims() {
       <>
       <div className="table-card componentsData">
         <div id="search">
-          <SearchBar placeholder={"Search for claim"} value={searchText} handleSearch={handleSearch} />
+          <SearchBar placeholder={"Search for claimant's name"} value={searchText} handleSearch={handleSearch} />
           <div></div>
           <Form.Group className="m-3 categories" width="200px">
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
-                <option value="new">Pending</option>
+                <option value="pending">Pending</option>
                 <option value="settled">Settled</option>
                 <option value="closed">Closed</option>
             </Form.Select>
@@ -239,7 +239,7 @@ export default function Claims() {
         </div>
 
 
-         {currentClaims.length > 0
+         {paginatedShownClaim.length > 0
          ?
          <Table responsive>
          <thead>

@@ -19,8 +19,6 @@ function AddClaims() {
 
     const { authClaims } = useAuth()
 
-    console.log(authClaims)
-
     const claimsCollectionRef = collection(db, 'claims')
     const [fields, handleFieldChange] = useForm({
         uid: authentication.currentUser.uid,
@@ -36,7 +34,7 @@ function AddClaims() {
         claimEstimate: '',
         detailsOfIncident: '',
         attachedDocuments: '',
-        status: 'new'
+        status: 'pending'
 
     })
 
