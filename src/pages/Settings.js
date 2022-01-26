@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
-import '../../styles/Settings.css'
+import '../styles/Settings.css'
 import { Form, Alert, Modal, Button, Badge } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
-import Header from '../../components/header/Header'
-import DefaultAvatar from '../../components/DefaultAvatar'
-import { authentication, db, functions } from '../../helpers/firebase'
+import Header from '../components/header/Header'
+import DefaultAvatar from '../components/DefaultAvatar'
+import { authentication, db, functions } from '../helpers/firebase'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { httpsCallable } from 'firebase/functions';
-import useDialog from '../../hooks/useDialog'
-import useAuth from '../../contexts/Auth'
+import useDialog from '../hooks/useDialog'
+import useAuth from '../contexts/Auth'
 import { getAuth, updateProfile, updateEmail, updatePassword } from "firebase/auth";
 import { getDoc, doc, updateDoc } from 'firebase/firestore'
-import { useForm } from '../../hooks/useForm'
+import { useForm } from '../hooks/useForm'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -32,6 +32,7 @@ function Settings() {
 
     const auth = getAuth()
     const { currentUser } = auth;
+    const { authClaims } = useAuth()
 
     const getUserMeta = async () => {
         const docRef = doc(db, "usermeta", currentUser.uid);
@@ -69,7 +70,18 @@ function Settings() {
    const handlePasswordChange = async (event) => {
     event.preventDefault()
 
-    if(event.target.password.value === event.target.newPassword.value){
+    const credential = authentication.EmailAuthProvider.credential(
+        auth.currentUser.email,
+        event.target.oldPassword.value
+      );
+
+      auth.currentUser.reauthenticateWithCredential(credential).then(function() {
+        console.log("successfully got the password")
+      }).catch(function(error) {
+        console.log("password failed", error)
+      });
+
+    /* if(event.target.password.value === event.target.newPassword.value){
         updatePassword(auth.currentUser, event.target.password.value).then(() => {
             toast.success('Successfully updated password', {position: "top-center"});
           }).catch((error) => {
@@ -78,10 +90,11 @@ function Settings() {
           });
     } else{
         toast.error("Password doesn't match", {position: "top-center"});
-    }
+    } */
    }
 
-   console.log(currentUser.reloadUserInfo.passwordHash)
+//    console.log(currentUser.reloadUserInfo.passwordHash)
+console.log(authentication)
 
     return (
         <div className='components'>
@@ -152,7 +165,10 @@ function Settings() {
                                         <h6>General Information</h6>
                                             <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
                                                 <th style={{paddingRight: "10rem"}}><p>Role</p></th>
-                                                <td><Badge>Agent</Badge></td>
+                                                {authClaims.agent && <td><Badge>Agent</Badge></td>}
+                                                {authClaims.supervisor && <td><Badge>Supervisor</Badge></td>}
+                                                {authClaims.admin && <td><Badge>Admin</Badge></td>}
+                                                {authClaims.superadmin && <td><Badge>Super Admin</Badge></td>}
                                             </div>
                                             <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
                                                 <th style={{paddingRight: "10rem"}}><p>Gender</p></th>

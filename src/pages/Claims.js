@@ -224,7 +224,7 @@ export default function Claims() {
 
       {claims !== null && claims.length > 0 ?
       <>
-      <div className="table-card componentsData">
+      <div className="table-card componentsData shadow-sm">
         <div id="search">
           <SearchBar placeholder={"Search for claimant's name"} value={searchText} handleSearch={handleSearch} />
           <div></div>
