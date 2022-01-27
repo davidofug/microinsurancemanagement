@@ -77,7 +77,7 @@ function PolicyDetails() {
                 {policy.clientDetails != undefined &&
                     <div id="to">
                         <p>To: <b>{policy.clientDetails.name}</b></p>
-                        <p>{policy.clientDetails.address}</p>
+                        <p>Address: {policy.clientDetails.meta.address}</p>
                     </div>
                 }
 
@@ -130,7 +130,7 @@ function PolicyDetails() {
             </>
             }
 
-            <p className='prepared'>Prepared by {policy.agentName}</p>
+            <p><span className='prepared'>Prepared by</span><b>{policy.added_by_name}</b></p>
             <button className='btn btn-success'>$ Proceed with Payments</button>
         </div>
     )

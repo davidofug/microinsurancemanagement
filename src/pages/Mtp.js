@@ -4,7 +4,7 @@ import Header from "../components/header/Header";
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../components/searchBar/SearchBar'
 import { Table, Form } from 'react-bootstrap'
-import { getDoc, getDocs, collection, doc, deleteDoc } from 'firebase/firestore'
+import { getDoc, getDocs, collection, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { authentication, db, functions } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
@@ -80,10 +80,12 @@ export default function Mtp() {
 
   // Confirm Box
   const [ openToggle, setOpenToggle ] = useState(false)
+  const [ openToggleCancel, setOpenToggleCancel ] = useState(false)
   window.onclick = (event) => {
     if(openToggle === true) {
       if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
         setOpenToggle(false)
+        setOpenToggleCancel(false)
     }
     }
   }
@@ -99,6 +101,38 @@ export default function Mtp() {
     const policyDoc = doc(db, "policies", id);
     await deleteDoc(policyDoc);
     toast.success('Successfully deleted', {position: "top-center"});
+  }
+
+  // cancel a policy
+  const handleCancel = async (id) => {
+      const policyRef = doc(db, "policies", id)
+      const data = await getDoc(policyRef);
+      const policy = data.data()
+
+
+    await updateDoc(policyRef, {
+      stickersDetails: [{
+        basicPremium: "",
+        category: policy.stickersDetails[0].category,
+        ccPower: policy.stickersDetails[0].ccPower,
+        chasisNo: policy.stickersDetails[0].chasisNo,
+        grossWeight: policy.stickersDetails[0].grossWeight,
+        motorClass: policy.stickersDetails[0].motorClass,
+        motorMake: policy.stickersDetails[0].motorMake,
+        plateNo: policy.stickersDetails[0].plateNo,
+        referenceNo: policy.stickersDetails[0].referenceNo,
+        seatingCapacity: policy.stickersDetails[0].seatingCapacity,
+        stampDuty: policy.stickersDetails[0].stampDuty,
+        status: "cancelled",
+        stickerFee: policy.stickersDetails[0].stickerFee,
+        totalPremium: policy.stickersDetails[0].totalPremium,
+        trainingLevy: policy.stickersDetails[0].trainingLevy,
+        vat: policy.stickersDetails[0].vat,
+        vehicleUse: policy.stickersDetails[0].vehicleUse
+
+    }]
+    });
+    toast.success('Successfully Cancelled', {position: "top-center"});
   }
 
   const handleAllCheck = () => {
@@ -192,6 +226,21 @@ export default function Mtp() {
         </div>
       </div>
 
+      <div className={openToggleCancel ? 'myModal is-active': 'myModal'}>
+        <div className="modal__content wack">
+          <h1 className='wack'>Confirm</h1>
+          <p className='wack'>Are you sure you want to cancel <b>{deleteName}</b></p>
+          <div className="buttonContainer wack" >
+            <button id="yesButton" onClick={() => {
+              setOpenToggleCancel(false)
+              handleCancel(editID)
+              getMTP()
+              }} className='wack'>Yes</button>
+            <button id="noButton" onClick={() => setOpenToggleCancel(false)} className='wack'>No</button>
+          </div>
+        </div>
+      </div>
+
       {policies !== null && policies.length > 0 
       ?
         <>
@@ -202,7 +251,7 @@ export default function Mtp() {
           <Form.Group className="m-3 categories" width="200px">
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
-                <option value="new">New</option>
+                <option value="active">Active</option>
                 <option value="renewed">Renewed</option>
                 <option value="expired">Expired</option>
                 <option value="deleted">Deleted</option>
@@ -231,9 +280,26 @@ export default function Mtp() {
                  <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                  {!authClaims.agent && <td>{policy.added_by_name}</td>}
                  <td>
-                   <span
-                     style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                   >{policy.stickersDetails[0].status}</span>
+                   {policy.stickersDetails[0].status === 'active'  && 
+                      <span
+                        style={{backgroundColor: "#3EC089", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                      >{policy.stickersDetails[0].status}</span>
+                   }
+                   {policy.stickersDetails[0].status === 'renewed'  && 
+                      <span
+                        style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                      >{policy.stickersDetails[0].status}</span>
+                   }
+                   {policy.stickersDetails[0].status === 'cancelled'  && 
+                      <span
+                        style={{backgroundColor: "#ffc107", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                      >{policy.stickersDetails[0].status}</span>
+                   }
+                   {policy.stickersDetails[0].status === 'expired'  && 
+                      <span
+                        style={{backgroundColor: "#dc3545", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                      >{policy.stickersDetails[0].status}</span>
+                   }
                  </td>
                  <td>{policy.policyStartDate}</td>
 
@@ -251,7 +317,11 @@ export default function Mtp() {
                        <i><MdAutorenew /></i> Renew
                      </div>
                    </Link>
-                   <li>
+                   <li onClick={() => {
+                                 setOpenToggleCancel(true)
+                                 setEditID(policy.id);
+                                 setShowContext(false)
+                               }}>
                      <div className="actionDiv">
                        <i><MdCancel /></i> Cancel
                      </div>
