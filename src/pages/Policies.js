@@ -114,7 +114,7 @@ function Policies({cat, btn_txt, pol}) {
             basicPremium:'',
             stickerFee:6000,
             stampDuty:35000, 
-            status: "new",
+            status: "active",
         }
     ])
     
@@ -180,7 +180,7 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
-                status: "new",
+                status: "active",
             }
         ])
     }
@@ -247,7 +247,7 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
-                status: "new",
+                status: "active",
             }
         ])
 
