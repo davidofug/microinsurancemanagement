@@ -155,7 +155,7 @@ function Supervisors() {
               </div>
             </div>
 
-            <Modal show={show} fade={false} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose}>
               <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
             </Modal>
 
