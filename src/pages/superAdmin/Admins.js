@@ -117,7 +117,7 @@ function Admins() {
             </div>
 
             <Modal show={showModal} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} />
+              <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
             </Modal>
 
 
