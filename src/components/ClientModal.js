@@ -1,7 +1,7 @@
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
 import { getAuth  } from "firebase/auth";
-import { getDoc, doc, updateDoc } from 'firebase/firestore'
-import { authentication, db, functions } from '../helpers/firebase'
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from '../helpers/firebase'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'

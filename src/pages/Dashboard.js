@@ -96,6 +96,12 @@ function Dashboard() {
         return sum     
     }
 
+    if(authentication.currentUser.metadata.creationTime === authentication.currentUser.metadata.lastSignInTime){
+        console.log("welcome to Britam")
+    }
+
+    console.log(authentication.currentUser)
+
     return (
             <div className='components'>
                 <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" />
