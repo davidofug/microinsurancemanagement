@@ -75,7 +75,7 @@ function AddUsers() {
                                 {authClaims.comprehensive && <option value="comprehensive">Comprehensive</option>}
                                 {authClaims.windscreen && <option value="windscreen">Windscreen</option>}
                                 {authClaims.newImports && <option value="newImport">New Imports</option>}
-                                {authClaims.transt && <option value="transit">Transit</option>}
+                                {authClaims.transit && <option value="transit">Transit</option>}
                             </Form.Select>
                         </Form.Group>
 
