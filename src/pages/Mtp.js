@@ -285,6 +285,11 @@ export default function Mtp() {
                         style={{backgroundColor: "#3EC089", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
                       >{policy.stickersDetails[0].status}</span>
                    }
+                   {policy.stickersDetails[0].status === 'paid'  && 
+                      <span
+                        style={{backgroundColor: "#3EC089", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                      >paid</span>
+                   }
                    {policy.stickersDetails[0].status === 'renewed'  && 
                       <span
                         style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
