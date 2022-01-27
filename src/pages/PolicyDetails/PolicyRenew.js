@@ -23,13 +23,12 @@ function PolicyRenew() {
         const policyRef = doc(db, "policies", id)
         const data = await getDoc(policyRef);
         setPolicy(data.data())
-      }
+    }
 
       
 
       const modalSubmit = async (event) => {
         event.preventDefault();
-        const { status } = policy.stickersDetails[0]
         const policyRef = doc(db, "policies", id);
 
         
@@ -71,7 +70,7 @@ function PolicyRenew() {
             <form className="table-card componentsData shadow-sm" onSubmit={modalSubmit}>
             <div style={{width: "100%", padding: "20px"}} >
                 <Form.Group controlId="formGridAddress1">
-                    <Form.Label>Select the New Start Date</Form.Label>
+                    <Form.Label>Select the renewal Start Date and submit policy</Form.Label>
                     <Form.Control type='date' id='policyStartDate' />
                 </Form.Group>
             </div>
@@ -88,7 +87,7 @@ function PolicyRenew() {
                     {policy.clientDetails != undefined &&
                         <div id="to">
                             <p>To: <b>{policy.clientDetails.name}</b></p>
-                            <p>{policy.clientDetails.address}</p>
+                            <p>Address: {policy.clientDetails.meta.address}</p>
                         </div>
                     }
                     {policy.policyStartDate != undefined &&
@@ -123,10 +122,12 @@ function PolicyRenew() {
                         </tbody>
                     </table>
                     <b>Cost of Insurance</b>
-                    <p>Total Premium: <b>{policy.currency} </b><span>{policy.stickersDetails[0].totalPremium}</span></p>
+                    <hr></hr>
+                    <div style={{display: "flex", justifyContent: "space-between"}}><p>Total Premium:</p> <span style={{marginRight: "12rem"}}><b>{policy.currency} </b>{policy.stickersDetails[0].totalPremium}</span></div>
+                    <hr></hr>
                 </>
                 }
-                <p className='prepared'>Prepared by {policy.agentName}</p>
+                <p><span className='prepared'>Prepared by </span><b>{policy.added_by_name}</b></p>
                 <input type="submit" className='btn btn-success' value="Renew Policy" />
             </div>
             </form>
