@@ -619,20 +619,25 @@ left: auto;
 .generator__password {
     position: relative;
     background: rgb(255 255 255);
-    padding: 13px 10px;
     color: #000;
     margin-bottom: 15px;
     word-break: break-word;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
   }
 
   .generator__password h3 {
     font-weight: 500;
     text-align: left;
     margin: 0;
-    padding: 0px 37px 0 0;
+    /* padding: 0px 37px 0 0; */
     font-size: 17px;
     line-height: 33px;
     min-height: 20px;
+    text-align: center;
   }
 
 
@@ -645,11 +650,15 @@ left: auto;
     height: 42px;
     padding: 0 12px 0 12px;
     cursor: pointer;
-    top: 3px;
     right: 3px;
   }
   .copy__btn svg {
     font-size: 20px;
+  }
+
+  .password-h3{
+      background-color: #fafafa;
+      height: 42px;
   }
 
 
