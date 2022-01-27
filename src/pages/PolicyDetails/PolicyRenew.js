@@ -7,6 +7,7 @@ import { getDoc, collection, doc, updateDoc} from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import './PolicyDetails.css'
 import Header from "../../components/header/Header";
+import { currencyFormatter } from '../../helpers/currency.format'
 
 function PolicyRenew() {
     useEffect(() => {
@@ -32,7 +33,6 @@ function PolicyRenew() {
         const policyRef = doc(db, "policies", id);
 
         
-
         await updateDoc(policyRef, {
             policyStartDate: event.target.policyStartDate.value,
             stickersDetails: [{
@@ -74,6 +74,8 @@ function PolicyRenew() {
                     <Form.Control type='date' id='policyStartDate' />
                 </Form.Group>
             </div>
+
+            
 
             <div style={{margin: "30px"}}>
                 <div className='fromTo'>
@@ -123,7 +125,7 @@ function PolicyRenew() {
                     </table>
                     <b>Cost of Insurance</b>
                     <hr></hr>
-                    <div style={{display: "flex", justifyContent: "space-between"}}><p>Total Premium:</p> <span style={{marginRight: "12rem"}}><b>{policy.currency} </b>{policy.stickersDetails[0].totalPremium}</span></div>
+                    <div style={{display: "flex", justifyContent: "space-between"}}><p>Total Premium:</p> <span style={{marginRight: "12rem"}}><b>{policy.currency} </b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</span></div>
                     <hr></hr>
                 </>
                 }

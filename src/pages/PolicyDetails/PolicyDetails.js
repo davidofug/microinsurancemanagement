@@ -6,7 +6,11 @@ import { getDoc, collection, doc, updateDoc} from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import './PolicyDetails.css'
 import { currencyFormatter } from '../../helpers/currency.format'
-import { Modal } from 'react-bootstrap'
+import { Modal, Form, Col } from 'react-bootstrap'
+import useDialog from '../../hooks/useDialog'
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function PolicyDetails() {
     useEffect(() => { document.title = "Britam - Sticker Details"; getMTP(id)}, []);
@@ -15,6 +19,8 @@ function PolicyDetails() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [editID, setEditID] = useState(null);
+
+  const [ showPayment, handleShowPayment, handleClosePayment ] = useDialog()
 
     const { id } = useParams()  
 
@@ -28,7 +34,37 @@ function PolicyDetails() {
         setPolicy(data.data())
       }
 
-    
+      const handleSubmitPayment = async (event) => {
+
+        event.preventDefault()
+        handleClosePayment()
+        const docRef = doc(db, "policies", id);
+        await updateDoc(docRef, {
+            stickersDetails: [{
+                basicPremium: "",
+                category: policy.stickersDetails[0].category,
+                ccPower: policy.stickersDetails[0].ccPower,
+                chasisNo: policy.stickersDetails[0].chasisNo,
+                grossWeight: policy.stickersDetails[0].grossWeight,
+                motorClass: policy.stickersDetails[0].motorClass,
+                motorMake: policy.stickersDetails[0].motorMake,
+                plateNo: policy.stickersDetails[0].plateNo,
+                referenceNo: policy.stickersDetails[0].referenceNo,
+                seatingCapacity: policy.stickersDetails[0].seatingCapacity,
+                stampDuty: policy.stickersDetails[0].stampDuty,
+                status: "paid",
+                stickerFee: policy.stickersDetails[0].stickerFee,
+                totalPremium: policy.stickersDetails[0].totalPremium,
+                trainingLevy: policy.stickersDetails[0].trainingLevy,
+                vat: policy.stickersDetails[0].vat,
+                vehicleUse: policy.stickersDetails[0].vehicleUse
+
+            }]
+        });
+        toast.success('Payment Reference successfully saved.', {position: "top-center"});
+      }
+
+    //   console.log(policy)
 
       
     
@@ -64,7 +100,26 @@ function PolicyDetails() {
                 </Modal.Body>
             </Modal>
 
+            <Modal show={showPayment} onHide={handleClosePayment}>
+            <form onSubmit={handleSubmitPayment}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Process with Payments</Modal.Title>
+                </Modal.Header>
+                <Modal.Body id="stickerPrint">
+                    
+                        <Form.Group as={Col} className='addFormGroups'>
+                            <Form.Label htmlFor='paymentReference'>Enter Payment Reference</Form.Label>
+                            <Form.Control type="text" id="paymentReference" />
+                        </Form.Group>
+                    
+                </Modal.Body>
+                <Modal.Footer className="hideOnPrint">
+                    <button className='btn btn-primary cta hideOnPrint'>Submit</button>
+                </Modal.Footer>
+                </form>
+            </Modal>
 
+            <hr></hr>
 
             <div className='fromTo'>
                 <div id='from'>
@@ -112,26 +167,27 @@ function PolicyDetails() {
                             <td>{policy.stickersDetails[0].ccPower}</td>
                             <td>{policy.stickersDetails[0].vehicleUse}</td>
                             <td>
-                                <tr>
-                                    <button className='btn btn-warning mb-2 mt-2' onClick={() => {
-                                        
-                                        handleShow()
-                                    }}>Print Sticker</button>
-                                </tr>
-                                <tr>
-                                    <button className='btn btn-danger mb-2'>Cancel Sticker</button>
-                                </tr>
+                                {policy.stickersDetails[0].status === 'paid' &&
+                                    <tr>
+                                        <button className='btn btn-warning mb-2 mt-2' onClick={handleShow}>Print Sticker</button>
+                                    </tr>
+                                }
+                                    <tr>
+                                        <button className='btn btn-danger mb-2 mt-2'>Cancel Sticker</button>
+                                    </tr>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <b>Cost of Insurance</b>
-                <p>Total Premium: <b>{policy.currency} </b><span>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</span></p>
+                <hr></hr>
+                <div style={{display: "flex", justifyContent: "space-between"}}><p>Total Premium:</p> <span style={{marginRight: "12rem"}}><b>{policy.currency} </b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</span></div>
+                <hr></hr>
             </>
             }
 
-            <p><span className='prepared'>Prepared by</span><b>{policy.added_by_name}</b></p>
-            <button className='btn btn-success'>$ Proceed with Payments</button>
+            <p><span className='prepared'>Prepared by:  </span><b>{policy.added_by_name}</b></p>
+            {policy.stickersDetails && policy.stickersDetails[0].status !== 'paid' && <button className='btn btn-success' onClick={handleShowPayment}>$ Proceed with Payments</button>}
         </div>
     )
 }
