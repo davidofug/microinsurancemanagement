@@ -9,6 +9,7 @@ import Header from '../components/header/Header'
 import { useForm } from '../hooks/useForm'
 import useAuth from '../contexts/Auth'
 import Loader from '../components/Loader'
+import PasswordGenerator from '../components/PasswordGenerator'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -27,6 +28,7 @@ function AddUsers({role}) {
     const [mtp, setMTP] = useState(false)
 
     const [ isLoading, setIsLoading ] = useState(false)
+    const [ password, setPassword ] = useState('')
 
     const [showOrganisation, setShowOrganisation] = useState(false)
     const [policyType, setPolicyType] = useState('')
@@ -336,6 +338,8 @@ function AddUsers({role}) {
                                 }
                                 <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
                                 <Upload uploadLogo={uploadLogo}/>
+
+                                <PasswordGenerator password={password} setPassword={setPassword} />
 
                             </>
                         }
