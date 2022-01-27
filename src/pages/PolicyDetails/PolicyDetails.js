@@ -2,7 +2,7 @@ import logo from '../../assets/imgs/britam-logo2.png'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { getDoc, collection, doc} from 'firebase/firestore'
+import { getDoc, collection, doc, updateDoc} from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import './PolicyDetails.css'
 import { currencyFormatter } from '../../helpers/currency.format'
@@ -27,6 +27,8 @@ function PolicyDetails() {
         console.log(data.data())
         setPolicy(data.data())
       }
+
+    
 
       
     

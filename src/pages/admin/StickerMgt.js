@@ -77,10 +77,10 @@ export default function StickerMgt() {
 
             <div className="componentsData">
                     <div className="sticker-mgt">
-                            <Badge color={"#5CB85C"} number={104} title={"Motor Bikes"} icon={<MdOutlinePedalBike />} />
-                            <Badge color={"#46B8DA"} number={25} title={"Motor Transit"} icon={<FiTruck />}/>
-                            <Badge color={"#D43F3A"} number={77} title={"Motor Private"} icon={<AiOutlineCar />}/>
-                            <Badge color={"#FFB848"} number={10} title={"Motor Commercial"} icon={<BiBus />}/>
+                            <Badge color={"#5CB85C"} number={0} title={"Motor Bikes"} icon={<MdOutlinePedalBike />} />
+                            <Badge color={"#46B8DA"} number={0} title={"Motor Transit"} icon={<FiTruck />}/>
+                            <Badge color={"#D43F3A"} number={0} title={"Motor Private"} icon={<AiOutlineCar />}/>
+                            <Badge color={"#FFB848"} number={0} title={"Motor Commercial"} icon={<BiBus />}/>
                     </div>
                     <div className="shadow-sm table-card">
                     <div id="search">

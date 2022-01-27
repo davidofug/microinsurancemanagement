@@ -153,6 +153,8 @@ export default function Mtp() {
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
+  console.log(policies)
+
   return (
     <div className="components">
       <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
@@ -193,7 +195,7 @@ export default function Mtp() {
       {policies !== null && policies.length > 0 
       ?
         <>
-        <div className="table-card componentsData" style={{display: "flex",flexDirection: "column", justifyContent: "center", maxWidth: "900px", minWidth: "300px"}}>
+        <div className="table-card componentsData shadow-sm" style={{display: "flex",flexDirection: "column", justifyContent: "center", maxWidth: "900px", minWidth: "300px"}}>
         <div id="search">
           <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
           <div></div>
@@ -307,7 +309,7 @@ export default function Mtp() {
           <div className="no-table-data">
               <i><ImFilesEmpty /></i>
               <h4>No match</h4>
-              <p>There is no current match for claim</p>
+              <p>There is no current match for MTP sticker</p>
           </div>
         }
 

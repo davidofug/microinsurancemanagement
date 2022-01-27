@@ -52,6 +52,10 @@ function Policies({cat, btn_txt, pol}) {
         clientType: cat,
     })
 
+    // working on policy status
+    const today = `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
+    console.log(today)
+
     
     const [ comprehensiveClient, setComprehensiveClient ] = useState('') 
     const [ policyDisplayEndDate, setPolicyDisplayEndDate ] = useState()
@@ -110,7 +114,7 @@ function Policies({cat, btn_txt, pol}) {
             basicPremium:'',
             stickerFee:6000,
             stampDuty:35000, 
-            status: 'new'
+            status: "new",
         }
     ])
     
@@ -121,8 +125,8 @@ function Policies({cat, btn_txt, pol}) {
 
         listUsers().then(({data}) => {
             setExistingClients(data.filter(user => user?.role?.Customer))
-            console.log(data.filter(user => user?.role?.Customer))
-            console.log(data)
+            // console.log(data.filter(user => user?.role?.Customer))
+            // console.log(data)
         }).catch((err) => {
             console.log(err)
         })
@@ -176,7 +180,7 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
-                status: 'new',
+                status: "new",
             }
         ])
     }
@@ -203,12 +207,12 @@ function Policies({cat, btn_txt, pol}) {
     
         await addDoc(policiesRef, {
             currency,
+            policyStartDate: policyStartDate, 
+            policyEndDate: policyEndDate,
             stickersDetails: stickers,
             clientDetails: clientInfo,
             added_by_uid: authentication.currentUser.uid,
             added_by_name: authentication.currentUser.displayName,  
-            policyStartDate: policyStartDate, 
-            policyEndDate: policyEndDate,
             category: cat,
             totalValuation: await generateTotalValuation(stickers),
             createdAt: created_at
@@ -243,7 +247,7 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
-                status: 'new',
+                status: "new",
             }
         ])
 
