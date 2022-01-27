@@ -18,7 +18,8 @@ function AddUsers() {
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
     const [mtp, setMTP] = useState(false)
-
+    
+    const [policyType, setPolicyType] = useState('')
     const [ isLoading, setIsLoading ] = useState(false)
 
     const [fields, handleFieldChange] = useForm({
@@ -33,6 +34,7 @@ function AddUsers() {
         licenseNo: '',
         NIN: '',
         photo: '',
+        policyType: policyType,
     })
 
     const handleSubmit = async (event) => {
@@ -55,8 +57,6 @@ function AddUsers() {
 
     const { user_role } = fields
 
-    console.log(isLoading)
-
     return (
         <div className='components'>
             <Header title="Add Clients" subtitle="ADD A NEW CLIENT" />
@@ -69,15 +69,16 @@ function AddUsers() {
                     <Form name='form4' onSubmit={handleSubmit}>
                     <Row>
                         <Form.Group className="m-3 categories" width="200px">
-                            <Form.Select aria-label="User role" id='category'>
+                            <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)}>
                                 <option value={""}>Policy Type</option>
-                                <option value="mtp">MTP</option>
-                                <option value="comprehensive">Comprehensive</option>
-                                <option value="windscreen">Windscreen</option>
-                                <option value="newImport">New Imports</option>
-                                <option value="transit">Transit</option>
+                                {authClaims.mtp && <option value="mtp">MTP</option>}
+                                {authClaims.comprehensive && <option value="comprehensive">Comprehensive</option>}
+                                {authClaims.windscreen && <option value="windscreen">Windscreen</option>}
+                                {authClaims.newImports && <option value="newImport">New Imports</option>}
+                                {authClaims.transt && <option value="transit">Transit</option>}
                             </Form.Select>
                         </Form.Group>
+
                         {authClaims.comprehensive &&
                             <Form.Group className="m-3 categories" width="200px">
                                 <Form.Select aria-label="User role" id='category'>
