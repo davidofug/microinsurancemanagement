@@ -86,18 +86,26 @@ function PolicyDetails() {
             
             <Modal show={show} onHide={handleClose} className="hideOnPrint" >
                 <Modal.Header closeButton className='hideOnPrint'>
-                    <Modal.Title className='hideOnPrint'>Print Sticker</Modal.Title>
+                    <Modal.Title className='hideOnPrint'>Print Sticker #{policy.stickersDetails[0].referenceNo}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body id="stickerPrint">
-                        <p>Number</p>
-                        <p>Sticker Details</p>
-                        <p>10,000</p>
+                        <p>{policy.clientDetails.name}</p>
+                        <p>9000</p>
+                        <p>{policy.stickersDetails[0].plateNo} {policy.stickersDetails[0].motorMake}</p>
+                        <p>{policy.stickersDetails[0].seatingCapacity}</p>
+                        <p>{policy.stickersDetails[0].ccPower}</p>
+                        <p>{policy.stickersDetails[0].chasisNo}</p>
+                        <p>{currencyFormatter(policy.stickersDetails[0].totalPremium)} {policy.currency}</p>
+                        <p>{policy.policyStartDate}</p>
+                        <p>{policy.policyEndDate}</p>
+                        <p>Britam Insurance Co. (U) Ltd.</p>
+                        <p>{policy.added_by_name}</p>
                 </Modal.Body>
-                <Modal.Body className="hideOnPrint">
+                <Modal.Footer className="hideOnPrint">
                     <button className='btn btn-primary cta hideOnPrint' onClick={() => {
                         window.print()
                     }} >Print</button>
-                </Modal.Body>
+                </Modal.Footer>
             </Modal>
 
             <Modal show={showPayment} onHide={handleClosePayment}>
