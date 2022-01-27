@@ -80,11 +80,19 @@ export default function Mtp() {
 
   // Confirm Box
   const [ openToggle, setOpenToggle ] = useState(false)
-  const [ openToggleCancel, setOpenToggleCancel ] = useState(false)
   window.onclick = (event) => {
     if(openToggle === true) {
       if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
         setOpenToggle(false)
+    }
+    }
+  }
+
+  // Confirm Box
+  const [ openToggleCancel, setOpenToggleCancel ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggleCancel === true) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
         setOpenToggleCancel(false)
     }
     }
