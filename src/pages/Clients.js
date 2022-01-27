@@ -177,7 +177,7 @@ const getClients = () => {
                             <td>{index + 1}</td>
                             <td>{client.name}</td>
                             <td>{client.email}</td>
-                            <td>{client.meta.gender}</td>
+                            <td>{client.meta.gender === '' ? 'Corporate Entity' : client.meta.gender}</td>
                             <td>{client.meta.phone}</td>
                             <td>{client.meta.address}</td>
                             <td>{client.meta.added_by_name}</td>

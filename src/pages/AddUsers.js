@@ -183,7 +183,7 @@ function AddUsers({role}) {
                                         
                                         <Form.Group as={Col} className='addFormGroups'>
                                             <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
-                                            <div className='gender-options'>
+                                            <div className='gender-options' required>
                                                 <div>
                                                 <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleFieldChange}/>
                                                     <label htmlFor="male">Male</label>
