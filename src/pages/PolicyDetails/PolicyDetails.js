@@ -22,6 +22,21 @@ function PolicyDetails() {
 
   const [ showPayment, handleShowPayment, handleClosePayment ] = useDialog()
 
+    // Confirm Box
+  const [ openToggleCancel, setOpenToggleCancel ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggleCancel === true) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggleCancel(false)
+    }
+    }
+  }
+
+  // cancel a policy
+  const handleCancel = async (id) => {
+    console.log("handle cancel")
+}
+
     const { id } = useParams()  
 
     const [ policy, setPolicy ] = useState({})
@@ -30,7 +45,7 @@ function PolicyDetails() {
     const getMTP = async (id) => {
         const policyRef = doc(db, "policies", id)
         const data = await getDoc(policyRef);
-        console.log(data.data())
+        // console.log(data.data())
         setPolicy(data.data())
       }
 
@@ -64,7 +79,7 @@ function PolicyDetails() {
         toast.success('Payment Reference successfully saved.', {position: "top-center"});
       }
 
-    //   console.log(policy)
+      console.log(policy)
 
       
     
@@ -83,24 +98,41 @@ function PolicyDetails() {
                 </div>
             </div>
 
+
+            <div className={openToggleCancel ? 'myModal is-active': 'myModal'}>
+                <div className="modal__content wack">
+                <h1 className='wack'>Confirm</h1>
+                <p className='wack'>Are you sure you want to cancel</p>
+                <div className="buttonContainer wack" >
+                    <button id="yesButton" onClick={() => {
+                    setOpenToggleCancel(false)
+                    handleCancel(editID)
+                    }} className='wack'>Yes</button>
+                    <button id="noButton" onClick={() => setOpenToggleCancel(false)} className='wack'>No</button>
+                </div>
+                </div>
+            </div>
+
             
             <Modal show={show} onHide={handleClose} className="hideOnPrint" >
                 <Modal.Header closeButton className='hideOnPrint'>
-                    <Modal.Title className='hideOnPrint'>Print Sticker #{policy.stickersDetails[0].referenceNo}</Modal.Title>
+                    <Modal.Title className='hideOnPrint'>Print Sticker #{policy.stickersDetails && policy.stickersDetails[0].referenceNo}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body id="stickerPrint">
-                        <p>{policy.clientDetails.name}</p>
-                        <p>9000</p>
-                        <p>{policy.stickersDetails[0].plateNo} {policy.stickersDetails[0].motorMake}</p>
-                        <p>{policy.stickersDetails[0].seatingCapacity}</p>
-                        <p>{policy.stickersDetails[0].ccPower}</p>
-                        <p>{policy.stickersDetails[0].chasisNo}</p>
-                        <p>{currencyFormatter(policy.stickersDetails[0].totalPremium)} {policy.currency}</p>
-                        <p>{policy.policyStartDate}</p>
-                        <p>{policy.policyEndDate}</p>
-                        <p>Britam Insurance Co. (U) Ltd.</p>
-                        <p>{policy.added_by_name}</p>
-                </Modal.Body>
+                {show &&
+                    <Modal.Body id="stickerPrint">
+                            <p>{policy.clientDetails.name}</p>
+                            <p>9000</p>
+                            <p>{policy.stickersDetails[0].plateNo} {policy.stickersDetails[0].motorMake}</p>
+                            <p>{policy.stickersDetails[0].seatingCapacity}</p>
+                            <p>{policy.stickersDetails[0].ccPower}</p>
+                            <p>{policy.stickersDetails[0].chasisNo}</p>
+                            <p>{currencyFormatter(policy.stickersDetails[0].totalPremium)} {policy.currency}</p>
+                            <p>{policy.policyStartDate}</p>
+                            <p>{policy.policyEndDate}</p>
+                            <p>Britam Insurance Co. (U) Ltd.</p>
+                            <p>{policy.added_by_name}</p>
+                    </Modal.Body>
+                }
                 <Modal.Footer className="hideOnPrint">
                     <button className='btn btn-primary cta hideOnPrint' onClick={() => {
                         window.print()
@@ -181,7 +213,10 @@ function PolicyDetails() {
                                     </tr>
                                 }
                                     <tr>
-                                        <button className='btn btn-danger mb-2 mt-2'>Cancel Sticker</button>
+                                        <button className='btn btn-danger mb-2 mt-2' 
+                                        onClick={() => {
+                                            setOpenToggleCancel(true)
+                                        }}>Cancel Sticker</button>
                                     </tr>
                             </td>
                         </tr>
