@@ -1,7 +1,6 @@
 import '../assets/styles/addClients.css'
-import { authentication } from '../helpers/firebase'
 import { httpsCallable } from 'firebase/functions'
-import { functions } from '../helpers/firebase'
+import { authentication, db, functions } from '../helpers/firebase'
 import { useEffect, useState } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import Upload from '../components/uploader/Upload'
@@ -10,6 +9,7 @@ import { useForm } from '../hooks/useForm'
 import useAuth from '../contexts/Auth'
 import Loader from '../components/Loader'
 import PasswordGenerator from '../components/PasswordGenerator'
+import { collection, addDoc } from 'firebase/firestore'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -30,19 +30,23 @@ function AddUsers({role}) {
     const [ isLoading, setIsLoading ] = useState(false)
     const [ password, setPassword ] = useState('')
 
-    const [showOrganisation, setShowOrganisation] = useState(false)
+    // const [showOrganisation, setShowOrganisation] = useState(false)
     const [policyType, setPolicyType] = useState('')
     const [clientType, setClientType] = useState('individual')
 
+
+    // initialising the logs doc.
+    const logCollectionRef = collection(db, "logs");
+
     
 
-    const checkedOrganisation = () => {
+    /* const checkedOrganisation = () => {
         if(document.getElementById('supervisorCheck').checked){
             setShowOrganisation(true)
         } else {
             setShowOrganisation(false)
         }
-    }
+    } */
     
 
     const [fields, handleFieldChange] = useForm({
@@ -76,8 +80,22 @@ function AddUsers({role}) {
             toast.success(`Successfully added ${fields.name}`, {position: "top-center"});
             setIsLoading(false)
             document.form3.reset()
-        }).catch(() => {
+        }).then(async () => {
+            await addDoc(logCollectionRef, {
+                timeCreated: new Date(),
+                type: 'user creation',
+                status: 'successful',
+                message: `Successfully created ${fields.name} by ${authentication.currentUser.displayName}`
+            })
+        }).catch(async () => {
             toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+
+            await addDoc(logCollectionRef, {
+                timeCreated: new Date(),
+                type: 'user creation',
+                status: 'failed',
+                message: `Failed to created ${fields.name} by ${authentication.currentUser.displayName}`
+            })
         })
 
     }
