@@ -17,17 +17,15 @@ import useDialog from "../../hooks/useDialog";
 
 export default function AdminMenu({ setLargeContentClass }) {
 
-  useEffect(() => {
-    
-  }, [])
-
   const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
   const { Admin } = menuData;
-  const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(preferredToggleMenu);
+  const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
   const [ show, handleShow, handleClose ] = useDialog();
   if(show){
     window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
   }
+
+  console.log(preferredToggleMenu)
 
   return (
     <div className="menuSide">
