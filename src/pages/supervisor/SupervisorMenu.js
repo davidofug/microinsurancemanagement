@@ -88,7 +88,7 @@ function SupervisorMenu({ setLargeContentClass }) {
                     </div>
                     {/* </Link> */}
                     <ul className={show ? "footerContextShow" : ""} id="contextUl">
-                        <li><Link to="/admin/settings"><ImProfile /></Link></li>
+                        <li><Link to="/supervisor/settings"><ImProfile /></Link></li>
                         <li><Link to="/logout"><MdLogout /></Link></li>
                     </ul>
                 </footer>
