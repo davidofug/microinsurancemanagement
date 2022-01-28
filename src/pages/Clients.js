@@ -122,7 +122,7 @@ const getClients = () => {
             <div id="add_client_group">
                 <div></div>
                 {authClaims.supervisor && 
-                  <Link to="/supervisor/add-user">
+                  <Link to="/supervisor/add-clients">
                       <button className='btn btn-primary cta'>Add Client</button>
                   </Link>
                 }
@@ -169,7 +169,7 @@ const getClients = () => {
                   <>
                     <Table hover striped responsive className='mt-5'>
                       <thead>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}<th>Action</th></tr>
                       </thead>
                       <tbody>
                         {currentClients.map((client, index) => (
@@ -177,9 +177,10 @@ const getClients = () => {
                             <td>{index + 1}</td>
                             <td>{client.name}</td>
                             <td>{client.email}</td>
-                            <td>{client.meta.gender}</td>
+                            <td>{client.meta.gender === '' ? 'Corporate Entity' : client.meta.gender}</td>
                             <td>{client.meta.phone}</td>
                             <td>{client.meta.address}</td>
+                            <td>{client.meta.added_by_name}</td>
               <td className="started">
                 <button className="sharebtn" onClick={() => {
                   setClickedIndex(index);
@@ -235,7 +236,7 @@ const getClients = () => {
                         </tfoot>
 
                       <tfoot>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}<th>Action</th></tr>
                       </tfoot>
                   </Table>
             

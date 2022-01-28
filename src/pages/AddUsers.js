@@ -9,6 +9,7 @@ import Header from '../components/header/Header'
 import { useForm } from '../hooks/useForm'
 import useAuth from '../contexts/Auth'
 import Loader from '../components/Loader'
+import PasswordGenerator from '../components/PasswordGenerator'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -17,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../helpers/firebase'
 
-function AddUsers() {
+function AddUsers({role}) {
     const { authClaims } = useAuth()
     const addUser = httpsCallable(functions, 'addUser')
     useEffect(() => { document.title = 'Britam - Add Users' }, [])
@@ -27,8 +28,11 @@ function AddUsers() {
     const [mtp, setMTP] = useState(false)
 
     const [ isLoading, setIsLoading ] = useState(false)
+    const [ password, setPassword ] = useState('')
 
     const [showOrganisation, setShowOrganisation] = useState(false)
+    const [policyType, setPolicyType] = useState('')
+    const [clientType, setClientType] = useState('individual')
 
     
 
@@ -42,7 +46,7 @@ function AddUsers() {
     
 
     const [fields, handleFieldChange] = useForm({
-        user_role: '',
+        user_role: role === "client" ? "Customer" : role,
         organisation: '',
         email: '',
         name: '',
@@ -106,114 +110,248 @@ function AddUsers() {
           ) 
     }
 
+    console.log(clientType)
 
     return (
         <div className='components'>
-            <Header title="Add User" subtitle="ADD A NEW USER" />
+            <Header title={`Add ${role}`} subtitle={`Add a new ${role}`.toUpperCase()} />
             <ToastContainer/>
-            <div className="addComponentsData shadow-sm">
+            <div className="addComponentsData shadow-sm mb-3">
                     {isLoading && 
                         <div className='loader-wrapper'>
                             <Loader />
                         </div>
                     }
                     <Form name='form3' onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" >
-                        <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
-                            <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange} required>
-                                <option value="hide">--User Role--</option>
-                                {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
-                                {authClaims.superadmin && <option value="admin">Admin</option>}
-                                {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
-                                {(authClaims.supervisor || authClaims.admin) && <option value="agent">Agent</option>}
-                                {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
-                            </Form.Select>
-                        </Form.Group>
-                        { user_role === 'supervisor' && 
+
+                        {/* {authClaims.superadmin &&
+                            <Form.Group className="mb-3" >
+                                <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
+                                <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange} required>
+                                    <option value="hide">--User Role--</option>
+                                    {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
+                                    {authClaims.superadmin && <option value="admin">Admin</option>}
+                                    {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
+                                    {(authClaims.supervisor || authClaims.admin) && <option value="agent">Agent</option>}
+                                    {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
+                                </Form.Select>
+                            </Form.Group>
+                        } */}
+                        
+
+                        { role === 'supervisor' && 
                             <Form.Group className="mb-3" >
                                 <Form.Label htmlFor='organisation'>Organisation<span className='required'>*</span></Form.Label>
                                 <Form.Control id="organisation" placeholder="organisation" onChange={handleFieldChange} required/>
                             </Form.Group>
                         }
-                        <Form.Group className="mb-3" >
-                            <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
-                            <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
-                        </Form.Group>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} className='addFormGroups'>
-                                <Form.Label htmlFor='dob'>Date of birth</Form.Label>
-                            <Form.Control type="date" id="dob" onChange={handleFieldChange} required/>
-                            </Form.Group>
-                            <Form.Group as={Col} className='addFormGroups'>
-                                <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
-                                <div className='gender-options'>
-                                    <div>
-                                    <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleFieldChange}/>
-                                        <label htmlFor="male">Male</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleFieldChange}/>
-                                        <label htmlFor="female">Female</label>
-                                    </div>
-                                </div>
+
+                        {role === 'client' &&
+                            <Row>
+                            <Form.Group className="m-3 categories" width="200px">
+                                <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)}>
+                                    <option value={""}>Policy Type</option>
+                                    <option value="mtp">MTP</option>
+                                    <option value="comprehensive">Comprehensive</option>
+                                    <option value="windscreen">Windscreen</option>
+                                    <option value="newImport">New Imports</option>
+                                    <option value="transit">Transit</option>
+                                </Form.Select>
                             </Form.Group>
                         </Row>
+                        }
 
-                        <Row className="mb-3">
-                            <Form.Group as={Col} className='addFormGroups'>
-                                <Form.Label htmlFor='email'>Email Address <span className='required'>*</span></Form.Label>
-                                <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
-                            </Form.Group>
-                            <Form.Group as={Col} className='addFormGroups'>
-                                <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
-                                <Form.Control type="tel" id="phone" placeholder="Enter phone number"  onChange={handleFieldChange} required/>
-                            </Form.Group>
-                        </Row>
-                        <Form.Group className="mb-3" >
-                            <Form.Label htmlFor='address'>Address</Form.Label>
-                            <Form.Control id="address" placeholder="Enter your address"  onChange={handleFieldChange}/>
-                    </Form.Group>
-                    <Row className="mb-3">
-                    <Form.Group as={Col} className="addFormGroups" >
-                        <Form.Label htmlFor='license'>License No.</Form.Label>
-                        <Form.Control id="licenseNo" placeholder="license No." onChange={handleFieldChange} />
-                    </Form.Group>
-                    <Form.Group as={Col} className="addFormGroups" >
-                        <Form.Label htmlFor='nin'>NIN</Form.Label>
-                        <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
-                        </Form.Group>
-                    </Row>
-                    { user_role === 'agent' &&
-                        <>
-                            <Form.Group className="mb-3" >
-                                <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="comprehensive">
-                                <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="mtp">
-                                <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="windscreen">
-                                <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="windscreen">
-                                <Form.Check type="checkbox" label="Handle New Imports" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="windscreen">
-                                <Form.Check type="checkbox" label="Handle Transit" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
-                            </Form.Group>
-                        </>
-                    }
-                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                        <Upload uploadLogo={uploadLogo}/>
+                        {role === 'client' && policyType === 'comprehensive'
+                        ?
+                            <>
+                                <Form.Group className="m-3 categories" width="200px">
+                                    <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setClientType(value)}>
+                                        <option value={"individual"}>Type of Client</option>
+                                        <option value="individual">Individual</option>
+                                        <option value="corporateEntity">Corporate Entity</option>
+                                    </Form.Select>
+                                </Form.Group>
+                                {clientType === 'individual' && 
+                                <>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
+                                        <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
+                                    </Form.Group>
+                                    <Row className="mb-3">
+                                        <Form.Group as={Col} className='addFormGroups'>
+                                            <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                            <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
+                                        </Form.Group>
+                                        
+                                        <Form.Group as={Col} className='addFormGroups'>
+                                            <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
+                                            <div className='gender-options' required>
+                                                <div>
+                                                <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleFieldChange}/>
+                                                    <label htmlFor="male">Male</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleFieldChange}/>
+                                                    <label htmlFor="female">Female</label>
+                                                </div>
+                                            </div>
+                                        </Form.Group>
+                                        </Row>
+                        
 
-                    {fields.name !== "" & fields.email !== ""
-                    ?
-                        <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' /></div>
-                    :
-                        <div id='submit' ><input type="button" value="Submit" className='btn btn-primary cta submitcta' style={{background: "rgba(20, 117, 207, 0.4)", border: "1px solid #a1c8ec"}}/></div>
-                    }
+                                        <Row className="mb-3">
+                                            <Form.Group as={Col} className='addFormGroups'>
+                                                <Form.Label htmlFor='tinNumber'>Tin Number</Form.Label>
+                                                <Form.Control type="number" id="tinNumber" placeholder="Enter TIN" onChange={handleFieldChange} />
+                                            </Form.Group>
+                                            <Form.Group as={Col} className='addFormGroups'>
+                                                <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
+                                                <Form.Control type="tel" id="phone" placeholder="Enter phone number"  onChange={handleFieldChange} required/>
+                                            </Form.Group>
+                                        </Row>
+
+                                        <Form.Group className="mb-3" >
+                                            <Form.Label htmlFor='address'>Address</Form.Label>
+                                            <Form.Control id="address" placeholder="Enter your address"  onChange={handleFieldChange}/>
+                                        </Form.Group>
+                                        <Row className="mb-3">
+                                            <Form.Group as={Col} className="addFormGroups" >
+                                                <Form.Label htmlFor='driverLicense'>Driver's License</Form.Label>
+                                                <Form.Control id="driverLicense" placeholder="Driver's License" onChange={handleFieldChange} />
+                                            </Form.Group>
+                                            <Form.Group as={Col} className="addFormGroups" >
+                                                <Form.Label htmlFor='nin'>NIN</Form.Label>
+                                                <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
+                                            </Form.Group>
+                                        </Row>
+                                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
+                                        <Upload uploadLogo={uploadLogo}/>
+                                </>
+                                }
+                                {clientType === 'corporateEntity' && 
+                                <>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
+                                        <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
+                                    </Form.Group>
+                                    <Row>
+                                        <Form.Group as={Col} className='addFormGroups'>
+                                            <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                            <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
+                                        </Form.Group>
+                                    </Row>
+                                    <Row className="mb-3">
+                                        <Form.Group as={Col} className='addFormGroups'>
+                                            <Form.Label htmlFor='tinNumber'>Tin Number</Form.Label>
+                                            <Form.Control type="number" id="tinNumber" placeholder="Enter TIN" onChange={handleFieldChange} />
+                                        </Form.Group>
+                                        <Form.Group as={Col} className='addFormGroups'>
+                                            <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
+                                            <Form.Control type="tel" id="phone" placeholder="Enter phone number"  onChange={handleFieldChange} required/>
+                                        </Form.Group>
+                                    </Row>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label htmlFor='address'>Address</Form.Label>
+                                        <Form.Control id="address" placeholder="Enter your address"  onChange={handleFieldChange}/>
+                                    </Form.Group>
+                                </>}
+                            </>
+                        :
+                            <>
+                                <Form.Group className="mb-3" >
+                                    <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
+                                    <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
+                                </Form.Group>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} className='addFormGroups'>
+                                        <Form.Label htmlFor='email'>Email Address</Form.Label>
+                                        <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
+                                    </Form.Group>
+                                    <Form.Group as={Col} className='addFormGroups'>
+                                        <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
+                                        <div className='gender-options'>
+                                            <div>
+                                            <input type="radio" name="gender" id="gender" value="male" className='addFormRadio' onChange={handleFieldChange}/>
+                                                <label htmlFor="male">Male</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleFieldChange}/>
+                                                <label htmlFor="female">Female</label>
+                                            </div>
+                                        </div>
+                                    </Form.Group>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} className='addFormGroups'>
+                                        <Form.Label htmlFor='tinNumber'>Tin Number</Form.Label>
+                                        <Form.Control type="number" id="tinNumber" placeholder="Enter TIN" onChange={handleFieldChange} />
+                                    </Form.Group>
+                                    <Form.Group as={Col} className='addFormGroups'>
+                                        <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
+                                        <Form.Control type="tel" id="phone" placeholder="Enter phone number"  onChange={handleFieldChange} required/>
+                                    </Form.Group>
+                                </Row>
+                                <Form.Group className="mb-3" >
+                                    <Form.Label htmlFor='address'>Address</Form.Label>
+                                    <Form.Control id="address" placeholder="Enter your address"  onChange={handleFieldChange}/>
+                                </Form.Group>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} className="addFormGroups" >
+                                        <Form.Label htmlFor='license'>License No.</Form.Label>
+                                        <Form.Control id="licenseNo" placeholder="license No." onChange={handleFieldChange} />
+                                    </Form.Group>
+                                        <Form.Group as={Col} className="addFormGroups" >
+                                            <Form.Label htmlFor='driverLicense'>Driver's License</Form.Label>
+                                            <Form.Control id="driverLicense" placeholder="Driver's License" onChange={handleFieldChange} />
+                                        </Form.Group>
+                                </Row>
+                                <Row>
+                                    <Form.Group as={Col} className="addFormGroups" >
+                                        <Form.Label htmlFor='nin'>NIN</Form.Label>
+                                        <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
+                                    </Form.Group>
+                                </Row>
+                                    
+                                
+                                { (role === "agent") &&
+                                    <>
+                                        <Form.Group className="mb-3" >
+                                            <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="comprehensive">
+                                            <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="mtp">
+                                            <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="windscreen">
+                                            <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="windscreen">
+                                            <Form.Check type="checkbox" label="Handle New Imports" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="windscreen">
+                                            <Form.Check type="checkbox" label="Handle Transit" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                                        </Form.Group>
+                                    </>
+                                }
+                                <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
+                                <Upload uploadLogo={uploadLogo}/>
+
+                                <PasswordGenerator password={password} setPassword={setPassword} />
+
+                            </>
+                        }
+                        {fields.name !== "" & fields.email !== ""
+                        ?
+                            <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' /></div>
+                        :
+                            <div id='submit' ><input type="button" value="Submit" className='btn btn-primary cta submitcta' style={{background: "rgba(20, 117, 207, 0.4)", border: "1px solid #a1c8ec"}}/></div>
+                        }
+
+
+                        
                     </Form>
             </div>
         </div>

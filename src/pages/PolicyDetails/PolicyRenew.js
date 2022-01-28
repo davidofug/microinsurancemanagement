@@ -3,17 +3,16 @@ import { Form } from 'react-bootstrap'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { getDoc, collection, doc} from 'firebase/firestore'
+import { getDoc, collection, doc, updateDoc} from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import './PolicyDetails.css'
 import Header from "../../components/header/Header";
+import { currencyFormatter } from '../../helpers/currency.format'
 
 function PolicyRenew() {
     useEffect(() => {
         document.title = "Britam - Sticker Details";
-
-        console.log(id)
-        getMTP(id)
+        getMTP()
       }, []);
 
     const { id } = useParams()  
@@ -21,23 +20,62 @@ function PolicyRenew() {
     const [ policy, setPolicy ] = useState({})
     const policyCollectionRef = collection(db, "policies");
 
-    const getMTP = async (id) => {
+    const getMTP = async () => {
         const policyRef = doc(db, "policies", id)
         const data = await getDoc(policyRef);
-        console.log(data.data())
         setPolicy(data.data())
-      }
+    }
+
+      
+
+      const modalSubmit = async (event) => {
+        event.preventDefault();
+        const policyRef = doc(db, "policies", id);
+
+        
+        await updateDoc(policyRef, {
+            policyStartDate: event.target.policyStartDate.value,
+            stickersDetails: [{
+                basicPremium: "",
+                category: policy.stickersDetails[0].category,
+                ccPower: policy.stickersDetails[0].ccPower,
+                chasisNo: policy.stickersDetails[0].chasisNo,
+                grossWeight: policy.stickersDetails[0].grossWeight,
+                motorClass: policy.stickersDetails[0].motorClass,
+                motorMake: policy.stickersDetails[0].motorMake,
+                plateNo: policy.stickersDetails[0].plateNo,
+                referenceNo: policy.stickersDetails[0].referenceNo,
+                seatingCapacity: policy.stickersDetails[0].seatingCapacity,
+                stampDuty: policy.stickersDetails[0].stampDuty,
+                status: "renewed",
+                stickerFee: policy.stickersDetails[0].stickerFee,
+                totalPremium: policy.stickersDetails[0].totalPremium,
+                trainingLevy: policy.stickersDetails[0].trainingLevy,
+                vat: policy.stickersDetails[0].vat,
+                vehicleUse: policy.stickersDetails[0].vehicleUse
+
+            }]
+        });
+        getMTP();
+        
+    };
+
+
+
     
     return (
         <div className="components">
             <Header title="Renew Policy" subtitle="STICKER RENEW" />
 
-            <div style={{width: "100%", padding: "20px", margin: "10px 50px"}} >
+            <form className="table-card componentsData shadow-sm" onSubmit={modalSubmit}>
+            <div style={{width: "100%", padding: "20px"}} >
                 <Form.Group controlId="formGridAddress1">
-                    <Form.Label>Select the New Start Date</Form.Label>
-                    <Form.Control type='date' />
+                    <Form.Label>Select the renewal Start Date and submit policy</Form.Label>
+                    <Form.Control type='date' id='policyStartDate' />
                 </Form.Group>
             </div>
+
+            
 
             <div style={{margin: "30px"}}>
                 <div className='fromTo'>
@@ -51,7 +89,7 @@ function PolicyRenew() {
                     {policy.clientDetails != undefined &&
                         <div id="to">
                             <p>To: <b>{policy.clientDetails.name}</b></p>
-                            <p>{policy.clientDetails.address}</p>
+                            <p>Address: {policy.clientDetails.meta.address}</p>
                         </div>
                     }
                     {policy.policyStartDate != undefined &&
@@ -86,12 +124,15 @@ function PolicyRenew() {
                         </tbody>
                     </table>
                     <b>Cost of Insurance</b>
-                    <p>Total Premium: <b>{policy.currency} </b><span>{policy.stickersDetails[0].totalPremium}</span></p>
+                    <hr></hr>
+                    <div style={{display: "flex", justifyContent: "space-between"}}><p>Total Premium:</p> <span style={{marginRight: "12rem"}}><b>{policy.currency} </b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</span></div>
+                    <hr></hr>
                 </>
                 }
-                <p className='prepared'>Prepared by {policy.agentName}</p>
-                <button className='btn btn-success'>Renew Policy</button>
+                <p><span className='prepared'>Prepared by </span><b>{policy.added_by_name}</b></p>
+                <input type="submit" className='btn btn-success' value="Renew Policy" />
             </div>
+            </form>
         </div>
     )
 }

@@ -7,6 +7,7 @@ import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../../hooks/useForm'
 import Loader from '../../components/Loader'
 import { AiOutlineCopy } from 'react-icons/ai'
+import PasswordGenerator from '../../components/PasswordGenerator'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -20,6 +21,7 @@ export default function AddOrganisation() {
     useEffect(() => { document.title = 'Britam - Add Organisations'}, [])
 
     const [ isLoading, setIsLoading ] = useState(false)
+    const [ password, setPassword ] = useState('')
 
     const organisationsCollectionRef = collection(db, 'organisations')
     const [fields, handleFieldChange] = useForm({
@@ -38,27 +40,6 @@ export default function AddOrganisation() {
         password: ''
 
     })
-
-    // generating passwords
-    const [ password, setPassword ] = useState('')
-    const handleGeneratePassword = () => {
-      
-      setPassword(createPassword())
-
-      // console.log(fields)
-    }
-
-    const createPassword = () => {
-      const characterList = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!^+%&/()=?#${[]}|;:><*-@"
-
-      let password = '';
-      const characterListLength = characterList.length;
-      for (let i = 0; i < 12; i++) {
-        const characterIndex = Math.round(Math.random() * characterListLength);
-        password = password + characterList.charAt(characterIndex);
-      }
-      return password;
-    }
 
     const [ url, setUrl ] = useState('')
 //       const [ logo, setLogo ] = useState(null)
@@ -102,24 +83,8 @@ export default function AddOrganisation() {
       }
 
 
-      // copy password to click board
-      const copyToClipboard = () => {
-        const newTextArea = document.createElement('textarea');
-        newTextArea.innerText = password;
-        document.body.appendChild(newTextArea);
-        newTextArea.select();
-        document.execCommand('copy');
-        newTextArea.remove();
-      }
+      
 
-      const handleCopyPassword = (e) => {
-        if (password === '') {
-          toast.error('Nothing To Copy', {position: "top-center"});
-        } else {
-          copyToClipboard();
-          toast.success('Password successfully copied to clipboard', {position: "top-center"});
-        }
-      }
 
     return (
         <div className='components'>
@@ -195,17 +160,8 @@ export default function AddOrganisation() {
                                             <Form.Label htmlFor='contact_email'>Contact Email</Form.Label>
                                             <Form.Control id="contact_email" type="email" placeholder="Enter email" onChange={handleFieldChange} />
                                     </Form.Group>
-                                    <Form.Group className="mb-3" style={{display: "flex", flexDirection: "column"}}>
-                                            {/* <Form.Control id="password" type="text" placeholder="Create password" onChange={handleFieldChange} /> */}
-                                            {/* <Form.Label htmlFor='password'>Contact Password</Form.Label> */}
-                                            <button type='button' className='btn btn-primary cta mb-3' onClick={handleGeneratePassword}>Generate Password</button>
-                                            <div className='generator__password'>
-                                                <h3>{password}</h3>
-                                                <button type='button' className='copy__btn' onClick={handleCopyPassword}>
-                                                <AiOutlineCopy />
-                                                </button>
-                                        </div>
-                                    </Form.Group>
+
+                                    <PasswordGenerator password={password} setPassword={setPassword} />
                                 </div>
                             </div>
                             <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>

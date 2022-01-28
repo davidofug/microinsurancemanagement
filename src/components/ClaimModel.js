@@ -1,4 +1,4 @@
-import { Table, Modal, Form, Col, Row, Button } from "react-bootstrap";
+import { Modal, Form, Col, Row, Button } from "react-bootstrap";
 
 export function ClaimModelNotification({ singleDoc }) {
   return <div>
@@ -326,6 +326,27 @@ export function ClaimModel({singleDoc, handleClose, handleFieldChange, modalSubm
                   name=""
                   id="estimate"
                   defaultValue={singleDoc.estimate}
+                  placeholder="Enter Claim Estimate"
+                  onChange={handleFieldChange}
+                />
+              </Form.Group>
+            </Row>
+
+            <Row className="mb-3">
+              <Form.Group
+                as={Col}
+                style={{
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "start",
+                }}
+              >
+                <Form.Label htmlFor="estimate">Details Of incident</Form.Label>
+                <Form.Control
+                  type="text"
+                  name=""
+                  id="detailsOfIncident"
+                  defaultValue={singleDoc.detailsOfIncident}
                   placeholder="Enter Claim Estimate"
                   onChange={handleFieldChange}
                 />

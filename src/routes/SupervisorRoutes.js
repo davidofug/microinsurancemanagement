@@ -1,19 +1,15 @@
 import Mtp from '../pages/Mtp'
-import Users from '../pages/Users'
 import Claims from '../pages/Claims'
 import Reports from '../pages/supervisor/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
-import Settings from '../pages/supervisor/Settings'
+import Settings from '../pages/Settings'
 import PrivateRoute  from './PrivateRoute'
-import { Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
-import AddClients from '../pages/AddClients'
 import Windscreen from '../pages/Windscreen'
 import Comprehensive from '../pages/Comprehensive'
 import Logs from '../pages/Logs.js'
 import Agents from '../pages/Agents'
-import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddUsers from '../pages/AddUsers'
 import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
@@ -33,14 +29,11 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor/add-user" >
-                <AddUsers />
-            </PrivateRoute>
             <PrivateRoute path="/supervisor/clients" >
                 <Clients />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/user-management" >
-                <Users />
+                <Agents />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/policies" >
                 <Policies />
@@ -48,7 +41,7 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/claims" >
                 <Claims />
             </PrivateRoute>
-            <PrivateRoute path="/supervisor-add-claims" >
+            <PrivateRoute path="/supervisor/add-claim" >
                 <AddClaims />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/reports" >
@@ -60,7 +53,6 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/settings" >
                 <Settings />
             </PrivateRoute>
-
             <PrivateRoute path="/supervisor/add-comprehensive" >
                 <Policies cat="comprehensive" btn_txt="Process Comprehensive" pol="comprehensive"/>
             </PrivateRoute>
@@ -91,8 +83,11 @@ function SupervisorRoutes() {
             <PrivateRoute path="/supervisor/transit" >
                 <Transit />
             </PrivateRoute>
-            <PrivateRoute path="/add-clients" >
-                <AddClients />
+            <PrivateRoute path="/supervisor/add-clients" >
+                <AddUsers role="client" />
+            </PrivateRoute>
+            <PrivateRoute path="/supervisor/add-agents" >
+                <AddUsers role="agent" />
             </PrivateRoute>
         </>
         

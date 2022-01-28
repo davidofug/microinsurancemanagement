@@ -128,7 +128,7 @@ export default function Claims() {
 
     const claimRef = doc(db, "claims", editID);
 
-    const result = await updateDoc(claimRef, {
+    await updateDoc(claimRef, {
       dateReported: event.target.dateReported.value,
       policyType: event.target.policyType.value,
       numberPlate: event.target.numberPlate.value,
@@ -138,9 +138,9 @@ export default function Claims() {
       claimantPhoneNumber: event.target.claimantPhoneNumber.value,
       dateOfIncident: event.target.dateOfIncident.value,
       estimate: event.target.estimate.value,
-      detailsOfIncident: "",
-      attachedDocuments: "",
-      status: "",
+      detailsOfIncident: event.target.detailsOfIncident,
+      attachedDocuments: event.target.attachedDocuments,
+      status: "pending",
     });
     getClaims();
   };
@@ -176,6 +176,11 @@ export default function Claims() {
   const shownClaims = !claims || currentClaims.filter(claim => !switchCategory || claim.status === switchCategory)
 
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
+
+
+  
+
+  console.log(claims)
 
   return (
     <div className="components">
@@ -224,15 +229,14 @@ export default function Claims() {
 
       {claims !== null && claims.length > 0 ?
       <>
-      <div className="table-card componentsData">
+      <div className="table-card componentsData shadow-sm">
         <div id="search">
-          <SearchBar placeholder={"Search for claim"} value={searchText} handleSearch={handleSearch} />
+          <SearchBar placeholder={"Search for claimant's name"} value={searchText} handleSearch={handleSearch} />
           <div></div>
           <Form.Group className="m-3 categories" width="200px">
-            <Form.Label htmlFor='category'>Status</Form.Label>
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
-                <option value="new">Pending</option>
+                <option value="pending">Pending</option>
                 <option value="settled">Settled</option>
                 <option value="closed">Closed</option>
             </Form.Select>
@@ -240,13 +244,13 @@ export default function Claims() {
         </div>
 
 
-         {currentClaims.length > 0
+         {paginatedShownClaim.length > 0
          ?
          <Table responsive>
          <thead>
            <tr>
              <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-             <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
+             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th>Action</th>
            </tr>
          </thead>
          <tbody>
@@ -262,6 +266,7 @@ export default function Claims() {
                <td>{claim.numberPlate}</td>
                <td>{claim.stickerNumber}</td>
                <td>{claim.estimate}</td>
+               <td>{claim.added_by_name}</td>
                <td>
                  <span
                    style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
@@ -336,7 +341,7 @@ export default function Claims() {
          <tfoot>
            <tr>
              <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-             <th>Sticker Number</th><th>Claim Estimate</th><th>Status</th><th>Action</th>
+             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th>Action</th>
            </tr>
          </tfoot>
        </Table>

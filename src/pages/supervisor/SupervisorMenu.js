@@ -12,6 +12,7 @@ import { Badge } from 'react-bootstrap'
 import { MdLogout } from 'react-icons/md'
 import DefaultAvatar from '../../components/DefaultAvatar'
 import { ImProfile } from 'react-icons/im'
+import useDialog from '../../hooks/useDialog'
 
 function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
 
@@ -19,6 +20,12 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
 
     const [ selected, setSelected ] = useState({ activeObject: null, SuperVisor })
     const [ toggleMenu, setToggeMenu ] = useState(true)
+
+     // actions context
+  const [show, handleShow, handleClose] = useDialog()
+  if(show){
+    window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
+  }
 
     useEffect(() => {
         if(sessionStorage.getItem('session1')){
@@ -59,7 +66,9 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                     <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
 
                     <footer>
-                        <div className="footerContext" onClick={() => setOpenFooterContext(!openFooterContext)}>
+                        <div className="footerContext" onClick={(event) => { 
+                            show ? handleClose() : handleShow(); 
+                            event.stopPropagation()}}>
                             <DefaultAvatar />
                             <div>
                                 <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
@@ -69,7 +78,7 @@ function SupervisorMenu({ setLargeContentClass, largeContentClass }) {
                             </div>
                             <h3 style={{color: "#000"}}>&hellip;</h3>
                         </div>
-                        <ul className={openFooterContext ? "footerContextShow" : ""} id="contextUl">
+                        <ul className={show ? "footerContextShow" : ""} id="contextUl">
                             <li><Link to="/supervisor/settings"><ImProfile /> My Profile</Link></li>
                             <li><Link to="/logout"><MdLogout /> Logout</Link></li>
                         </ul>
