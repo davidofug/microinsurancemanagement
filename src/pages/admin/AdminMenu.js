@@ -86,14 +86,18 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                 </section>
                 <MinimisedSideBar role={Admin}/>
                 <footer>
-                        <ul>
-                            <li><Link to="/admin/settings">Settings</Link></li>
-                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                        </ul>
-                    <Link to={'/admin-settings'} id="account">
-                        <DefaultAvatar />
-                    </Link>
-                </footer>
+                <div className="footerContext" onClick={(event) => {
+                  show ? handleClose() : handleShow();
+                  event.stopPropagation();
+                }}>
+                    <DefaultAvatar />
+                </div>
+                {/* </Link> */}
+                <ul className={show ? "footerContextShow" : ""} id="contextUl">
+                    <li><Link to="/admin/settings"><ImProfile /></Link></li>
+                    <li><Link to="/logout"><MdLogout /></Link></li>
+                </ul>
+            </footer>
             </nav>
       )}
     </div>
