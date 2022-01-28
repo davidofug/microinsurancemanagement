@@ -70,7 +70,7 @@ function Settings() {
    const handlePasswordChange = async (event) => {
     event.preventDefault()
 
-    const credential = authentication.EmailAuthProvider.credential(
+    /* const credential = authentication.EmailAuthProvider.credential(
         auth.currentUser.email,
         event.target.oldPassword.value
       );
@@ -79,18 +79,22 @@ function Settings() {
         console.log("successfully got the password")
       }).catch(function(error) {
         console.log("password failed", error)
-      });
+      }); */
 
-    /* if(event.target.password.value === event.target.newPassword.value){
+    if(event.target.password.value === event.target.newPassword.value){
         updatePassword(auth.currentUser, event.target.password.value).then(() => {
             toast.success('Successfully updated password', {position: "top-center"});
           }).catch((error) => {
-            error.code === "auth/weak-password" ? toast.error('Weak password', {position: "top-center"}): toast.error('Failed', {position: "top-center"});
+            error.code === "auth/weak-password" 
+                ? toast.error('Weak password', {position: "top-center"})
+                : error.code === 'auth/requires-recent-login' 
+                    ? toast.error('This action requires you to re-login in first', {position: "top-center"})
+                    : toast.error('Failed, Try again', {position: "top-center"}); 
             
           });
     } else{
         toast.error("Password doesn't match", {position: "top-center"});
-    } */
+    }
    }
 
 //    console.log(currentUser.reloadUserInfo.passwordHash)

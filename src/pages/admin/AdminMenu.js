@@ -15,7 +15,7 @@ import { ImProfile } from 'react-icons/im'
 import useDialog from "../../hooks/useDialog";
 
 
-export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
+export default function AdminMenu({ setLargeContentClass }) {
 
   useEffect(() => {
     
@@ -86,18 +86,18 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                 </section>
                 <MinimisedSideBar role={Admin}/>
                 <footer>
-                <div className="footerContext" onClick={(event) => {
-                  show ? handleClose() : handleShow();
-                  event.stopPropagation();
-                }}>
-                    <DefaultAvatar />
-                </div>
-                {/* </Link> */}
-                <ul className={show ? "footerContextShow" : ""} id="contextUl">
-                    <li><Link to="/admin/settings"><ImProfile /></Link></li>
-                    <li><Link to="/logout"><MdLogout /></Link></li>
-                </ul>
-            </footer>
+                    <div className="footerContext" onClick={(event) => {
+                      show ? handleClose() : handleShow();
+                      event.stopPropagation();
+                    }}>
+                        <DefaultAvatar />
+                    </div>
+                    {/* </Link> */}
+                    <ul className={show ? "footerContextShow" : ""} id="contextUl">
+                        <li><Link to="/admin/settings"><ImProfile /></Link></li>
+                        <li><Link to="/logout"><MdLogout /></Link></li>
+                    </ul>
+                </footer>
             </nav>
       )}
     </div>

@@ -7,7 +7,7 @@ import Pagination from "../../helpers/Pagination";
 import SearchBar from "../../components/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
-import { collection, getDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import { collection, getDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import OrganisationModal from "../../components/OrganisationModel";
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
@@ -30,6 +30,7 @@ export default function Organisations() {
     document.title = "Britam - Organisations";
       getOrganisations()
   }, []);
+
 
 
   // TODO: working on the Organisation on delete Confirm box
@@ -56,13 +57,10 @@ export default function Organisations() {
     
   }
 
-  const [editID, setEditID] = useState(null);
   const [ show, handleShow, handleClose ] = useDialog();
-
-
   const [ searchText, setSearchText ] = useState('')
 
-  const [fields, handleFieldChange] = useForm({
+  /* const [fields, handleFieldChange] = useForm({
     uid: authentication.currentUser.uid,
     category: '',
     name: '',
@@ -77,7 +75,7 @@ export default function Organisations() {
     contact_email: '',
     password: ''
 
-})
+}) */
 
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
@@ -88,13 +86,17 @@ export default function Organisations() {
       toast.success('Successfully deleted', {position: "top-center"});
     };
 
-    const [singleDoc, setSingleDoc] = useState(fields);
+    const [singleDoc, setSingleDoc] = useState({});
 
-    const getSingleDoc = async (id) => {
-      const docRef = doc(db, "organisations", id);
-      const docSnap = await getDoc(docRef);
-      setSingleDoc(docSnap.data());
+    const getSingleDoc = async (organisation) => {
+      // const docRef = doc(db, "organisations", id);
+      // const docSnap = await getDoc(docRef);
+      // setSingleDoc(docSnap.data());
+      setSingleDoc(organisation);
+      console.log(organisation)
     };
+
+    console.log(singleDoc)
 
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => !data || data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
@@ -133,11 +135,11 @@ export default function Organisations() {
       <div className={openToggle ? 'myModal is-active': 'myModal'}>
         <div className="modal__content wack">
           <h1 className='wack'>Confirm</h1>
-          <p className='wack'>Are you sure you want to delete this user</p>
+          <p className='wack'>Are you sure you want to delete this <b>{singleDoc.name}</b></p>
           <div className="buttonContainer wack" >
             <button id="yesButton" onClick={() => {
               setOpenToggle(false)
-              handleDelete(editID)
+              handleDelete(singleDoc.id)
               getOrganisations()
               }} className='wack'>Yes</button>
             <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
@@ -148,7 +150,7 @@ export default function Organisations() {
 
 
       <Modal show={show} onHide={handleClose}>
-        <OrganisationModal fields={fields} singleDoc={singleDoc} handleClose={handleClose} handleFieldChange={handleFieldChange} editID={editID} />
+            <OrganisationModal singleDoc={singleDoc} />
       </Modal>
 
       {organisations === null  || organisations.length <= 0
@@ -224,13 +226,12 @@ export default function Organisations() {
                 <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
                 
                 <td className="started">
-                    <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+                    <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); getSingleDoc(organisation)}}>&#8942;</button>
 
                     <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                       
                                   <li onClick={() => {
                                             setOpenToggle(true)
-                                            setEditID(organisation.id);
                                             setShowContext(false)
                                           }}
                                     >
@@ -240,8 +241,6 @@ export default function Organisations() {
                                 </li>
                                 <li onClick={() => {
                                         setShowContext(false)
-                                        setEditID(organisation.id);
-                                        getSingleDoc(organisation.id)
                                         handleShow();
                                       }}
                                     >

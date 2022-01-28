@@ -69,6 +69,7 @@ function AddUsers({role}) {
 
         fields['added_by_uid'] = authentication.currentUser.uid
         fields['added_by_name'] = authentication.currentUser.displayName
+        fields['password'] = password
 
 
         addUser(fields).then((results) => {
