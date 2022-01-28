@@ -260,6 +260,7 @@ export default function Mtp() {
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
                 <option value="active">Active</option>
+                <option value="paid">Paid</option>
                 <option value="renewed">Renewed</option>
                 <option value="expired">Expired</option>
                 <option value="deleted">Deleted</option>
@@ -290,7 +291,7 @@ export default function Mtp() {
                  <td>
                    {policy.stickersDetails[0].status === 'active'  && 
                       <span
-                        style={{backgroundColor: "#3EC089", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                        style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
                       >{policy.stickersDetails[0].status}</span>
                    }
                    {policy.stickersDetails[0].status === 'paid'  && 
