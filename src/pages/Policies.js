@@ -8,6 +8,12 @@ import dynamicFields from '../helpers/multipleChoice'
 import '../styles/Policies.css'
 import moment from 'moment'
 import Upload from '../components/uploader/Upload';
+import Loader from '../components/Loader'
+
+import Header from '../components/header/Header'
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 // import AddClient from '../components/AddClient'
@@ -28,6 +34,8 @@ function Policies({cat, btn_txt, pol}) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [ isLoading, setIsLoading ] = useState(false)
+
     const [ existingClients, setExistingClients ] = useState([])
     const [ classes, setClasses ] = useState([])
     const [ vehicleUses, setVehicleUses ] = useState([])
@@ -43,6 +51,10 @@ function Policies({cat, btn_txt, pol}) {
         NIN:'',
         clientType: cat,
     })
+
+    // working on policy status
+    const today = `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
+    console.log(today)
 
     
     const [ comprehensiveClient, setComprehensiveClient ] = useState('') 
@@ -102,7 +114,7 @@ function Policies({cat, btn_txt, pol}) {
             basicPremium:'',
             stickerFee:6000,
             stampDuty:35000, 
-            status: 'new'
+            status: "active",
         }
     ])
     
@@ -113,8 +125,8 @@ function Policies({cat, btn_txt, pol}) {
 
         listUsers().then(({data}) => {
             setExistingClients(data.filter(user => user?.role?.Customer))
-            console.log(data.filter(user => user?.role?.Customer))
-            console.log(data)
+            // console.log(data.filter(user => user?.role?.Customer))
+            // console.log(data)
         }).catch((err) => {
             console.log(err)
         })
@@ -168,7 +180,7 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
-                status: 'new',
+                status: "active",
             }
         ])
     }
@@ -189,17 +201,18 @@ function Policies({cat, btn_txt, pol}) {
     //createPolicies
     const handleSubmit = async(event) => {
         const created_at = moment().toString()
+        setIsLoading(true)
         event.preventDefault()
         const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client
     
         await addDoc(policiesRef, {
             currency,
+            policyStartDate: policyStartDate, 
+            policyEndDate: policyEndDate,
             stickersDetails: stickers,
             clientDetails: clientInfo,
             added_by_uid: authentication.currentUser.uid,
             added_by_name: authentication.currentUser.displayName,  
-            policyStartDate: policyStartDate, 
-            policyEndDate: policyEndDate,
             category: cat,
             totalValuation: await generateTotalValuation(stickers),
             createdAt: created_at
@@ -210,11 +223,12 @@ function Policies({cat, btn_txt, pol}) {
         
         
         addUser(clientInfo).then((results) => {
-            alert(`Successfully created stickers and added ${clientInfo.name}`)
             document.policy.reset()
             setPolicyEndDate('')
             setPolicyStartDate('')
         }).catch( error => console.log( error ))
+
+        toast.success("succesfully created sticker", {position: "top-center"})
  
 
         setStickers([
@@ -233,11 +247,13 @@ function Policies({cat, btn_txt, pol}) {
                 basicPremium:'',
                 stickerFee: 6000,
                 stampDuty: 35000,
-                status: 'new',
+                status: "active",
             }
         ])
 
-        console.log(
+        setIsLoading(false)
+
+        /* console.log(
             {
                 currency,
                 stickersDetails: stickers,
@@ -249,7 +265,7 @@ function Policies({cat, btn_txt, pol}) {
                 category: cat,
                 totalValuation: await generateTotalValuation(stickers),
             }
-        )
+        ) */
     }    
 
     const handleComprehesiveClientInfo = async (type, individualClient, organisationInfo, contactInfo) => {
@@ -437,11 +453,18 @@ function Policies({cat, btn_txt, pol}) {
 
     return (
         <div className='components'>
-            <div className='heading'>
-                <h1 className='title'>Policies</h1>
-                <p>MANAGING {pol.toUpperCase()} POLICIES</p>
-            </div>
-            <div className="table-card componentsData" style={{paddingBottom:"10vh"}}>
+            <Header title="Policies" subtitle={`MANAGING ${pol} POLICIES`.toUpperCase()}/>
+
+            <ToastContainer />
+
+            <div className="componentsData addComponentsData shadow-sm" style={{paddingBottom:"10vh"}}>
+
+            {isLoading && 
+                <div className='loader-wrapper'>
+                        <Loader />
+                </div>
+            }
+
                 <Form name="policy" onSubmit={handleSubmit}>
                     <div style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                         <Row style={{paddingTop:"2vh"}}>

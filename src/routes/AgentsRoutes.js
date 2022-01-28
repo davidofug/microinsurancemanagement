@@ -2,17 +2,14 @@ import MTP from '../pages/Mtp'
 import Users from '../pages/Users'
 import Logs from '../pages/Logs.js'
 import Claims from '../pages/Claims'
-import Logout from '../pages/Logout'
 import Reports from '../pages/agent/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
 import PrivateRoute  from './PrivateRoute'
 import Dashboard from '../pages/Dashboard'
 import Windscreen from '../pages/Windscreen'
-import AddClients from '../pages/AddClients'
 import Settings from '../pages/agent/Settings'
 import Comprehensive from '../pages/Comprehensive'
-import { Route } from 'react-router-dom'
 import AddUsers from '../pages/agent/AddUsers'
 import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
@@ -80,9 +77,6 @@ function AgentsRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/agent/add-transit" >
                 <Policies cat="mtp" btn_txt="Process 3rd Party" pol="transit"/>
-            </PrivateRoute>
-            <PrivateRoute path="/agent/add-clients" >
-                <AddClients />
             </PrivateRoute>
         </>
 

@@ -110,14 +110,14 @@ function Admins() {
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/superadmin/add-user">
+                <Link to="/superadmin/add-admin">
                     <button className="btn btn-primary cta">Add admin</button>
                 </Link>
                 
             </div>
 
             <Modal show={showModal} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} />
+              <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
             </Modal>
 
 

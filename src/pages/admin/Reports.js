@@ -147,14 +147,14 @@ function Reports() {
                 placeholder={"Search for Report"} value={searchText} handleSearch={handleSearch}
               />
               <div></div>
-              <CSVLink
-                data={policies}
-                filename={"Britam-Reports.csv"}
-                className="btn btn-primary cta"
-                target="_blank"
-              >
-                Export <MdDownload />
-              </CSVLink>
+                <CSVLink
+                  data={policies}
+                  filename={"Britam-Reports.csv"}
+                  className="btn btn-primary cta"
+                  target="_blank"
+                >
+                  Export <MdDownload />
+                </CSVLink>
             </div>
 
             <div style={{display: "flex", alignItems: "center"}}>  
@@ -175,10 +175,11 @@ function Reports() {
                       <Form.Select aria-label="User role" id='category'>
                           <option value={null}>Select a status</option>
                           <option value="new">New</option>
+                          <option value="paid">Renewed</option>
                           <option value="paid">Paid</option>
+                          <option value="expired">Expired</option>
                           <option value="cancelled">Cancelled</option>
                           <option value="deleted">Deleted</option>
-                          <option value="expired">Expired</option>
                       </Form.Select>
                   </Form.Group>
             </div>
@@ -284,7 +285,7 @@ function Reports() {
                                   <td>35,000</td>
                                   <td>2,191</td>
                                   <td>branch location</td>
-                                  <td>{policy.agentName}</td>
+                                  <td>{policy.added_by_name}</td>
                                   <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                                 </tr>
                               </>

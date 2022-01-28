@@ -1,14 +1,11 @@
 import Mtp from '../pages/Mtp'
-import Users from '../pages/Users'
 import Claims from '../pages/Claims'
 import Reports from '../pages/admin/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
-import Settings from '../pages/admin/Settings'
+import Settings from '../pages/Settings'
 import PrivateRoute  from './PrivateRoute'
-import { Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
-import AddClients from '../pages/AddClients'
 import Windscreen from '../pages/Windscreen'
 import Comprehensive from '../pages/Comprehensive'
 import Organisations from '../pages/admin/Organisations'
@@ -46,9 +43,6 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/supervisor" >
                 <Supervisors />
             </PrivateRoute>
-            <PrivateRoute path="/admin/add-user" >
-                <AddUsers />
-            </PrivateRoute>
             <PrivateRoute path="/admin/agents" >
                 <Agents />
             </PrivateRoute>
@@ -65,7 +59,7 @@ function AdminRoutes() {
                 <AddStickerRange />
             </PrivateRoute>
             <PrivateRoute path="/admin/user-management" >
-                <Users />
+                <Supervisors />
             </PrivateRoute>
             <PrivateRoute path="/admin/policies" >
                 <Policies />
@@ -109,14 +103,17 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/transit" >
                 <Transit />
             </PrivateRoute>
-            <PrivateRoute path="/add-clients" >
-                <AddClients />
-            </PrivateRoute>
             <PrivateRoute path="/add-claim" >
                 <AddClaims />
             </PrivateRoute>
             <PrivateRoute path="/logout" >
                 <Logout />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-agent" >
+                <AddUsers role="agent" />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-supervisor" >
+                <AddUsers role="supervisor" />
             </PrivateRoute>
         </>
         

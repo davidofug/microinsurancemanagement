@@ -18,7 +18,8 @@ function AddUsers() {
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
     const [mtp, setMTP] = useState(false)
-
+    
+    const [policyType, setPolicyType] = useState('')
     const [ isLoading, setIsLoading ] = useState(false)
 
     const [fields, handleFieldChange] = useForm({
@@ -33,6 +34,7 @@ function AddUsers() {
         licenseNo: '',
         NIN: '',
         photo: '',
+        policyType: policyType,
     })
 
     const handleSubmit = async (event) => {
@@ -55,18 +57,39 @@ function AddUsers() {
 
     const { user_role } = fields
 
-    console.log(isLoading)
-
     return (
         <div className='components'>
             <Header title="Add Clients" subtitle="ADD A NEW CLIENT" />
-            <div class="addComponentsData">
+            <div class="addComponentsData mb-3">
                     {isLoading && 
                         <div className='loader-wrapper'>
                             <Loader />
                         </div>
                     }
                     <Form name='form4' onSubmit={handleSubmit}>
+                    <Row>
+                        <Form.Group className="m-3 categories" width="200px">
+                            <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)}>
+                                <option value={""}>Policy Type</option>
+                                {authClaims.mtp && <option value="mtp">MTP</option>}
+                                {authClaims.comprehensive && <option value="comprehensive">Comprehensive</option>}
+                                {authClaims.windscreen && <option value="windscreen">Windscreen</option>}
+                                {authClaims.newImports && <option value="newImport">New Imports</option>}
+                                {authClaims.transit && <option value="transit">Transit</option>}
+                            </Form.Select>
+                        </Form.Group>
+
+                        {authClaims.comprehensive &&
+                            <Form.Group className="m-3 categories" width="200px">
+                                <Form.Select aria-label="User role" id='category'>
+                                    <option value={""}>Type of Client</option>
+                                    <option value="individual">Individual</option>
+                                    <option value="corporateEntity">Corporate Entity</option>
+                                </Form.Select>
+                            </Form.Group>
+                        }
+                    </Row>
+
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                             <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required />
@@ -87,6 +110,12 @@ function AddUsers() {
                                         <input type="radio" name="gender" id="gender" value="female" className='addFormRadio' onChange={handleFieldChange}/>
                                         <label htmlFor="female">Female</label>
                                     </div>
+                                    {authClaims.comprehensive &&
+                                        <div>
+                                            <input type="radio" name="gender" id="gender" value="corporate" className='addFormRadio' onChange={handleFieldChange}/>
+                                            <label htmlFor="female">Corporate Entity</label>
+                                        </div>
+                                    }
                                 </div>
                             </Form.Group>
                         </Row>

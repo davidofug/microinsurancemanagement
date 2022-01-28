@@ -6,6 +6,7 @@ import { authentication, db } from '../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../hooks/useForm'
 import Loader from '../components/Loader'
+import useAuth from '../contexts/Auth';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -15,6 +16,8 @@ function AddClaims() {
     useEffect(() => document.title = 'Britam - Add Claims', [])
 
     const [ isLoading, setIsLoading ] = useState(false)
+
+    const { authClaims } = useAuth()
 
     const claimsCollectionRef = collection(db, 'claims')
     const [fields, handleFieldChange] = useForm({
@@ -31,7 +34,7 @@ function AddClaims() {
         claimEstimate: '',
         detailsOfIncident: '',
         attachedDocuments: '',
-        status: 'new'
+        status: 'pending'
 
     })
 
@@ -39,8 +42,14 @@ function AddClaims() {
         try{
             setIsLoading(true)
             event.preventDefault()
+            fields["added_by_name"] = authentication.currentUser.displayName
             await addDoc(claimsCollectionRef, fields)
             toast.success(`successfully added ${fields.claimantName}'s claim`, {position: "top-center"});
+
+            // send claim to Britam claim team on creation showing agent who created the notification.
+            const sendToClaimTeam = () => {}
+
+
             setIsLoading(false)
             document.form1.reset();
         } catch(error){
@@ -87,6 +96,20 @@ function AddClaims() {
                                 <Form.Label htmlFor='dateReported'>Date Reported</Form.Label>
                                 <Form.Control type="date" id="dateReported" onChange={handleFieldChange} max={today} required/>
                             </Form.Group>
+                            {authClaims.agent
+                            ?
+                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                            <Form.Label htmlFor='policyType'>Policy</Form.Label>
+                            <Form.Select aria-label="User role" id="policyType" onChange={handleFieldChange} required>
+                                <option value="hide">--Select Category--</option>
+                                {authClaims.mtp && <option value="mtp">MTP</option>}
+                                {authClaims.comprehensive && <option value="comprehensive">Comprehensive</option>}
+                                {authClaims.windscreen && <option value="windscreen">Windscreen</option>}
+                                {authClaims.newImport && <option value="newImport">New Import</option>}
+                                {authClaims.transit && <option value="transit">Transit</option>}
+                            </Form.Select>
+                        </Form.Group>
+                            :
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='policyType'>Policy</Form.Label>
                                 <Form.Select aria-label="User role" id="policyType" onChange={handleFieldChange} required>
@@ -98,6 +121,9 @@ function AddClaims() {
                                     <option value="transit">Transit</option>
                                 </Form.Select>
                             </Form.Group>
+                            }
+                            
+
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='numberPlate'>Plate No.</Form.Label>
                                 <Form.Control type="text" name="" id="numberPlate" placeholder="Enter plate No." onChange={handleFieldChange}/>
