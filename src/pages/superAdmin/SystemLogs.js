@@ -41,10 +41,6 @@ function SystemLogs() {
   const paginatedShownLogs = !logs || shownLogs.slice(indexOfFirstLog, indexOfLastLog)
   const totalPagesNum = !logs || Math.ceil(shownLogs.length / logsPerPage)
 
-
-  // console.log(logs[0].timeCreated.slice(0, 10))
-  console.log(date)
-
   return (
     <div className="components">
       <Header title="System Logs" subtitle="MANAGING LOGS" />

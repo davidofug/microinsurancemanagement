@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { httpsCallable } from 'firebase/functions'
+import { connectFunctionsEmulator, httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
 
 import { Form,Row, Col, Table, Button, Modal, Alert } from 'react-bootstrap'
@@ -204,19 +204,19 @@ function Policies({cat, btn_txt, pol}) {
         setIsLoading(true)
         event.preventDefault()
         const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client
-    
-        await addDoc(policiesRef, {
-            currency,
-            policyStartDate: policyStartDate, 
-            policyEndDate: policyEndDate,
-            stickersDetails: stickers,
-            clientDetails: clientInfo,
-            added_by_uid: authentication.currentUser.uid,
-            added_by_name: authentication.currentUser.displayName,  
-            category: cat,
-            totalValuation: await generateTotalValuation(stickers),
-            createdAt: created_at
-        })        
+
+            await addDoc(policiesRef, {
+                currency,
+                policyStartDate: policyStartDate, 
+                policyEndDate: policyEndDate,
+                stickersDetails: stickers,
+                clientDetails: clientInfo,
+                added_by_uid: authentication.currentUser.uid,
+                added_by_name: authentication.currentUser.displayName,  
+                category: cat,
+                totalValuation: await generateTotalValuation(stickers),
+                createdAt: created_at
+            })
 
         client['added_by_uid'] = authentication.currentUser.uid
         client['added_by_name'] = authentication.currentUser.displayName
@@ -229,6 +229,13 @@ function Policies({cat, btn_txt, pol}) {
         }).catch( error => console.log( error ))
 
         toast.success("succesfully created sticker", {position: "top-center"})
+
+        /* await addDoc(logCollectionRef, {
+            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+            type: 'user creation',
+            status: 'successful',
+            message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+        }) */
  
 
         setStickers([

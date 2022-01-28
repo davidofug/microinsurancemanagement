@@ -80,7 +80,6 @@ function AddUsers({role}) {
             setIsLoading(false)
             document.form3.reset()            
         }).then( async () => {
-            const timeCreated = 
             await addDoc(logCollectionRef, {
                 timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
                 type: 'user creation',
