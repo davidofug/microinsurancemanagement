@@ -61,7 +61,7 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
                         <SideBar role={Agent_mtp} user="agent" displayName={authentication?.currentUser?.displayName} />
 
                         <footer>
-                            <div className="footerContext" onClick={(event) => { handleShow(); event.stopPropagation()}}>
+                            <div className="footerContext" onClick={(event) => { show ? handleClose() : handleShow(); event.stopPropagation()}}>
                                 {authentication?.currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8"
                                 ?
                                     <img src={authentication?.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>

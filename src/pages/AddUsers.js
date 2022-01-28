@@ -1,7 +1,6 @@
 import '../assets/styles/addClients.css'
-import { authentication } from '../helpers/firebase'
 import { httpsCallable } from 'firebase/functions'
-import { functions } from '../helpers/firebase'
+import { authentication, db, functions } from '../helpers/firebase'
 import { useEffect, useState } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import Upload from '../components/uploader/Upload'
@@ -10,6 +9,7 @@ import { useForm } from '../hooks/useForm'
 import useAuth from '../contexts/Auth'
 import Loader from '../components/Loader'
 import PasswordGenerator from '../components/PasswordGenerator'
+import { collection, addDoc } from 'firebase/firestore'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -30,19 +30,22 @@ function AddUsers({role}) {
     const [ isLoading, setIsLoading ] = useState(false)
     const [ password, setPassword ] = useState('')
 
-    const [showOrganisation, setShowOrganisation] = useState(false)
+    // const [showOrganisation, setShowOrganisation] = useState(false)
     const [policyType, setPolicyType] = useState('')
     const [clientType, setClientType] = useState('individual')
 
+
+    // initialising the logs doc.
+    const logCollectionRef = collection(db, "logs");
     
 
-    const checkedOrganisation = () => {
+    /* const checkedOrganisation = () => {
         if(document.getElementById('supervisorCheck').checked){
             setShowOrganisation(true)
         } else {
             setShowOrganisation(false)
         }
-    }
+    } */
     
 
     const [fields, handleFieldChange] = useForm({
@@ -69,14 +72,32 @@ function AddUsers({role}) {
 
         fields['added_by_uid'] = authentication.currentUser.uid
         fields['added_by_name'] = authentication.currentUser.displayName
+        fields['password'] = password
 
 
-        addUser(fields).then((results) => {
+        addUser(fields).then( async (results) => {
             toast.success(`Successfully added ${fields.name}`, {position: "top-center"});
             setIsLoading(false)
-            document.form3.reset()
-        }).catch(() => {
+            document.form3.reset()            
+        }).then( async () => {
+            await addDoc(logCollectionRef, {
+                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                type: 'user creation',
+                status: 'successful',
+                message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+            })
+            setPassword('')
+        }).catch(async (error) => {
+            console.log(error)
+
             toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+
+            await addDoc(logCollectionRef, {
+                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                type: 'user creation',
+                status: 'failed',
+                message: `Failed to created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+            })
         })
 
     }

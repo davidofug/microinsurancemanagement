@@ -17,7 +17,7 @@ import AddUsers from '../pages/AddUsers'
 import Admins from '../pages/superAdmin/Admins'
 import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
-import SystemLogs from '../pages/admin/SystemLogs'
+import SystemLogs from '../pages/superAdmin/SystemLogs'
 
 
 function SuperAdminRoutes() {

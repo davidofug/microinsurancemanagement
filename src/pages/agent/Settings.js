@@ -9,9 +9,10 @@ import { AiOutlineEdit } from 'react-icons/ai'
 import { httpsCallable } from 'firebase/functions';
 import useDialog from '../../hooks/useDialog'
 import useAuth from '../../contexts/Auth'
-import { getAuth, updateProfile, updateEmail, updatePassword } from "firebase/auth";
+import { getAuth, updateProfile, updateEmail, updatePassword, reauthenticateWithCredential } from "firebase/auth";
 import { getDoc, doc, updateDoc } from 'firebase/firestore'
 import { useForm } from '../../hooks/useForm'
+import firebase from 'firebase/compat/app';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -69,6 +70,13 @@ function Settings() {
    const handlePasswordChange = async (event) => {
     event.preventDefault()
 
+    // TODO(you): prompt the user to re-provide their sign-in credentials
+    /* const credential = firebase.auth.EmailAuthProvider.credential(
+        currentUser.email, 
+        event.target.oldPassword.value
+    ); */
+
+
     if(event.target.password.value === event.target.newPassword.value){
         updatePassword(auth.currentUser, event.target.password.value).then(() => {
             toast.success('Successfully updated password', {position: "top-center"});
@@ -79,7 +87,18 @@ function Settings() {
     } else{
         toast.error("Password doesn't match", {position: "top-center"});
     }
-   }
+    /* reauthenticateWithCredential(currentUser, credential).then(() => {
+        // User re-authenticated.
+    }).catch((error) => {
+        // An error ocurred
+        // ...
+        console.log(error)
+    }); */
+}
+
+
+
+    
 
    console.log(currentUser.reloadUserInfo.passwordHash)
 
