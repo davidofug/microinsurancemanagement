@@ -12,39 +12,16 @@ import { MdLogout } from "react-icons/md";
 import DefaultAvatar from "../../components/DefaultAvatar";
 import { Badge } from "react-bootstrap"; 
 import { ImProfile } from 'react-icons/im'
+import useDialog from "../../hooks/useDialog";
 
 
 export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
   const { Admin } = menuData;
-  const [selected, setSelected] = useState({ activeObject: null, Admin });
-  const [toggleMenu, setToggeMenu] = useState(true);
-
-  useEffect(() => {
-    sessionStorage.getItem("session1")
-      ? setSelected({
-          ...selected,
-          activeObject: selected.Admin[sessionStorage.getItem("session1") - 1],
-        })
-      : setSelected({ ...selected, activeObject: selected.Admin[0] });
-  }, []);
-
-  const toggleActive = (index) => {
-    setSelected({ ...selected, activeObject: selected.Admin[index] });
-    sessionStorage.setItem("session1", selected.Admin[index]["number"]);
-  };
-
-  const toggleActiveClassStyle = (index) =>
-    selected.Admin[index] === selected.activeObject
-      ? "nav-linked selected"
-      : "nav-linked";
-
-  // foot contextMenu close
-  // window.onclick = function(event) {
-  //   if (!event.target.matches('.footerContext')) {
-  //     setOpenFooterContext(false)
-  //   }
-  // }
-  const [ openFooterContext, setOpenFooterContext ] = useState(false)
+  const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(true);
+  const [ show, handleShow, handleClose ] = useDialog();
+  if(show){
+    window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
+  }
 
   return (
     <div className="menuSide">
@@ -54,7 +31,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
             <div id='brand'>
                 <img width={150} src={logo} alt="Britam" />
                 <div id="arrowCircle" onClick={() => {
-                        setToggeMenu(!toggleMenu)
+                        hideToggleMenu()
                         setLargeContentClass(!largeContentClass)
                         }}>
                         
@@ -66,7 +43,10 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
             <SideBar role={Admin} />
             <footer>
                 {/* <Link to='/admin/settings'> */}
-                <div className="footerContext" onClick={() => setOpenFooterContext(!openFooterContext)}>
+                <div className="footerContext" onClick={(event) => {
+                  show ? handleClose() : handleShow();
+                  event.stopPropagation();
+                }}>
                     <DefaultAvatar />
                     <div>
                         <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
@@ -77,7 +57,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                     <h3 style={{color: "#000"}}>&hellip;</h3>
                 </div>
                 {/* </Link> */}
-                <ul className={openFooterContext ? "footerContextShow" : ""} id="contextUl">
+                <ul className={show ? "footerContextShow" : ""} id="contextUl">
                     <li><Link to="/admin/settings"><ImProfile /> My Profile</Link></li>
                     <li><Link to="/logout"><MdLogout /> Logout</Link></li>
                 </ul>
@@ -87,7 +67,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
         <nav className='sidebar-m'>
                 <section id='brand_m'>
                     <div id="arrowOutCircle" onClick={() => {
-                        setToggeMenu(!toggleMenu)
+                        showToggleMenu()
                         setLargeContentClass(!largeContentClass)
                         }}>
                         
