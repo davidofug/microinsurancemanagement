@@ -21,6 +21,12 @@ function SystemLogs() {
   
   const [ currentPage, setCurrentPage ] = useState(1)
 
+  const [ switchStatus, setSwitchStatus ] = useState(null)
+
+  console.log(switchStatus)
+
+  const shownLogs = !logs || logs.filter(log => !switchStatus || log.status === switchStatus)
+
 
   console.log(logs)
 
@@ -28,31 +34,31 @@ function SystemLogs() {
     <div className="components">
       <Header title="System Logs" subtitle="MANAGING LOGS" />
 
-      {logs.length > 0
+      {shownLogs.length > 0
                         ?
                         <>
         <div className="componentsData  shadow-sm table-card" style={{ "maxWidth": "80vw", margin: "auto" }}>
             <div id="search">
                 <Form.Group className="m-3 categories" width="200px">
                     <Form.Label htmlFor='category'>Status</Form.Label>
-                    <Form.Select aria-label="User role" id='category'>
-                        <option value={null}>Select Log Status</option>
-                        <option value="success">Successful</option>
+                    <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchStatus(value)}>
+                        <option value="">Select Log Status</option>
+                        <option value="successful">Successful</option>
                         <option value="failed">Failed</option>
                     </Form.Select>
                 </Form.Group>
                 <Form.Group className="m-3 categories" width="200px">
-                    <Form.Label htmlFor='category'>Date</Form.Label>
+                    <Form.Label htmlFor='date'>Date</Form.Label>
                     <Form.Control type="date" />
                 </Form.Group>
                 <Form.Group className="m-3 categories" width="200px">
-                    <Form.Label htmlFor='category'>Logs</Form.Label>
+                    <Form.Label htmlFor='logType'>Logs</Form.Label>
                     <Form.Select aria-label="User role" id='category'>
                         <option value={null}>Select Log Type</option>
-                        <option value="success">User Creation</option>
-                        <option value="failed">User Deletion</option>
-                        <option value="failed">Policy Creation</option>
-                        <option value="failed">Policy Deletion</option>
+                        <option value="userCreation">User Creation</option>
+                        <option value="userDeletion">User Deletion</option>
+                        <option value="policyCreation">Policy Creation</option>
+                        <option value="policyDeletion">Policy Deletion</option>
                     </Form.Select>
                 </Form.Group>
             </div>
@@ -66,7 +72,7 @@ function SystemLogs() {
                       </thead>
                       <tbody>
                         
-                          {logs.map(log => (
+                          {shownLogs.map(log => (
                             <tr key={log.id}>
                               <td>
                                 {typeof(log.timeCreated) === 'string' && log.timeCreated}
