@@ -30,8 +30,7 @@ function MyRouter() {
     }, [])
 
     const { currentUser, authClaims, user } = useAuth()
-    // const [ largeContentClass, setLargeContentClass ] = useState(false)
-    const [ largeContentClass, setLargeContentClass ] = useState(localStorage.getItem('preferredToggleMenu'))
+    const [ largeContentClass, setLargeContentClass ] = useState(!JSON.parse(localStorage.getItem('preferredToggleMenu')))
 
 /* something */
     return (
