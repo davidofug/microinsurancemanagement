@@ -75,18 +75,22 @@ function AddUsers({role}) {
         fields['password'] = password
 
 
-        addUser(fields).then((results) => {
+        addUser(fields).then( async (results) => {
             toast.success(`Successfully added ${fields.name}`, {position: "top-center"});
             setIsLoading(false)
-            document.form3.reset()
-        }).then(async () => {
+            document.form3.reset()            
+        }).then( async () => {
+            const timeCreated = 
             await addDoc(logCollectionRef, {
-                timeCreated: new `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
                 type: 'user creation',
                 status: 'successful',
                 message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
             })
-        }).catch(async () => {
+            setPassword('')
+        }).catch(async (error) => {
+            console.log(error)
+
             toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
 
             await addDoc(logCollectionRef, {

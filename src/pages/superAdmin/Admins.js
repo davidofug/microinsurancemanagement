@@ -4,7 +4,7 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
-import { functions } from '../../helpers/firebase';
+import { functions, authentication, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table, Form, Modal } from 'react-bootstrap'
 import { MdDelete, MdEdit } from 'react-icons/md'
@@ -13,6 +13,10 @@ import { ImFilesEmpty } from 'react-icons/im'
 import useDialog from '../../hooks/useDialog'
 import ClientModal from '../../components/ClientModal';
 import { useForm } from "../../hooks/useForm";
+import { collection, addDoc } from 'firebase/firestore'
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Admins() {
 
@@ -27,6 +31,9 @@ function Admins() {
         myAdmins.length === 0 ? setAdmins(null) : setAdmins(myAdmins)
     }).catch()
   }
+
+  // initialising the logs doc.
+  const logCollectionRef = collection(db, "logs");
 
   // show model 
   const [ showModal, handleShow, handleClose ] = useDialog()
@@ -63,15 +70,29 @@ function Admins() {
     const currentAdmins = !admins || searchByName(admins).slice(indexOfFirstAdmin, indexOfLastAdmin)
     const totalPagesNum = !admins || Math.ceil(admins.length / adminsPerPage)
 
-    const handleDelete = (id) => {
+    const handleDelete = (admin) => {
       const deleteUser = httpsCallable(functions, 'deleteUser')
-      deleteUser({uid:id}).then((result) => {
-        console.log(result)
-      }
-      ).catch(err => {
-        console.log(err)
-      })
-      getAdmins()
+      deleteUser({uid: admin.uid})
+        .then( () => toast.success(`Successfully deleted ${admin.name}`, {position: "top-center"}))
+        .then( async () => {
+          await addDoc(logCollectionRef, {
+            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+            type: 'user deletion',
+            status: 'successful',
+            message: `Successfully deleted ${fields.user_role} [ ${admin.name} ] by ${authentication.currentUser.displayName}`
+        })})
+        
+        .catch( async (error) => {
+
+          toast.error(`Failed to deleted ${admin.name}`, {position: "top-center"});
+          await addDoc(logCollectionRef, {
+            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+            type: 'user deletion',
+            status: 'failed',
+            message: `Failed to delete ${fields.user_role} [ ${admin.name} ] by ${authentication.currentUser.displayName}`
+          })})
+          getAdmins()
+      
     };
 
     const handleAllCheck = () => {
@@ -107,6 +128,8 @@ function Admins() {
     return (
         <div className='components'>
           <Header title="Admins" subtitle="MANAGING ADMINS" />
+
+            <ToastContainer />
 
             <div id="add_client_group">
                 <div></div>
@@ -170,7 +193,7 @@ function Admins() {
                                         `Are you sure you want to delete ${admin.name}`
                                       );
                                       if (confirmBox === true) {
-                                        handleDelete(admin.uid);
+                                        handleDelete(admin);
                                       }
                                     }}
                                   >
