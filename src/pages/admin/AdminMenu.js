@@ -1,6 +1,6 @@
 import menuData from "../../components/menuData";
 import "../../assets/styles/menu.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import logo from "../../assets/imgs/britam-logo2.png";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import MobileNav from "../../components/menu/MobileNav";
@@ -16,8 +16,14 @@ import useDialog from "../../hooks/useDialog";
 
 
 export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
+
+  useEffect(() => {
+    
+  }, [])
+
+  const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
   const { Admin } = menuData;
-  const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(true);
+  const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(preferredToggleMenu);
   const [ show, handleShow, handleClose ] = useDialog();
   if(show){
     window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
@@ -32,7 +38,8 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                 <img width={150} src={logo} alt="Britam" />
                 <div id="arrowCircle" onClick={() => {
                         hideToggleMenu()
-                        setLargeContentClass(!largeContentClass)
+                        setLargeContentClass(true)
+                        localStorage.setItem('preferredToggleMenu', false)
                         }}>
                         
                         <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -68,7 +75,8 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                 <section id='brand_m'>
                     <div id="arrowOutCircle" onClick={() => {
                         showToggleMenu()
-                        setLargeContentClass(!largeContentClass)
+                        setLargeContentClass(false)
+                        localStorage.setItem('preferredToggleMenu', true)
                         }}>
                         
                             <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
