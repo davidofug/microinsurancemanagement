@@ -37,7 +37,6 @@ function AddUsers({role}) {
 
     // initialising the logs doc.
     const logCollectionRef = collection(db, "logs");
-
     
 
     /* const checkedOrganisation = () => {
@@ -82,19 +81,19 @@ function AddUsers({role}) {
             document.form3.reset()
         }).then(async () => {
             await addDoc(logCollectionRef, {
-                timeCreated: new Date(),
+                timeCreated: new `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
                 type: 'user creation',
                 status: 'successful',
-                message: `Successfully created ${fields.name} by ${authentication.currentUser.displayName}`
+                message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
             })
         }).catch(async () => {
             toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
 
             await addDoc(logCollectionRef, {
-                timeCreated: new Date(),
+                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
                 type: 'user creation',
                 status: 'failed',
-                message: `Failed to created ${fields.name} by ${authentication.currentUser.displayName}`
+                message: `Failed to created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
             })
         })
 

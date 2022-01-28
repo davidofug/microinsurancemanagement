@@ -21,9 +21,8 @@ function SystemLogs() {
   
   const [ currentPage, setCurrentPage ] = useState(1)
 
-  console.log(logs)
 
-  console.log((new Date()))
+  console.log(logs)
 
   return (
     <div className="components">
@@ -69,7 +68,9 @@ function SystemLogs() {
                         
                           {logs.map(log => (
                             <tr key={log.id}>
-                              <td>2022-01-28 07:32:19</td>
+                              <td>
+                                {log.timeCreated && `${new Date(log.timeCreated.seconds).toISOString().slice(0, 10)} ${ new Date(log.timeCreated.seconds).getHours()}:${ new Date(log.timeCreated.seconds).getMinutes()}:${ new Date(log.timeCreated.seconds).getSeconds()}`}
+                              </td>
                               <td>{log.type}</td>
                               <td>
                                 {log.status === 'successful'
