@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-const useDialog = () => {
-    const [ open, setOpen ] = useState(false)
+const useDialog = (initialState = false) => {
+    const [ open, setOpen ] = useState(initialState)
 
     const handleShow = () => setOpen(true)
     const handleClose = () => setOpen(false)

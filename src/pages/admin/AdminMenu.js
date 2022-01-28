@@ -1,6 +1,6 @@
 import menuData from "../../components/menuData";
 import "../../assets/styles/menu.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import logo from "../../assets/imgs/britam-logo2.png";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import MobileNav from "../../components/menu/MobileNav";
@@ -12,39 +12,20 @@ import { MdLogout } from "react-icons/md";
 import DefaultAvatar from "../../components/DefaultAvatar";
 import { Badge } from "react-bootstrap"; 
 import { ImProfile } from 'react-icons/im'
+import useDialog from "../../hooks/useDialog";
 
 
-export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
+export default function AdminMenu({ setLargeContentClass }) {
+
+  const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
   const { Admin } = menuData;
-  const [selected, setSelected] = useState({ activeObject: null, Admin });
-  const [toggleMenu, setToggeMenu] = useState(true);
+  const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
+  const [ show, handleShow, handleClose ] = useDialog();
+  if(show){
+    window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
+  }
 
-  useEffect(() => {
-    sessionStorage.getItem("session1")
-      ? setSelected({
-          ...selected,
-          activeObject: selected.Admin[sessionStorage.getItem("session1") - 1],
-        })
-      : setSelected({ ...selected, activeObject: selected.Admin[0] });
-  }, []);
-
-  const toggleActive = (index) => {
-    setSelected({ ...selected, activeObject: selected.Admin[index] });
-    sessionStorage.setItem("session1", selected.Admin[index]["number"]);
-  };
-
-  const toggleActiveClassStyle = (index) =>
-    selected.Admin[index] === selected.activeObject
-      ? "nav-linked selected"
-      : "nav-linked";
-
-  // foot contextMenu close
-  // window.onclick = function(event) {
-  //   if (!event.target.matches('.footerContext')) {
-  //     setOpenFooterContext(false)
-  //   }
-  // }
-  const [ openFooterContext, setOpenFooterContext ] = useState(false)
+  console.log(preferredToggleMenu)
 
   return (
     <div className="menuSide">
@@ -54,8 +35,9 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
             <div id='brand'>
                 <img width={150} src={logo} alt="Britam" />
                 <div id="arrowCircle" onClick={() => {
-                        setToggeMenu(!toggleMenu)
-                        setLargeContentClass(!largeContentClass)
+                        hideToggleMenu()
+                        setLargeContentClass(true)
+                        localStorage.setItem('preferredToggleMenu', false)
                         }}>
                         
                         <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -66,7 +48,10 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
             <SideBar role={Admin} />
             <footer>
                 {/* <Link to='/admin/settings'> */}
-                <div className="footerContext" onClick={() => setOpenFooterContext(!openFooterContext)}>
+                <div className="footerContext" onClick={(event) => {
+                  show ? handleClose() : handleShow();
+                  event.stopPropagation();
+                }}>
                     <DefaultAvatar />
                     <div>
                         <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
@@ -77,7 +62,7 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                     <h3 style={{color: "#000"}}>&hellip;</h3>
                 </div>
                 {/* </Link> */}
-                <ul className={openFooterContext ? "footerContextShow" : ""} id="contextUl">
+                <ul className={show ? "footerContextShow" : ""} id="contextUl">
                     <li><Link to="/admin/settings"><ImProfile /> My Profile</Link></li>
                     <li><Link to="/logout"><MdLogout /> Logout</Link></li>
                 </ul>
@@ -87,8 +72,9 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
         <nav className='sidebar-m'>
                 <section id='brand_m'>
                     <div id="arrowOutCircle" onClick={() => {
-                        setToggeMenu(!toggleMenu)
-                        setLargeContentClass(!largeContentClass)
+                        showToggleMenu()
+                        setLargeContentClass(false)
+                        localStorage.setItem('preferredToggleMenu', true)
                         }}>
                         
                             <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -98,13 +84,17 @@ export default function AdminMenu({ setLargeContentClass, largeContentClass }) {
                 </section>
                 <MinimisedSideBar role={Admin}/>
                 <footer>
-                        <ul>
-                            <li><Link to="/admin/settings">Settings</Link></li>
-                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                        </ul>
-                    <Link to={'/admin-settings'} id="account">
+                    <div className="footerContext" onClick={(event) => {
+                      show ? handleClose() : handleShow();
+                      event.stopPropagation();
+                    }}>
                         <DefaultAvatar />
-                    </Link>
+                    </div>
+                    {/* </Link> */}
+                    <ul className={show ? "footerContextShow" : ""} id="contextUl">
+                        <li><Link to="/admin/settings"><ImProfile /></Link></li>
+                        <li><Link to="/logout"><MdLogout /></Link></li>
+                    </ul>
                 </footer>
             </nav>
       )}
