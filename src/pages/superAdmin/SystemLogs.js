@@ -29,18 +29,21 @@ function SystemLogs() {
 
   const [ switchStatus, setSwitchStatus ] = useState(null)
   const [ logType, setLogType ] = useState(null)
+  const [ date, setDate ] = useState(null)
 
   console.log(logType)
 
   const shownLogs = !logs || logs
                                 .filter(log => !switchStatus || log.status === switchStatus)
                                 .filter(log => !logType || log.type === logType)
+                                .filter(log => !date || typeof(log.timeCreated) !== 'string' || log.timeCreated.slice(0, 10) === date)
 
   const paginatedShownLogs = !logs || shownLogs.slice(indexOfFirstLog, indexOfLastLog)
   const totalPagesNum = !logs || Math.ceil(shownLogs.length / logsPerPage)
 
 
-  console.log(logs)
+  // console.log(logs[0].timeCreated.slice(0, 10))
+  console.log(date)
 
   return (
     <div className="components">
@@ -61,7 +64,7 @@ function SystemLogs() {
                 </Form.Group>
                 <Form.Group className="m-3 categories" width="200px">
                     <Form.Label htmlFor='date'>Date</Form.Label>
-                    <Form.Control type="date" />
+                    <Form.Control type="date" id="date" onChange={({target: {value}}) => setDate(value)}/>
                 </Form.Group>
                 <Form.Group className="m-3 categories" width="200px">
                     <Form.Label htmlFor='logType'>Logs</Form.Label>
