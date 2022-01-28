@@ -69,7 +69,7 @@ function SystemLogs() {
                           {logs.map(log => (
                             <tr key={log.id}>
                               <td>
-                                {log.timeCreated && `${new Date(log.timeCreated.seconds).toISOString().slice(0, 10)} ${ new Date(log.timeCreated.seconds).getHours()}:${ new Date(log.timeCreated.seconds).getMinutes()}:${ new Date(log.timeCreated.seconds).getSeconds()}`}
+                                {typeof(log.timeCreated) === 'string' && log.timeCreated}
                               </td>
                               <td>{log.type}</td>
                               <td>
