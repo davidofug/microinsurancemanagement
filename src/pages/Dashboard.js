@@ -114,7 +114,7 @@ function Dashboard() {
                                         <div className="custom-card" style={{backgroundColor:"#804C75"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${claims.length}`}</div>
-                                                <div className="card-text">Claim Settlement</div>
+                                                <div className="card-text">Claim Settlements</div>
                                             </Card.Body>
                                         </div>
                                     </div>
