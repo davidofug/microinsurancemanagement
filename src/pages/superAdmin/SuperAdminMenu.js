@@ -20,6 +20,18 @@ function SuperAdminMenu({ setLargeContentClass }) {
     const { SuperAdmin } = menuData;
     const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
     const [ show, handleShow, handleClose ] = useDialog();
+
+    const { logout } = useAuth()
+    const handleLogout = async () => {
+        try {
+            window.location = "/"
+            await logout()
+        }
+        catch(error){
+            console.log(error)
+        }
+  }
+
     if(show){
     window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
     }
@@ -61,7 +73,7 @@ function SuperAdminMenu({ setLargeContentClass }) {
                         {/* </Link> */}
                         <ul className={show ? "footerContextShow" : ""} id="contextUl">
                             <li><Link to="/superadmin/settings"><ImProfile /> My Profile</Link></li>
-                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                            <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                         </ul>
                     </footer>
                 </nav>
@@ -89,7 +101,7 @@ function SuperAdminMenu({ setLargeContentClass }) {
                 </div>
                 <ul className={show ? "footerContextShow" : ""} id="contextUl">
                     <li><Link to="/superadmin/settings"><ImProfile /></Link></li>
-                    <li><Link to="/logout"><MdLogout /></Link></li>
+                    <li onClick={handleLogout}><Link><MdLogout /></Link></li>
                 </ul>
             </footer>
         </nav>
