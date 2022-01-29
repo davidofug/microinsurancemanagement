@@ -1,54 +1,77 @@
 import Header from '../../components/header/Header'
 import { Row, Form, Col } from 'react-bootstrap'
-import { useState } from 'react'
-import authentication from '../../helpers/firebase'
+import { useState, useEffect } from 'react'
+import { authentication, db } from '../../helpers/firebase'
+import { collection, addDoc } from 'firebase/firestore'
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function AddStickerRange() {
 
+    useEffect(() => {document.title = 'Britam - Add Sticker Range'}, [])
 
-    const [ totalSticker, setTotalSticker ] = useState(0)
-    const [ totalFrom, setTotalFrom ] = useState(0)
-    const [ totalTo, setTotalTo ] = useState(0)
 
-    const handleStickerRange = () => {
-        // added_by_uid.authentication.currentUser.uid
+    const [ rangeFrom, setRangeFrom ] = useState(0)
+    const [ rangeTo, setRangeTo ] = useState(0)
+    const rangesCollectionRef = collection(db, 'ranges')
+
+    const handleStickerRange = async (event) => {
+        event.preventDefault()
+        try{
+            await addDoc(rangesCollectionRef, {
+                added_by_uid: authentication.currentUser.uid,
+                added_by_name: authentication.currentUser.displayName,
+                category: event.target.category.value,
+                rangeFrom: event.target.rangeFrom.value,
+                rangeTo: event.target.rangeTo.value,
+                used: []
+            })
+            toast.success(`Successfully added sticker Range`, {position: "top-center"});
+            document.stickerForm.reset()
+        } catch(error){
+            toast.error(`Failed to added sticker Range`, {position: "top-center"});
+            console.log(error)
+        }
+        
     }
 
     return (
         <div className='components'>
             <Header title="Add Sticker Number" subtitle="ADD NEW STICKER NUMBERS" />
+            <ToastContainer />
 
             <div className="componentsData table-card" >
                 <h6>Add Sticker Details</h6>
-                <form onSubmit={handleStickerRange}>
+                <form name='stickerForm' onSubmit={handleStickerRange}>
                     <Row>
                         <Form.Group className="mb-3" >
-                            <Form.Label htmlFor='name'>Select Category</Form.Label>
-                            <Form.Select aria-label="User role" id='category'>
-                                <option value="hide">--Select Category--</option>
-                                <option value="bike">Motor Bike</option>
-                                <option value="transit">Motor Transit</option>
-                                <option value="private">Motor Private</option>
-                                <option value="commercial">Motor Commercial</option>
+                            <Form.Label htmlFor='category'>Select Category</Form.Label>
+                            <Form.Select aria-label="User role" id='category' required>
+                                <option value="">--Select Category--</option>
+                                <option value="Motor Bike">Motor Bike</option>
+                                <option value="Motor Transit">Motor Transit</option>
+                                <option value="Motor Private">Motor Private</option>
+                                <option value="Motor Commercial">Motor Commercial</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Sticker Nos Range</Form.Label>
                                 <Col>
-                                    <Form.Control type="number" id='name' placeholder="0" required style={{marginRight: "5px"}} onChange={(e) => {
-                                        setTotalFrom(e.target.value)
-                                        setTotalSticker(totalTo - totalFrom)
+                                        <Form.Control type="number" id='rangeFrom' placeholder="From" required style={{marginRight: "5px"}} onChange={(e) => {
+                                            setRangeFrom(+e.target.value)
                                         }}/>
-                                    <Form.Control type="number" id='name' placeholder="0" required style={{marginLeft: "5px"}} onChange={(e) => {
-                                        setTotalTo(e.target.value)
-                                        setTotalSticker(totalTo - totalFrom)
+
+                                        <Form.Control type="number" id='rangeTo' placeholder="To" required style={{marginLeft: "5px"}} onChange={(e) => {
+                                        setRangeTo(+e.target.value)
                                         }}/>
+                                    
                                 </Col>
                         </Form.Group>
                         
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Total Amount Received</Form.Label>
-                            <Form.Control type="text" id='name' value={totalSticker} readOnly/>
+                            <Form.Control type="text" id='total' value={(rangeTo > 0) ? rangeTo - rangeFrom : ''} readOnly/>
                         </Form.Group>
                     </Row>
                     <input type="submit" className='btn btn-primary cta' value="Submit" />
