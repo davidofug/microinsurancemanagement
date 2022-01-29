@@ -23,7 +23,6 @@ function SupervisorMenu({ setLargeContentClass }) {
     const [show, handleShow, handleClose] = useDialog()
 
     const { logout } = useAuth()
-
     const handleLogout = async () => {
         try {
             window.location = "/"
@@ -103,7 +102,7 @@ function SupervisorMenu({ setLargeContentClass }) {
                     {/* </Link> */}
                     <ul className={show ? "footerContextShow" : ""} id="contextUl">
                         <li><Link to="/supervisor/settings"><ImProfile /></Link></li>
-                        <li><Link to="/logout"><MdLogout /></Link></li>
+                        <li onClick={handleLogout}><Link><MdLogout /></Link></li>
                     </ul>
                 </footer>
             
