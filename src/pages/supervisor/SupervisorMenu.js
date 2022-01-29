@@ -13,6 +13,7 @@ import { MdLogout } from 'react-icons/md'
 import DefaultAvatar from '../../components/DefaultAvatar'
 import { ImProfile } from 'react-icons/im'
 import useDialog from '../../hooks/useDialog'
+import useAuth from '../../contexts/Auth'
 
 function SupervisorMenu({ setLargeContentClass }) {
 
@@ -20,6 +21,19 @@ function SupervisorMenu({ setLargeContentClass }) {
     const { SuperVisor } = menuData
     const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(preferredToggleMenu);
     const [show, handleShow, handleClose] = useDialog()
+
+    const { logout } = useAuth()
+
+    const handleLogout = async () => {
+        try {
+            window.location = "/"
+            await logout()
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+
     if(show){
         window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
     }
@@ -60,7 +74,7 @@ function SupervisorMenu({ setLargeContentClass }) {
                         </div>
                         <ul className={show ? "footerContextShow" : ""} id="contextUl">
                             <li><Link to="/supervisor/settings"><ImProfile /> My Profile</Link></li>
-                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                            <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                         </ul>
                     </footer>
                 </nav>
