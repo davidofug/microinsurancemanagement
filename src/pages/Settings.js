@@ -9,7 +9,7 @@ import { AiOutlineEdit } from 'react-icons/ai'
 import { httpsCallable } from 'firebase/functions';
 import useDialog from '../hooks/useDialog'
 import useAuth from '../contexts/Auth'
-import { getAuth, updateProfile, updateEmail, updatePassword } from "firebase/auth";
+import { getAuth, updateProfile, updateEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { getDoc, doc, updateDoc } from 'firebase/firestore'
 import { useForm } from '../hooks/useForm'
 
@@ -68,37 +68,38 @@ function Settings() {
    }
 
    const handlePasswordChange = async (event) => {
-    event.preventDefault()
+        event.preventDefault()
 
-    /* const credential = authentication.EmailAuthProvider.credential(
-        auth.currentUser.email,
-        event.target.oldPassword.value
-      );
+        const credential = EmailAuthProvider.credential(
+            auth.currentUser.email,
+            event.target.oldPassword.value
+        );
 
-      auth.currentUser.reauthenticateWithCredential(credential).then(function() {
-        console.log("successfully got the password")
-      }).catch(function(error) {
-        console.log("password failed", error)
-      }); */
-
-    if(event.target.password.value === event.target.newPassword.value){
-        updatePassword(auth.currentUser, event.target.password.value).then(() => {
-            toast.success('Successfully updated password', {position: "top-center"});
-          }).catch((error) => {
-            error.code === "auth/weak-password" 
-                ? toast.error('Weak password', {position: "top-center"})
-                : error.code === 'auth/requires-recent-login' 
-                    ? toast.error('This action requires you to re-login in first', {position: "top-center"})
-                    : toast.error('Failed, Try again', {position: "top-center"}); 
-            
-          });
-    } else{
-        toast.error("Password doesn't match", {position: "top-center"});
+        try{
+            await reauthenticateWithCredential(auth.currentUser, credential)
+                .then(() => {
+                    if(event.target.password.value === event.target.newPassword.value){
+                        updatePassword(auth.currentUser, event.target.password.value).then(() => {
+                            toast.success('Successfully updated password', {position: "top-center"});
+                        }).catch((error) => {
+                            error.code === "auth/weak-password" 
+                                ? toast.error('Weak password', {position: "top-center"})
+                                : error.code === 'auth/requires-recent-login' 
+                                    ? toast.error('This action requires you to re-login in first', {position: "top-center"})
+                                    : toast.error('Failed, Try again', {position: "top-center"}); 
+                            
+                        });
+                    } else{
+                        toast.error("Password doesn't match", {position: "top-center"});
+                    }
+                    document.passwordForm.reset();
+                }).catch((error) => {
+                    console.log("password failed", error)
+                });
+        } catch(error){
+            console.log('re-auth failed',error)
+        }
     }
-   }
-
-//    console.log(currentUser.reloadUserInfo.passwordHash)
-console.log(authentication)
 
     return (
         <div className='components'>
@@ -200,20 +201,20 @@ console.log(authentication)
                                 </div>
 
                                 <div id="edit_profile" className="componentsData myProfile shadow-sm mb-3">
-                                        <form onSubmit={handlePasswordChange}>
+                                        <form name='passwordForm' onSubmit={handlePasswordChange}>
                                             <h2>Password and Security</h2>
                                             <p>change your password</p>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
                                             <Form.Label htmlFor='oldPassword'>Old Password</Form.Label>
-                                            <Form.Control type="password" id='oldPassword' placeholder="Enter old password" />
+                                            <Form.Control type="password" id='oldPassword' placeholder="Enter old password" required/>
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
                                             <Form.Label htmlFor='newPassword'>New Password</Form.Label>
-                                            <Form.Control type="password" id='newPassword' placeholder="Enter new password" />
+                                            <Form.Control type="password" id='newPassword' placeholder="Enter new password" required/>
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
                                             <Form.Label htmlFor='confirmPassword'>Confirm Password</Form.Label>
-                                            <Form.Control placeholder="Match password" id='password' type="password" />
+                                            <Form.Control placeholder="Match password" id='password' type="password" required />
                                         </Form.Group>
                                         <input type="submit" value="Update Password" className="btn btn-primary cta" />                              
                                         </form>
