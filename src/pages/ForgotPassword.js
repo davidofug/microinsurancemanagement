@@ -6,6 +6,9 @@ import { sendPasswordResetEmail, getAuth } from 'firebase/auth'
 
 import "../assets/styles/login.css";
 
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 function ForgotPassword() {
   let [isLogin, setLogin] = useState(false);
 
@@ -24,21 +27,20 @@ function ForgotPassword() {
 
   const handleResetPassword = (event) => {
     event.preventDefault()
-    console.log("started")
     sendPasswordResetEmail(auth, event.target.email.value)
       .then(() => {
-        console.log('Password reset email sent')
+        toast.success(`Password reset email sent to ${event.target.email.value}`, {position: "top-center"});
       })
       .catch((error) => {
-        console.log(error)
+        error.code === 'auth/user-not-found' ? toast.error(`User with email ${event.target.email.value} not found`, {position: "top-center"}) : toast.error('Failed to send email', {position: "top-center"});
       })
-      console.log("Ended")
   }
 
   if (isLogin) return <Redirect to={{ pathname: "/supervisor-dashboard" }} />;
 
   return (
     <div className="auth-wrapper">
+      <ToastContainer />
       <img src={logo} alt="Britam" />
       <form onSubmit={handleResetPassword}>
         <p>Forgot Password?</p>
