@@ -67,8 +67,8 @@ function SystemLogs() {
                         <option value="">Select Log Type</option>
                         <option value="user creation">User Creation</option>
                         <option value="user deletion">User Deletion</option>
-                        <option value="policy creation">Policy Creation</option>
-                        <option value="policy deletion">Policy Deletion</option>
+                        <option value="sticker creation">Sticker Creation</option>
+                        <option value="sticker deletion">Sticker Deletion</option>
                         <option value="claim creation">Claim Creation</option>
                         <option value="claim deletion">Claim Deletion</option>
                     </Form.Select>
