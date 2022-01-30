@@ -77,8 +77,10 @@ export default function StickerMgt() {
 
 
     const numberOfCategory = (category) => {
-        const categorySticker = !stickerRange || stickerRange.filter(range => range.category === category)
-        return categorySticker.length || 0
+        let totalNumber = 0
+        const categorySticker = !stickerRange || stickerRange.filter(range => range.category === category).map(range => totalNumber += (range.rangeTo - range.rangeFrom))
+
+        return totalNumber || 0
     }
 
     // delete a policy
@@ -117,7 +119,7 @@ export default function StickerMgt() {
 
             <div className="componentsData">
                     <div className="sticker-mgt">
-                            <Badge color={"#5CB85C"} number={numberOfCategory('bike')} title={"Motor Bikes"} icon={<MdOutlinePedalBike />} />
+                            <Badge color={"#5CB85C"} number={numberOfCategory('Motor Bike')} title={"Motor Bikes"} icon={<MdOutlinePedalBike />} />
                             <Badge color={"#46B8DA"} number={numberOfCategory('Motor Transit')} title={"Motor Transit"} icon={<FiTruck />}/>
                             <Badge color={"#D43F3A"} number={numberOfCategory('Motor Private')} title={"Motor Private"} icon={<AiOutlineCar />}/>
                             <Badge color={"#FFB848"} number={numberOfCategory('Motor Commercial')} title={"Motor Commercial"} icon={<BiBus />}/>
