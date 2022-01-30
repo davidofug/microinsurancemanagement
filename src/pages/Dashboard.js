@@ -36,12 +36,89 @@ function Dashboard() {
     const [policies, setPolicies] = useState([])
     const policyCollectionRef = collection(db, "policies");
 
-
     const getPolicies = async () => {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        setPolicies(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
-        return(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+
+        if(authClaims.agent){// agent's policies
+            setPolicies(allPolicies.filter(claim => claim.uid === authentication.currentUser.uid)) 
+            return (allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+        }
+
+        if(authClaims.supervisor){ // supervisor's policies
+            const listUsers = httpsCallable(functions, 'listUsers')
+            listUsers().then(({data}) => {
+              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+              
+              const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid]
+      
+              const supervisorPolicies = allPolicies.filter(claim => usersUnderSupervisor.includes(claim.added_by_uid))
+              setPolicies(supervisorPolicies)
+              return(allPolicies.filter(supervisorPolicies))
+            })
+          }
+        
+        if(authClaims.admin){ // admin's policies
+            const listUsers = httpsCallable(functions, 'listUsers')
+            listUsers().then(({data}) => {
+              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+      
+              const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+      
+              const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+              
+              const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
+      
+              const adminPolicies = allPolicies.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
+              setPolicies(adminPolicies)
+              return(adminPolicies)
+            })
+        }
+
+        if(authClaims.superadmin){// superadmin's policies
+            setPolicies(allPolicies)
+            return(allPolicies)
+        } 
+    }
+
+    // claims
+    const getClaims = async () => {
+        const data = await getDocs(claimsCollectionRef);
+        const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+        authClaims.agent && setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid)) // agent's claims
+
+        if(authClaims.supervisor){ // supervisor's claims
+            const listUsers = httpsCallable(functions, 'listUsers')
+            listUsers().then(({data}) => {
+              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+              
+              const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid]
+      
+              const supervisorClaims = allClaims.filter(claim => usersUnderSupervisor.includes(claim.added_by_uid))
+              setClaims(supervisorClaims)
+            })
+          }
+        
+        if(authClaims.admin){ // admin's claims
+            const listUsers = httpsCallable(functions, 'listUsers')
+            listUsers().then(({data}) => {
+              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+      
+              const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+      
+              const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+              
+              const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
+      
+              const adminClaims = allClaims.filter(claim => usersUnderAdmin.includes(claim.added_by_uid))
+              setClaims(adminClaims)
+            })
+        }
+
+        authClaims.superadmin && setClaims(allClaims) // superadmin's claims
+          
+          
     }
 
     // clients
@@ -95,26 +172,14 @@ function Dashboard() {
         })
     }
 
-    const getClaims = async () => {
-        const data = await getDocs(claimsCollectionRef);
-        const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid))
-    };
-
     // Total number of stickers
     const handlePolicyStickers = (pols) => {
         let sum = 0
-        pols.forEach( pol =>  {
+        !pols || pols.forEach( pol =>  {
             sum += pol.stickersDetails.length
         })
         return sum     
     }
-
-    if(authentication.currentUser.metadata.creationTime === authentication.currentUser.metadata.lastSignInTime){
-        console.log("welcome to Britam")
-    }
-
-    console.log(authentication.currentUser)
 
     return (
             <div className='components'>
