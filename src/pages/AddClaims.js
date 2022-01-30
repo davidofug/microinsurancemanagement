@@ -16,6 +16,8 @@ function AddClaims() {
     useEffect(() => document.title = 'Britam - Add Claims', [])
 
     const [ isLoading, setIsLoading ] = useState(false)
+    // initialising the logs doc.
+    const logCollectionRef = collection(db, "logs");
 
     const { authClaims } = useAuth()
 
@@ -44,18 +46,35 @@ function AddClaims() {
             event.preventDefault()
             fields["added_by_name"] = authentication.currentUser.displayName
             await addDoc(claimsCollectionRef, fields)
-            toast.success(`successfully added ${fields.claimantName}'s claim`, {position: "top-center"});
+                .then(() => toast.success(`successfully added ${fields.claimantName}'s claim`, {position: "top-center"}))
+                .then(async () => {
+                    await addDoc(logCollectionRef, {
+                        timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                        type: 'claim creation',
+                        status: 'successful',
+                        message: `Successfully created ${fields.claimantName}'s claim by ${authentication.currentUser.displayName}`
+                    })
+                })
+                .catch(async () => {
+                    toast.error(`Failed: couldn't added ${fields.claimantName}'s claim`, {position: "top-center"});
 
-            // send claim to Britam claim team on creation showing agent who created the notification.
-            const sendToClaimTeam = () => {}
-
+                    await addDoc(logCollectionRef, {
+                        timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                        type: 'claim creation',
+                        status: 'failed',
+                        message: `Failed to create ${fields.claimantName}'s claim by ${authentication.currentUser.displayName}`
+                    })
+                })
 
             setIsLoading(false)
             document.form1.reset();
         } catch(error){
-            console.log(error)
+            toast.error(`Failed: ${error.code}`, {position: "top-center"});
         }
       }
+
+      // send claim to Britam claim team on creation showing agent who created the notification.
+      const sendToClaimTeam = () => {}
 
       let today;
       new Date().getMonth()+1 >= 10 ? today = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
