@@ -195,8 +195,6 @@ export default function Mtp() {
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
-  console.log(policies)
-
   return (
     <div className="components">
       <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
