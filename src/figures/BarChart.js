@@ -62,6 +62,9 @@ function BarChart () {
                 
                 } else if (authClaims?.agent) {
                     return[authentication.currentUser.uid]
+                } else if (authClaims?.superadmin) {
+                    const usersID = data.map(user => user.uid)
+                    return usersID
                 }
 
             }).then(async (userIDs) =>{
