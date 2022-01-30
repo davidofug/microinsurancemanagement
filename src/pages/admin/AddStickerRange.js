@@ -3,6 +3,7 @@ import { Row, Form, Col } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 import { authentication, db } from '../../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
+import Loader from '../../components/Loader'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -11,12 +12,15 @@ function AddStickerRange() {
 
     useEffect(() => {document.title = 'Britam - Add Sticker Range'}, [])
 
+    const [ isLoading, setIsLoading ] = useState(false)
+
 
     const [ rangeFrom, setRangeFrom ] = useState(0)
     const [ rangeTo, setRangeTo ] = useState(0)
     const rangesCollectionRef = collection(db, 'ranges')
 
     const handleStickerRange = async (event) => {
+        setIsLoading(true)
         event.preventDefault()
         try{
             await addDoc(rangesCollectionRef, {
@@ -29,9 +33,11 @@ function AddStickerRange() {
             })
             toast.success(`Successfully added sticker Range`, {position: "top-center"});
             document.stickerForm.reset()
+            setIsLoading(false)
         } catch(error){
             toast.error(`Failed to added sticker Range`, {position: "top-center"});
             console.log(error)
+            setIsLoading(false)
         }
         
     }
@@ -41,8 +47,13 @@ function AddStickerRange() {
             <Header title="Add Sticker Number" subtitle="ADD NEW STICKER NUMBERS" />
             <ToastContainer />
 
-            <div className="componentsData table-card" >
-                <h6>Add Sticker Details</h6>
+            <div className="addComponentsData shadow-sm mb-3" >
+                {isLoading && 
+                    <div className='loader-wrapper'>
+                        <Loader />
+                    </div>
+                }
+                {/* <h6>Add Sticker Details</h6> */}
                 <form name='stickerForm' onSubmit={handleStickerRange}>
                     <Row>
                         <Form.Group className="mb-3" >
