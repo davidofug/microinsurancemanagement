@@ -113,33 +113,31 @@ export default function Mtp() {
 
   // cancel a policy
   const handleCancel = async (id) => {
-      const policyRef = doc(db, "policies", id)
-      const data = await getDoc(policyRef);
-      const policy = data.data()
+  const policyRef = doc(db, "policies", id)
+  const data = await getDoc(policyRef);
+  const policy = data.data()
+  await updateDoc(policyRef, {
+    stickersDetails: [{
+      basicPremium: "",
+      category: policy.stickersDetails[0].category,
+      ccPower: policy.stickersDetails[0].ccPower,
+      chasisNo: policy.stickersDetails[0].chasisNo,
+      grossWeight: policy.stickersDetails[0].grossWeight,
+      motorClass: policy.stickersDetails[0].motorClass,
+      motorMake: policy.stickersDetails[0].motorMake,
+      plateNo: policy.stickersDetails[0].plateNo,
+      referenceNo: policy.stickersDetails[0].referenceNo,
+      seatingCapacity: policy.stickersDetails[0].seatingCapacity,
+      stampDuty: policy.stickersDetails[0].stampDuty,
+      status: "cancelled",
+      stickerFee: policy.stickersDetails[0].stickerFee,
+      totalPremium: policy.stickersDetails[0].totalPremium,
+      trainingLevy: policy.stickersDetails[0].trainingLevy,
+      vat: policy.stickersDetails[0].vat,
+      vehicleUse: policy.stickersDetails[0].vehicleUse
 
-
-    await updateDoc(policyRef, {
-      stickersDetails: [{
-        basicPremium: "",
-        category: policy.stickersDetails[0].category,
-        ccPower: policy.stickersDetails[0].ccPower,
-        chasisNo: policy.stickersDetails[0].chasisNo,
-        grossWeight: policy.stickersDetails[0].grossWeight,
-        motorClass: policy.stickersDetails[0].motorClass,
-        motorMake: policy.stickersDetails[0].motorMake,
-        plateNo: policy.stickersDetails[0].plateNo,
-        referenceNo: policy.stickersDetails[0].referenceNo,
-        seatingCapacity: policy.stickersDetails[0].seatingCapacity,
-        stampDuty: policy.stickersDetails[0].stampDuty,
-        status: "cancelled",
-        stickerFee: policy.stickersDetails[0].stickerFee,
-        totalPremium: policy.stickersDetails[0].totalPremium,
-        trainingLevy: policy.stickersDetails[0].trainingLevy,
-        vat: policy.stickersDetails[0].vat,
-        vehicleUse: policy.stickersDetails[0].vehicleUse
-
-    }]
-    });
+  }]
+  });
     toast.success('Successfully Cancelled', {position: "top-center"});
   }
 
@@ -156,7 +154,6 @@ export default function Mtp() {
   // delete multiple agents
   const [ bulkDelete, setBulkDelete ] = useState(null)
   const [ deleteArray, setDeleteArray ] = useState([])
-  const [ deleteAllArray, setDeleteAllArray ] = useState([])
   const handleBulkDelete = async () => {
     if(bulkDelete){
       deleteArray.map(agentuid => handleDelete(agentuid))
