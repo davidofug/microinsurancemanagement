@@ -29,15 +29,13 @@ export default function AdminMenu({ setLargeContentClass }) {
             await logout()
         }
         catch(error){
-            console.log(error)
+            
         }
   }
 
   if(show){
     window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
   }
-
-  console.log(preferredToggleMenu)
 
   return (
     <div className="menuSide">
