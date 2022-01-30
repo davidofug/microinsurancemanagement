@@ -67,8 +67,6 @@ export default function Mtp() {
         
         const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
 
-        console.log(usersUnderAdmin)
-
         const AdminMtpPolicies = mtpPolicies.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
         AdminMtpPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminMtpPolicies)
       })
@@ -76,7 +74,7 @@ export default function Mtp() {
 
     // superAdmin mtp policies
     if(authClaims.superadmin){
-      mtpPolicies === 0 ? setPolicies(null) : setPolicies(mtpPolicies)
+      mtpPolicies.length === 0 ? setPolicies(null) : setPolicies(mtpPolicies)
     }
     
   }
@@ -262,7 +260,7 @@ export default function Mtp() {
       {policies !== null && policies.length > 0 
       ?
         <>
-        <div className="table-card componentsData shadow-sm" style={{display: "flex",flexDirection: "column", justifyContent: "center", maxWidth: "900px", minWidth: "300px"}}>
+        <div className="table-card componentsData shadow-sm">
         <div id="search">
           <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
           <div></div>
@@ -384,7 +382,7 @@ export default function Mtp() {
              <Pagination 
                pages={totalPagesNum}
                setCurrentPage={setCurrentPage}
-               currentClients={currentPolicies}
+               currentClients={paginatedShownPolicies}
                sortedEmployees={policies}
                entries={'Motor Third Party'} />
              </td>
