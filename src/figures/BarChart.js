@@ -48,16 +48,25 @@ function BarChart () {
                     return [ ...agentsIDs, authentication.currentUser.uid]
 
                 } else if (authClaims?.admin) {
-                    const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
+                    const agentsIDs = data.filter( user => user?.role?.agent).filter( user => user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
+                    console.log("agents", agentsIDs)
+
                     const supervisorIDs = data.filter( user => user?.role?.supervisor === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
+
+                    console.log("superviors", supervisorIDs)
 
                     let agentsBySupervisors = []
                     supervisorIDs.forEach(ID => {
                         const agents = data.filter(user => user?.role?.agent === true && user?.meta?.added_by_uid === ID)
                         agentsBySupervisors.push(...[...agents])   
                     })
+
+                    console.log("agents by supervisor", agentsBySupervisors)
                     const agentBySupervisorsIDs = agentsBySupervisors.map(agentBySupervisor => agentBySupervisor.uid)
                     const usersIDsByAddedByAdmins = [...agentBySupervisorsIDs, ...agentsIDs]
+
+                    console.log("All", usersIDsByAddedByAdmins)
+
                     return usersIDsByAddedByAdmins
                 
                 } else if (authClaims?.agent) {
