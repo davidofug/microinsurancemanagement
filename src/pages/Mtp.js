@@ -268,7 +268,7 @@ export default function Mtp() {
           <Form.Group className="m-3 categories" width="200px">
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
-                <option value="active">Active</option>
+                <option value="new">New</option>
                 <option value="paid">Paid</option>
                 <option value="renewed">Renewed</option>
                 <option value="expired">Expired</option>
@@ -298,7 +298,7 @@ export default function Mtp() {
                  <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                  {!authClaims.agent && <td>{policy.added_by_name}</td>}
                  <td>
-                   {policy.stickersDetails[0].status === 'active'  && 
+                   {policy.stickersDetails[0].status === 'new'  && 
                       <span
                         style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
                       >{policy.stickersDetails[0].status}</span>

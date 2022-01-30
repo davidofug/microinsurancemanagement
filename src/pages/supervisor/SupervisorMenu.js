@@ -37,7 +37,7 @@ function SupervisorMenu({ setLargeContentClass }) {
     return (
         <div className="menuSide">
             <MobileNav role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
-            {toggleMenu === true 
+            {toggleMenu 
             ?
                 <nav className="sidebar">
                     <section id='brand'>
