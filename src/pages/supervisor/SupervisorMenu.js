@@ -1,7 +1,6 @@
 import menuData from '../../components/menuData'
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 import logo from '../../assets/imgs/britam-logo2.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import MobileNav from '../../components/menu/MobileNav'
@@ -19,7 +18,7 @@ function SupervisorMenu({ setLargeContentClass }) {
 
     const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
     const { SuperVisor } = menuData
-    const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(preferredToggleMenu);
+    const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
     const [show, handleShow, handleClose] = useDialog()
 
     const { logout } = useAuth()
@@ -28,9 +27,7 @@ function SupervisorMenu({ setLargeContentClass }) {
             window.location = "/"
             await logout()
         }
-        catch(error){
-            console.log(error)
-        }
+        catch(error){}
     }
 
     if(show){
