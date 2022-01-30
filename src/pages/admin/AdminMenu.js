@@ -40,7 +40,7 @@ export default function AdminMenu({ setLargeContentClass }) {
   return (
     <div className="menuSide">
       <MobileNav role={Admin} user="admin" displayName={authentication?.currentUser?.displayName}/>
-      {toggleMenu === true ? (
+      {toggleMenu ? (
         <nav className="sidebar">
             <div id='brand'>
                 <img width={150} src={logo} alt="Britam" />

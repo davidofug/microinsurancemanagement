@@ -464,7 +464,7 @@ function Policies({cat, btn_txt, pol}) {
 
             <ToastContainer />
 
-            <div className="componentsData addComponentsData shadow-sm" style={{paddingBottom:"10vh"}}>
+            <div className="componentsData addComponentsData shadow-sm mb-5" style={{paddingBottom:"10vh"}}>
 
             {isLoading && 
                 <div className='loader-wrapper'>
