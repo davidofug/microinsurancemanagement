@@ -140,7 +140,7 @@ function Admins() {
             </div>
 
             <Modal show={showModal} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
+              <ClientModal singleDoc={singleDoc} handleClose={handleClose} getUsers={getAdmins} />
             </Modal>
 
 
