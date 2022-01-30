@@ -262,6 +262,20 @@ export default function Organisations() {
           </tbody>
 
           <tfoot>
+           <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+             <td colSpan={7}>
+             <Pagination
+                pages={totalPagesNum}
+                setCurrentPage={setCurrentPage}
+                currentClients={currentOrganisations}
+                sortedEmployees={organisations}
+                entries={"Organisations"}
+              />
+             </td>
+           </tr>
+         </tfoot>  
+
+          <tfoot>
             <tr>
               <th>Logo</th>
               <th>Name</th>
@@ -276,13 +290,7 @@ export default function Organisations() {
           </tfoot>
         </Table>
 
-        <Pagination
-          pages={totalPagesNum}
-          setCurrentPage={setCurrentPage}
-          currentClients={currentOrganisations}
-          sortedEmployees={organisations}
-          entries={"Organisations"}
-        />
+        
       </div>
     </div>
         }
