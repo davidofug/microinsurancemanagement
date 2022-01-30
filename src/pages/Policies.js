@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { connectFunctionsEmulator, httpsCallable } from 'firebase/functions'
+import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
-
-import { Form,Row, Col, Table, Button, Modal, Alert } from 'react-bootstrap'
+import { Form,Row, Col, Table, Button, Modal } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import dynamicFields from '../helpers/multipleChoice'
 import '../styles/Policies.css'
 import moment from 'moment'
 import Upload from '../components/uploader/Upload';
 import Loader from '../components/Loader'
-
 import Header from '../components/header/Header'
+import { collection, addDoc } from 'firebase/firestore'
+import { authentication, db } from '../helpers/firebase'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 
-// import AddClient from '../components/AddClient'
 
-import { db } from '../helpers/firebase'
-import { collection, addDoc } from 'firebase/firestore'
-import { authentication } from '../helpers/firebase'
-import { FaSolarPanel } from 'react-icons/fa'
+// import { FaSolarPanel } from 'react-icons/fa'
 // import AddClient from '../parts/AddClient'
 // enlarging the size of + and -
 
@@ -35,6 +31,9 @@ function Policies({cat, btn_txt, pol}) {
     const handleShow = () => setShow(true);
 
     const [ isLoading, setIsLoading ] = useState(false)
+
+    // initialising the logs doc.
+    const logCollectionRef = collection(db, "logs");
 
     const [ existingClients, setExistingClients ] = useState([])
     const [ classes, setClasses ] = useState([])
@@ -205,18 +204,7 @@ function Policies({cat, btn_txt, pol}) {
         event.preventDefault()
         const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client
 
-            await addDoc(policiesRef, {
-                currency,
-                policyStartDate: policyStartDate, 
-                policyEndDate: policyEndDate,
-                stickersDetails: stickers,
-                clientDetails: clientInfo,
-                added_by_uid: authentication.currentUser.uid,
-                added_by_name: authentication.currentUser.displayName,  
-                category: cat,
-                totalValuation: await generateTotalValuation(stickers),
-                createdAt: created_at
-            })
+            
 
         client['added_by_uid'] = authentication.currentUser.uid
         client['added_by_name'] = authentication.currentUser.displayName
@@ -228,7 +216,38 @@ function Policies({cat, btn_txt, pol}) {
             setPolicyStartDate('')
         }).catch( error => console.log( error ))
 
-        toast.success("succesfully created sticker", {position: "top-center"})
+        await addDoc(policiesRef, {
+            currency,
+            policyStartDate: policyStartDate, 
+            policyEndDate: policyEndDate,
+            stickersDetails: stickers,
+            clientDetails: clientInfo,
+            added_by_uid: authentication.currentUser.uid,
+            added_by_name: authentication.currentUser.displayName,  
+            category: cat,
+            totalValuation: await generateTotalValuation(stickers),
+            createdAt: created_at
+        }).then(() => {
+            toast.success(`succesfully created ${clientInfo.name}'s sticker`, {position: "top-center"})
+            document.policyForm.reset()
+        }).then(async () => {
+            await addDoc(logCollectionRef, {
+                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                type: 'sticker creation',
+                status: 'successful',
+                message: `Successfully created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
+            })
+        }).catch(async () => {
+            toast.error(`Failed: couldn't added ${clientInfo.name}'s sticker`, {position: "top-center"});
+            await addDoc(logCollectionRef, {
+                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                type: 'sticker creation',
+                status: 'failed',
+                message: `Failed to created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
+            })
+        })
+
+        
 
         /* await addDoc(logCollectionRef, {
             timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
@@ -238,7 +257,7 @@ function Policies({cat, btn_txt, pol}) {
         }) */
  
 
-        setStickers([
+        /* setStickers([
             {
                 referenceNo:'',
                 plateNo:'',
@@ -256,7 +275,7 @@ function Policies({cat, btn_txt, pol}) {
                 stampDuty: 35000,
                 status: "new",
             }
-        ])
+        ]) */
 
         setIsLoading(false)
 
@@ -472,7 +491,7 @@ function Policies({cat, btn_txt, pol}) {
                 </div>
             }
 
-                <Form name="policy" onSubmit={handleSubmit}>
+                <Form name="policyForm" onSubmit={handleSubmit}>
                     <div style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                         <Row style={{paddingTop:"2vh"}}>
                             <h1>
