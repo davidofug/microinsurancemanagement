@@ -126,7 +126,7 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.Customer === true)
+            const myUsers = resultsArray.filter(user => user.role.Customer)
             setClients(myUsers)
         }).catch((err) => {
             console.log(err)
@@ -139,7 +139,7 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.agent === true)
+            const myUsers = resultsArray.filter(user => user.role.agent)
             setAgents(myUsers)
         }).catch((err) => {
             console.log(err)
@@ -152,7 +152,7 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.supervisor === true)
+            const myUsers = resultsArray.filter(user => user.role.supervisor)
             setSupervisors(myUsers)
         }).catch((err) => {
             console.log(err)
@@ -165,7 +165,7 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.admin === true)
+            const myUsers = resultsArray.filter(user => user.role.admin)
             setAdmins(myUsers)
         }).catch((err) => {
             console.log(err)
@@ -229,26 +229,28 @@ function Dashboard() {
 
                         <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex", alignItems: "flex-start"}}>
                             <div id="short_stats">
-                                {authClaims.superadmin && 
+                                {authClaims.superadmin && (
                                     admins.length > 0
                                     ?
-                                    <>
-                                        <h5 className="heading">Admins</h5>
-                                        <table>
-                                            <thead><tr><th>Name</th><th>Address</th></tr></thead>
-                                            <tbody>
-                                                {admins.map(admin => (
-                                                    <tr key={admin.uid}>
-                                                        <td>{admin.name}</td>
-                                                        <td>{admin.email}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </>
-                                    : <Loader />
-                                }
-                                {authClaims.admin && 
+                                        <>
+                                            <h5 className="heading">Admins</h5>
+                                            <table>
+                                                <thead><tr><th>Name</th><th>Address</th></tr></thead>
+                                                <tbody>
+                                                    {admins.map(admin => (
+                                                        <tr key={admin.uid}>
+                                                            <td>{admin.name}</td>
+                                                            <td>{admin.email}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </>
+                                    : 
+                                        <Loader />
+                                    )}
+
+                                {authClaims.admin && (
                                     supervisors.length > 0 
                                     ?
                                     <>
@@ -266,9 +268,10 @@ function Dashboard() {
                                         </table>
                                     </>
                                     : <Loader />
-                                }
-                                {authClaims.supervisor && <>
-                                    {agents.length > 0 
+                                )}
+
+                                {authClaims.supervisor && (
+                                    agents.length > 0 
                                     ? <>
                                     <h5 className="heading">Latest Agents</h5>
                                     <table>
@@ -285,10 +288,10 @@ function Dashboard() {
                                     </>
                                     : 
                                     <Loader />
-                                    }</>}
+                                )}
                                     
-                                {authClaims.agent && <>
-                                    {clients.length > 0
+                                {authClaims.agent && (
+                                    clients.length > 0
                                     ? <>
                                     <h5 className="heading">Latest Clients</h5>
                                     <table>
@@ -306,7 +309,7 @@ function Dashboard() {
                                     </>
                                     :
                                     <Loader />
-                                    }</>}
+                                )}
                             </div>
                         </div>
                     </div>
