@@ -270,7 +270,7 @@ export default function Claims() {
          <thead>
            <tr>
              <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th>Action</th>
+             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th className="text-center">Action</th>
            </tr>
          </thead>
          <tbody>
@@ -356,7 +356,7 @@ export default function Claims() {
          <tfoot>
            <tr>
              <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th>Action</th>
+             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th className="text-center">Action</th>
            </tr>
          </tfoot>
        </Table>

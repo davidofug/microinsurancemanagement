@@ -160,7 +160,7 @@ function Admins() {
                   <>
                     <Table hover striped responsive>
                         <thead>
-                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th className='text-center'>Action</th></tr>
                         </thead>
                         <tbody>
                           {currentAdmins.map((admin, index) => (
