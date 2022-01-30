@@ -25,7 +25,8 @@ export default function Mtp() {
   const { authClaims } = useAuth()
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
-  const [editID, setEditID] = useState(null);
+
+  const [ singleDoc, setSingleDoc ] = useState(null)
 
   // getting mtps under a particular user.
   const getMTP = async () => {
@@ -80,20 +81,18 @@ export default function Mtp() {
 
   // Confirm Box
   const [ openToggle, setOpenToggle ] = useState(false)
+  const [ openToggleCancel, setOpenToggleCancel ] = useState(false)
   window.onclick = (event) => {
-    if(openToggle === true) {
+    if(openToggleCancel || openToggle) {
       if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggleCancel(false)
         setOpenToggle(false)
     }
     }
-  }
 
-  // Confirm Box
-  const [ openToggleCancel, setOpenToggleCancel ] = useState(false)
-  window.onclick = (event) => {
-    if(openToggleCancel === true) {
+    if(openToggle) {
       if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
-        setOpenToggleCancel(false)
+        
     }
     }
   }
@@ -105,15 +104,15 @@ export default function Mtp() {
   const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
   // delete a policy
-  const handleDelete = async (id) => {
-    const policyDoc = doc(db, "policies", id);
+  const handleDelete = async () => {
+    const policyDoc = doc(db, "policies", singleDoc.id);
     await deleteDoc(policyDoc);
     toast.success('Successfully deleted', {position: "top-center"});
   }
 
   // cancel a policy
-  const handleCancel = async (id) => {
-  const policyRef = doc(db, "policies", id)
+  const handleCancel = async () => {
+  const policyRef = doc(db, "policies", singleDoc.id)
   const data = await getDoc(policyRef);
   const policy = data.data()
   await updateDoc(policyRef, {
@@ -192,6 +191,7 @@ export default function Mtp() {
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
+
   return (
     <div className="components">
       <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
@@ -217,11 +217,11 @@ export default function Mtp() {
       <div className={openToggle ? 'myModal is-active': 'myModal'}>
         <div className="modal__content wack">
           <h1 className='wack'>Confirm</h1>
-          <p className='wack'>Are you sure you want to delete <b>{deleteName}</b></p>
+          <p className='wack'>Are you sure you want to delete <b>{!singleDoc || singleDoc.clientDetails.name}</b></p>
           <div className="buttonContainer wack" >
             <button id="yesButton" onClick={() => {
               setOpenToggle(false)
-              handleDelete(editID)
+              handleDelete()
               getMTP()
               }} className='wack'>Yes</button>
             <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
@@ -232,11 +232,11 @@ export default function Mtp() {
       <div className={openToggleCancel ? 'myModal is-active': 'myModal'}>
         <div className="modal__content wack">
           <h1 className='wack'>Confirm</h1>
-          <p className='wack'>Are you sure you want to cancel <b>{deleteName}</b></p>
+          <p className='wack'>Are you sure you want to cancel <b>{!singleDoc || singleDoc.clientDetails.name}</b></p>
           <div className="buttonContainer wack" >
             <button id="yesButton" onClick={() => {
               setOpenToggleCancel(false)
-              handleCancel(editID)
+              handleCancel()
               getMTP()
               }} className='wack'>Yes</button>
             <button id="noButton" onClick={() => setOpenToggleCancel(false)} className='wack'>No</button>
@@ -313,7 +313,7 @@ export default function Mtp() {
                  <td>{policy.policyStartDate}</td>
 
                  <td className="started">
-                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setEditID(policy.id); getPolicy(policy.id)}}>&#8942;</button>
+                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy); getPolicy(policy.id)}}>&#8942;</button>
 
                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                    <Link to={`/admin/policy-details/${policy.id}`}>
@@ -328,7 +328,6 @@ export default function Mtp() {
                    </Link>
                    <li onClick={() => {
                                  setOpenToggleCancel(true)
-                                 setEditID(policy.id);
                                  setShowContext(false)
                                }}>
                      <div className="actionDiv">
@@ -338,7 +337,6 @@ export default function Mtp() {
                    <li 
                          onClick={() => {
                                  setOpenToggle(true)
-                                 setEditID(policy.id);
                                  setShowContext(false)
                                }}
                        >
