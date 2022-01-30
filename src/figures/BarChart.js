@@ -45,7 +45,7 @@ function BarChart () {
             listUsers().then(({ data }) => {
                 if(authClaims?.supervisor) {
                     const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
-                    return agentsIDs
+                    return [ ...agentsIDs, authentication.currentUser.uid]
 
                 } else if (authClaims?.admin) {
                     const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
