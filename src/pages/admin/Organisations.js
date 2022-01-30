@@ -7,7 +7,7 @@ import Pagination from "../../helpers/Pagination";
 import SearchBar from "../../components/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import { addDoc, collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import OrganisationModal from "../../components/OrganisationModel";
 import { Modal } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
@@ -25,6 +25,9 @@ import 'react-toastify/dist/ReactToastify.css'
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
+
+  // initialising the logs collection.
+  const logCollectionRef = collection(db, "logs");
 
   useEffect(() => {
     document.title = "Britam - Organisations";
@@ -60,43 +63,34 @@ export default function Organisations() {
   const [ show, handleShow, handleClose ] = useDialog();
   const [ searchText, setSearchText ] = useState('')
 
-  /* const [fields, handleFieldChange] = useForm({
-    uid: authentication.currentUser.uid,
-    category: '',
-    name: '',
-    org_email: '',
-    tel: '',
-    address: '',
-    logo: '',
-    role: '',
-    title: '',
-    contactName: '',
-    contactPhoneNumber: '',
-    contact_email: '',
-    password: ''
-
-}) */
-
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
 
     const handleDelete = async (id) => {
       const organisationDoc = doc(db, "organisations", id);
-      await deleteDoc(organisationDoc);
-      toast.success('Successfully deleted', {position: "top-center"});
+      await deleteDoc(organisationDoc)
+        .then(() => toast.success('Successfully deleted', {position: "top-center"}))
+        .then(async () => {
+          await addDoc(logCollectionRef, {
+            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+            type: 'organisation deletion',
+            status: 'successful',
+            message: `Successfully deleted organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
+          })
+        })
+        .catch(async () => {
+          toast.error(`Failed to deleted organisation: ${singleDoc.name}`, {position: "top-center"});
+          await addDoc(logCollectionRef, {
+            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+            type: 'organisation deletion',
+            status: 'failed',
+            message: `Failed to delete ${singleDoc.name}'s claim by ${authentication.currentUser.displayName}`
+          })
+        })
+      
     };
 
     const [singleDoc, setSingleDoc] = useState({});
-
-    const getSingleDoc = async (organisation) => {
-      // const docRef = doc(db, "organisations", id);
-      // const docSnap = await getDoc(docRef);
-      // setSingleDoc(docSnap.data());
-      setSingleDoc(organisation);
-      console.log(organisation)
-    };
-
-    console.log(singleDoc)
 
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => !data || data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
@@ -226,7 +220,7 @@ export default function Organisations() {
                 <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
                 
                 <td className="started">
-                    <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); getSingleDoc(organisation)}}>&#8942;</button>
+                    <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(organisation)}}>&#8942;</button>
 
                     <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                       
