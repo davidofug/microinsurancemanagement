@@ -4,7 +4,7 @@ import Header from "../components/header/Header";
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../components/searchBar/SearchBar'
 import { Table, Form } from 'react-bootstrap'
-import { getDoc, getDocs, collection, doc, deleteDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, getDoc, getDocs, collection, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { authentication, db, functions } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
@@ -25,6 +25,8 @@ export default function Mtp() {
   const { authClaims } = useAuth()
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
+  // initialising the logs collection.
+  const logCollectionRef = collection(db, "logs");
 
   const [ singleDoc, setSingleDoc ] = useState(null)
 
@@ -89,12 +91,6 @@ export default function Mtp() {
         setOpenToggle(false)
     }
     }
-
-    if(openToggle) {
-      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
-        
-    }
-    }
   }
 
 
@@ -106,8 +102,26 @@ export default function Mtp() {
   // delete a policy
   const handleDelete = async () => {
     const policyDoc = doc(db, "policies", singleDoc.id);
-    await deleteDoc(policyDoc);
-    toast.success('Successfully deleted', {position: "top-center"});
+    await deleteDoc(policyDoc)
+      .then(() => toast.success(`Successfully deleted ${singleDoc.clientDetails.name}'s sticker`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'successful',
+          message: `Successfully deleted ${singleDoc.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch(async() => {
+        toast.error(`Failed to deleted ${singleDoc.clientDetails.name}'s claim`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete ${singleDoc.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+    
   }
 
   // cancel a policy
