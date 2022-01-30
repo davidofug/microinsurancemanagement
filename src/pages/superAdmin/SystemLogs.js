@@ -31,7 +31,6 @@ function SystemLogs() {
   const [ logType, setLogType ] = useState(null)
   const [ date, setDate ] = useState(null)
 
-  console.log(logType)
 
   const shownLogs = !logs || logs
                                 .filter(log => !switchStatus || log.status === switchStatus)
@@ -70,6 +69,8 @@ function SystemLogs() {
                         <option value="user deletion">User Deletion</option>
                         <option value="policy creation">Policy Creation</option>
                         <option value="policy deletion">Policy Deletion</option>
+                        <option value="claim creation">Claim Creation</option>
+                        <option value="claim deletion">Claim Deletion</option>
                     </Form.Select>
                 </Form.Group>
             </div>

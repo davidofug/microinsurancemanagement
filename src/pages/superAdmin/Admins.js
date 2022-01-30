@@ -65,35 +65,35 @@ function Admins() {
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
-    const indexOfLastAdmin = currentPage * adminsPerPage
-    const indexOfFirstAdmin = indexOfLastAdmin - adminsPerPage
-    const currentAdmins = !admins || searchByName(admins).slice(indexOfFirstAdmin, indexOfLastAdmin)
-    const totalPagesNum = !admins || Math.ceil(admins.length / adminsPerPage)
+  const indexOfLastAdmin = currentPage * adminsPerPage
+  const indexOfFirstAdmin = indexOfLastAdmin - adminsPerPage
+  const currentAdmins = !admins || searchByName(admins).slice(indexOfFirstAdmin, indexOfLastAdmin)
+  const totalPagesNum = !admins || Math.ceil(admins.length / adminsPerPage)
 
-    const handleDelete = (admin) => {
-      const deleteUser = httpsCallable(functions, 'deleteUser')
-      deleteUser({uid: admin.uid})
-        .then( () => toast.success(`Successfully deleted ${admin.name}`, {position: "top-center"}))
-        .then( async () => {
-          await addDoc(logCollectionRef, {
-            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-            type: 'user deletion',
-            status: 'successful',
-            message: `Successfully deleted ${fields.user_role} [ ${admin.name} ] by ${authentication.currentUser.displayName}`
-        })})
-        
-        .catch( async (error) => {
-
-          toast.error(`Failed to deleted ${admin.name}`, {position: "top-center"});
-          await addDoc(logCollectionRef, {
-            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-            type: 'user deletion',
-            status: 'failed',
-            message: `Failed to delete ${fields.user_role} [ ${admin.name} ] by ${authentication.currentUser.displayName}`
-          })})
-          getAdmins()
+  const handleDelete = (admin) => {
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    deleteUser({uid: admin.uid})
+      .then( () => toast.success(`Successfully deleted ${admin.name}`, {position: "top-center"}))
+      .then( async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'successful',
+          message: `Successfully deleted ${fields.user_role} [ ${admin.name} ] by ${authentication.currentUser.displayName}`
+      })})
       
-    };
+      .catch( async (error) => {
+
+        toast.error(`Failed to deleted ${admin.name}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'failed',
+          message: `Failed to delete ${fields.user_role} [ ${admin.name} ] by ${authentication.currentUser.displayName}`
+        })})
+        getAdmins()
+    
+  };
 
     const handleAllCheck = () => {
       if(document.getElementById("firstAgentCheckbox").checked === true){
