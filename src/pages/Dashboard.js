@@ -54,7 +54,7 @@ function Dashboard() {
       
               const supervisorPolicies = allPolicies.filter(claim => usersUnderSupervisor.includes(claim.added_by_uid))
               setPolicies(supervisorPolicies)
-              return(allPolicies.filter(supervisorPolicies))
+              return(supervisorPolicies)
             })
           }
         
