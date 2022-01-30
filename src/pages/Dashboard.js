@@ -26,6 +26,7 @@ function Dashboard() {
         getClaims()
         getClients()
         getAgents()
+        getSupervisors()
         getAdmins()
         getPolicies()
         setStickers(handlePolicyStickers(await getPolicies()))
@@ -63,6 +64,19 @@ function Dashboard() {
             const resultsArray = results.data
             const myUsers = resultsArray.filter(user => user.role.agent === true)
             setAgents(myUsers)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    // getting supervisors
+    const [ supervisors, setSupervisors ] = useState([])
+    const getSupervisors = () => {
+        const listUsers = httpsCallable(functions, 'listUsers')
+        listUsers().then((results) => {
+            const resultsArray = results.data
+            const myUsers = resultsArray.filter(user => user.role.supervisor === true)
+            setSupervisors(myUsers)
         }).catch((err) => {
             console.log(err)
         })
@@ -158,19 +172,16 @@ function Dashboard() {
                                     </>
                                 }
                                 {authClaims.admin && <>
-                                    <h5 className="heading">Daily Reports Summary</h5>
+                                    <h5 className="heading">Supervisors</h5>
                                     <table>
-                                        <thead><tr><th>Category</th><th>Grand totals</th></tr></thead>
+                                        <thead><tr><th>Name</th><th>Address</th></tr></thead>
                                         <tbody>
-                                            <tr>
-                                                <td>MTP</td><td>UGX ___</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Comprehensive</td><td>UGX ___</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Windscreen</td><td>UGX ___</td>
-                                            </tr>
+                                            {supervisors.map(supervisor => (
+                                                <tr key={supervisor.uid}>
+                                                    <td>{supervisor.name}</td>
+                                                    <td>{supervisor.email}</td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </table>
                                     </>
