@@ -6,7 +6,6 @@ import { authentication, db } from '../../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../../hooks/useForm'
 import Loader from '../../components/Loader'
-import { AiOutlineCopy } from 'react-icons/ai'
 import PasswordGenerator from '../../components/PasswordGenerator'
 
 import { toast, ToastContainer } from 'react-toastify'
@@ -22,6 +21,9 @@ export default function AddOrganisation() {
 
     const [ isLoading, setIsLoading ] = useState(false)
     const [ password, setPassword ] = useState('')
+    // initialising the logs doc.
+    const logCollectionRef = collection(db, "logs");
+    const [ logo, setLogo ] = useState('')
 
     const organisationsCollectionRef = collection(db, 'organisations')
     const [fields, handleFieldChange] = useForm({
@@ -46,44 +48,94 @@ export default function AddOrganisation() {
       const [ progress, setProgress ] = useState(0)
     
 
-    const createOrganisation = async (event) => {
-        setIsLoading(true)
-        event.preventDefault()
-                // fields.logo = url
-                fields.password = password
-                await addDoc(organisationsCollectionRef, fields)
-                toast.success(`successfully added ${fields.name}`, {position: "top-center"});
-                
-                setIsLoading(false)
-                document.form2.reset()
-      }
+        const createOrganisation = async (event) => {
+                setIsLoading(true)
+                event.preventDefault()
+                        // fields.logo = url
+                        fields.password = password 
 
-      const uploadLogo = (logo) => {
-              console.log(logo)
-              console.log('nothing happend')
-                const storageRef = ref(storage, `images/${logo.name}`)
-                console.log(storageRef)
-                const uploadTask = uploadBytesResumable(storageRef, logo)
+                        if(logo){
+                                const storageRef = ref(storage, `images/${logo.name}`)
+                                console.log(storageRef)
+                                const uploadTask = uploadBytesResumable(storageRef, logo)
 
-                uploadTask.on(
-                        "state_changed",
-                        (snapshot) => {
-                                const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                                setProgress(prog)
-                        },
-                        (error) => console.log(error),
-                        async () => {
-                                        await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-                                        // setUrl(downloadUrl)
-                                        fields.logo = downloadUrl
-                                        console.log("file available at", downloadUrl)
+                                uploadTask.on(
+                                        "state_changed",
+                                        (snapshot) => {
+                                                const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                                                setProgress(prog)
+                                        },
+                                        (error) => console.log(error), async () => {
+                                                        await getDownloadURL(uploadTask.snapshot.ref)
+                                                                .then((downloadUrl) => {
+                                                        fields.logo = downloadUrl
+                                                        console.log("file available at", downloadUrl)
+                                                        })
+                                                                .then(async () => {
+                                                                        await addDoc(organisationsCollectionRef, fields)
+                                                                        .then(() => {
+                                                                                toast.success(`successfully added ${fields.name}`, {position: "top-center"})
+                                                                        })
+                                                                        .then(async () => {
+                                                                                await addDoc(logCollectionRef, {
+                                                                                        timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                                                                        type: 'organisation creation',
+                                                                                        status: 'successful',
+                                                                                        message: `Successfully created organisation: ${fields.name} by ${authentication.currentUser.displayName}`
+                                                                                })
+                                                                        })
+                                                                        .then(() => {
+                                                                                setIsLoading(false)
+                                                                                document.form2.reset()
+                                                                                setPassword('')
+                                                                        })
+                                                                        .catch(async () => {
+                                                                                toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+
+                                                                                await addDoc(logCollectionRef, {
+                                                                                        timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                                                                        type: 'organisation creation',
+                                                                                        status: 'failed',
+                                                                                        message: `Failed to create organisation: ${fields.name} by ${authentication.currentUser.displayName}`
+                                                                                })
+                                                                                setIsLoading(false)
+                                                                                document.form2.reset()
+                                                                                setPassword('')
+                                                                        })
+                                                                })
+                                        }
+                                )
+                        } else{
+                                await addDoc(organisationsCollectionRef, fields)
+                                .then(() => {
+                                        toast.success(`successfully added ${fields.name}`, {position: "top-center"})
+                                        setIsLoading(false)
+                                        document.form2.reset()
+                                        setPassword('')
                                 })
-                        }
-                ) 
-      }
-
-
-      
+                                .then(async () => {
+                                        await addDoc(logCollectionRef, {
+                                                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                                type: 'organisation creation',
+                                                status: 'successful',
+                                                message: `Successfully created organisation: ${fields.name} by ${authentication.currentUser.displayName}`
+                                        })
+                                })
+                                .catch(async () => {
+                                        toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+                                        setIsLoading(false)
+                                        document.form2.reset()
+                                        setPassword('')
+                                        await addDoc(logCollectionRef, {
+                                                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                                type: 'organisation creation',
+                                                status: 'failed',
+                                                message: `Failed to create organisation: ${fields.name} by ${authentication.currentUser.displayName}`
+                                        })
+                                })
+                        }             
+                        
+        }
 
 
     return (
@@ -133,7 +185,8 @@ export default function AddOrganisation() {
                                     <Form.Group className="mb-3">
                                             <Form.Label htmlFor='logo'>Upload Logo</Form.Label>
                                             <Form.Control id='logo' type="file" onChange={(event) => {
-                                                    uploadLogo(event.target.files[0])
+                                                //     uploadLogo(event.target.files[0])
+                                                setLogo(event.target.files[0])
                                             }} />
                                             {progress}
                                     </Form.Group>

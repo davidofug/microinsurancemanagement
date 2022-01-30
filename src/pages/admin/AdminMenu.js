@@ -25,8 +25,8 @@ export default function AdminMenu({ setLargeContentClass }) {
   const { logout } = useAuth()
     const handleLogout = async () => {
         try {
-            window.location = "/"
             await logout()
+            window.location = "/"
         }
         catch(error){
             
