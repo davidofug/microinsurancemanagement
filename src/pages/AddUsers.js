@@ -102,7 +102,7 @@ function AddUsers({role}) {
                                     timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
                                     type: 'user creation',
                                     status: 'successful',
-                                    message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                                    message: `Successfully created ${fields.user_role} - [ ${fields.name} ] by ${authentication.currentUser.displayName}`
                                 })
                                 setPassword('')
                                 setLogo('')
@@ -115,7 +115,7 @@ function AddUsers({role}) {
                                     timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
                                     type: 'user creation',
                                     status: 'failed',
-                                    message: `Failed to created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                                    message: `Failed to created ${fields.user_role} - [ ${fields.name} ] by ${authentication.currentUser.displayName}`
                                 })
 
                                 setPassword('')
@@ -134,7 +134,7 @@ function AddUsers({role}) {
                     timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
                     type: 'user creation',
                     status: 'successful',
-                    message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                    message: `Successfully created ${fields.user_role} - [ ${fields.name} ] by ${authentication.currentUser.displayName}`
                 })
                 setPassword('')
             }).catch(async (error) => {
@@ -144,7 +144,7 @@ function AddUsers({role}) {
                     timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
                     type: 'user creation',
                     status: 'failed',
-                    message: `Failed to created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                    message: `Failed to created ${fields.user_role} - [ ${fields.name} ] by ${authentication.currentUser.displayName}`
                 })
             })
         }
@@ -163,15 +163,6 @@ function AddUsers({role}) {
 
     console.log(logo)
 
-    const uploadLogo = () => {
-
-
-        
-
-          
-    }
-
-
     return (
         <div className='components'>
             <Header title={`Add ${role}`} subtitle={`Add a new ${role}`.toUpperCase()} />
@@ -183,8 +174,6 @@ function AddUsers({role}) {
                         </div>
                     }
                     <Form name='form3' onSubmit={handleSubmit}>
-                        
-
                         { role === 'supervisor' && 
                             <Form.Group className="mb-3" >
                                 <Form.Label htmlFor='organisation'>Organisation<span className='required'>*</span></Form.Label>
@@ -192,10 +181,25 @@ function AddUsers({role}) {
                             </Form.Group>
                         }
 
-                        {role === 'client' &&
+                        {role === 'client' && authClaims.agent &&
                             <Row>
                             <Form.Group className="m-3 categories" width="200px">
-                                <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)}>
+                                <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)} required>
+                                    <option value={""}>Policy Type</option>
+                                    {authClaims.mtp && <option value="mtp">MTP</option>}
+                                    {authClaims.comprehensive && <option value="comprehensive">Comprehensive</option>}
+                                    {authClaims.windscreen && <option value="windscreen">Windscreen</option>}
+                                    {authClaims.newImports && <option value="newImport">New Imports</option>}
+                                    {authClaims.transit && <option value="transit">Transit</option>}
+                                </Form.Select>
+                            </Form.Group>
+                        </Row>
+                        }
+
+                        {role === 'client' && authClaims.supervisor &&
+                            <Row>
+                            <Form.Group className="m-3 categories" width="200px">
+                                <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)} required>
                                     <option value={""}>Policy Type</option>
                                     <option value="mtp">MTP</option>
                                     <option value="comprehensive">Comprehensive</option>
@@ -385,7 +389,8 @@ function AddUsers({role}) {
                                 <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
                                 <Upload setLogo={setLogo}/>
 
-                                <PasswordGenerator password={password} setPassword={setPassword} />
+                                {role !== 'client' && <PasswordGenerator password={password} setPassword={setPassword} />}
+                                
 
                             </>
                         }

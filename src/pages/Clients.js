@@ -6,7 +6,7 @@ import Header from '../components/header/Header';
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar';
 import { Table, Modal } from 'react-bootstrap';
-import { functions, authentication } from '../helpers/firebase';
+import { functions, authentication, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
 import ClientModal from '../components/ClientModal'
@@ -16,6 +16,10 @@ import { AiFillCloseCircle } from 'react-icons/ai'
 import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import useDialog from '../hooks/useDialog';
+import { addDoc, collection } from 'firebase/firestore';
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Clients() {
 
@@ -24,24 +28,12 @@ export default function Clients() {
   const { authClaims } = useAuth()
   const [clients, setClients] = useState([]);
   const [ show, handleShow, handleClose ] = useDialog()
-  const [editID, setEditID] = useState(null);
 
-  const [fields, handleFieldChange] = useForm({
-    user_role: 'Customer',
-    email: '',
-    name: '',
-    dob: '',
-    gender: '',
-    phone: '',
-    address: '',
-    licenseNo: '',
-    NIN: '',
-    photo: ''
-})
+  // initialising the logs collection.
+  const logCollectionRef = collection(db, "logs");
 
 // edit client
-const [singleDoc, setSingleDoc] = useState(fields);
-const getSingleClient = async (id) => setSingleDoc(clients.filter(client => client.uid == id)[0])
+const [singleDoc, setSingleDoc] = useState();
 
 // getting Clients under a particular user.
 const getClients = () => {
@@ -78,15 +70,41 @@ const getClients = () => {
 
   // Confirm Box
   const [ openToggle, handleShowToggle, handleCloseToggle ] = useDialog()
+  const [ showContext, handleShowContext, handleCloseContext ] = useDialog()
   window.onclick = ({target}) => {
-    if(openToggle) {if (!target.matches('.wack') && !target.matches('#myb')) {handleCloseToggle()}}
+    if(openToggle) {
+      if (!target.matches('.wack') && !target.matches('#myb')) {handleCloseToggle()}
+      
+    }
+    if (!target.matches('.sharebtn')) {
+      handleCloseContext()
+    }
   }
 
   // deleting a user
-  const [ deleteName, setDeleteName ] = useState("")
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     const deleteUser = httpsCallable(functions, 'deleteUser')
-    deleteUser({uid:id}).then().catch()
+    deleteUser({uid:singleDoc.uid})
+      .then(() => toast.success(`Successfully deleted ${singleDoc.name}`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'successful',
+          message: `Successfully deleted client - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch( async () => {
+        toast.error(`Failed to deleted ${singleDoc.name}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete client - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+    })
+
+    getClients()
   };
 
   // search for client
@@ -95,15 +113,6 @@ const getClients = () => {
   const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
 
-  // actions context
-  const [ showContext, handleShowContext, handleCloseContext ] = useDialog()
-  if(showContext){
-    window.onclick = function(event) {
-        if (!event.target.matches('.sharebtn')) {
-            handleCloseContext()
-        }
-    }
-  }
   const [clickedIndex, setClickedIndex] = useState(null)
 
   // pagination
@@ -118,6 +127,7 @@ const getClients = () => {
     return (
         <div className='components'>
             <Header title="Clients" subtitle="MANAGING CLIENTS" />
+            <ToastContainer />
    
             <div id="add_client_group">
                 <div></div>
@@ -127,7 +137,7 @@ const getClients = () => {
                   </Link>
                 }
                 {authClaims.agent && 
-                  <Link to="/agent/add-user">
+                  <Link to="/agent/add-clients">
                       <button className='btn btn-primary cta'>Add Client</button>
                   </Link>
                 }
@@ -136,20 +146,19 @@ const getClients = () => {
             <div className={openToggle ? 'myModal is-active': 'myModal'}>
               <div className="modal__content wack">
                 <h1 className='wack'>Confirm</h1>
-                <p className='wack'>Are you sure you want to delete <b>{deleteName}</b></p>
+                <p className='wack'>Are you sure you want to delete <b>{singleDoc && singleDoc.name}</b></p>
                 <div className="buttonContainer wack" >
                   <button id="yesButton" onClick={() => {
                     handleCloseToggle()
-                    handleDelete(editID)
-                    getClients()
+                    handleDelete()
                     }} className='wack'>Yes</button>
-                  <button id="noButton" onClick={() => {handleCloseToggle(); setDeleteName("")}} className='wack'>No</button>
+                  <button id="noButton" onClick={() => {handleCloseToggle()}} className='wack'>No</button>
                 </div>
               </div>
             </div>
 
             <Modal show={show} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
+              <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
             </Modal>
 
             {clients !== null && clients.length > 0
@@ -184,15 +193,14 @@ const getClients = () => {
               <td className="started">
                 <button className="sharebtn" onClick={() => {
                   setClickedIndex(index);
+                  setSingleDoc(client)
                   showContext ? handleCloseContext() : handleShowContext() 
                   }}>&#8942;</button>
 
                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                             <li onClick={() => {
                                           handleShowToggle()
-                                          setEditID(client.uid);
                                           handleCloseContext()
-                                          setDeleteName(client.name)
                                         }}
                                 >
                                   <div className="actionDiv">
@@ -201,18 +209,11 @@ const getClients = () => {
                             </li>
                             <li onClick={() => {
                                     handleCloseContext()
-                                    setEditID(client.uid);
-                                    getSingleClient(client.uid)
                                     handleShow();
                                   }}
                                 >
                                   <div className="actionDiv">
                                     <i><MdEdit/></i> Edit
-                                  </div>
-                            </li>
-                            <li onClick={handleCloseContext}>
-                                  <div className="actionDiv">
-                                    <i><AiFillCloseCircle/></i> Close
                                   </div>
                             </li>
                 </ul>

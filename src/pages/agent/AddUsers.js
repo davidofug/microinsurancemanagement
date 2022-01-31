@@ -1,5 +1,5 @@
 import '../../assets/styles/addClients.css'
-import { authentication } from '../../helpers/firebase'
+import { authentication, db } from '../../helpers/firebase'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../../helpers/firebase'
 import { useEffect, useState } from 'react'
@@ -9,6 +9,10 @@ import Header from '../../components/header/Header'
 import { useForm } from '../../hooks/useForm'
 import useAuth from '../../contexts/Auth'
 import Loader from '../../components/Loader'
+import { collection, addDoc } from 'firebase/firestore'
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function AddUsers() {
     const { authClaims } = useAuth()
@@ -37,6 +41,11 @@ function AddUsers() {
         policyType: policyType,
     })
 
+    // initialising the logs doc.
+    const logCollectionRef = collection(db, "logs");
+
+    const [ logo, setLogo ] = useState(null)
+
     const handleSubmit = async (event) => {
         setIsLoading(true)
         event.preventDefault()
@@ -60,6 +69,8 @@ function AddUsers() {
     return (
         <div className='components'>
             <Header title="Add Clients" subtitle="ADD A NEW CLIENT" />
+            <ToastContainer />
+
             <div class="addComponentsData mb-3">
                     {isLoading && 
                         <div className='loader-wrapper'>
@@ -140,22 +151,7 @@ function AddUsers() {
                         <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
                         </Form.Group>
                     </Row>
-                    { user_role === 'agent' &&
-                        <>
-                            <Form.Group className="mb-3" >
-                                <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="comprehensive">
-                                <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="mtp">
-                                <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="windscreen">
-                                <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
-                            </Form.Group>
-                        </>
-                    }
+
                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
                         <Upload />
                     <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' />
