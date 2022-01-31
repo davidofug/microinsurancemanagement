@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar'
 import Header from '../components/header/Header';
-import { functions, authentication } from '../helpers/firebase';
+import { functions, authentication, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table, Modal, Form } from 'react-bootstrap'
 import useAuth from '../contexts/Auth';
@@ -14,12 +14,19 @@ import ClientModal from '../components/ClientModal';
 import { useForm } from '../hooks/useForm';
 import useDialog from '../hooks/useDialog'
 import { ImFilesEmpty } from 'react-icons/im'
+import { addDoc, collection } from 'firebase/firestore';
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Agents({role}) {
 
   useEffect(() => {document.title = 'Britam - Agents';getAgents()}, [])
   
   const { authClaims } = useAuth()
+
+   // initialising the logs collection.
+   const logCollectionRef = collection(db, "logs");
   
   // get agents
   const [agents, setAgents] = useState([]);
@@ -43,19 +50,6 @@ function Agents({role}) {
     }
   }
 
-  const [fields, handleFieldChange] = useForm({
-    user_role: 'agent',
-    email: '',
-    name: '',
-    dob: '',
-    gender: '',
-    phone: '',
-    address: '',
-    licenseNo: '',
-    NIN: '',
-    photo: '',
-})
-
 const [ open, handleOpen, handleClose ] = useDialog()
 
   // search for agent
@@ -72,11 +66,53 @@ const [ open, handleOpen, handleClose ] = useDialog()
   const totalPagesNum = !agents || Math.ceil(agents.length / clientsPerPage)
 
   // delete a single agent
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     const deleteUser = httpsCallable(functions, 'deleteUser')
-    deleteUser({uid:id}).then().catch(err => {
-      console.log(err)
+    deleteUser({uid:singleDoc.uid})
+      .then(() => toast.success(`Successfully deleted ${singleDoc.name}`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'successful',
+          message: `Successfully deleted agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch( async () => {
+        toast.error(`Failed to deleted ${singleDoc.name}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
     })
+
+    getAgents()
+  };
+
+  const handleMultpleDelete = async (arr) => {
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    deleteUser({uid: arr[0]})
+      .then(() => toast.success(`Successfully deleted ${arr[1]}`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'successful',
+          message: `Successfully deleted agent - ${arr[1].toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch( async () => {
+        toast.error(`Failed to deleted ${arr[1]}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete agent - ${arr[1].toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+    })
+
     getAgents()
   };
 
@@ -86,7 +122,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
       setDeleteArray([])
     } else{
       Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(agents.map(agent => agent.uid))
+      setDeleteArray(agents.map(agent => [agent.uid, agent.name]))
     }
     
     
@@ -98,24 +134,33 @@ const [ open, handleOpen, handleClose ] = useDialog()
   const [ deleteAllArray, setDeleteAllArray ] = useState([])
   const handleBulkDelete = async () => {
     if(bulkDelete){
-      deleteArray.map(agentuid => handleDelete(agentuid))
+      deleteArray.map(agent => handleMultpleDelete(agent))
       getAgents()
     }
+  }
+
+  // Confirm Box
+  const [showContext, setShowContext] = useState(false)
+  const [ openToggle, setOpenToggle ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggle === true) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggle(false)
+    }
+    }
+    if (!event.target.matches('.sharebtn')) {
+      setShowContext(false)
+  }
   }
 
   
 
   // get a single doc
-  const [singleDoc, setSingleDoc] = useState(fields);
-  const getSingleAgent = async (id) => setSingleDoc(agents.filter(agent => agent.uid == id)[0])
+  const [singleDoc, setSingleDoc] = useState({});
     
-  // actions context
-  const [showContext, setShowContext] = useState(false)
-  window.onclick = function(event) {
-      if (!event.target.matches('.sharebtn')) {
-          setShowContext(false)
-      }
-  }
+
+  
+
 
   const [clickedIndex, setClickedIndex] = useState(null)
 
@@ -125,9 +170,12 @@ const [ open, handleOpen, handleClose ] = useDialog()
 
   const paginatedShownAgent = !agents || shownAgents.slice(indexOfFirstAgent, indexOfLastAgent)
 
+  console.log(deleteArray)
+
     return (
         <div className='components'>
             <Header title="Agents" subtitle="MANAGING AGENTS" />
+            <ToastContainer />
    
             <div id="add_client_group">
                 <div></div>
@@ -143,8 +191,22 @@ const [ open, handleOpen, handleClose ] = useDialog()
                 }
             </div>
 
+            <div className={openToggle ? 'myModal is-active': 'myModal'}>
+              <div className="modal__content wack">
+                <h1 className='wack'>Confirm</h1>
+                <p className='wack'>Are you sure you want to delete <b>{singleDoc.name}</b></p>
+                <div className="buttonContainer wack" >
+                  <button id="yesButton" onClick={() => {
+                    setOpenToggle(false)
+                    handleDelete()
+                    }} className='wack'>Yes</button>
+                  <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+                </div>
+              </div>
+            </div>
+
             <Modal show={open} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} fields={fields} handleFieldChange={handleFieldChange} handleClose={handleClose} />
+              <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
             </Modal>
 
             {agents !== null && agents.length > 0
@@ -178,8 +240,8 @@ const [ open, handleOpen, handleClose ] = useDialog()
                         <tbody>
                           {paginatedShownAgent.map((agent, index) => (
                               <tr key={agent.uid}>
-                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, agent.uid]) : 
-                              setDeleteArray(deleteArray.filter(element => element !== agent.uid))
+                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [agent.uid, agent.name]]) : 
+                              setDeleteArray(deleteArray.filter(element => element[0] !== agent.uid))
                             }/></td>
                               <td>{agent.name}</td>
                               <td>{agent.email}</td>
@@ -195,13 +257,11 @@ const [ open, handleOpen, handleClose ] = useDialog()
                               <td>{agent.meta.address}</td>
                               {authClaims.admin && <td>{agent.meta.added_by_name}</td>}
                               <td className="started">
-                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext)}}>&#8942;</button>
+                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(agent)}}>&#8942;</button>
 
                                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                                             <li onClick={() => {
                                                     setShowContext(false)
-                                                    // setEditID(agent.uid);
-                                                    getSingleAgent(agent.uid)
                                                     handleOpen(); 
                                                     console.log(agent.uid)
                                                   }}
@@ -211,23 +271,12 @@ const [ open, handleOpen, handleClose ] = useDialog()
                                                   </div>
                                             </li>
                                             <li onClick={() => {
+                                                        setOpenToggle(true)
                                                         setShowContext(false)
-                                                        const confirmBox = window.confirm(
-                                                          `Are you sure you want to ${agent.name}`
-                                                        );
-                                                        if (confirmBox === true) {
-                                                          handleDelete(agent.uid)
-                                                        }
                                                       }}
                                                 >
                                                   <div className="actionDiv">
                                                     <i><MdDelete/></i> Delete
-                                                  </div>
-                                            </li>
-                                            <li onClick={() => setShowContext(false)}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><AiFillCloseCircle/></i> Close
                                                   </div>
                                             </li>
                                 </ul>

@@ -10,7 +10,7 @@ import Dashboard from '../pages/Dashboard'
 import Windscreen from '../pages/Windscreen'
 import Settings from '../pages/Settings'
 import Comprehensive from '../pages/Comprehensive'
-import AddUsers from '../pages/agent/AddUsers'
+import AddUsers from '../pages/AddUsers'
 import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
 import AddClaims from '../pages/AddClaims'
@@ -27,8 +27,8 @@ function AgentsRoutes() {
             <PrivateRoute path="/agent/clients" >
                 <Clients />
             </PrivateRoute>
-            <PrivateRoute path="/agent/add-user" >
-                <AddUsers />
+            <PrivateRoute path="/agent/add-clients" >
+                <AddUsers role="client" />
             </PrivateRoute>
             <PrivateRoute path="/agent/user" >
                 <Users />

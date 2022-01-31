@@ -102,7 +102,7 @@ function Supervisors() {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
           type: 'user deletion',
           status: 'successful',
-          message: `Successfully deleted ${arr[1]} by ${authentication.currentUser.displayName}`
+          message: `Successfully deleted supervisor - ${arr[1]} by ${authentication.currentUser.displayName}`
         })
       })
       .catch( async () => {
@@ -111,7 +111,7 @@ function Supervisors() {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
           type: 'sticker deletion',
           status: 'failed',
-          message: `Failed to delete ${arr[1]} by ${authentication.currentUser.displayName}`
+          message: `Failed to delete supervisor - ${arr[1]} by ${authentication.currentUser.displayName}`
         })
     })
 
