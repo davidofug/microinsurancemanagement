@@ -24,8 +24,9 @@ function SuperAdminMenu({ setLargeContentClass }) {
     const { logout } = useAuth()
     const handleLogout = async () => {
         try {
-            window.location = "/"
+            localStorage.removeItem('onRefresh')
             await logout()
+            window.location = "/"
         }
         catch(error){
             console.log(error)

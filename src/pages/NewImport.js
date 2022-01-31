@@ -18,7 +18,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function Mtp() {
-  useEffect(() => { document.title = "Britam - Motor Third Party"; getMTP()}, []);
+  useEffect(() => { document.title = "Britam - New Imports"; getMTP()}, []);
 
   
   // policies
@@ -102,6 +102,7 @@ export default function Mtp() {
   // delete a policy
   const handleDelete = async () => {
     const policyDoc = doc(db, "policies", singleDoc.id);
+
     await deleteDoc(policyDoc)
       .then(() => toast.success(`Successfully deleted ${singleDoc.clientDetails.name}'s sticker`, {position: "top-center"}))
       .then(async () => {
@@ -121,6 +122,36 @@ export default function Mtp() {
           message: `Failed to delete ${singleDoc.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
         })
       })
+
+      getMTP()
+    
+  }
+
+  // delete multiple policies
+  const handleMultipleDelete = async (arr) => {
+    const policyDoc = doc(db, "policies", arr[0]);
+
+    await deleteDoc(policyDoc)
+      .then(() => toast.success(`Successfully deleted ${arr[1]}'s sticker`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'successful',
+          message: `Successfully deleted ${arr[1]}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch(async() => {
+        toast.error(`Failed to deleted ${arr[1]}'s claim`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete ${arr[1]}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+
+      getMTP()
     
   }
 
@@ -160,7 +191,7 @@ export default function Mtp() {
       setDeleteArray([])
     } else{
       Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(policies.map(policy => policy.id))
+      setDeleteArray(policies.map(policy => [policy.id, policy.clientDetails.name]))
     }
   }
 
@@ -169,7 +200,7 @@ export default function Mtp() {
   const [ deleteArray, setDeleteArray ] = useState([])
   const handleBulkDelete = async () => {
     if(bulkDelete){
-      deleteArray.map(agentuid => handleDelete(agentuid))
+      deleteArray.map(policy=> handleMultipleDelete(policy))
     }
   }
 
@@ -187,7 +218,13 @@ export default function Mtp() {
   const [ deleteName, setDeleteName ] = useState('')
   const getPolicy = async (id) => {
     const policyDoc = doc(db, "policies", id);
-    return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
+    await getDoc(policyDoc)
+      .then(result => {
+        return result.data().clientDetails.name
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   // pagination
@@ -205,17 +242,18 @@ export default function Mtp() {
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
-  console.log(policies)
+  console.log(deleteArray)
+
 
   return (
     <div className="components">
-      <Header title="New Imports" subtitle="MANAGING NEW IMPORTS POLICIES" />
+      <Header title="New Import" subtitle="MANAGING NEW IMPORT POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-newImports">
-            <button className="btn btn-primary cta">Add New Imports</button>
+          <Link to="/supervisor/add-newImport">
+            <button className="btn btn-primary cta">Add New Import</button>
           </Link>
         </div>
       }
@@ -223,8 +261,8 @@ export default function Mtp() {
       {authClaims.agent &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/agent/add-newImports">
-            <button className="btn btn-primary cta">Add New Imports</button>
+          <Link to="/agent/add-newImport">
+            <button className="btn btn-primary cta">Add New Import</button>
           </Link>
         </div>
       }
@@ -290,8 +328,8 @@ export default function Mtp() {
          <tbody>
              {paginatedShownPolicies.map((policy, index) => (
                <tr key={policy.id}>
-                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, policy.id]) : 
-                   setDeleteArray(deleteArray.filter(element => element !== policy.id))
+                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [policy.id, policy.clientDetails.name]]) : 
+                   setDeleteArray(deleteArray.filter(element => element[0] !== policy.id))
                  }/></td>
                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
@@ -328,7 +366,7 @@ export default function Mtp() {
                  <td>{policy.policyStartDate}</td>
 
                  <td className="started">
-                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy); getPolicy(policy.id)}}>&#8942;</button>
+                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy); console.log(getPolicy(policy.id))}}>&#8942;</button>
 
                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                    <Link to={`/admin/policy-details/${policy.id}`}>
@@ -401,7 +439,7 @@ export default function Mtp() {
           <div className="no-table-data">
               <i><ImFilesEmpty /></i>
               <h4>No match</h4>
-              <p>There is no current match for New Imports sticker</p>
+              <p>There is no current match for New Import sticker</p>
           </div>
         }
 
@@ -417,7 +455,7 @@ export default function Mtp() {
           <div className="no-table-data">
             <i><ImFilesEmpty /></i>
             <h4>No data yet</h4>
-            <p>You have not created any New Imports Stickers Yet</p>
+            <p>You have not created any New Import Stickers Yet</p>
           </div>
         :
           <Loader />
