@@ -24,6 +24,8 @@ function Reports() {
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
 
+  const [ ReportCSV, setReportCSV ] = useState([])
+
 
   const getPolicies = async () => {
     const data = await getDocs(policyCollectionRef);
@@ -40,20 +42,11 @@ function Reports() {
       
       const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
 
-      console.log(usersUnderAdmin)
 
       const AdminPolicies = policiesArray.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
       AdminPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminPolicies)
     })
 
-
-
-  //   const data = await getDocs(policyCollectionRef);
-  //   if((data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))).length === 0){
-  //     setPolicies(null)
-  //   } else{
-  //     setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-  //   }
   }
 
   // TODO: look for a better way to switch between categories
@@ -132,7 +125,53 @@ function Reports() {
   
   const totalPagesNum = !policies || Math.ceil(shownPolicies.length / policiesPerPage)
 
-  console.log(policies)
+  paginatedShownPolicies.forEach(policy => {
+    // setReportCSV({
+    //   Category: policy.category
+    // })
+    ReportCSV.push({
+      "Policy Holder": policy.clientDetails.name,
+      category: policy.category,
+      "Plate Number": policy.stickersDetails[0].plateNo
+    })
+  })
+
+
+  // Quick and simple export target #table_id into a csv
+const generateReport = (table_id) => {
+  console.log("hey")
+  // Select rows from table_id
+  var rows = document.querySelectorAll('table#' + table_id + ' tr');
+  // Construct csv
+  var csv = [];
+  for (var i = 0; i < rows.length; i++) {
+      var row = [], cols = rows[i].querySelectorAll('td, th');
+      for (var j = 0; j < cols.length; j++) {
+          // Clean innertext to remove multiple spaces and jumpline (break csv)
+          var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+          // Escape double-quote with double-double-quote
+          data = data.replace(/"/g, '""');
+          // Push escaped string
+          row.push('"' + data + '"');
+      }
+      csv.push(row.join(','));
+  }
+  var csv_string = csv.join('\n');
+
+
+  // Downloading rg csv
+  const filename = 'Britam Reports' + new Date().toLocaleDateString() + '.csv';
+
+  const link = document.createElement('a');
+  link.style.display = 'none';
+  link.setAttribute('target', '_blank');
+  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 
 
   return (
@@ -149,15 +188,8 @@ function Reports() {
                 placeholder={"Search for Report"} value={searchText} handleSearch={handleSearch}
               />
               <div></div>
-                <CSVLink
-                  data={policies}
-                  filename={"Britam-Reports.csv"}
-                  className="btn btn-primary cta"
-                  target="_blank"
-                >
-                  Export <MdDownload />
-                </CSVLink>
-            </div>
+              <button onClick={() => generateReport("myTable")} className="btn btn-primary cta">Export <MdDownload /></button> 
+          </div>
 
             <div style={{display: "flex", alignItems: "center"}}>  
                   <Form.Group className="m-3 categories" width="180px">
@@ -237,7 +269,7 @@ function Reports() {
             {shownPolicies.length > 0
             ?
               <>
-                <Table striped hover responsive>
+                <Table striped hover responsive id="myTable">
               <thead>
 
               <tr style={{borderBottom: "1px solid #000"}}>
@@ -296,12 +328,16 @@ function Reports() {
                             
                           })}
                           <tr>
-                            <th colSpan={12}>Subtotal Total</th><th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(stickerFeeCurrentTotal)}</th><th>{currencyFormatter(vatCurrentTotal)}</th><th>{currencyFormatter(stumpDutyCurrentTotal)}</th><th>{currencyFormatter(commissionCurrentTotal)}</th><th></th><th></th><th>UGX</th>
+                            <th>Subtotal Total</th>
+                            <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                            <th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(stickerFeeCurrentTotal)}</th><th>{currencyFormatter(vatCurrentTotal)}</th><th>{currencyFormatter(stumpDutyCurrentTotal)}</th><th>{currencyFormatter(commissionCurrentTotal)}</th><th></th><th></th><th>UGX</th>
                           </tr>
               </tbody>
               <tfoot>
                 <tr>
-                  <th colSpan={12}>Grand Total</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
+                  <th>Grand Total</th>
+                  <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                  <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
                 </tr>
               </tfoot>
             </Table>
