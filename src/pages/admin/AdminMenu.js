@@ -25,8 +25,10 @@ export default function AdminMenu({ setLargeContentClass }) {
   const { logout } = useAuth()
     const handleLogout = async () => {
         try {
+            localStorage.removeItem('onRefresh')
             await logout()
             window.location = "/"
+            console.log('reached this point')
         }
         catch(error){
             

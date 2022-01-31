@@ -122,6 +122,32 @@ export default function Mtp() {
     
   }
 
+  // delete multiple policies
+  const handleMultipleDelete = async (arr) => {
+    const policyDoc = doc(db, "policies", arr[0]);
+
+    await deleteDoc(policyDoc)
+      .then(() => toast.success(`Successfully deleted ${arr[1]}'s sticker`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'successful',
+          message: `Successfully deleted ${arr[1]}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch(async() => {
+        toast.error(`Failed to deleted ${arr[1]}'s claim`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete ${arr[1]}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+    
+  }
+
   // cancel a policy
   const handleCancel = async () => {
   const policyRef = doc(db, "policies", singleDoc.id)
@@ -158,7 +184,7 @@ export default function Mtp() {
       setDeleteArray([])
     } else{
       Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(policies.map(policy => policy.id))
+      setDeleteArray(policies.map(policy => [policy.id, policy.clientDetails.name]))
     }
   }
 
@@ -167,7 +193,7 @@ export default function Mtp() {
   const [ deleteArray, setDeleteArray ] = useState([])
   const handleBulkDelete = async () => {
     if(bulkDelete){
-      deleteArray.map(agentuid => handleDelete(agentuid))
+      deleteArray.map(policy=> handleMultipleDelete(policy))
     }
   }
 
@@ -234,7 +260,7 @@ export default function Mtp() {
           <div className="buttonContainer wack" >
             <button id="yesButton" onClick={() => {
               setOpenToggle(false)
-              handleDelete()
+              handleDelete(singleDoc.id)
               getMTP()
               }} className='wack'>Yes</button>
             <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
@@ -288,8 +314,8 @@ export default function Mtp() {
          <tbody>
              {paginatedShownPolicies.map((policy, index) => (
                <tr key={policy.id}>
-                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, policy.id]) : 
-                   setDeleteArray(deleteArray.filter(element => element !== policy.id))
+                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [policy.id, policy.clientDetails.name]]) : 
+                   setDeleteArray(deleteArray.filter(element => element[0] !== policy.id))
                  }/></td>
                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
