@@ -4,7 +4,7 @@ import { Form, Alert, Modal, Badge } from 'react-bootstrap'
 import { MdCheckCircle } from 'react-icons/md'
 import Header from '../components/header/Header'
 import DefaultAvatar from '../components/DefaultAvatar'
-import { db } from '../helpers/firebase'
+import { db, authentication } from '../helpers/firebase'
 import { AiOutlineEdit } from 'react-icons/ai'
 import useDialog from '../hooks/useDialog'
 import useAuth from '../contexts/Auth'
@@ -123,7 +123,12 @@ function Settings() {
                         <p>User Detail</p>
                         <div className='profileSection'>
                             <div className="avatarSection">
-                                <DefaultAvatar />
+                            {authentication?.currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8"
+                                ?
+                                    <img src={authentication?.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>
+                                :
+                                    <DefaultAvatar />
+                                }
                                 <div>
                                     <h6 style={{margin: "0"}}>{currentUser.displayName}</h6>
                                     <p>{currentUser.email}</p>
