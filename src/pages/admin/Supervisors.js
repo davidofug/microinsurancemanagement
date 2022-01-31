@@ -43,28 +43,13 @@ function Supervisors() {
       }
     }
 
-    const [fields, handleFieldChange] = useForm({
-      user_role: 'supervisor',
-      email: '',
-      name: '',
-      dob: '',
-      gender: '',
-      phone: '',
-      address: '',
-      licenseNo: '',
-      NIN: '',
-      photo: '',
-  })
   
-  const [singleDoc, setSingleDoc] = useState(fields);
-  
-  const getSingleSupervisor = async (id) => setSingleDoc(supervisors.filter(supervisor => supervisor.uid == id)[0])
+  const [singleDoc, setSingleDoc] = useState({});
 
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const [editID, setEditID] = useState(null);
 
   const [ currentPage, setCurrentPage ] = useState(1)
   const [supervisorsPerPage] = useState(10)
@@ -92,7 +77,7 @@ function Supervisors() {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
           type: 'user deletion',
           status: 'successful',
-          message: `Successfully deleted ${singleDoc.name} by ${authentication.currentUser.displayName}`
+          message: `Successfully deleted supervisor - ${singleDoc.name} by ${authentication.currentUser.displayName}`
         })
       })
       .catch( async () => {
@@ -101,7 +86,7 @@ function Supervisors() {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
           type: 'sticker deletion',
           status: 'failed',
-          message: `Failed to delete ${singleDoc.name} by ${authentication.currentUser.displayName}`
+          message: `Failed to delete supervisor - ${singleDoc.name} by ${authentication.currentUser.displayName}`
         })
     })
 
@@ -208,7 +193,7 @@ function Supervisors() {
             </div>
 
             <Modal show={show} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
+              <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
             </Modal>
 
             {supervisors !== null && supervisors.length > 0
@@ -260,7 +245,6 @@ function Supervisors() {
                                                   </div>
                                             </li>
                                             <li onClick={() => {
-                                                    getSingleSupervisor(supervisor.uid)
                                                     setShowContext(false)
                                                     handleShow();
                                                   }}
