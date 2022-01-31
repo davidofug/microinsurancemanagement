@@ -4,7 +4,7 @@ import { MdCloudUpload  } from 'react-icons/md'
 import { FaFileAlt } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
 
-export default function Upload({uploadLogo}) {
+export default function Upload({setLogo}) {
 
     const [ fileName, setFileName ] = useState("No selected File")
 
@@ -14,7 +14,7 @@ export default function Upload({uploadLogo}) {
                 document.querySelector(".input-file").click()
             }}>
                 <input type="file" className='input-file' hidden id='photo' defaultValue={""} onChange={({target: {files}}) => {
-                    uploadLogo(files[0])
+                    setLogo(files[0])
                     files[0] && setFileName(files[0].name)
                 }}/>
                 <MdCloudUpload id='upload-icon'/>

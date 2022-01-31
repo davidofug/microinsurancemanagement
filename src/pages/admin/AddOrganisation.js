@@ -69,7 +69,6 @@ export default function AddOrganisation() {
                                                         await getDownloadURL(uploadTask.snapshot.ref)
                                                                 .then((downloadUrl) => {
                                                         fields.logo = downloadUrl
-                                                        console.log("file available at", downloadUrl)
                                                         })
                                                                 .then(async () => {
                                                                         await addDoc(organisationsCollectionRef, fields)
