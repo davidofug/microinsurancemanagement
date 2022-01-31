@@ -242,8 +242,8 @@ tbody, td, tfoot, th, thead, tr{
 
 #search{
     display: grid;
-    grid-template-columns: 5fr 1fr 1fr;
-    justify-content: center;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
     align-items: center;
 }
 

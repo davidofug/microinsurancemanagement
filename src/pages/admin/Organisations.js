@@ -10,7 +10,6 @@ import { db } from '../../helpers/firebase'
 import { addDoc, collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import OrganisationModal from "../../components/OrganisationModel";
 import { Modal } from 'react-bootstrap'
-import { useForm } from "../../hooks/useForm";
 import { authentication } from "../../helpers/firebase";
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
@@ -167,15 +166,6 @@ export default function Organisations() {
             value={searchText}
             handleSearch={handleSearch}
           />
-          <div></div>
-          <CSVLink
-            data={organisations}
-            filename={"Britam-Organisations.csv"}
-            className="btn btn-primary cta"
-          >
-            {" "}
-            Export <MdDownload />
-          </CSVLink>
         </div>
 
         <Table
@@ -183,8 +173,6 @@ export default function Organisations() {
           hover
           striped
           responsive
-          cellPadding={0}
-          cellSpacing={0}
           className="mt-5"
         >
           <thead>

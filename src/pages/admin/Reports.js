@@ -1,7 +1,6 @@
 // import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react";
 import { MdDownload } from "react-icons/md";
-import { CSVLink } from "react-csv";
 import SearchBar from "../../components/searchBar/SearchBar";
 import Header from "../../components/header/Header";
 import { getDocs, collection } from 'firebase/firestore'
@@ -13,6 +12,7 @@ import Loader from '../../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import { httpsCallable } from 'firebase/functions';
 import { authentication, functions } from '../../helpers/firebase'
+import { generateReport } from '../../helpers/generateReport'
 
 function Reports() {
   useEffect(() => {
@@ -23,8 +23,6 @@ function Reports() {
   // policies
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
-
-  const [ ReportCSV, setReportCSV ] = useState([])
 
 
   const getPolicies = async () => {
@@ -41,7 +39,6 @@ function Reports() {
       const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
       
       const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
-
 
       const AdminPolicies = policiesArray.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
       AdminPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminPolicies)
@@ -125,52 +122,9 @@ function Reports() {
   
   const totalPagesNum = !policies || Math.ceil(shownPolicies.length / policiesPerPage)
 
-  paginatedShownPolicies.forEach(policy => {
-    // setReportCSV({
-    //   Category: policy.category
-    // })
-    ReportCSV.push({
-      "Policy Holder": policy.clientDetails.name,
-      category: policy.category,
-      "Plate Number": policy.stickersDetails[0].plateNo
-    })
-  })
 
 
-  // Quick and simple export target #table_id into a csv
-const generateReport = (table_id) => {
-  console.log("hey")
-  // Select rows from table_id
-  var rows = document.querySelectorAll('table#' + table_id + ' tr');
-  // Construct csv
-  var csv = [];
-  for (var i = 0; i < rows.length; i++) {
-      var row = [], cols = rows[i].querySelectorAll('td, th');
-      for (var j = 0; j < cols.length; j++) {
-          // Clean innertext to remove multiple spaces and jumpline (break csv)
-          var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
-          // Escape double-quote with double-double-quote
-          data = data.replace(/"/g, '""');
-          // Push escaped string
-          row.push('"' + data + '"');
-      }
-      csv.push(row.join(','));
-  }
-  var csv_string = csv.join('\n');
 
-
-  // Downloading rg csv
-  const filename = 'Britam Reports' + new Date().toLocaleDateString() + '.csv';
-
-  const link = document.createElement('a');
-  link.style.display = 'none';
-  link.setAttribute('target', '_blank');
-  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
-  link.setAttribute('download', filename);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
 
 
 
@@ -187,8 +141,10 @@ const generateReport = (table_id) => {
               <SearchBar
                 placeholder={"Search for Report"} value={searchText} handleSearch={handleSearch}
               />
-              <div></div>
-              <button onClick={() => generateReport("myTable")} className="btn btn-primary cta">Export <MdDownload /></button> 
+              <div style={{display: "flex", justifyContent: "flex-end"}}>
+                <button onClick={() => generateReport("myTable")} className="btn btn-primary cta">Export <MdDownload /></button> 
+              </div>
+              
           </div>
 
             <div style={{display: "flex", alignItems: "center"}}>  
