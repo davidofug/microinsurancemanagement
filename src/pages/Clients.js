@@ -1,7 +1,5 @@
-import { CSVLink } from 'react-csv'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { MdDownload } from 'react-icons/md'
 import Header from '../components/header/Header';
 import Pagination from '../helpers/Pagination';
 import SearchBar from '../components/searchBar/SearchBar';
@@ -10,9 +8,7 @@ import { functions, authentication, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import useAuth from '../contexts/Auth';
 import ClientModal from '../components/ClientModal'
-import { useForm } from '../hooks/useForm';
 import { MdEdit, MdDelete } from 'react-icons/md'
-import { AiFillCloseCircle } from 'react-icons/ai'
 import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import useDialog from '../hooks/useDialog';
@@ -166,17 +162,15 @@ const getClients = () => {
               <div className="componentsData shadow-sm table-card">
                 <div id="search">
                   <SearchBar placeholder={"Search Client by name"} value={searchText} handleSearch={handleSearch}/>
-                  <div></div>
-                  <CSVLink data={clients} filename={"Britam-Clients.csv"} className="btn btn-primary cta">
-                    Export <MdDownload />
-                  </CSVLink>
+                  <div style={{display: "flex", justifyContent: "flex-end"}}>
+                  </div>
                 </div>
 
 
                 {currentClients.length > 0
                 ?
                   <>
-                    <Table hover striped responsive className='mt-5'>
+                    <Table hover striped responsive className='mt-5' id='myTable'>
                       <thead>
                           <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}<th>Action</th></tr>
                       </thead>
