@@ -25,6 +25,7 @@ export default function Mtp() {
   const { authClaims } = useAuth()
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
+  
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
