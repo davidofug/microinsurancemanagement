@@ -37,6 +37,8 @@ function AddUsers({role}) {
 
     // initialising the logs doc.
     const logCollectionRef = collection(db, "logs");
+
+    const [ logo, setLogo ] = useState(null)
     
 
     /* const checkedOrganisation = () => {
@@ -75,30 +77,80 @@ function AddUsers({role}) {
         fields['password'] = password
 
 
-        addUser(fields).then( async (results) => {
-            toast.success(`Successfully added ${fields.name}`, {position: "top-center"});
-            setIsLoading(false)
-            document.form3.reset()            
-        }).then( async () => {
-            await addDoc(logCollectionRef, {
-                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                type: 'user creation',
-                status: 'successful',
-                message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
-            })
-            setPassword('')
-        }).catch(async (error) => {
-            console.log(error)
+        if(logo){
+            const storageRef = ref(storage, `images/${logo.name}`)
+            const uploadTask = uploadBytesResumable(storageRef, logo)
 
-            toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                        const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                        setProgress(prog)
+                },
+                (error) => console.log(error),
+                async () => {
+                                await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+                                fields.photo = downloadUrl
+                        })
+                        .then(async() => {
+                            addUser(fields).then( async (results) => {
+                                toast.success(`Successfully added ${fields.name}`, {position: "top-center"});
+                                setIsLoading(false)
+                                document.form3.reset()            
+                            }).then( async () => {
+                                await addDoc(logCollectionRef, {
+                                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                    type: 'user creation',
+                                    status: 'successful',
+                                    message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                                })
+                                setPassword('')
+                                setLogo('')
+                            }).catch(async (error) => {
+                                console.log(error)
+                    
+                                toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+                    
+                                await addDoc(logCollectionRef, {
+                                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                    type: 'user creation',
+                                    status: 'failed',
+                                    message: `Failed to created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                                })
 
-            await addDoc(logCollectionRef, {
-                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                type: 'user creation',
-                status: 'failed',
-                message: `Failed to created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                                setPassword('')
+                                setLogo('')
+                            })
+                        })
+                }
+        ) 
+        } else{
+            addUser(fields).then( async (results) => {
+                toast.success(`Successfully added ${fields.name}`, {position: "top-center"});
+                setIsLoading(false)
+                document.form3.reset()            
+            }).then( async () => {
+                await addDoc(logCollectionRef, {
+                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                    type: 'user creation',
+                    status: 'successful',
+                    message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                })
+                setPassword('')
+            }).catch(async (error) => {
+                toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+    
+                await addDoc(logCollectionRef, {
+                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                    type: 'user creation',
+                    status: 'failed',
+                    message: `Failed to created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                })
             })
-        })
+        }
+
+
+        
 
     }
 
@@ -109,29 +161,16 @@ function AddUsers({role}) {
     //const [ logo, setLogo ] = useState(null)
     const [ progress, setProgress ] = useState(0)
 
-    const uploadLogo = (logo) => {
-          const storageRef = ref(storage, `images/${logo.name}`)
-          console.log(storageRef)
-          const uploadTask = uploadBytesResumable(storageRef, logo)
+    console.log(logo)
 
-          uploadTask.on(
-                  "state_changed",
-                  (snapshot) => {
-                          const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                          setProgress(prog)
-                  },
-                  (error) => console.log(error),
-                  async () => {
-                                  await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-                                  // setUrl(downloadUrl)
-                                  fields.photo = downloadUrl
-                                  console.log("file available at", downloadUrl)
-                          })
-                  }
-          ) 
+    const uploadLogo = () => {
+
+
+        
+
+          
     }
 
-    console.log(clientType)
 
     return (
         <div className='components'>
@@ -232,7 +271,7 @@ function AddUsers({role}) {
                                             </Form.Group>
                                         </Row>
                                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                        <Upload uploadLogo={uploadLogo}/>
+                                        <Upload setLogo={setLogo}/>
                                 </>
                                 }
                                 {clientType === 'corporateEntity' && 
@@ -344,7 +383,7 @@ function AddUsers({role}) {
                                     </>
                                 }
                                 <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                <Upload uploadLogo={uploadLogo}/>
+                                <Upload setLogo={setLogo}/>
 
                                 <PasswordGenerator password={password} setPassword={setPassword} />
 

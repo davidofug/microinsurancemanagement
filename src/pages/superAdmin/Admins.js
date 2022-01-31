@@ -75,6 +75,8 @@ function Admins() {
           status: 'failed',
           message: `Failed to delete admin [ ${singleDoc.name} ] by ${authentication.currentUser.displayName}`
         })})
+
+
         getAdmins()
     
   };
@@ -100,8 +102,8 @@ function Admins() {
           message: `Failed to delete ${arr[1]} by ${authentication.currentUser.displayName}`
         })
     })
-
     getAdmins()
+    
   };
 
     const handleAllCheck = () => {
@@ -110,7 +112,7 @@ function Admins() {
         setDeleteArray([])
       } else{
         Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-        setDeleteArray(admins.map(admin => admin.uid))
+        setDeleteArray(admins.map(admin => [admin.uid, admin.name]))
       }
     }
 
@@ -119,8 +121,10 @@ function Admins() {
   const [ deleteArray, setDeleteArray ] = useState([])
   const handleBulkDelete = async () => {
     if(bulkDelete){
-      deleteArray.map(agentuid => handleDelete(agentuid))
+      deleteArray.map(admin => handleMultpleDelete(admin))
     }
+
+    getAdmins()
   }
 
   // Confirm Box
@@ -138,7 +142,7 @@ function Admins() {
     
   }
 
-  
+  console.log(deleteArray)
 
   const [clickedIndex, setClickedIndex] = useState(null)
 
@@ -197,8 +201,8 @@ function Admins() {
                         <tbody>
                           {currentAdmins.map((admin, index) => (
                               <tr key={admin.uid}>
-                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, admin.uid]) : 
-                              setDeleteArray(deleteArray.filter(element => element !== admin.uid))
+                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [admin.uid, admin.name]]) : 
+                              setDeleteArray(deleteArray.filter(element => element[0] !== admin.uid))
                             }/></td>
                               <td>{admin.name}</td>
                               <td>{admin.email}</td>
