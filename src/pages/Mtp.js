@@ -119,6 +119,8 @@ export default function Mtp() {
           message: `Failed to delete ${singleDoc.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
         })
       })
+
+      getMTP()
     
   }
 
@@ -145,6 +147,8 @@ export default function Mtp() {
           message: `Failed to delete ${arr[1]}'s sticker by ${authentication.currentUser.displayName}`
         })
       })
+
+      getMTP()
     
   }
 
