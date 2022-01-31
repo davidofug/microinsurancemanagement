@@ -37,6 +37,7 @@ function SuperAdminMenu({ setLargeContentClass }) {
     window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
     }
 
+
     return (
         <div className="menuSide">
             <MobileNav role={SuperAdmin} user="superadmin" displayName={authentication?.currentUser?.displayName}/>
@@ -62,7 +63,7 @@ function SuperAdminMenu({ setLargeContentClass }) {
                         show ? handleClose() : handleShow();
                         event.stopPropagation();
                         }}>
-                            {authentication?.currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8"
+                            {authentication?.currentUser.photoURL !== ("https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" && "https://example.com/jane-doe/photo.jpg")
                                 ?
                                     <img src={authentication?.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>
                                 :
