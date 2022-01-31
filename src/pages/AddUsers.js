@@ -144,20 +144,6 @@ function AddUsers({role}) {
                         </div>
                     }
                     <Form name='form3' onSubmit={handleSubmit}>
-
-                        {/* {authClaims.superadmin &&
-                            <Form.Group className="mb-3" >
-                                <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
-                                <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange} required>
-                                    <option value="hide">--User Role--</option>
-                                    {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
-                                    {authClaims.superadmin && <option value="admin">Admin</option>}
-                                    {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
-                                    {(authClaims.supervisor || authClaims.admin) && <option value="agent">Agent</option>}
-                                    {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
-                                </Form.Select>
-                            </Form.Group>
-                        } */}
                         
 
                         { role === 'supervisor' && 
@@ -322,10 +308,10 @@ function AddUsers({role}) {
                                         <Form.Label htmlFor='license'>License No.</Form.Label>
                                         <Form.Control id="licenseNo" placeholder="license No." onChange={handleFieldChange} />
                                     </Form.Group>
-                                        <Form.Group as={Col} className="addFormGroups" >
+                                        {/* <Form.Group as={Col} className="addFormGroups" >
                                             <Form.Label htmlFor='driverLicense'>Driver's License</Form.Label>
                                             <Form.Control id="driverLicense" placeholder="Driver's License" onChange={handleFieldChange} />
-                                        </Form.Group>
+                                        </Form.Group> */}
                                 </Row>
                                 <Row>
                                     <Form.Group as={Col} className="addFormGroups" >

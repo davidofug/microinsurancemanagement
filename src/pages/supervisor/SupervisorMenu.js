@@ -59,7 +59,12 @@ function SupervisorMenu({ setLargeContentClass }) {
                         <div className="footerContext" onClick={(event) => { 
                             show ? handleClose() : handleShow(); 
                             event.stopPropagation()}}>
-                            <DefaultAvatar />
+                            {authentication?.currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8"
+                                ?
+                                    <img src={authentication?.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>
+                                :
+                                    <DefaultAvatar />
+                                }
                             <div>
                                 <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
                                 <p style={{"color": "#646464"}}>
