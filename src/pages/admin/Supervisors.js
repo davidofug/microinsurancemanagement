@@ -164,7 +164,7 @@ function Supervisors() {
   }
   const [clickedIndex, setClickedIndex] = useState(null)
 
-  console.log(deleteArray)
+  console.log(supervisors)
 
     return (
         <div className='components'>
@@ -217,7 +217,7 @@ function Supervisors() {
                   <>
                     <Table hover striped responsive className='mt-5'>
                         <thead>
-                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Created At</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {currentSupervisors.map((supervisor, index) => (
@@ -230,20 +230,12 @@ function Supervisors() {
                               <td>{supervisor.meta.gender}</td>
                               <td>{supervisor.meta.phone}</td>
                               <td>{supervisor.meta.address}</td>
+                              <td>{supervisor.meta.address}</td>
                 
                               <td className="started">
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(supervisor)}}>&#8942;</button>
 
                                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                                            <li onClick={() => {
-                                            setOpenToggle(true)
-                                            setShowContext(false)
-                                          }}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><MdDelete/></i> Delete
-                                                  </div>
-                                            </li>
                                             <li onClick={() => {
                                                     setShowContext(false)
                                                     handleShow();
@@ -253,10 +245,13 @@ function Supervisors() {
                                                     <i><MdEdit/></i> Edit
                                                   </div>
                                             </li>
-                                            <li onClick={() => setShowContext(false)}
+                                            <li onClick={() => {
+                                            setOpenToggle(true)
+                                            setShowContext(false)
+                                          }}
                                                 >
                                                   <div className="actionDiv">
-                                                    <i><AiFillCloseCircle/></i> Close
+                                                    <i><MdDelete/></i> Delete
                                                   </div>
                                             </li>
                                 </ul>
@@ -291,7 +286,7 @@ function Supervisors() {
 
 
                         <tfoot>
-                            <tr><th></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Created At</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 
