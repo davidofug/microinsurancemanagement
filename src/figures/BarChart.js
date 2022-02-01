@@ -196,7 +196,7 @@ function BarChart () {
         datasets: [
             {
                 label: 'Sticker sales',
-                data: [...Object.values(sales)],
+                data: [...Object.values(sales), Math.max(...Object.values(sales)) + (0.2 * Math.max(...Object.values(sales)))],
                 backgroundColor: '#E0E7EC',
                 hoverBackgroundColor:"#1475CF"
             },
