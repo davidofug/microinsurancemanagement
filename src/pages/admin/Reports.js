@@ -122,12 +122,6 @@ function Reports() {
   
   const totalPagesNum = !policies || Math.ceil(shownPolicies.length / policiesPerPage)
 
-
-
-
-
-
-
   return (
     <div className="components">
       <Header title="Reports" subtitle="MANAGING REPORTS" />
