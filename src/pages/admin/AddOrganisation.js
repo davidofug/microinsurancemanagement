@@ -11,6 +11,8 @@ import PasswordGenerator from '../../components/PasswordGenerator'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import Chat from '../../components/messenger/Chat'
+
 // firebase storage..
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../helpers/firebase'
@@ -220,6 +222,9 @@ export default function AddOrganisation() {
                         </Form>
                 </div>
             </div>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+              <Chat />
+            </div> 
         </div>
     )
 }
