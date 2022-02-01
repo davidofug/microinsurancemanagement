@@ -4,7 +4,7 @@ import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
-import { functions, authentication } from '../../helpers/firebase';
+import { functions, authentication, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table, Modal, Form } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
@@ -15,12 +15,19 @@ import { ImFilesEmpty } from 'react-icons/im'
 import Loader from '../../components/Loader';
 import useAuth from '../../contexts/Auth';
 import { CSVLink } from "react-csv";
+import { addDoc, collection } from 'firebase/firestore';
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Supervisors() {
 
     useEffect(() => {document.title = 'Britam - Supervisors'; getSupervisors()}, [])
 
     const { authClaims } = useAuth()
+
+    // initialising the logs collection.
+  const logCollectionRef = collection(db, "logs");
 
 
 
@@ -36,28 +43,13 @@ function Supervisors() {
       }
     }
 
-    const [fields, handleFieldChange] = useForm({
-      user_role: 'supervisor',
-      email: '',
-      name: '',
-      dob: '',
-      gender: '',
-      phone: '',
-      address: '',
-      licenseNo: '',
-      NIN: '',
-      photo: '',
-  })
   
-  const [singleDoc, setSingleDoc] = useState(fields);
-  
-  const getSingleSupervisor = async (id) => setSingleDoc(supervisors.filter(supervisor => supervisor.uid == id)[0])
+  const [singleDoc, setSingleDoc] = useState({});
 
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const [editID, setEditID] = useState(null);
 
   const [ currentPage, setCurrentPage ] = useState(1)
   const [supervisorsPerPage] = useState(10)
@@ -76,11 +68,54 @@ function Supervisors() {
 
 
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     const deleteUser = httpsCallable(functions, 'deleteUser')
-    deleteUser({uid:id}).then().catch(err => {
-      console.log(err)
+    deleteUser({uid:singleDoc.uid})
+      .then(() => toast.success(`Successfully deleted ${singleDoc.name}`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'successful',
+          message: `Successfully deleted supervisor - ${singleDoc.name} by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch( async () => {
+        toast.error(`Failed to deleted ${singleDoc.name}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete supervisor - ${singleDoc.name} by ${authentication.currentUser.displayName}`
+        })
     })
+
+    getSupervisors()
+  };
+
+  const handleMultpleDelete = async (arr) => {
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    deleteUser({uid: arr[0]})
+      .then(() => toast.success(`Successfully deleted ${arr[1]}`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'successful',
+          message: `Successfully deleted supervisor - ${arr[1]} by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch( async () => {
+        toast.error(`Failed to deleted ${arr[1]}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete supervisor - ${arr[1]} by ${authentication.currentUser.displayName}`
+        })
+    })
+
+    getSupervisors()
   };
 
   // Confirm Box
@@ -100,17 +135,16 @@ function Supervisors() {
       setDeleteArray([])
     } else{
       Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(supervisors.map(agent => agent.uid))
+      setDeleteArray(supervisors.map(supervisor => [supervisor.uid, supervisor.name]))
     }
   }
 
   // delete multiple agents
   const [ bulkDelete, setBulkDelete ] = useState(null)
   const [ deleteArray, setDeleteArray ] = useState([])
-  const [ deleteAllArray, setDeleteAllArray ] = useState([])
   const handleBulkDelete = async () => {
     if(bulkDelete){
-      deleteArray.map(agentuid => handleDelete(agentuid))
+      deleteArray.map(supervisor => handleMultpleDelete(supervisor))
       getSupervisors()
     }
   }
@@ -130,9 +164,12 @@ function Supervisors() {
   }
   const [clickedIndex, setClickedIndex] = useState(null)
 
+  console.log(deleteArray)
+
     return (
         <div className='components'>
           <Header title="Supervisors" subtitle="MANAGING SUPERVISORS" />
+          <ToastContainer />
 
             <div id="add_client_group">
                 <div></div>
@@ -144,11 +181,11 @@ function Supervisors() {
             <div className={openToggle ? 'myModal is-active': 'myModal'}>
               <div className="modal__content wack">
                 <h1 className='wack'>Confirm</h1>
-                <p className='wack'>Are you sure you want to delete</p>
+                <p className='wack'>Are you sure you want to delete <b>{singleDoc.name}</b></p>
                 <div className="buttonContainer wack" >
                   <button id="yesButton" onClick={() => {
                     setOpenToggle(false)
-                    handleDelete(editID)
+                    handleDelete()
                     }} className='wack'>Yes</button>
                   <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
                 </div>
@@ -156,7 +193,7 @@ function Supervisors() {
             </div>
 
             <Modal show={show} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} handleFieldChange={handleFieldChange} handleClose={handleClose} />
+              <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
             </Modal>
 
             {supervisors !== null && supervisors.length > 0
@@ -185,8 +222,8 @@ function Supervisors() {
                         <tbody>
                           {currentSupervisors.map((supervisor, index) => (
                               <tr key={supervisor.uid}>
-                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, supervisor.uid]) : 
-                              setDeleteArray(deleteArray.filter(element => element !== supervisor.uid))
+                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [supervisor.uid, supervisor.name]]) : 
+                              setDeleteArray(deleteArray.filter(element => element[0] !== supervisor.uid))
                             }/></td>
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
@@ -195,12 +232,11 @@ function Supervisors() {
                               <td>{supervisor.meta.address}</td>
                 
                               <td className="started">
-                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setEditID(supervisor.uid)}}>&#8942;</button>
+                                <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(supervisor)}}>&#8942;</button>
 
                                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                                             <li onClick={() => {
                                             setOpenToggle(true)
-                                            setEditID(supervisor.uid);
                                             setShowContext(false)
                                           }}
                                                 >
@@ -209,9 +245,7 @@ function Supervisors() {
                                                   </div>
                                             </li>
                                             <li onClick={() => {
-                                                    getSingleSupervisor(supervisor.uid)
                                                     setShowContext(false)
-                                                    setEditID(supervisor.uid);
                                                     handleShow();
                                                   }}
                                                 >

@@ -1,7 +1,6 @@
 import menuData from '../../components/menuData'
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 import logo from '../../assets/imgs/britam-logo2.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import MobileNav from '../../components/menu/MobileNav'
@@ -13,21 +12,34 @@ import { MdLogout } from 'react-icons/md'
 import DefaultAvatar from '../../components/DefaultAvatar'
 import { ImProfile } from 'react-icons/im'
 import useDialog from '../../hooks/useDialog'
+import useAuth from '../../contexts/Auth'
 
 function SupervisorMenu({ setLargeContentClass }) {
 
     const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
     const { SuperVisor } = menuData
-    const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(preferredToggleMenu);
+    const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
     const [show, handleShow, handleClose] = useDialog()
+
+    const { logout } = useAuth()
+    const handleLogout = async () => {
+        try {
+            window.location = "/"
+            await logout()
+        }
+        catch(error){}
+    }
+
     if(show){
         window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
     }
 
+    console.log(authentication.currentUser.photoURL)
+
     return (
         <div className="menuSide">
             <MobileNav role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
-            {toggleMenu === true 
+            {toggleMenu 
             ?
                 <nav className="sidebar">
                     <section id='brand'>
@@ -49,7 +61,12 @@ function SupervisorMenu({ setLargeContentClass }) {
                         <div className="footerContext" onClick={(event) => { 
                             show ? handleClose() : handleShow(); 
                             event.stopPropagation()}}>
-                            <DefaultAvatar />
+                            {authentication?.currentUser.photoURL !== ("https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" && "https://example.com/jane-doe/photo.jpg")
+                                ?
+                                    <img src={authentication?.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>
+                                :
+                                    <DefaultAvatar />
+                                }
                             <div>
                                 <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
                                 <p style={{"color": "#646464"}}>
@@ -60,7 +77,7 @@ function SupervisorMenu({ setLargeContentClass }) {
                         </div>
                         <ul className={show ? "footerContextShow" : ""} id="contextUl">
                             <li><Link to="/supervisor/settings"><ImProfile /> My Profile</Link></li>
-                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                            <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                         </ul>
                     </footer>
                 </nav>
@@ -89,7 +106,7 @@ function SupervisorMenu({ setLargeContentClass }) {
                     {/* </Link> */}
                     <ul className={show ? "footerContextShow" : ""} id="contextUl">
                         <li><Link to="/supervisor/settings"><ImProfile /></Link></li>
-                        <li><Link to="/logout"><MdLogout /></Link></li>
+                        <li onClick={handleLogout}><Link><MdLogout /></Link></li>
                     </ul>
                 </footer>
             

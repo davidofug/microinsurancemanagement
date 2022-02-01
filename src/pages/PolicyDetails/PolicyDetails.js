@@ -149,7 +149,7 @@ function PolicyDetails() {
                     
                         <Form.Group as={Col} className='addFormGroups'>
                             <Form.Label htmlFor='paymentReference'>Enter Payment Reference</Form.Label>
-                            <Form.Control type="text" id="paymentReference" />
+                            <Form.Control type="text" id="paymentReference" required/>
                         </Form.Group>
                     
                 </Modal.Body>

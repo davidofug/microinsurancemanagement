@@ -37,6 +37,8 @@ function AddUsers({role}) {
 
     // initialising the logs doc.
     const logCollectionRef = collection(db, "logs");
+
+    const [ logo, setLogo ] = useState(null)
     
 
     /* const checkedOrganisation = () => {
@@ -75,30 +77,80 @@ function AddUsers({role}) {
         fields['password'] = password
 
 
-        addUser(fields).then( async (results) => {
-            toast.success(`Successfully added ${fields.name}`, {position: "top-center"});
-            setIsLoading(false)
-            document.form3.reset()            
-        }).then( async () => {
-            await addDoc(logCollectionRef, {
-                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                type: 'user creation',
-                status: 'successful',
-                message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
-            })
-            setPassword('')
-        }).catch(async (error) => {
-            console.log(error)
+        if(logo){
+            const storageRef = ref(storage, `images/${logo.name}`)
+            const uploadTask = uploadBytesResumable(storageRef, logo)
 
-            toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                        const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                        setProgress(prog)
+                },
+                (error) => console.log(error),
+                async () => {
+                                await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+                                fields.photo = downloadUrl
+                        })
+                        .then(async() => {
+                            addUser(fields).then( async (results) => {
+                                toast.success(`Successfully added ${fields.name}`, {position: "top-center"});
+                                setIsLoading(false)
+                                document.form3.reset()            
+                            }).then( async () => {
+                                await addDoc(logCollectionRef, {
+                                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                    type: 'user creation',
+                                    status: 'successful',
+                                    message: `Successfully created ${fields.user_role} - [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                                })
+                                setPassword('')
+                                setLogo('')
+                            }).catch(async (error) => {
+                                console.log(error)
+                    
+                                toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+                    
+                                await addDoc(logCollectionRef, {
+                                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                    type: 'user creation',
+                                    status: 'failed',
+                                    message: `Failed to created ${fields.user_role} - [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                                })
 
-            await addDoc(logCollectionRef, {
-                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                type: 'user creation',
-                status: 'failed',
-                message: `Failed to created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                                setPassword('')
+                                setLogo('')
+                            })
+                        })
+                }
+        ) 
+        } else{
+            addUser(fields).then( async (results) => {
+                toast.success(`Successfully added ${fields.name}`, {position: "top-center"});
+                setIsLoading(false)
+                document.form3.reset()            
+            }).then( async () => {
+                await addDoc(logCollectionRef, {
+                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                    type: 'user creation',
+                    status: 'successful',
+                    message: `Successfully created ${fields.user_role} - [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                })
+                setPassword('')
+            }).catch(async (error) => {
+                toast.error(`Failed: couldn't added ${fields.name}`, {position: "top-center"});
+    
+                await addDoc(logCollectionRef, {
+                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                    type: 'user creation',
+                    status: 'failed',
+                    message: `Failed to created ${fields.user_role} - [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+                })
             })
-        })
+        }
+
+
+        
 
     }
 
@@ -109,29 +161,7 @@ function AddUsers({role}) {
     //const [ logo, setLogo ] = useState(null)
     const [ progress, setProgress ] = useState(0)
 
-    const uploadLogo = (logo) => {
-          const storageRef = ref(storage, `images/${logo.name}`)
-          console.log(storageRef)
-          const uploadTask = uploadBytesResumable(storageRef, logo)
-
-          uploadTask.on(
-                  "state_changed",
-                  (snapshot) => {
-                          const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                          setProgress(prog)
-                  },
-                  (error) => console.log(error),
-                  async () => {
-                                  await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-                                  // setUrl(downloadUrl)
-                                  fields.photo = downloadUrl
-                                  console.log("file available at", downloadUrl)
-                          })
-                  }
-          ) 
-    }
-
-    console.log(clientType)
+    console.log(logo)
 
     return (
         <div className='components'>
@@ -144,22 +174,6 @@ function AddUsers({role}) {
                         </div>
                     }
                     <Form name='form3' onSubmit={handleSubmit}>
-
-                        {/* {authClaims.superadmin &&
-                            <Form.Group className="mb-3" >
-                                <Form.Label htmlFor='user_role'>User role<span className='required'>*</span></Form.Label>
-                                <Form.Select aria-label="User role" controlId="user_role" id="user_role" onChange={handleFieldChange} required>
-                                    <option value="hide">--User Role--</option>
-                                    {authClaims.superadmin && <option value="superadmin">Super Admin</option>}
-                                    {authClaims.superadmin && <option value="admin">Admin</option>}
-                                    {(authClaims.superadmin || authClaims.admin) && <option value="supervisor">Supervisor</option>}
-                                    {(authClaims.supervisor || authClaims.admin) && <option value="agent">Agent</option>}
-                                    {(authClaims.supervisor || authClaims.agent) && <option value="Customer">Customer</option>}
-                                </Form.Select>
-                            </Form.Group>
-                        } */}
-                        
-
                         { role === 'supervisor' && 
                             <Form.Group className="mb-3" >
                                 <Form.Label htmlFor='organisation'>Organisation<span className='required'>*</span></Form.Label>
@@ -167,10 +181,25 @@ function AddUsers({role}) {
                             </Form.Group>
                         }
 
-                        {role === 'client' &&
+                        {role === 'client' && authClaims.agent &&
                             <Row>
                             <Form.Group className="m-3 categories" width="200px">
-                                <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)}>
+                                <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)} required>
+                                    <option value={""}>Policy Type</option>
+                                    {authClaims.mtp && <option value="mtp">MTP</option>}
+                                    {authClaims.comprehensive && <option value="comprehensive">Comprehensive</option>}
+                                    {authClaims.windscreen && <option value="windscreen">Windscreen</option>}
+                                    {authClaims.newImports && <option value="newImport">New Imports</option>}
+                                    {authClaims.transit && <option value="transit">Transit</option>}
+                                </Form.Select>
+                            </Form.Group>
+                        </Row>
+                        }
+
+                        {role === 'client' && authClaims.supervisor &&
+                            <Row>
+                            <Form.Group className="m-3 categories" width="200px">
+                                <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)} required>
                                     <option value={""}>Policy Type</option>
                                     <option value="mtp">MTP</option>
                                     <option value="comprehensive">Comprehensive</option>
@@ -246,7 +275,7 @@ function AddUsers({role}) {
                                             </Form.Group>
                                         </Row>
                                         <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                        <Upload uploadLogo={uploadLogo}/>
+                                        <Upload setLogo={setLogo}/>
                                 </>
                                 }
                                 {clientType === 'corporateEntity' && 
@@ -322,10 +351,10 @@ function AddUsers({role}) {
                                         <Form.Label htmlFor='license'>License No.</Form.Label>
                                         <Form.Control id="licenseNo" placeholder="license No." onChange={handleFieldChange} />
                                     </Form.Group>
-                                        <Form.Group as={Col} className="addFormGroups" >
+                                        {/* <Form.Group as={Col} className="addFormGroups" >
                                             <Form.Label htmlFor='driverLicense'>Driver's License</Form.Label>
                                             <Form.Control id="driverLicense" placeholder="Driver's License" onChange={handleFieldChange} />
-                                        </Form.Group>
+                                        </Form.Group> */}
                                 </Row>
                                 <Row>
                                     <Form.Group as={Col} className="addFormGroups" >
@@ -358,9 +387,10 @@ function AddUsers({role}) {
                                     </>
                                 }
                                 <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                <Upload uploadLogo={uploadLogo}/>
+                                <Upload setLogo={setLogo}/>
 
-                                <PasswordGenerator password={password} setPassword={setPassword} />
+                                {role !== 'client' && <PasswordGenerator password={password} setPassword={setPassword} />}
+                                
 
                             </>
                         }

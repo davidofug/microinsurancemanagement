@@ -6,14 +6,7 @@ import SearchBar from "../components/searchBar/SearchBar";
 import Header from "../components/header/Header";
 import { Table, Modal, Form } from "react-bootstrap";
 import { db } from "../helpers/firebase";
-import {
-  collection,
-  getDoc,
-  getDocs,
-  doc,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, getDoc, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useForm } from "../hooks/useForm";
 import { authentication, functions } from "../helpers/firebase";
 import Loader from "../components/Loader";
@@ -25,12 +18,19 @@ import { httpsCallable } from 'firebase/functions';
 import useDialog from "../hooks/useDialog";
 import {ClaimModelNotification, ClaimModel} from '../components/ClaimModel'
 
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 export default function Claims() {
   const [claims, setClaims] = useState([]);
   const claimsCollectionRef = collection(db, "claims");
-  const [editID, setEditID] = useState(null);
   const [ show, handleShow, handleClose ] = useDialog()
   const [ showNotification, handleShowNotification, handleCloseNotification ] = useDialog()
+
+  // initialising the logs collection.
+  const logCollectionRef = collection(db, "logs");
+
+  
 
   const [fields, handleFieldChange] = useForm({
     uid: authentication.currentUser.uid,
@@ -48,6 +48,8 @@ export default function Claims() {
     attachedDocuments: "",
     status: "",
   });
+
+  const [singleDoc, setSingleDoc] = useState(fields);
 
 
   useEffect(() => {
@@ -108,12 +110,34 @@ export default function Claims() {
     await updateDoc(userDoc, { claimantName: singleClaims.claimantName });
   };
 
-  const handleDelete = async (id) => {
-    const claimDoc = doc(db, "claims", id);
-    await deleteDoc(claimDoc);
+  const handleDelete = async () => {
+    const claimDoc = doc(db, "claims", singleDoc.id);
+    
+    await deleteDoc(claimDoc)
+      .then(async () => {
+        toast.success(`Successfully deleted ${singleDoc.claimantName}'s claim`, {position: "top-center"})
+      })
+      .then( async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'claim deletion',
+          status: 'successful',
+          message: `Successfully deleted ${singleDoc.claimantName}'s claim by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch(async () => {
+        toast.error(`Failed to deleted ${singleDoc.claimantName}'s claim`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'claim deletion',
+          status: 'failed',
+          message: `Failed to delete ${singleDoc.claimantName}'s claim by ${authentication.currentUser.displayName}`
+        })
+      })
+    
   };
 
-  const [singleDoc, setSingleDoc] = useState(fields);
+  
 
   const getSingleDoc = async (id) => {
     const docRef = doc(db, "claims", id);
@@ -126,7 +150,7 @@ export default function Claims() {
   const modalSubmit = async (event) => {
     event.preventDefault();
 
-    const claimRef = doc(db, "claims", editID);
+    const claimRef = doc(db, "claims", singleDoc.id);
 
     await updateDoc(claimRef, {
       dateReported: event.target.dateReported.value,
@@ -138,8 +162,7 @@ export default function Claims() {
       claimantPhoneNumber: event.target.claimantPhoneNumber.value,
       dateOfIncident: event.target.dateOfIncident.value,
       estimate: event.target.estimate.value,
-      detailsOfIncident: event.target.detailsOfIncident,
-      attachedDocuments: event.target.attachedDocuments,
+      detailsOfIncident: event.target.detailsOfIncident.value,
       status: "pending",
     });
     getClaims();
@@ -177,14 +200,12 @@ export default function Claims() {
 
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
 
-
-  
-
-  console.log(claims)
+  console.log(singleDoc)
 
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
+      <ToastContainer />
 
       {authClaims.agent && 
         <div id="add_client_group">
@@ -207,11 +228,11 @@ export default function Claims() {
       <div className={openToggle ? 'myModal is-active': 'myModal'}>
         <div className="modal__content wack">
           <h1 className='wack'>Confirm</h1>
-          <p className='wack'>Are you sure you want to delete</p>
+          <p className='wack'>Are you sure you want to delete <b>{singleDoc.claimantName}</b>'s claim</p>
           <div className="buttonContainer wack" >
             <button id="yesButton" onClick={() => {
               setOpenToggle(false)
-              handleDelete(editID)
+              handleDelete()
               getClaims()
               }} className='wack'>Yes</button>
             <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
@@ -250,7 +271,7 @@ export default function Claims() {
          <thead>
            <tr>
              <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th>Action</th>
+             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th className="text-center">Action</th>
            </tr>
          </thead>
          <tbody>
@@ -274,13 +295,11 @@ export default function Claims() {
                </td>
 
                <td className="started">
-                             <button className="sharebtn" onClick={() => {setClickedIndex(index); setEditID(claim.id); setShowContext(!showContext)}}>&#8942;</button>
+                             <button className="sharebtn" onClick={() => {setClickedIndex(index); setSingleDoc(claim); setShowContext(!showContext)}}>&#8942;</button>
 
                              <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                                          <li onClick={() => {
                                                setShowContext(false)
-                                               setEditID(claim.id);
-                                               getSingleDoc(claim.id);
                                                handleShowNotification();
                                          }}
                                              >
@@ -291,8 +310,6 @@ export default function Claims() {
 
                                          <li onClick={() => {
                                                setShowContext(false)
-                                               setEditID(claim.id);
-                                               getSingleDoc(claim.id);
                                                handleShow();
                                              }}
                                              >
@@ -310,7 +327,6 @@ export default function Claims() {
 
                                          <li onClick={() => {
                                                setOpenToggle(true)
-                                               setEditID(claim.id);
                                                setShowContext(false)
                                              }}
                                              >
@@ -341,7 +357,7 @@ export default function Claims() {
          <tfoot>
            <tr>
              <th>Ref Number</th><th>Claimant Details</th><th>Date of Incident</th><th>Number Plate</th>
-             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th>Action</th>
+             <th>Sticker Number</th><th>Claim Estimate</th>{!authClaims.agent && <th>Added by</th>}<th>Status</th><th className="text-center">Action</th>
            </tr>
          </tfoot>
        </Table>

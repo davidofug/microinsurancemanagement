@@ -1,7 +1,6 @@
 // import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react";
 import { MdDownload } from "react-icons/md";
-import { CSVLink } from "react-csv";
 import SearchBar from "../../components/searchBar/SearchBar";
 import Header from "../../components/header/Header";
 import { getDocs, collection } from 'firebase/firestore'
@@ -13,6 +12,7 @@ import Loader from '../../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import { httpsCallable } from 'firebase/functions';
 import { authentication, functions } from '../../helpers/firebase'
+import { generateReport } from '../../helpers/generateReport'
 
 function Reports() {
   useEffect(() => {
@@ -40,20 +40,10 @@ function Reports() {
       
       const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
 
-      console.log(usersUnderAdmin)
-
       const AdminPolicies = policiesArray.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
       AdminPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminPolicies)
     })
 
-
-
-  //   const data = await getDocs(policyCollectionRef);
-  //   if((data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))).length === 0){
-  //     setPolicies(null)
-  //   } else{
-  //     setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-  //   }
   }
 
   // TODO: look for a better way to switch between categories
@@ -132,9 +122,6 @@ function Reports() {
   
   const totalPagesNum = !policies || Math.ceil(shownPolicies.length / policiesPerPage)
 
-  console.log(policies)
-
-
   return (
     <div className="components">
       <Header title="Reports" subtitle="MANAGING REPORTS" />
@@ -148,16 +135,11 @@ function Reports() {
               <SearchBar
                 placeholder={"Search for Report"} value={searchText} handleSearch={handleSearch}
               />
-              <div></div>
-                <CSVLink
-                  data={policies}
-                  filename={"Britam-Reports.csv"}
-                  className="btn btn-primary cta"
-                  target="_blank"
-                >
-                  Export <MdDownload />
-                </CSVLink>
-            </div>
+              <div style={{display: "flex", justifyContent: "flex-end"}}>
+                <button onClick={() => generateReport("myTable")} className="btn btn-primary cta">Export <MdDownload /></button> 
+              </div>
+              
+          </div>
 
             <div style={{display: "flex", alignItems: "center"}}>  
                   <Form.Group className="m-3 categories" width="180px">
@@ -237,7 +219,7 @@ function Reports() {
             {shownPolicies.length > 0
             ?
               <>
-                <Table striped hover responsive>
+                <Table striped hover responsive id="myTable">
               <thead>
 
               <tr style={{borderBottom: "1px solid #000"}}>
@@ -296,12 +278,16 @@ function Reports() {
                             
                           })}
                           <tr>
-                            <th colSpan={12}>Subtotal Total</th><th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(stickerFeeCurrentTotal)}</th><th>{currencyFormatter(vatCurrentTotal)}</th><th>{currencyFormatter(stumpDutyCurrentTotal)}</th><th>{currencyFormatter(commissionCurrentTotal)}</th><th></th><th></th><th>UGX</th>
+                            <th>Subtotal Total</th>
+                            <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                            <th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(stickerFeeCurrentTotal)}</th><th>{currencyFormatter(vatCurrentTotal)}</th><th>{currencyFormatter(stumpDutyCurrentTotal)}</th><th>{currencyFormatter(commissionCurrentTotal)}</th><th></th><th></th><th>UGX</th>
                           </tr>
               </tbody>
               <tfoot>
                 <tr>
-                  <th colSpan={12}>Grand Total</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
+                  <th>Grand Total</th>
+                  <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                  <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
                 </tr>
               </tfoot>
             </Table>

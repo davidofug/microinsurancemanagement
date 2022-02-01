@@ -45,10 +45,11 @@ function BarChart () {
             listUsers().then(({ data }) => {
                 if(authClaims?.supervisor) {
                     const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
-                    return agentsIDs
+                    return [ ...agentsIDs, authentication.currentUser.uid]
 
                 } else if (authClaims?.admin) {
-                    const agentsIDs = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
+                    const agentsIDs = data.filter( user => user?.role?.agent).filter( user => user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
+
                     const supervisorIDs = data.filter( user => user?.role?.supervisor === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
 
                     let agentsBySupervisors = []
@@ -56,12 +57,19 @@ function BarChart () {
                         const agents = data.filter(user => user?.role?.agent === true && user?.meta?.added_by_uid === ID)
                         agentsBySupervisors.push(...[...agents])   
                     })
+
+
                     const agentBySupervisorsIDs = agentsBySupervisors.map(agentBySupervisor => agentBySupervisor.uid)
                     const usersIDsByAddedByAdmins = [...agentBySupervisorsIDs, ...agentsIDs]
+
+
                     return usersIDsByAddedByAdmins
                 
                 } else if (authClaims?.agent) {
                     return[authentication.currentUser.uid]
+                } else if (authClaims?.superadmin) {
+                    const usersID = data.map(user => user.uid)
+                    return usersID
                 }
 
             }).then(async (userIDs) =>{

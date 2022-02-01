@@ -20,9 +20,23 @@ function SuperAdminMenu({ setLargeContentClass }) {
     const { SuperAdmin } = menuData;
     const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
     const [ show, handleShow, handleClose ] = useDialog();
+
+    const { logout } = useAuth()
+    const handleLogout = async () => {
+        try {
+            localStorage.removeItem('onRefresh')
+            await logout()
+            window.location = "/"
+        }
+        catch(error){
+            console.log(error)
+        }
+  }
+
     if(show){
     window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
     }
+
 
     return (
         <div className="menuSide">
@@ -49,7 +63,12 @@ function SuperAdminMenu({ setLargeContentClass }) {
                         show ? handleClose() : handleShow();
                         event.stopPropagation();
                         }}>
-                            <DefaultAvatar />
+                            {authentication?.currentUser.photoURL !== ("https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" && "https://example.com/jane-doe/photo.jpg")
+                                ?
+                                    <img src={authentication?.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>
+                                :
+                                    <DefaultAvatar />
+                                }
                             <div>
                                 <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}><span>{(authentication?.currentUser?.displayName).split(' ')[0]} </span><span>{(authentication?.currentUser?.displayName).split(' ')[1]}</span></p>
                                 <p style={{"color": "#646464"}}>
@@ -61,7 +80,7 @@ function SuperAdminMenu({ setLargeContentClass }) {
                         {/* </Link> */}
                         <ul className={show ? "footerContextShow" : ""} id="contextUl">
                             <li><Link to="/superadmin/settings"><ImProfile /> My Profile</Link></li>
-                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                            <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                         </ul>
                     </footer>
                 </nav>
@@ -89,7 +108,7 @@ function SuperAdminMenu({ setLargeContentClass }) {
                 </div>
                 <ul className={show ? "footerContextShow" : ""} id="contextUl">
                     <li><Link to="/superadmin/settings"><ImProfile /></Link></li>
-                    <li><Link to="/logout"><MdLogout /></Link></li>
+                    <li onClick={handleLogout}><Link><MdLogout /></Link></li>
                 </ul>
             </footer>
         </nav>

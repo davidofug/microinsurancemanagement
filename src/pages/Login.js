@@ -59,7 +59,7 @@ function Login() {
         history.push(from); // had removed claim from the route.
       }
     } catch(err) {
-      console.log(err.code)
+      // console.log(err.code)
       setLoading(false)
       const errors = {
         "auth/user-not-found": "User with email is not found",

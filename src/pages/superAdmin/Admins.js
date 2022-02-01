@@ -38,23 +38,7 @@ function Admins() {
   // show model 
   const [ showModal, handleShow, handleClose ] = useDialog()
 
-  const [fields, handleFieldChange] = useForm({
-    user_role: 'admin',
-    email: '',
-    name: '',
-    dob: '',
-    gender: '',
-    phone: '',
-    address: '',
-    licenseNo: '',
-    NIN: '',
-    photo: '',
-  })
-
-  const [singleDoc, setSingleDoc] = useState(fields);
-  
-  const getSingleSupervisor = async (id) => setSingleDoc(admins.filter(admin => admin.uid == id)[0])
-
+  const [singleDoc, setSingleDoc] = useState({});
 
     // Pagination
     const [ currentPage, setCurrentPage ] = useState(1)
@@ -65,35 +49,62 @@ function Admins() {
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
-    const indexOfLastAdmin = currentPage * adminsPerPage
-    const indexOfFirstAdmin = indexOfLastAdmin - adminsPerPage
-    const currentAdmins = !admins || searchByName(admins).slice(indexOfFirstAdmin, indexOfLastAdmin)
-    const totalPagesNum = !admins || Math.ceil(admins.length / adminsPerPage)
+  const indexOfLastAdmin = currentPage * adminsPerPage
+  const indexOfFirstAdmin = indexOfLastAdmin - adminsPerPage
+  const currentAdmins = !admins || searchByName(admins).slice(indexOfFirstAdmin, indexOfLastAdmin)
+  const totalPagesNum = !admins || Math.ceil(admins.length / adminsPerPage)
 
-    const handleDelete = (admin) => {
-      const deleteUser = httpsCallable(functions, 'deleteUser')
-      deleteUser({uid: admin.uid})
-        .then( () => toast.success(`Successfully deleted ${admin.name}`, {position: "top-center"}))
-        .then( async () => {
-          await addDoc(logCollectionRef, {
-            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-            type: 'user deletion',
-            status: 'successful',
-            message: `Successfully deleted ${fields.user_role} [ ${admin.name} ] by ${authentication.currentUser.displayName}`
-        })})
-        
-        .catch( async (error) => {
-
-          toast.error(`Failed to deleted ${admin.name}`, {position: "top-center"});
-          await addDoc(logCollectionRef, {
-            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-            type: 'user deletion',
-            status: 'failed',
-            message: `Failed to delete ${fields.user_role} [ ${admin.name} ] by ${authentication.currentUser.displayName}`
-          })})
-          getAdmins()
+  const handleDelete = () => {
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    deleteUser({uid: singleDoc.uid})
+      .then( () => toast.success(`Successfully deleted ${singleDoc.name}`, {position: "top-center"}))
+      .then( async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'successful',
+          message: `Successfully deleted admin - [ ${singleDoc.name} ] by ${authentication.currentUser.displayName}`
+      })})
       
-    };
+      .catch( async (error) => {
+
+        toast.error(`Failed to deleted ${singleDoc.name}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'failed',
+          message: `Failed to delete admin [ ${singleDoc.name} ] by ${authentication.currentUser.displayName}`
+        })})
+
+
+        getAdmins()
+    
+  };
+
+  const handleMultpleDelete = async (arr) => {
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    deleteUser({uid: arr[0]})
+      .then(() => toast.success(`Successfully deleted ${arr[1]}`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user deletion',
+          status: 'successful',
+          message: `Successfully deleted ${arr[1]} by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch( async () => {
+        toast.error(`Failed to deleted ${arr[1]}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete ${arr[1]} by ${authentication.currentUser.displayName}`
+        })
+    })
+    getAdmins()
+    
+  };
 
     const handleAllCheck = () => {
       if(document.getElementById("firstAgentCheckbox").checked === true){
@@ -101,27 +112,38 @@ function Admins() {
         setDeleteArray([])
       } else{
         Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-        setDeleteArray(admins.map(admin => admin.uid))
+        setDeleteArray(admins.map(admin => [admin.uid, admin.name]))
       }
     }
 
     // delete multiple agents
   const [ bulkDelete, setBulkDelete ] = useState(null)
   const [ deleteArray, setDeleteArray ] = useState([])
-  const [ deleteAllArray, setDeleteAllArray ] = useState([])
   const handleBulkDelete = async () => {
     if(bulkDelete){
-      deleteArray.map(agentuid => handleDelete(agentuid))
+      deleteArray.map(admin => handleMultpleDelete(admin))
     }
+
+    getAdmins()
   }
 
-  // actions context
+  // Confirm Box
   const [show, setShow] = useState(false)
-  window.onclick = function(event) {
-      if (!event.target.matches('.sharebtn')) {
-          setShow(false)
-      }
+  const [ openToggle, setOpenToggle ] = useState(false)
+  window.onclick = (event) => {
+    if(openToggle) {
+      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
+        setOpenToggle(false)
+    }
+    }
+    if (!event.target.matches('.sharebtn')) {
+      setShow(false)
+    }
+    
   }
+
+  console.log(deleteArray)
+
   const [clickedIndex, setClickedIndex] = useState(null)
 
 
@@ -139,8 +161,22 @@ function Admins() {
                 
             </div>
 
+            <div className={openToggle ? 'myModal is-active': 'myModal'}>
+              <div className="modal__content wack">
+                <h1 className='wack'>Confirm</h1>
+                <p className='wack'>Are you sure you want to delete <b>{singleDoc.name}</b></p>
+                <div className="buttonContainer wack" >
+                  <button id="yesButton" onClick={() => {
+                    setOpenToggle(false)
+                    handleDelete()
+                    }} className='wack'>Yes</button>
+                  <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+                </div>
+              </div>
+            </div>
+
             <Modal show={showModal} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
+              <ClientModal singleDoc={singleDoc} handleClose={handleClose} getUsers={getAdmins} />
             </Modal>
 
 
@@ -160,13 +196,13 @@ function Admins() {
                   <>
                     <Table hover striped responsive>
                         <thead>
-                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
+                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th className='text-center'>Action</th></tr>
                         </thead>
                         <tbody>
                           {currentAdmins.map((admin, index) => (
                               <tr key={admin.uid}>
-                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, admin.uid]) : 
-                              setDeleteArray(deleteArray.filter(element => element !== admin.uid))
+                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [admin.uid, admin.name]]) : 
+                              setDeleteArray(deleteArray.filter(element => element[0] !== admin.uid))
                             }/></td>
                               <td>{admin.name}</td>
                               <td>{admin.email}</td>
@@ -175,12 +211,11 @@ function Admins() {
                               <td>{admin.meta.address}</td>
                 
                             <td className="started">
-                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show)}}>&#8942;</button>
+                            <button className="sharebtn" onClick={() => {setClickedIndex(index); setShow(!show); setSingleDoc(admin)}}>&#8942;</button>
 
                             <ul  id="mySharedown" className={(show && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                               <li onClick={() => { 
                                       setShow(false)
-                                      getSingleSupervisor(admin.uid)
                                       handleShow()
                                     }}
                                   >
@@ -188,14 +223,10 @@ function Admins() {
                                       <i><MdEdit /></i> Edit
                                     </div>
                               </li>
-                              <li onClick={() => { setShow(false)
-                                      const confirmBox = window.confirm(
-                                        `Are you sure you want to delete ${admin.name}`
-                                      );
-                                      if (confirmBox === true) {
-                                        handleDelete(admin);
-                                      }
-                                    }}
+                              <li onClick={() => {
+                                setOpenToggle(true)
+                                setShow(false)
+                              }}
                                   >
                                     <div className="actionDiv">
                                       <i><MdDelete /></i> Delete
@@ -207,17 +238,36 @@ function Admins() {
                           ))}
                             
                         </tbody>
+
+
+                        <tfoot>
+                          <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+                            <td colSpan={3}>
+                              <div style={{display: "flex"}}>
+                                <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
+                                    <option value="">Bulk Action</option>
+                                    <option value="delete">Delete</option>
+                                </Form.Select>
+                                <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
+                              </div>
+                            </td>
+                            <td colSpan={4}>
+                            <Pagination 
+                              pages={totalPagesNum}
+                              setCurrentPage={setCurrentPage}
+                              currentClients={currentAdmins}
+                              sortedEmployees={admins}
+                              entries={'Admins'} />
+                            </td>
+                          </tr>
+                        </tfoot>
+                        
                         <tfoot>
                             <tr><th></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
 
-                  <Pagination 
-                    pages={totalPagesNum}
-                    setCurrentPage={setCurrentPage}
-                    currentClients={currentAdmins}
-                    sortedEmployees={admins}
-                    entries={'Admins'} />
+                  
                   </>
                 :
                   <div className="no-table-data">

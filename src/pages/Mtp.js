@@ -4,7 +4,7 @@ import Header from "../components/header/Header";
 import Pagination from '../helpers/Pagination'
 import SearchBar from '../components/searchBar/SearchBar'
 import { Table, Form } from 'react-bootstrap'
-import { getDoc, getDocs, collection, doc, deleteDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, getDoc, getDocs, collection, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { authentication, db, functions } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
 import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
@@ -25,7 +25,11 @@ export default function Mtp() {
   const { authClaims } = useAuth()
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
-  const [editID, setEditID] = useState(null);
+  
+  // initialising the logs collection.
+  const logCollectionRef = collection(db, "logs");
+
+  const [ singleDoc, setSingleDoc ] = useState(null)
 
   // getting mtps under a particular user.
   const getMTP = async () => {
@@ -64,8 +68,6 @@ export default function Mtp() {
         
         const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
 
-        console.log(usersUnderAdmin)
-
         const AdminMtpPolicies = mtpPolicies.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
         AdminMtpPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminMtpPolicies)
       })
@@ -73,27 +75,19 @@ export default function Mtp() {
 
     // superAdmin mtp policies
     if(authClaims.superadmin){
-      mtpPolicies === 0 ? setPolicies(null) : setPolicies(mtpPolicies)
+      mtpPolicies.length === 0 ? setPolicies(null) : setPolicies(mtpPolicies)
     }
     
   }
 
   // Confirm Box
   const [ openToggle, setOpenToggle ] = useState(false)
-  window.onclick = (event) => {
-    if(openToggle === true) {
-      if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
-        setOpenToggle(false)
-    }
-    }
-  }
-
-  // Confirm Box
   const [ openToggleCancel, setOpenToggleCancel ] = useState(false)
   window.onclick = (event) => {
-    if(openToggleCancel === true) {
+    if(openToggleCancel || openToggle) {
       if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
         setOpenToggleCancel(false)
+        setOpenToggle(false)
     }
     }
   }
@@ -105,41 +99,87 @@ export default function Mtp() {
   const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
   // delete a policy
-  const handleDelete = async (id) => {
-    const policyDoc = doc(db, "policies", id);
-    await deleteDoc(policyDoc);
-    toast.success('Successfully deleted', {position: "top-center"});
+  const handleDelete = async () => {
+    const policyDoc = doc(db, "policies", singleDoc.id);
+    await deleteDoc(policyDoc)
+      .then(() => toast.success(`Successfully deleted ${singleDoc.clientDetails.name}'s sticker`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'successful',
+          message: `Successfully deleted ${singleDoc.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch(async() => {
+        toast.error(`Failed to deleted ${singleDoc.clientDetails.name}'s claim`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete ${singleDoc.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+
+      getMTP()
+    
+  }
+
+  // delete multiple policies
+  const handleMultipleDelete = async (arr) => {
+    const policyDoc = doc(db, "policies", arr[0]);
+
+    await deleteDoc(policyDoc)
+      .then(() => toast.success(`Successfully deleted ${arr[1]}'s sticker`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'successful',
+          message: `Successfully deleted ${arr[1]}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch(async() => {
+        toast.error(`Failed to deleted ${arr[1]}'s claim`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete ${arr[1]}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+
+      getMTP()
+    
   }
 
   // cancel a policy
-  const handleCancel = async (id) => {
-      const policyRef = doc(db, "policies", id)
-      const data = await getDoc(policyRef);
-      const policy = data.data()
+  const handleCancel = async () => {
+  const policyRef = doc(db, "policies", singleDoc.id)
+  const data = await getDoc(policyRef);
+  const policy = data.data()
+  await updateDoc(policyRef, {
+    stickersDetails: [{
+      basicPremium: "",
+      category: policy.stickersDetails[0].category,
+      ccPower: policy.stickersDetails[0].ccPower,
+      chasisNo: policy.stickersDetails[0].chasisNo,
+      grossWeight: policy.stickersDetails[0].grossWeight,
+      motorClass: policy.stickersDetails[0].motorClass,
+      motorMake: policy.stickersDetails[0].motorMake,
+      plateNo: policy.stickersDetails[0].plateNo,
+      referenceNo: policy.stickersDetails[0].referenceNo,
+      seatingCapacity: policy.stickersDetails[0].seatingCapacity,
+      stampDuty: policy.stickersDetails[0].stampDuty,
+      status: "cancelled",
+      stickerFee: policy.stickersDetails[0].stickerFee,
+      totalPremium: policy.stickersDetails[0].totalPremium,
+      trainingLevy: policy.stickersDetails[0].trainingLevy,
+      vat: policy.stickersDetails[0].vat,
+      vehicleUse: policy.stickersDetails[0].vehicleUse
 
-
-    await updateDoc(policyRef, {
-      stickersDetails: [{
-        basicPremium: "",
-        category: policy.stickersDetails[0].category,
-        ccPower: policy.stickersDetails[0].ccPower,
-        chasisNo: policy.stickersDetails[0].chasisNo,
-        grossWeight: policy.stickersDetails[0].grossWeight,
-        motorClass: policy.stickersDetails[0].motorClass,
-        motorMake: policy.stickersDetails[0].motorMake,
-        plateNo: policy.stickersDetails[0].plateNo,
-        referenceNo: policy.stickersDetails[0].referenceNo,
-        seatingCapacity: policy.stickersDetails[0].seatingCapacity,
-        stampDuty: policy.stickersDetails[0].stampDuty,
-        status: "cancelled",
-        stickerFee: policy.stickersDetails[0].stickerFee,
-        totalPremium: policy.stickersDetails[0].totalPremium,
-        trainingLevy: policy.stickersDetails[0].trainingLevy,
-        vat: policy.stickersDetails[0].vat,
-        vehicleUse: policy.stickersDetails[0].vehicleUse
-
-    }]
-    });
+  }]
+  });
     toast.success('Successfully Cancelled', {position: "top-center"});
   }
 
@@ -149,17 +189,16 @@ export default function Mtp() {
       setDeleteArray([])
     } else{
       Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(policies.map(policy => policy.id))
+      setDeleteArray(policies.map(policy => [policy.id, policy.clientDetails.name]))
     }
   }
 
   // delete multiple agents
   const [ bulkDelete, setBulkDelete ] = useState(null)
   const [ deleteArray, setDeleteArray ] = useState([])
-  const [ deleteAllArray, setDeleteAllArray ] = useState([])
   const handleBulkDelete = async () => {
     if(bulkDelete){
-      deleteArray.map(agentuid => handleDelete(agentuid))
+      deleteArray.map(policy=> handleMultipleDelete(policy))
     }
   }
 
@@ -195,7 +234,7 @@ export default function Mtp() {
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
-  console.log(policies)
+
 
   return (
     <div className="components">
@@ -222,11 +261,11 @@ export default function Mtp() {
       <div className={openToggle ? 'myModal is-active': 'myModal'}>
         <div className="modal__content wack">
           <h1 className='wack'>Confirm</h1>
-          <p className='wack'>Are you sure you want to delete <b>{deleteName}</b></p>
+          <p className='wack'>Are you sure you want to delete <b>{!singleDoc || singleDoc.clientDetails.name}</b></p>
           <div className="buttonContainer wack" >
             <button id="yesButton" onClick={() => {
               setOpenToggle(false)
-              handleDelete(editID)
+              handleDelete(singleDoc.id)
               getMTP()
               }} className='wack'>Yes</button>
             <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
@@ -237,11 +276,11 @@ export default function Mtp() {
       <div className={openToggleCancel ? 'myModal is-active': 'myModal'}>
         <div className="modal__content wack">
           <h1 className='wack'>Confirm</h1>
-          <p className='wack'>Are you sure you want to cancel <b>{deleteName}</b></p>
+          <p className='wack'>Are you sure you want to cancel <b>{!singleDoc || singleDoc.clientDetails.name}</b></p>
           <div className="buttonContainer wack" >
             <button id="yesButton" onClick={() => {
               setOpenToggleCancel(false)
-              handleCancel(editID)
+              handleCancel()
               getMTP()
               }} className='wack'>Yes</button>
             <button id="noButton" onClick={() => setOpenToggleCancel(false)} className='wack'>No</button>
@@ -252,14 +291,14 @@ export default function Mtp() {
       {policies !== null && policies.length > 0 
       ?
         <>
-        <div className="table-card componentsData shadow-sm" style={{display: "flex",flexDirection: "column", justifyContent: "center", maxWidth: "900px", minWidth: "300px"}}>
+        <div className="table-card componentsData shadow-sm">
         <div id="search">
           <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
           <div></div>
           <Form.Group className="m-3 categories" width="200px">
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
-                <option value="active">Active</option>
+                <option value="new">New</option>
                 <option value="paid">Paid</option>
                 <option value="renewed">Renewed</option>
                 <option value="expired">Expired</option>
@@ -280,8 +319,8 @@ export default function Mtp() {
          <tbody>
              {paginatedShownPolicies.map((policy, index) => (
                <tr key={policy.id}>
-                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, policy.id]) : 
-                   setDeleteArray(deleteArray.filter(element => element !== policy.id))
+                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [policy.id, policy.clientDetails.name]]) : 
+                   setDeleteArray(deleteArray.filter(element => element[0] !== policy.id))
                  }/></td>
                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
@@ -289,7 +328,7 @@ export default function Mtp() {
                  <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                  {!authClaims.agent && <td>{policy.added_by_name}</td>}
                  <td>
-                   {policy.stickersDetails[0].status === 'active'  && 
+                   {policy.stickersDetails[0].status === 'new'  && 
                       <span
                         style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
                       >{policy.stickersDetails[0].status}</span>
@@ -318,7 +357,7 @@ export default function Mtp() {
                  <td>{policy.policyStartDate}</td>
 
                  <td className="started">
-                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setEditID(policy.id); getPolicy(policy.id)}}>&#8942;</button>
+                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy); getPolicy(policy.id)}}>&#8942;</button>
 
                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                    <Link to={`/admin/policy-details/${policy.id}`}>
@@ -333,7 +372,6 @@ export default function Mtp() {
                    </Link>
                    <li onClick={() => {
                                  setOpenToggleCancel(true)
-                                 setEditID(policy.id);
                                  setShowContext(false)
                                }}>
                      <div className="actionDiv">
@@ -343,7 +381,6 @@ export default function Mtp() {
                    <li 
                          onClick={() => {
                                  setOpenToggle(true)
-                                 setEditID(policy.id);
                                  setShowContext(false)
                                }}
                        >
@@ -376,7 +413,7 @@ export default function Mtp() {
              <Pagination 
                pages={totalPagesNum}
                setCurrentPage={setCurrentPage}
-               currentClients={currentPolicies}
+               currentClients={paginatedShownPolicies}
                sortedEmployees={policies}
                entries={'Motor Third Party'} />
              </td>
