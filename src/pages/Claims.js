@@ -162,8 +162,7 @@ export default function Claims() {
       claimantPhoneNumber: event.target.claimantPhoneNumber.value,
       dateOfIncident: event.target.dateOfIncident.value,
       estimate: event.target.estimate.value,
-      detailsOfIncident: event.target.detailsOfIncident,
-      attachedDocuments: event.target.attachedDocuments,
+      detailsOfIncident: event.target.detailsOfIncident.value,
       status: "pending",
     });
     getClaims();
@@ -200,6 +199,8 @@ export default function Claims() {
   const shownClaims = !claims || currentClaims.filter(claim => !switchCategory || claim.status === switchCategory)
 
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
+
+  console.log(singleDoc)
 
   return (
     <div className="components">
