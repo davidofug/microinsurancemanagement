@@ -20,7 +20,7 @@
   
   
     // Downloading rg csv
-    const filename = 'Britam-Reports-' + new Date().toLocaleDateString() + '.csv';
+    const filename = 'Britam-Reports-' + new Date().toISOString().slice(0, 10) + '.csv';
   
     const link = document.createElement('a');
     link.style.display = 'none';

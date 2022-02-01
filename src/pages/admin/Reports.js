@@ -297,17 +297,21 @@ function Reports() {
 
                             
                           })}
-                          <tr>
-                            <th>Subtotal Total</th>
-                            <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
-                            <th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(trainingCurrentLevy)}</th><th>{currencyFormatter(stickerFeeCurrentTotal)}</th><th>{currencyFormatter(vatCurrentTotal)}</th><th>{currencyFormatter(stumpDutyCurrentTotal)}</th><th>{currencyFormatter(commissionCurrentTotal)}</th><th></th><th></th><th>UGX</th>
-                          </tr>
+                          
               </tbody>
               <tfoot>
                 <tr>
                   <th>Grand Total</th>
                   <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
                   <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevy)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
+                </tr>
+              </tfoot>
+                
+              <tfoot>
+                <tr>
+                  <td>Subtotal Total</td>
+                  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                  <td>{currencyFormatter(basicCurrentTotal)}</td><td>{currencyFormatter(trainingCurrentLevy)}</td><td>{currencyFormatter(stickerFeeCurrentTotal)}</td><td>{currencyFormatter(vatCurrentTotal)}</td><td>{currencyFormatter(stumpDutyCurrentTotal)}</td><td>{currencyFormatter(commissionCurrentTotal)}</td><td></td><td></td><td>UGX</td>
                 </tr>
               </tfoot>
             </Table>
@@ -322,7 +326,7 @@ function Reports() {
               <div className="no-table-data">
                 <i><ImFilesEmpty /></i>
                 <h4>No data yet</h4>
-                <p>You have not created any Motor Third Party Stickers Yet</p>
+                <p>You have not created any Motor third Party Stickers Yet</p>
               </div>
             }
 
