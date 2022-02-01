@@ -23,6 +23,7 @@ import Transit from '../pages/Transit'
 import AddStickerRange from '../pages/admin/AddStickerRange'
 import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
 import PolicyRenew from '../pages/PolicyDetails/PolicyRenew'
+import StickerMgtDetails from '../pages/admin/StickerMgtDetails'
 
 
 function AdminRoutes() {
@@ -114,6 +115,9 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/add-supervisor" >
                 <AddUsers role="supervisor" />
+            </PrivateRoute>
+            <PrivateRoute path="/admin/sticker-range-details/:id" >
+                <StickerMgtDetails />
             </PrivateRoute>
         </>
         
