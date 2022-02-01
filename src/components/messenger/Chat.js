@@ -219,7 +219,7 @@ function Chat() {
                         {
                             search === false ?
                             <>
-                                <div style={{paddingTop:"4px"}}>Previous Chats</div>
+                                <div>Previous Chats</div>
                                 
                                 
                                 {
@@ -253,7 +253,7 @@ function Chat() {
                             </>
                             :
                             <>
-                                <div style={{paddingTop:"4px"}}>All Chats</div>
+                                <div>Start a new Chat</div>
                                 {
                                     acceptedChats.map(({
                                         name,
@@ -297,7 +297,7 @@ function Chat() {
 
                         messages?.length > 0 && messages.map(({ message, createdAt, sendersUID, receiversUID}, index) => {
                             document.getElementById('display').scrollTop = document.getElementById('display').scrollHeight
-                            let date
+                            let date = null
                             if(createdAt !== null) {
                                 date = new Date(createdAt.seconds * 1000)    
                             }   
@@ -320,7 +320,7 @@ function Chat() {
                                                 </div>    
                                             </div>
                                             <span style={{display:"flex", width:"60%", paddingLeft:"50px", color:"#536471", fontSize:"11px"}}>
-                                                {getFormattedDate(date)}
+                                                { getFormattedDate(date) }
                                             </span>
                                         </div>
                                         :

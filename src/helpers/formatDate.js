@@ -34,18 +34,22 @@ export function getFormattedDate(date) {
     const currentMonth = MONTH_NAMES[currentDate.getMonth()]
 
     // Extract specific values from the date.
-    const calendarDate = date.getDate();
-    const day = DAY_NAMES[date.getDay()]
-    const month = MONTH_NAMES[date.getMonth()]
-    const year = date.getFullYear()
-    const hours = date.getHours()
-    const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
-    const ampm = hours >= 12 ? 'pm' : 'am'
+    if(date !== null) {
+        const calendarDate = date.getDate();
+        const day = DAY_NAMES[date.getDay()]
+        const month = MONTH_NAMES[date.getMonth()]
+        const year = date.getFullYear()
+        const hours = date.getHours()
+        const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
+        const ampm = hours >= 12 ? 'pm' : 'am'
+    
+        // Format the date for display along with the message.
+        if(currentDay === day ) return `${hours}:${minutes} ${ampm}`
+        else if(currentMonth === month) return `${ day } ${hours}:${minutes} ${ampm}`
+        else if(currentMonth !== month) return `${month} ${calendarDate}, ${year}, ${hours}:${minutes} ${ampm}`
+    }
 
-    // Format the date for display along with the message.
-    if(currentDay === day ) return `${hours}:${minutes} ${ampm}`
-    else if(currentMonth === month) return `${ day } ${hours}:${minutes} ${ampm}`
-    else if(currentMonth !== month) return `${month} ${calendarDate}, ${year}, ${hours}:${minutes} ${ampm}`
+    return null
 
 }
 
