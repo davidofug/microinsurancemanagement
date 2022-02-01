@@ -15,6 +15,10 @@ import UpdateUser from '../components/UpdateUser'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+
+import Chat from '../components/messenger/Chat'
+
+
 function Settings() {
 
     useEffect(() => { document.title = 'Britam - User Profile'; getUserMeta();}, [])
@@ -187,6 +191,9 @@ function Settings() {
                     <input type="submit" value="Update Password" className="btn btn-primary cta" />                              
                     </form>
             </div>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+              <Chat />
+            </div> 
         </div>
     )
 }
