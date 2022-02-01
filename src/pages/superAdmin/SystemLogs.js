@@ -32,13 +32,30 @@ function SystemLogs() {
   const [ date, setDate ] = useState(null)
 
 
+  const convertStringToDate = (stringDate) => {
+    return new Date(stringDate)
+  }
+
+
   const shownLogs = !logs || logs
+                                .sort((a, b) => convertStringToDate(b.timeCreated) - convertStringToDate(a.timeCreated))
                                 .filter(log => !switchStatus || log.status === switchStatus)
                                 .filter(log => !logType || log.type === logType)
                                 .filter(log => !date || typeof(log.timeCreated) !== 'string' || log.timeCreated.slice(0, 10) === date)
 
   const paginatedShownLogs = !logs || shownLogs.slice(indexOfFirstLog, indexOfLastLog)
   const totalPagesNum = !logs || Math.ceil(shownLogs.length / logsPerPage)
+
+
+  const dt2 = new Date('2022-01-31 10:48:29')
+  const dt1 = new Date('2022-01-31 9:47:10')
+  var diff =(dt1.getTime() - dt2.getTime()) / 1000;
+  diff /= (60 * 60);
+  /* console.log(Math.abs(Math.round(diff)));
+  console.log(3679000/1000/3600)
+  console.log(1440/60) */
+
+
 
   return (
     <div className="components">
