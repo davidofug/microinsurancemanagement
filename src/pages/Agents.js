@@ -170,7 +170,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
 
   const paginatedShownAgent = !agents || shownAgents.slice(indexOfFirstAgent, indexOfLastAgent)
 
-  console.log(deleteArray)
+  console.log(agents)
 
     return (
         <div className='components'>

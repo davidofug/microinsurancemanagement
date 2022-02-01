@@ -287,7 +287,7 @@ export default function Claims() {
                <td>{claim.numberPlate}</td>
                <td>{claim.stickerNumber}</td>
                <td>{claim.estimate}</td>
-               <td>{claim.added_by_name}</td>
+               {!authClaims && <td>{claim.added_by_name}</td>}
                <td>
                  <span
                    style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
