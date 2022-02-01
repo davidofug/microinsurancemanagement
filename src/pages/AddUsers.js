@@ -61,7 +61,7 @@ function AddUsers({role}) {
         address: '',
         licenseNo: '',
         NIN: '',
-        photo: '',
+        photo: ''
     })
 
 
@@ -75,6 +75,7 @@ function AddUsers({role}) {
         fields['added_by_uid'] = authentication.currentUser.uid
         fields['added_by_name'] = authentication.currentUser.displayName
         fields['password'] = password
+        fields['addedOn'] = `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`
 
 
         if(logo){
