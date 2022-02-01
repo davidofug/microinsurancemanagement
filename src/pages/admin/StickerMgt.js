@@ -1,11 +1,9 @@
 import Header from "../../components/header/Header"
 import Badge from "../../components/Badge"
 import { useEffect, useState } from 'react'
-import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
-import { CSVLink } from "react-csv";
 import SearchBar from '../../components/searchBar/SearchBar';
-import { Table, Form } from "react-bootstrap"
+import { Table, Modal } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { MdOutlinePedalBike } from 'react-icons/md'
 import { FiTruck } from 'react-icons/fi'
@@ -17,6 +15,7 @@ import { db } from '../../helpers/firebase'
 import '../../components/modal/ConfirmBox.css'
 import Loader from "../../components/Loader";
 import { ImFilesEmpty } from 'react-icons/im'
+import useDialog from "../../hooks/useDialog";
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -49,7 +48,7 @@ export default function StickerMgt() {
       }
     }
 
-    console.log(stickerRange)
+    const [ show, handleShow, handleClose ] = useDialog()
 
 
     // actions context
@@ -96,8 +95,6 @@ export default function StickerMgt() {
       
     }
 
-
-
     return (
         <div className="components">
             <Header title="Sticker No. Management" subtitle="MANAGING STICKER NUMBERS" />
@@ -116,6 +113,31 @@ export default function StickerMgt() {
                 </div>
               </div>
             </div>
+
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header>
+                <Modal.Title>Sticker Range Details</Modal.Title></Modal.Header>
+                <Modal.Body>
+                <div className="m-5">
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <div><p>Range from: </p></div>
+                        <div><p><b>{singleDoc.rangeFrom} -  {singleDoc.rangeTo}</b></p></div>
+                    </div>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <div><p>Assigned to: </p></div>
+                        <div><p><b>Charles Kasasira (supervisor)</b></p></div>
+                    </div>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <div><p>used Sticker Numbers: </p></div>
+                        <div><p><b>{singleDoc.used.length}</b></p></div>
+                    </div>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <div><p>Total Number of stickers: </p></div>
+                        <div><p><b>{singleDoc.rangeTo - singleDoc.rangeFrom}</b></p></div>
+                    </div>
+                </div>
+                </Modal.Body>
+            </Modal>
 
             <div className="componentsData">
                     <div className="sticker-mgt">
@@ -138,15 +160,6 @@ export default function StickerMgt() {
                         <div className="shadow-sm table-card">
                     <div id="search">
                             <SearchBar placeholder={"Search Stickers by Category"} value={searchText} handleSearch={handleSearch}/>
-                            {/* <div></div>
-                            <CSVLink
-                                data={stickerRange}
-                                filename={"Sticker-Ranges.csv"}
-                                className="btn btn-primary cta"
-                                target="_blank"
-                              >
-                                Export <MdDownload />
-                            </CSVLink> */}
                       </div>
 
                       <Table responsive hover bordered striped>
@@ -165,11 +178,11 @@ export default function StickerMgt() {
                                   <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(sticker)}}>&#8942;</button>
 
                                   <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                                    <Link to={`/admin/sticker-range-details/${sticker.id}`}>
+                                    <li onClick={() => {handleShow(); setShowContext(false)}}>
                                       <div className="actionDiv">
                                         <i><MdInfo /></i> Details
                                       </div>
-                                    </Link>
+                                    </li>
                                     <li onClick={() => {
                                                   setShowContext(false)
                                                 }}>
