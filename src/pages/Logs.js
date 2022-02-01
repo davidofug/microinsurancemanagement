@@ -7,6 +7,7 @@ import { authentication, db } from '../helpers/firebase'
 import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import { RiCalendarTodoFill } from 'react-icons/ri'
+import useAuth from '../contexts/Auth'
 
 function Logs() {
 
@@ -18,6 +19,8 @@ function Logs() {
     const [ todayAttendence, setTodayAttendence] = useState({
         checkin: ""
     })
+
+    const { authClaims } = useAuth()
 
     // initialising the logs doc.
     const logRef = collection(db, "provisions");
@@ -70,7 +73,9 @@ function Logs() {
         getLogs()
     }
 
-    console.log(Math.round((new Date(todayAttendence.checkout).getTime() - new Date(todayAttendence.checkin).getTime())/1000/60))
+    // const num = Math.round((new Date(todayAttendence.checkout).getTime() - new Date(todayAttendence.checkin).getTime())/1000/60)
+    const num = Math.round(new Date('2022-02-01 13:36:57'))
+    console.log(num)
 
     function timeConvert(n) {
         var num = n;
@@ -81,7 +86,7 @@ function Logs() {
         return rhours + " hour(s) and " + rminutes + " minute(s).";
     }
 
-    console.log(todayAttendence)
+    console.log(attendence)
 
     return (
         <div className='components'>
@@ -131,7 +136,7 @@ function Logs() {
                                     <td>{attend.checkin}</td>
                                     <td>{!attend.checkout ? "Didn't check out" : attend.checkout}</td>
                                     <td>{!attend.checkout ? "Can not be determined!" 
-                                        : `${timeConvert(Math.round((new Date(attend.checkout) - new Date(attend.checkin))/1000/60))}`}
+                                        : `${timeConvert((new Date(attend.checkout) - new Date(attend.checkin))/1000/60)}`}
                                     </td>
                                 </tr>
                             ))}

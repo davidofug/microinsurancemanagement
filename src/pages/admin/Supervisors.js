@@ -202,14 +202,14 @@ function Supervisors() {
                 <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                       <SearchBar placeholder={"Search Supervisor by name"} value={searchText} handleSearch={handleSearch} />
-                      <CSVLink
+                      {/* <CSVLink
                         data={supervisors}
                         filename={"Britam-Supervisors.csv"}
                         className="btn btn-primary cta"
                         target="_blank"
                       >
                         Export <MdDownload />
-                      </CSVLink>
+                      </CSVLink> */}
                 </div>
 
                 {currentSupervisors.length > 0

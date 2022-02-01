@@ -138,7 +138,7 @@ export default function StickerMgt() {
                         <div className="shadow-sm table-card">
                     <div id="search">
                             <SearchBar placeholder={"Search Stickers by Category"} value={searchText} handleSearch={handleSearch}/>
-                            <div></div>
+                            {/* <div></div>
                             <CSVLink
                                 data={stickerRange}
                                 filename={"Sticker-Ranges.csv"}
@@ -146,7 +146,7 @@ export default function StickerMgt() {
                                 target="_blank"
                               >
                                 Export <MdDownload />
-                            </CSVLink>
+                            </CSVLink> */}
                       </div>
 
                       <Table responsive hover bordered striped>
