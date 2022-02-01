@@ -262,7 +262,7 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
                               <td>{agent.meta.phone}</td>
                               <td>{agent.meta.address}</td>
                               {authClaims.admin && <td>{agent.meta.added_by_name}</td>}
-                              {authClaims.admin && <td>{agent.meta.added_by_name}</td>}
+                              <td>{agent.meta.added_by_name}</td>
 
                               <td className="started">
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(agent)}}>&#8942;</button>
