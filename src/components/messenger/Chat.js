@@ -219,7 +219,7 @@ function Chat() {
                         {
                             search === false ?
                             <>
-                                <div>Previous Chats</div>
+                                <div style={{paddingTop:"4px"}}>Previous Chats</div>
                                 
                                 
                                 {
@@ -253,7 +253,7 @@ function Chat() {
                             </>
                             :
                             <>
-                                <div>Start a new Chat</div>
+                                <div style={{paddingTop:"4px"}}>All Chats</div>
                                 {
                                     acceptedChats.map(({
                                         name,
