@@ -31,15 +31,31 @@ function SystemLogs() {
   const [ logType, setLogType ] = useState(null)
   const [ date, setDate ] = useState(null)
 
-  console.log(logType)
+
+  const convertStringToDate = (stringDate) => {
+    return new Date(stringDate)
+  }
+
 
   const shownLogs = !logs || logs
+                                .sort((a, b) => convertStringToDate(b.timeCreated) - convertStringToDate(a.timeCreated))
                                 .filter(log => !switchStatus || log.status === switchStatus)
                                 .filter(log => !logType || log.type === logType)
                                 .filter(log => !date || typeof(log.timeCreated) !== 'string' || log.timeCreated.slice(0, 10) === date)
 
   const paginatedShownLogs = !logs || shownLogs.slice(indexOfFirstLog, indexOfLastLog)
   const totalPagesNum = !logs || Math.ceil(shownLogs.length / logsPerPage)
+
+
+  const dt2 = new Date('2022-01-31 10:48:29')
+  const dt1 = new Date('2022-01-31 9:47:10')
+  var diff =(dt1.getTime() - dt2.getTime()) / 1000;
+  diff /= (60 * 60);
+  /* console.log(Math.abs(Math.round(diff)));
+  console.log(3679000/1000/3600)
+  console.log(1440/60) */
+
+
 
   return (
     <div className="components">
@@ -68,8 +84,10 @@ function SystemLogs() {
                         <option value="">Select Log Type</option>
                         <option value="user creation">User Creation</option>
                         <option value="user deletion">User Deletion</option>
-                        <option value="policy creation">Policy Creation</option>
-                        <option value="policy deletion">Policy Deletion</option>
+                        <option value="sticker creation">Sticker Creation</option>
+                        <option value="sticker deletion">Sticker Deletion</option>
+                        <option value="claim creation">Claim Creation</option>
+                        <option value="claim deletion">Claim Deletion</option>
                     </Form.Select>
                 </Form.Group>
             </div>

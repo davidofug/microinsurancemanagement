@@ -71,7 +71,7 @@ function PolicyRenew() {
             <div style={{width: "100%", padding: "20px"}} >
                 <Form.Group controlId="formGridAddress1">
                     <Form.Label>Select the renewal Start Date and submit policy</Form.Label>
-                    <Form.Control type='date' id='policyStartDate' />
+                    <Form.Control type='date' id='policyStartDate' required/>
                 </Form.Group>
             </div>
 

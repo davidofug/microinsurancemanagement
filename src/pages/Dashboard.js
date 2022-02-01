@@ -26,6 +26,7 @@ function Dashboard() {
         getClaims()
         getClients()
         getAgents()
+        getSupervisors()
         getAdmins()
         getPolicies()
         setStickers(handlePolicyStickers(await getPolicies()))
@@ -35,12 +36,89 @@ function Dashboard() {
     const [policies, setPolicies] = useState([])
     const policyCollectionRef = collection(db, "policies");
 
-
     const getPolicies = async () => {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        setPolicies(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
-        return(allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+
+        if(authClaims.agent){// agent's policies
+            setPolicies(allPolicies.filter(claim => claim.uid === authentication.currentUser.uid)) 
+            return (allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
+        }
+
+        if(authClaims.supervisor){ // supervisor's policies
+            const listUsers = httpsCallable(functions, 'listUsers')
+            listUsers().then(({data}) => {
+              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+              
+              const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid]
+      
+              const supervisorPolicies = allPolicies.filter(claim => usersUnderSupervisor.includes(claim.added_by_uid))
+              setPolicies(supervisorPolicies)
+              return(supervisorPolicies)
+            })
+          }
+        
+        if(authClaims.admin){ // admin's policies
+            const listUsers = httpsCallable(functions, 'listUsers')
+            listUsers().then(({data}) => {
+              const myAgents = data.filter(user => user.role.agent).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+      
+              const mySupervisors = data.filter(user => user.role.supervisor).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+      
+              const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+              
+              const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
+      
+              const adminPolicies = allPolicies.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
+              setPolicies(adminPolicies)
+              return(adminPolicies)
+            })
+        }
+
+        if(authClaims.superadmin){// superadmin's policies
+            setPolicies(allPolicies)
+            return(allPolicies)
+        } 
+    }
+
+    // claims
+    const getClaims = async () => {
+        const data = await getDocs(claimsCollectionRef);
+        const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+        authClaims.agent && setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid)) // agent's claims
+
+        if(authClaims.supervisor){ // supervisor's claims
+            const listUsers = httpsCallable(functions, 'listUsers')
+            listUsers().then(({data}) => {
+              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+              
+              const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid]
+      
+              const supervisorClaims = allClaims.filter(claim => usersUnderSupervisor.includes(claim.added_by_uid))
+              setClaims(supervisorClaims)
+            })
+          }
+        
+        if(authClaims.admin){ // admin's claims
+            const listUsers = httpsCallable(functions, 'listUsers')
+            listUsers().then(({data}) => {
+              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+      
+              const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+      
+              const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+              
+              const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
+      
+              const adminClaims = allClaims.filter(claim => usersUnderAdmin.includes(claim.added_by_uid))
+              setClaims(adminClaims)
+            })
+        }
+
+        authClaims.superadmin && setClaims(allClaims) // superadmin's claims
+          
+          
     }
 
     // clients
@@ -48,7 +126,7 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.Customer === true)
+            const myUsers = resultsArray.filter(user => user.role.Customer)
             setClients(myUsers)
         }).catch((err) => {
             console.log(err)
@@ -61,8 +139,21 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.agent === true)
+            const myUsers = resultsArray.filter(user => user.role.agent)
             setAgents(myUsers)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    // getting supervisors
+    const [ supervisors, setSupervisors ] = useState([])
+    const getSupervisors = () => {
+        const listUsers = httpsCallable(functions, 'listUsers')
+        listUsers().then((results) => {
+            const resultsArray = results.data
+            const myUsers = resultsArray.filter(user => user.role.supervisor)
+            setSupervisors(myUsers)
         }).catch((err) => {
             console.log(err)
         })
@@ -74,33 +165,22 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.superadmin === true)
+            const myUsers = resultsArray.filter(user => user.role.admin)
             setAdmins(myUsers)
         }).catch((err) => {
             console.log(err)
         })
     }
 
-    const getClaims = async () => {
-        const data = await getDocs(claimsCollectionRef);
-        const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid))
-    };
 
     // Total number of stickers
     const handlePolicyStickers = (pols) => {
         let sum = 0
-        pols.forEach( pol =>  {
-            sum += pol.stickersDetails.length
+        !pols || pols.forEach( pol =>  {
+            sum += !pol.stickersDetails || pol.stickersDetails.length
         })
         return sum     
     }
-
-    if(authentication.currentUser.metadata.creationTime === authentication.currentUser.metadata.lastSignInTime){
-        console.log("welcome to Britam")
-    }
-
-    console.log(authentication.currentUser)
 
     return (
             <div className='components'>
@@ -114,7 +194,7 @@ function Dashboard() {
                                         <div className="custom-card" style={{backgroundColor:"#804C75"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${claims.length}`}</div>
-                                                <div className="card-text">Claim Settlement</div>
+                                                <div className="card-text">Claim Settlements</div>
                                             </Card.Body>
                                         </div>
                                     </div>
@@ -149,34 +229,49 @@ function Dashboard() {
 
                         <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex", alignItems: "flex-start"}}>
                             <div id="short_stats">
-                                {authClaims.superadmin && 
-                                    <>
-                                        {admins.length > 0 
-                                        ? <>
+                                {authClaims.superadmin && (
+                                    admins.length > 0
+                                    ?
+                                        <>
+                                            <h5 className="heading">Admins</h5>
+                                            <table>
+                                                <thead><tr><th>Name</th><th>Address</th></tr></thead>
+                                                <tbody>
+                                                    {admins.map(admin => (
+                                                        <tr key={admin.uid}>
+                                                            <td>{admin.name}</td>
+                                                            <td>{admin.email}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         </>
-                                        : <Loader />}
+                                    : 
+                                        <Loader />
+                                    )}
+
+                                {authClaims.admin && (
+                                    supervisors.length > 0 
+                                    ?
+                                    <>
+                                        <h5 className="heading">Supervisors</h5>
+                                        <table>
+                                            <thead><tr><th>Name</th><th>Address</th></tr></thead>
+                                            <tbody>
+                                                {supervisors.map(supervisor => (
+                                                    <tr key={supervisor.uid}>
+                                                        <td>{supervisor.name}</td>
+                                                        <td>{supervisor.email}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
                                     </>
-                                }
-                                {authClaims.admin && <>
-                                    <h5 className="heading">Daily Reports Summary</h5>
-                                    <table>
-                                        <thead><tr><th>Category</th><th>Grand totals</th></tr></thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>MTP</td><td>UGX ___</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Comprehensive</td><td>UGX ___</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Windscreen</td><td>UGX ___</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    </>
-                                }
-                                {authClaims.supervisor && <>
-                                    {clients.length > 0 
+                                    : <Loader />
+                                )}
+
+                                {authClaims.supervisor && (
+                                    agents.length > 0 
                                     ? <>
                                     <h5 className="heading">Latest Agents</h5>
                                     <table>
@@ -193,10 +288,10 @@ function Dashboard() {
                                     </>
                                     : 
                                     <Loader />
-                                    }</>}
+                                )}
                                     
-                                {authClaims.agent && <>
-                                    {clients.length > 0
+                                {authClaims.agent && (
+                                    clients.length > 0
                                     ? <>
                                     <h5 className="heading">Latest Clients</h5>
                                     <table>
@@ -214,7 +309,7 @@ function Dashboard() {
                                     </>
                                     :
                                     <Loader />
-                                    }</>}
+                                )}
                             </div>
                         </div>
                     </div>

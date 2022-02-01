@@ -15,12 +15,24 @@ import { ImProfile } from 'react-icons/im'
 import useDialog from '../../hooks/useDialog'
 import { getAuth, signOut } from "firebase/auth";
 import { useHistory } from 'react-router-dom'
+import useAuth from '../../contexts/Auth'
 
 
 function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
 
     const { Agent_mtp } = menuData
     const [ toggleMenu, setToggeMenu ] = useState(true)
+
+    const { logout } = useAuth()
+    const handleLogout = async () => {
+        try {
+            window.location = "/"
+            await logout()
+        }
+        catch(error){
+            console.log(error)
+        }
+  }
 
     // actions context
   const [show, handleShow, handleClose] = useDialog()
@@ -79,8 +91,7 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
                             {/* context menu */}
                             <ul className={show ? "footerContextShow" : ""} id="contextUl" >
                                 <li><Link to="/agent/settings"><ImProfile /> My Profile</Link></li>
-                                <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                                {/* <li onClick={signOutUser}><MdLogout /> Logout</li> */}
+                                <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                             </ul>
                         </footer>
 
@@ -100,14 +111,16 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
                 </section>
                 <MinimisedSideBar role={Agent_mtp}/>
                 <footer>
-                        <ul>
-                            <li><Link to="/admin/settings">Settings</Link></li>
-                            <li><Link to="/logout" onClick={signOutUser}><MdLogout /> Logout</Link></li>
-                        </ul>
-                    <Link to={'/admin-settings'} id="account">
-                        <img src={authentication?.currentUser.photoURL} alt='profile'/>
-                        {/* <DefaultAvatar /> */}
-                    </Link>
+                    <div className="footerContext" onClick={(event) => {
+                      show ? handleClose() : handleShow();
+                      event.stopPropagation();
+                    }}>
+                        <DefaultAvatar />
+                    </div>
+                    <ul className={show ? "footerContextShow" : ""} id="contextUl">
+                        <li><Link to="/admin/settings"><ImProfile /></Link></li>
+                        <li onClick={handleLogout}><Link><MdLogout /></Link></li>
+                    </ul>
                 </footer>
             </nav>
 }

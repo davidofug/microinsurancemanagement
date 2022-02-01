@@ -22,6 +22,17 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
     const [ toggleMenu, setToggeMenu ] = useState(true)
     const [ openFooterContext, setOpenFooterContext ] = useState(false)
 
+    const { logout } = useAuth()
+    const handleLogout = async () => {
+        try {
+            window.location = "/"
+            await logout()
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+
     return (
         <div className='menuSide'>
             <MobileNav role={Agent} user="agent" displayName={authentication?.currentUser?.displayName}/>
@@ -45,7 +56,12 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                         <footer>
                             {/* <Link to='/admin/settings'> */}
                             <div className="footerContext" onClick={() => setOpenFooterContext(!openFooterContext)}>
-                                <DefaultAvatar />
+                            {authentication?.currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8"
+                                ?
+                                    <img src={authentication?.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>
+                                :
+                                    <DefaultAvatar />
+                                }
                                 <div>
                                     <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
                                     <p style={{"color": "#646464"}}>
@@ -57,7 +73,7 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                             {/* </Link> */}
                             <ul className={openFooterContext ? "footerContextShow" : ""} id="contextUl">
                                 <li><Link to="/agent/settings"><ImProfile /> My Profile</Link></li>
-                                <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                                <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                             </ul>
                         </footer>
 
@@ -79,7 +95,7 @@ function AgentMenu({setLargeContentClass, largeContentClass}) {
                 <footer>
                         <ul>
                             <li><Link to="/admin/settings">Settings</Link></li>
-                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                            <li onClick={handleLogout}><Link><MdLogout /></Link></li>
                         </ul>
                     <Link to={'/admin-settings'} id="account">
                         <DefaultAvatar />

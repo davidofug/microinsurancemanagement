@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 
-function ClientModal({ singleDoc, handleClose, handleFieldChange }) {
+function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
 
   const auth = getAuth();
 
@@ -23,6 +23,7 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange }) {
         NIN: event.target.NIN.value,
         gender: event.target.gender.value
     });
+    getUsers()
     toast.success('Successfully updated', {position: "top-center"});
 }
 

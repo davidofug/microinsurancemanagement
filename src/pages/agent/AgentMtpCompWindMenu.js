@@ -22,7 +22,16 @@ function AgentMtpCompWindMenu({setLargeContentClass, largeContentClass}) {
     const [ toggleMenu, setToggeMenu ] = useState(true)
     const [ openFooterContext, setOpenFooterContext ] = useState(false)
 
-    console.log(authentication.currentUser)
+    const { logout } = useAuth()
+    const handleLogout = async () => {
+        try {
+            window.location = "/"
+            await logout()
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
 
     return (
         <div className='menuSide'>
@@ -59,7 +68,7 @@ function AgentMtpCompWindMenu({setLargeContentClass, largeContentClass}) {
                             {/* </Link> */}
                             <ul className={openFooterContext ? "footerContextShow" : ""} id="contextUl">
                                 <li><Link to="/agent/settings"><ImProfile /> My Profile</Link></li>
-                                <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                                <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                             </ul>
                         </footer>
 
@@ -81,7 +90,7 @@ function AgentMtpCompWindMenu({setLargeContentClass, largeContentClass}) {
                 <footer>
                         <ul>
                             <li><Link to="/admin/settings">Settings</Link></li>
-                            <li><Link to="/logout"><MdLogout /> Logout</Link></li>
+                            <li onClick={handleLogout}><Link><MdLogout /></Link></li>
                         </ul>
                     <Link to={'/admin-settings'} id="account">
                         <DefaultAvatar />

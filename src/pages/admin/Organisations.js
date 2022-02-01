@@ -1,16 +1,13 @@
-import { CSVLink } from "react-csv";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { MdDownload } from "react-icons/md";
 import Header from "../../components/header/Header";
 import Pagination from "../../helpers/Pagination";
 import SearchBar from "../../components/searchBar/SearchBar";
 import { Table } from "react-bootstrap";
 import { db } from '../../helpers/firebase'
-import { collection, getDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import OrganisationModal from "../../components/OrganisationModel";
 import { Modal } from 'react-bootstrap'
-import { useForm } from "../../hooks/useForm";
 import { authentication } from "../../helpers/firebase";
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
@@ -25,6 +22,9 @@ import 'react-toastify/dist/ReactToastify.css'
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
+
+  // initialising the logs collection.
+  const logCollectionRef = collection(db, "logs");
 
   useEffect(() => {
     document.title = "Britam - Organisations";
@@ -60,43 +60,34 @@ export default function Organisations() {
   const [ show, handleShow, handleClose ] = useDialog();
   const [ searchText, setSearchText ] = useState('')
 
-  /* const [fields, handleFieldChange] = useForm({
-    uid: authentication.currentUser.uid,
-    category: '',
-    name: '',
-    org_email: '',
-    tel: '',
-    address: '',
-    logo: '',
-    role: '',
-    title: '',
-    contactName: '',
-    contactPhoneNumber: '',
-    contact_email: '',
-    password: ''
-
-}) */
-
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
 
     const handleDelete = async (id) => {
       const organisationDoc = doc(db, "organisations", id);
-      await deleteDoc(organisationDoc);
-      toast.success('Successfully deleted', {position: "top-center"});
+      await deleteDoc(organisationDoc)
+        .then(() => toast.success('Successfully deleted', {position: "top-center"}))
+        .then(async () => {
+          await addDoc(logCollectionRef, {
+            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+            type: 'organisation deletion',
+            status: 'successful',
+            message: `Successfully deleted organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
+          })
+        })
+        .catch(async () => {
+          toast.error(`Failed to deleted organisation: ${singleDoc.name}`, {position: "top-center"});
+          await addDoc(logCollectionRef, {
+            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+            type: 'organisation deletion',
+            status: 'failed',
+            message: `Failed to delete ${singleDoc.name}'s claim by ${authentication.currentUser.displayName}`
+          })
+        })
+      
     };
 
     const [singleDoc, setSingleDoc] = useState({});
-
-    const getSingleDoc = async (organisation) => {
-      // const docRef = doc(db, "organisations", id);
-      // const docSnap = await getDoc(docRef);
-      // setSingleDoc(docSnap.data());
-      setSingleDoc(organisation);
-      console.log(organisation)
-    };
-
-    console.log(singleDoc)
 
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => !data || data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
@@ -173,15 +164,6 @@ export default function Organisations() {
             value={searchText}
             handleSearch={handleSearch}
           />
-          <div></div>
-          <CSVLink
-            data={organisations}
-            filename={"Britam-Organisations.csv"}
-            className="btn btn-primary cta"
-          >
-            {" "}
-            Export <MdDownload />
-          </CSVLink>
         </div>
 
         <Table
@@ -189,8 +171,6 @@ export default function Organisations() {
           hover
           striped
           responsive
-          cellPadding={0}
-          cellSpacing={0}
           className="mt-5"
         >
           <thead>
@@ -226,7 +206,7 @@ export default function Organisations() {
                 <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
                 
                 <td className="started">
-                    <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); getSingleDoc(organisation)}}>&#8942;</button>
+                    <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(organisation)}}>&#8942;</button>
 
                     <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                       
@@ -262,6 +242,20 @@ export default function Organisations() {
           </tbody>
 
           <tfoot>
+           <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+             <td colSpan={7}>
+             <Pagination
+                pages={totalPagesNum}
+                setCurrentPage={setCurrentPage}
+                currentClients={currentOrganisations}
+                sortedEmployees={organisations}
+                entries={"Organisations"}
+              />
+             </td>
+           </tr>
+         </tfoot>  
+
+          <tfoot>
             <tr>
               <th>Logo</th>
               <th>Name</th>
@@ -276,13 +270,7 @@ export default function Organisations() {
           </tfoot>
         </Table>
 
-        <Pagination
-          pages={totalPagesNum}
-          setCurrentPage={setCurrentPage}
-          currentClients={currentOrganisations}
-          sortedEmployees={organisations}
-          entries={"Organisations"}
-        />
+        
       </div>
     </div>
         }
