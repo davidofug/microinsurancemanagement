@@ -49,22 +49,8 @@ function BarChart () {
 
                 } else if (authClaims?.admin) {
                     const agentsIDs = data.filter( user => user?.role?.agent).filter( user => user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
-
                     const supervisorIDs = data.filter( user => user?.role?.supervisor === true && user?.meta?.added_by_uid === authentication.currentUser.uid).map(user => user.uid)
-
-                    let agentsBySupervisors = []
-                    supervisorIDs.forEach(ID => {
-                        const agents = data.filter(user => user?.role?.agent === true && user?.meta?.added_by_uid === ID)
-                        agentsBySupervisors.push(...[...agents])   
-                    })
-
-
-                    const agentBySupervisorsIDs = agentsBySupervisors.map(agentBySupervisor => agentBySupervisor.uid)
-                    const usersIDsByAddedByAdmins = [...agentBySupervisorsIDs, ...agentsIDs]
-
-
-                    return usersIDsByAddedByAdmins
-                
+                    return data.filter(user => user?.role?.supervisor === true || user?.role?.agent === true).filter(user => [authentication.currentUser.uid, ...agentsIDs, ...supervisorIDs].includes(user.meta.added_by_uid)).map(user => user.uid)
                 } else if (authClaims?.agent) {
                     return[authentication.currentUser.uid]
                 } else if (authClaims?.superadmin) {
