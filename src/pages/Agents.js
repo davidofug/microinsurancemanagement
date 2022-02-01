@@ -19,6 +19,9 @@ import { addDoc, collection } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import Chat from '../components/messenger/Chat'
+
+
 function Agents({role}) {
 
   useEffect(() => {document.title = 'Britam - Agents';getAgents()}, [])
@@ -173,6 +176,8 @@ const [ open, handleOpen, handleClose ] = useDialog()
   console.log(deleteArray)
 
     return (
+      <>
+      
         <div className='components'>
             <Header title="Agents" subtitle="MANAGING AGENTS" />
             <ToastContainer />
@@ -319,13 +324,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
                     <p>There is no match for current search</p>
                   </div>
                   }
-
-                  
-
-                  
-
-               
-            </div>
+               </div>
               </>
             :
               agents === null
@@ -338,9 +337,12 @@ const [ open, handleOpen, handleClose ] = useDialog()
               :
                 <Loader />
             }
-
-              
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+              <Chat />
+            </div>
         </div>
+      </>
+      
     )
 }
 
