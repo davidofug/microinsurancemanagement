@@ -200,8 +200,6 @@ export default function Claims() {
 
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
 
-  console.log(singleDoc)
-
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
@@ -287,7 +285,7 @@ export default function Claims() {
                <td>{claim.numberPlate}</td>
                <td>{claim.stickerNumber}</td>
                <td>{claim.estimate}</td>
-               {!authClaims && <td>{claim.added_by_name}</td>}
+               {!authClaims.agent && <td>{claim.added_by_name}</td>}
                <td>
                  <span
                    style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
