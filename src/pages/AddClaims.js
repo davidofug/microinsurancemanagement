@@ -7,6 +7,7 @@ import { collection, addDoc } from 'firebase/firestore'
 import { useForm } from '../hooks/useForm'
 import Loader from '../components/Loader'
 import useAuth from '../contexts/Auth';
+import UploadFile from '../components/uploader/UploadFile'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -190,7 +191,8 @@ function AddClaims() {
                         
                         <Form.Group className="mb-3 mt-3">
                             <Form.Label>Upload support documents</Form.Label>
-                            <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} className="mb-1" onChange={event => setAttachedDocs(event.target.files)} multiple/>
+                            <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} className="mb-1"/>
+                            <UploadFile setAttachedDocs={setAttachedDocs}/>
                         </Form.Group>
                         
                         <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
