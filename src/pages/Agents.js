@@ -14,7 +14,9 @@ import ClientModal from '../components/ClientModal';
 import { useForm } from '../hooks/useForm';
 import useDialog from '../hooks/useDialog'
 import { ImFilesEmpty } from 'react-icons/im'
+import { MdStickyNote2 } from 'react-icons/md'
 import { addDoc, collection } from 'firebase/firestore';
+import StickerModal from '../components/StickersModal';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -54,6 +56,8 @@ function Agents({role}) {
   }
 
 const [ open, handleOpen, handleClose ] = useDialog()
+
+const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
 
   // search for agent
   const [searchText, setSearchText] = useState('')
@@ -173,8 +177,6 @@ const [ open, handleOpen, handleClose ] = useDialog()
 
   const paginatedShownAgent = !agents || shownAgents.slice(indexOfFirstAgent, indexOfLastAgent)
 
-  console.log(deleteArray)
-
     return (
       <>
       
@@ -214,6 +216,10 @@ const [ open, handleOpen, handleClose ] = useDialog()
               <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
             </Modal>
 
+            <Modal show={openSticker} onHide={handleCloseSticker}>
+              <StickerModal name={singleDoc.name} user_id={singleDoc.uid} />
+            </Modal>
+
             {agents !== null && agents.length > 0
             ?
               <>
@@ -240,7 +246,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
                     <>
                       <Table hover striped responsive>
                         <thead>
-                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
+                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Created At</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {paginatedShownAgent.map((agent, index) => (
@@ -261,14 +267,24 @@ const [ open, handleOpen, handleClose ] = useDialog()
                               <td>{agent.meta.phone}</td>
                               <td>{agent.meta.address}</td>
                               {authClaims.admin && <td>{agent.meta.added_by_name}</td>}
+                              <td>{agent.meta.added_by_name}</td>
+
                               <td className="started">
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(agent)}}>&#8942;</button>
 
                                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                                             <li onClick={() => {
                                                     setShowContext(false)
+                                                    handleOpenSticker(); 
+                                                  }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><MdStickyNote2/></i> Issued Stickers
+                                                  </div>
+                                            </li>
+                                            <li onClick={() => {
+                                                    setShowContext(false)
                                                     handleOpen(); 
-                                                    console.log(agent.uid)
                                                   }}
                                                 >
                                                   <div className="actionDiv">
@@ -313,7 +329,7 @@ const [ open, handleOpen, handleClose ] = useDialog()
                         </tfoot>
 
                         <tfoot>
-                            <tr><th></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Action</th></tr>
+                            <tr><th></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Created At</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
                     </>

@@ -1,6 +1,6 @@
 import Mtp from '../pages/Mtp'
 import Claims from '../pages/Claims'
-import Reports from '../pages/supervisor/Reports'
+import Reports from '../pages/admin/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
 import Settings from '../pages/Settings'
