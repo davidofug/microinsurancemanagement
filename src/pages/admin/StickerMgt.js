@@ -95,6 +95,8 @@ export default function StickerMgt() {
       
     }
 
+    console.log(stickerRange)
+
     return (
         <div className="components">
             <Header title="Sticker No. Management" subtitle="MANAGING STICKER NUMBERS" />
@@ -116,7 +118,7 @@ export default function StickerMgt() {
 
             {singleDoc !== undefined &&
               <Modal show={show} onHide={handleClose}>
-                <Modal.Header>
+                <Modal.Header closeButton>
                   <Modal.Title>Sticker Range Details</Modal.Title></Modal.Header>
                   <Modal.Body>
                   <div className="m-5">
@@ -126,10 +128,14 @@ export default function StickerMgt() {
                       </div>
                       <div style={{display: "flex", justifyContent: "space-between"}}>
                           <div><p>Assigned to: </p></div>
-                          <div><p><b>Charles Kasasira (supervisor)</b></p></div>
+                          <div><p><b>{singleDoc.assignedTo} </b> (supervisor)</p></div>
                       </div>
                       <div style={{display: "flex", justifyContent: "space-between"}}>
-                          <div><p>used Sticker Numbers: </p></div>
+                          <div><p>Used Sticker Numbers: </p></div>
+                          <div><p><b>{singleDoc.used && singleDoc.used.length}</b></p></div>
+                      </div>
+                      <div style={{display: "flex", justifyContent: "space-between"}}>
+                          <div><p>Returned Sticker Numbers: </p></div>
                           <div><p><b>{singleDoc.used && singleDoc.used.length}</b></p></div>
                       </div>
                       <div style={{display: "flex", justifyContent: "space-between"}}>
@@ -166,17 +172,18 @@ export default function StickerMgt() {
 
                       <Table responsive hover bordered striped>
                           <thead>
-                            <tr><th>#</th><th>Category</th><th>Sticker Nos</th><th>used/Total No Received</th><th>Actions</th></tr>
+                            <tr><th className="text-center">#</th><th>Category</th><th>Sticker Nos</th><th>used/Total No Received</th><th>Created At</th><th className="text-center">Actions</th></tr>
                           </thead>
                           <tbody>
                             {currentStickers.map((sticker, index) => (
                               <tr key={sticker.id}>
-                                <td>{index + 1}</td>
+                                <td className="text-center" style={{width: "9rem"}}>{index + 1}</td>
                                 <td>{sticker.category}</td>
                                 <td>[<span style={{color: "#c82e29"}}>{`${sticker.rangeFrom} - ${sticker.rangeTo}`}</span>]</td>
                                 <td>{sticker.used && sticker.used.length}/{sticker.rangeTo - sticker.rangeFrom}</td>
+                                <td>{sticker.timeCreated && sticker.timeCreated}</td>
                                 
-                                <td className="started">
+                                <td className="started text-center">
                                   <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(sticker)}}>&#8942;</button>
 
                                   <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
@@ -224,7 +231,7 @@ export default function StickerMgt() {
 
 
                           <tfoot>
-                            <tr><th>#</th><th>Category</th><th>Sticker Nos</th><th>used/Total No Received</th><th>Actions</th></tr>
+                            <tr><th className="text-center">#</th><th>Category</th><th>Sticker Nos</th><th>used/Total No Received</th><th>Created At</th><th className="text-center">Actions</th></tr>
                           </tfoot>
                       </Table>
 
