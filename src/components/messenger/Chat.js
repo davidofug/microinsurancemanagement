@@ -28,7 +28,7 @@ import { getFormattedDate } from '../../helpers/formatDate'
 
 function Chat() {
     // const [ receiversUIDS, setReceiversUIDS] = useState([])
-    const [ sentNotSeen, setSentNotSeen ] = useState([])
+    const [ unread, setUnread ] = useState(0)
     const [ searchKey, setSearchKey ] = useState('')
     const [ allChats, setAllChats ] = useState([])
     const [ acceptedChats, setAcceptedChats ] = useState([])
@@ -130,6 +130,8 @@ function Chat() {
             const messages = data.docs.map(doc => doc.data())
             const receivers = messages.filter(message => message?.sendersUID === authentication.currentUser.uid).map(message => message.receiversUID)
             const uids = [...new Set(receivers)]
+
+            setUnread(messages.filter(message => message.receiversUID === authentication.currentUser.uid).filter(message => message?.read !== true).length)
             setPreviousChats(capables.filter(capable => uids.includes(capable.uid)))   
             setAcceptedChats(capables)  
             setAllChats(capables)   
@@ -181,8 +183,10 @@ function Chat() {
                 </div>
                 :
                 <div style={{display:"flex", backgroundColor:"white", position:"relative", height:"80px", borderTopLeftRadius:"15px 15px", borderTopRightRadius:"15px 15px", paddingTop:"10px", paddingLeft:"20px", justifyContent:"space-between", opacity:"0.8"}}>
-                    <div style={{paddingTop:"5px"}}>
-                        Messages 
+                    <div style={{paddingTop:"5px", display:"flex", gap:"5px"}}>
+                        <div style={{paddingTop:"2px"}}>Messages</div>
+                        <div style={{paddingTop:"2px", width:"30px", height:"30px", borderRadius:"50%", backgroundColor:"#F8FAFA", justifyContent:"center", alignItems:"center", display:"flex"}}><BiEnvelope /></div>
+                        <div>{unread}</div>
                     </div>
                     <div style={{display:"flex", gap:"5px"}}>
                         {
@@ -200,7 +204,7 @@ function Chat() {
                             setSearch(!search)
                             setSearchKey('')
                         }} style={{height:"30px", width:"30px", borderRadius:"50%", border:"none"}}>
-                            <i style={{height:"100%", width:"100%", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", backgroundColor:"#f7f9f9"}}>{search === true ? <IoCloseSharp /> : <BiEnvelope />}</i>
+                            <i style={{height:"100%", width:"100%", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", backgroundColor:"#f7f9f9"}}>{search === true ? <IoCloseSharp /> : <BiSearchAlt2 />}</i>
                         </button>
                         <button style={{height:"30px", width:"30px", borderRadius:"50%", border:"none", marginRight:"20px"}} onClick={()=>{
                             if(expanded === false) {
@@ -256,8 +260,9 @@ function Chat() {
                                                         read: true
                                                     }).then(result => console.log(result))   
                                                 })
+                                                setUnread(unread - unseenMsgs.length)
 
-                                                }}>
+                                            }}>
                                                 <div >
                                                     <div style={{width:"40px",  height:"40px", borderRadius:"50%", backgroundColor:"gray", opacity:"0.2", display:"flex", justifyContent:"center", alignItems:"center"}}><div>{photoURL !== null ? <img src={photoURL} alt={`${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}/> : `${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}</div></div>
                                                     
@@ -278,7 +283,7 @@ function Chat() {
                             </>
                             :
                             <>
-                                <div>Start a new Chat</div>
+                                <div>All Chats</div>
                                 {
                                     acceptedChats.map(({
                                         name,
@@ -301,9 +306,10 @@ function Chat() {
                                                     const { id } = msg
                                                     updateDoc(doc(db, 'messages', id), {
                                                         read: true
-                                                    }).then(result => console.log(result))
-                                                    
+                                                    }).then(result => console.log(result))    
                                                 })
+
+                                                setUnread(unread - unseenMsgs)
                                             }}>
                                                 <div>
                                                     <div style={{width:"40px",  height:"40px", borderRadius:"50%", backgroundColor:"gray", opacity:"0.2", display:"flex", justifyContent:"center", alignItems:"center"}}><div>{photoURL !== null ? <img src={photoURL} alt={`${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}/> : `${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}</div></div>
