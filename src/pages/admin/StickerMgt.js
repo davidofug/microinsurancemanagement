@@ -114,30 +114,32 @@ export default function StickerMgt() {
               </div>
             </div>
 
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header>
-                <Modal.Title>Sticker Range Details</Modal.Title></Modal.Header>
-                <Modal.Body>
-                <div className="m-5">
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <div><p>Range from: </p></div>
-                        <div><p><b>{singleDoc.rangeFrom} -  {singleDoc.rangeTo}</b></p></div>
-                    </div>
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <div><p>Assigned to: </p></div>
-                        <div><p><b>Charles Kasasira (supervisor)</b></p></div>
-                    </div>
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <div><p>used Sticker Numbers: </p></div>
-                        <div><p><b>{singleDoc.used.length}</b></p></div>
-                    </div>
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <div><p>Total Number of stickers: </p></div>
-                        <div><p><b>{singleDoc.rangeTo - singleDoc.rangeFrom}</b></p></div>
-                    </div>
-                </div>
-                </Modal.Body>
-            </Modal>
+            {singleDoc !== undefined &&
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header>
+                  <Modal.Title>Sticker Range Details</Modal.Title></Modal.Header>
+                  <Modal.Body>
+                  <div className="m-5">
+                      <div style={{display: "flex", justifyContent: "space-between"}}>
+                          <div><p>Range from: </p></div>
+                          <div><p><b>{singleDoc.rangeFrom} -  {singleDoc.rangeTo}</b></p></div>
+                      </div>
+                      <div style={{display: "flex", justifyContent: "space-between"}}>
+                          <div><p>Assigned to: </p></div>
+                          <div><p><b>Charles Kasasira (supervisor)</b></p></div>
+                      </div>
+                      <div style={{display: "flex", justifyContent: "space-between"}}>
+                          <div><p>used Sticker Numbers: </p></div>
+                          <div><p><b>{singleDoc.used && singleDoc.used.length}</b></p></div>
+                      </div>
+                      <div style={{display: "flex", justifyContent: "space-between"}}>
+                          <div><p>Total Number of stickers: </p></div>
+                          <div><p><b>{singleDoc.rangeTo - singleDoc.rangeFrom}</b></p></div>
+                      </div>
+                  </div>
+                  </Modal.Body>
+              </Modal>
+            }
 
             <div className="componentsData">
                     <div className="sticker-mgt">
