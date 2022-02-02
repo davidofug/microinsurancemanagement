@@ -8,6 +8,8 @@ import { useForm } from '../hooks/useForm'
 import Loader from '../components/Loader'
 import useAuth from '../contexts/Auth';
 import UploadFile from '../components/uploader/UploadFile'
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../helpers/firebase'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -41,16 +43,68 @@ function AddClaims() {
         dateOfIncident: '',
         claimEstimate: '',
         detailsOfIncident: '',
-        attachedDocuments: '',
+        attachedDocuments: [],
         status: 'pending'
-
     })
 
+
+    console.log(fields.attachedDocuments)
+
+    console.log([ ...attachedDocs ])
+
     const createClaim = async (event) => {
-        try{
-            setIsLoading(true)
-            event.preventDefault()
-            fields["added_by_name"] = authentication.currentUser.displayName
+        setIsLoading(true)
+        event.preventDefault()
+        fields["added_by_name"] = authentication.currentUser.displayName
+
+        if(attachedDocs){
+            const arrayOfDocs = [ ...attachedDocs ]
+            arrayOfDocs.forEach(( attachedDoc, index ) => {
+                const storageRef = ref(storage, `images/${attachedDoc.name}`)
+                const uploadTask = uploadBytesResumable(storageRef, attachedDoc)
+
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                            // const prog = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                            // setProgress(prog)
+                    },
+                    (error) => console.log(error),
+                    async () => {
+                                    await getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+                                    fields.attachedDocuments = [...fields.attachedDocuments, downloadUrl]
+                            })
+                            .then( async() => {
+                                if(index === arrayOfDocs.length - 1){
+                                    await addDoc(claimsCollectionRef, fields)
+                                    .then(() => toast.success(`successfully added ${fields.claimantName}'s claim`, {position: "top-center"}))
+                                    .then(async () => {
+                                        await addDoc(logCollectionRef, {
+                                            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                            type: 'claim creation',
+                                            status: 'successful',
+                                            message: `Successfully created ${fields.claimantName}'s claim by ${authentication.currentUser.displayName}`
+                                        })
+                                    })
+                                    .catch(async () => {
+                                        toast.error(`Failed: couldn't added ${fields.claimantName}'s claim`, {position: "top-center"});
+
+                                        await addDoc(logCollectionRef, {
+                                            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                            type: 'claim creation',
+                                            status: 'failed',
+                                            message: `Failed to create ${fields.claimantName}'s claim by ${authentication.currentUser.displayName}`
+                                        })
+                                    })
+
+                                    setIsLoading(false)
+                                    document.form1.reset();
+                                  }
+                            })
+                    }
+                )
+            })   
+        } else{
             await addDoc(claimsCollectionRef, fields)
                 .then(() => toast.success(`successfully added ${fields.claimantName}'s claim`, {position: "top-center"}))
                 .then(async () => {
@@ -72,14 +126,11 @@ function AddClaims() {
                     })
                 })
 
-            setIsLoading(false)
-            document.form1.reset();
-        } catch(error){
-            toast.error(`Failed: ${error.code}`, {position: "top-center"});
+                setIsLoading(false)
+                document.form1.reset();
         }
-      }
+    }
 
-      // send claim to Britam claim team on creation showing agent who created the notification.
       const sendToClaimTeam = () => {}
 
       let today;
@@ -190,9 +241,8 @@ function AddClaims() {
                         </Form.Group>
                         
                         <Form.Group className="mb-3 mt-3">
-                            <Form.Label>Upload support documents</Form.Label>
-                            <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} className="mb-1"/>
-                            <UploadFile setAttachedDocs={setAttachedDocs}/>
+                            <Form.Label>Upload support documents (max: <b>2 files</b>)</Form.Label>
+                            <UploadFile setAttachedDocs={setAttachedDocs} attachedDocs={attachedDocs} />
                         </Form.Group>
                         
                         <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>

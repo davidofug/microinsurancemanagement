@@ -4,7 +4,7 @@ import { MdCloudUpload  } from 'react-icons/md'
 import { MdDelete } from 'react-icons/md'
 import { AiFillFileText } from 'react-icons/ai'
 
-export default function UploadFile({setAttachedDocs}) {
+export default function UploadFile({setAttachedDocs, attachedDocs}) {
 
     const [ fileName, setFileName ] = useState("No selected File")
     const [ fileName2, setFileName2 ] = useState("No selected File")
@@ -17,19 +17,19 @@ export default function UploadFile({setAttachedDocs}) {
             <div id="form" onClick={() => {
                 document.querySelector(".input-file").click()
             }}>
-                <input type="file" className='input-file' hidden id='photo' defaultValue={""} onChange={({target: {files}}) => {
-                    setAttachedDocs(files[0])
-                    files[0] && setFileName(files[0].name)
-                    files[1] && setFileName2(files[1].name)
-                    if(files){
-                        setImageUrl(URL.createObjectURL(files[0]))
-                        files[1] && setImageUrl2(URL.createObjectURL(files[1]))
+                <input type="file" className='input-file' hidden defaultValue={""} onChange={(event) => {
+                    setAttachedDocs(event.target.files)
+                    event.target.files[0] && setFileName(event.target.files[0].name)
+                    event.target.files[1] && setFileName2(event.target.files[1].name)
+                    if(event.target.files){
+                        setImageUrl(URL.createObjectURL(event.target.files[0]))
+                        event.target.files[1] && setImageUrl2(URL.createObjectURL(event.target.files[1]))
                     }
                 }} multiple/>
-                {imageUrl ?
+                {fileName !== "No selected File" || fileName2 !== "No selected File"
+                ?
                 <div>
-                    <img src={imageUrl} width={50} height={50} alt='attached Documents'/>
-                    { imageUrl2 && <img src={imageUrl2} width={50} height={50} alt='attached Documents 2'/>}
+                    {attachedDocs.length} files
                 </div>
                 :
                     <MdCloudUpload id='upload-icon'/>
@@ -41,7 +41,7 @@ export default function UploadFile({setAttachedDocs}) {
                     <AiFillFileText className='uploaded-icon' />
                     <div className='upload-content'>
                         <div id="details">
-                            <span className="name">{fileName} - <MdDelete onClick={() => {setFileName("No selected File"); setAttachedDocs(null); setImageUrl(null)}}/></span>
+                            <span className="name">{fileName} - <MdDelete onClick={() => {setFileName("No selected File"); setAttachedDocs([attachedDocs[1]]); setImageUrl(null)}}/></span>
                         </div>
                         <div id="progress-bar">
                             <div id="progress"></div>
@@ -53,7 +53,7 @@ export default function UploadFile({setAttachedDocs}) {
                         <AiFillFileText className='uploaded-icon' />
                         <div className='upload-content'>
                             <div id="details">
-                                <span className="name">{fileName2} - <MdDelete onClick={() => {setFileName2("No selected File"); setAttachedDocs(null); setImageUrl2(null)}}/></span>
+                                <span className="name">{fileName2} - <MdDelete onClick={() => {setFileName2("No selected File"); setAttachedDocs(attachedDocs[0]); setImageUrl2(null)}}/></span>
                             </div>
                             <div id="progress-bar">
                                 <div id="progress"></div>
