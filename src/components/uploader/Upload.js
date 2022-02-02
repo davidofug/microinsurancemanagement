@@ -8,7 +8,6 @@ export default function Upload({setLogo}) {
 
     const [ fileName, setFileName ] = useState("No selected File")
     const [ imageUrl, setImageUrl ] = useState(null)
-    console.log(imageUrl)
     
 
     return (
