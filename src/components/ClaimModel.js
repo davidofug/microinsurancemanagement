@@ -7,38 +7,35 @@ export function ClaimModelNotification({ singleDoc }) {
         </Modal.Header>
         <Form id="update_claim">
           <Modal.Body>
-                <div className="mb-3">
-                  Status:
-                  <span style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                  > {singleDoc.status}</span>
-                </div>
-                
+              <div className="mb-3">
+                Status:
+                <span style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                > {singleDoc.status}</span>
+              </div>
 
-          <h5>Client Details</h5>
-            <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantName">Name</Form.Label>
-                <p>{singleDoc.claimantName}</p>
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantEmail">Email Address</Form.Label>
-                <p>{singleDoc.claimantEmail}</p>
-              </Form.Group>
-            </Row>
+              <hr />
+
+              <h6>Client Details</h6>
+              <Row className="mb-3">
+                <Form.Group as={Col} style={{display: "flex",
+                    "flex-direction": "column", "align-items": "start",
+                  }}
+                >
+                  <Form.Label htmlFor="claimantName">Name</Form.Label>
+                  <p>{singleDoc.claimantName}</p>
+                </Form.Group>
+                <Form.Group
+                  as={Col}
+                  style={{
+                    display: "flex",
+                    "flex-direction": "column",
+                    "align-items": "start",
+                  }}
+                >
+                  <Form.Label htmlFor="claimantEmail">Email Address</Form.Label>
+                  <p>{singleDoc.claimantEmail}</p>
+                </Form.Group>
+              </Row>
 
             <Form.Group
                 as={Col}
@@ -57,7 +54,7 @@ export function ClaimModelNotification({ singleDoc }) {
               <hr />
             
 
-
+              <h6>Sticker Details</h6>
             <Row className="mb-3">
               <Form.Group
                 as={Col}
