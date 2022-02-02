@@ -1,8 +1,9 @@
 import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AuthProvider from './contexts/Auth';
+import AuthProvider from './providers/Auth';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.js'
 import reportWebVitals from './reportWebVitals';
 import { combineProviders } from './helpers/combineProviders';
 import './index.css'

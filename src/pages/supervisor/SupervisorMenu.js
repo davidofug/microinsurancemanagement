@@ -1,134 +1,116 @@
-import menuData from '../../parts/menuData'
+import menuData from '../../components/menuData'
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import logo from '../../assets/imgs/britam-logo.png'
-import profile from '../../assets/imgs/anyuru.jpg'
+import logo from '../../assets/imgs/britam-logo2.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
+import MobileNav from '../../components/menu/MobileNav'
+import SideBar from '../../components/menu/SideBar'
+import MinimisedSideBar from '../../components/menu/MinimisedSideBar'
+import { authentication } from "../../helpers/firebase";
+import { Badge } from 'react-bootstrap'
+import { MdLogout } from 'react-icons/md'
+import DefaultAvatar from '../../components/DefaultAvatar'
+import { ImProfile } from 'react-icons/im'
+import useDialog from '../../hooks/useDialog'
+import useAuth from '../../contexts/Auth'
 
+function SupervisorMenu({ setLargeContentClass }) {
 
-function SupervisorMenu() {
-
+    const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
     const { SuperVisor } = menuData
+    const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
+    const [show, handleShow, handleClose] = useDialog()
 
-    const [ selected, setSelected ] = useState({ activeObject: null, SuperVisor })
-    const [ toggleMenu, setToggeMenu ] = useState(true)
-
-    useEffect(() => {
-        if(sessionStorage.getItem('session1')){
-            setSelected({...selected, activeObject: selected.SuperVisor[sessionStorage.getItem('session1')-1]})
-        }else{
-            setSelected({...selected, activeObject: selected.SuperVisor[0]})
+    const { logout } = useAuth()
+    const handleLogout = async () => {
+        try {
+            window.location = "/"
+            await logout()
         }
-        
-    }, [])
-
-    const toggleActive = index => {
-        setSelected({...selected, activeObject: selected.SuperVisor[index]})
-        sessionStorage.setItem('session1', selected.SuperVisor[index]["number"])
+        catch(error){}
     }
 
-    const toggleActiveClassStyle = index => selected.SuperVisor[index] === selected.activeObject ? "nav-linked selected" : "nav-linked"
+    if(show){
+        window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
+    }
+
+    console.log(authentication.currentUser.photoURL)
 
     return (
-        <div>
-            {toggleMenu === true 
+        <div className="menuSide">
+            <MobileNav role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
+            {toggleMenu 
             ?
-                <nav className='sidebar'>
-                    <div id='brand'>
-                            <img src={logo} alt="Britam" />
-                            <i onClick={() => setToggeMenu(!toggleMenu)}>
-                            <HiOutlineChevronLeft />
-                            </i>
-                    </div>
-                
-                    <section className='position-sticky pt-3' id="menu_section">
-                    <ul className="nav flex-column">
-                            { selected.SuperVisor.map((object, index) => (
-                                                <li className='nav-item' key={index}>
-                                                    <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                        <span>{object.icon}</span>{object.name}
-                                                        {object?.subMenu &&
-                                                            (<ul>
-                                                                {object.subMenu.map((sub, index) => (
-                                                                    <li key={index}>
-                                                                        <Link to={sub.link} key={index} style={{color: "black"}}>
-                                                                            {sub.name}
-                                                                        </Link>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>)
-                                                        }
-                                                    </Link>
-                                                </li>
-                                    )
-                                )
-                            }
-                            </ul>
+                <nav className="sidebar">
+                    <section id='brand'>
+                        <img src={logo} width={150} alt="Britam" />
+                        <div id="arrowCircle" onClick={() => {
+                                hideToggleMenu()
+                                setLargeContentClass(true)
+                                localStorage.setItem('preferredToggleMenu', false)
+                                }}>
+                                
+                                    <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                                
+                                
+                        </div>
                     </section>
+                    <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
 
-                    
                     <footer>
-                            <ul>
-                                <li><Link to="/supervisor-settings">My Profile</Link></li>
-                                <li><Link to="/logout">Logout</Link></li>
-                            </ul>
-                        <Link to={'/supervisor-settings'}>
-                            <img src={profile} alt="profile" />
+                        <div className="footerContext" onClick={(event) => { 
+                            show ? handleClose() : handleShow(); 
+                            event.stopPropagation()}}>
+                            {authentication?.currentUser.photoURL !== ("https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" && "https://example.com/jane-doe/photo.jpg")
+                                ?
+                                    <img src={authentication?.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>
+                                :
+                                    <DefaultAvatar />
+                                }
                             <div>
-                                <p>Anyuru David Derrick</p>
-                                <p style={{"color": "#646464"}}>Supervisor</p>
+                                <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
+                                <p style={{"color": "#646464"}}>
+                                    <Badge bg="success">supervisor</Badge>
+                                </p>
                             </div>
-                            <div id="eclipse"><div></div><div></div><div></div></div>
-                        </Link>
-                    </footer>
-                    
-
-                </nav> 
-            : 
-                <nav className='sidebar-m'>
-                    <div id='brand_m'>
-                            <i onClick={() => setToggeMenu(!toggleMenu)}>
-                            <HiOutlineChevronRight />
-                                </i>
-                    </div>
-                
-                    <section className='position-sticky pt-3' id="menu_section_m">
-                        <ul className="nav flex-column">
-                            { selected.SuperVisor.map((object, index) => (
-                                        <li className='nav-item' key={index}>
-                                            <Link to={object.link} className={toggleActiveClassStyle(index)} onClick={() => toggleActive(index)} key={index} >
-                                                <span>{object.icon}</span>
-                                                
-                                                    {object?.subMenu &&
-                                                            (<ul>
-                                                                {object.subMenu.map((sub, index) => (
-                                                                    <Link to={sub.link} className='sub-link' key={index} style={{color: "black"}}>
-                                                                        {sub.name}
-                                                                    </Link>
-                                                                ))}
-                                                            </ul>)
-                                                        }
-                                                
-                                            </Link>
-                                        </li>
-                                    )
-                                )
-                            }
+                            <h3 style={{color: "#000"}}>&hellip;</h3>
+                        </div>
+                        <ul className={show ? "footerContextShow" : ""} id="contextUl">
+                            <li><Link to="/supervisor/settings"><ImProfile /> My Profile</Link></li>
+                            <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                         </ul>
-                    </section>
-                
-                    <footer>
-                            <ul>
-                                <li><Link to="/supervisor-settings">Settings</Link></li>
-                                <li><Link to="/logout">Logout</Link></li>
-                            </ul>
-                        <Link to={'/settings'} id="account">
-                            <img src={profile} alt="profile" />
-                        </Link>
                     </footer>
-
-                </nav> 
+                </nav>
+            : 
+            <nav className='sidebar-m'>
+                <section id='brand_m'>
+                    <div id="arrowOutCircle" onClick={() => {
+                        showToggleMenu()
+                        setLargeContentClass(false)
+                        localStorage.setItem('preferredToggleMenu', true)
+                        }}>
+                        
+                            <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
+                        
+                        
+                </div>
+                </section>
+                <MinimisedSideBar role={SuperVisor} displayName={authentication?.currentUser?.displayName}/>
+                <footer>
+                    <div className="footerContext" onClick={(event) => {
+                      show ? handleClose() : handleShow();
+                      event.stopPropagation();
+                    }}>
+                        <DefaultAvatar />
+                    </div>
+                    {/* </Link> */}
+                    <ul className={show ? "footerContextShow" : ""} id="contextUl">
+                        <li><Link to="/supervisor/settings"><ImProfile /></Link></li>
+                        <li onClick={handleLogout}><Link><MdLogout /></Link></li>
+                    </ul>
+                </footer>
+            
+            </nav>
             }
         </div>
     )

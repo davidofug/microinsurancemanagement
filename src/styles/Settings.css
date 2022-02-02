@@ -2,7 +2,6 @@
 
 #settings_columns{
     display: grid; 
-    grid-auto-columns: 1fr; 
     grid-template-columns: 0.5fr 1.5fr; 
     grid-template-rows: 1fr; 
     gap: 0px 0px; 
@@ -39,7 +38,7 @@
 
 #options{
     height: 100%;
-    border-right: 5px solid #fafafa;
+    /* border-right: 5px solid #fafafa; */
     padding: 20px;
 }
 
@@ -48,7 +47,28 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
+    background-color: white;
+    margin-bottom: 10px;
 }
+
+.avatarSection{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.profileSection{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
+.myProfile{
+    width: 80%;
+}
+
+
 
 #settings_columns img{
     height: 100px;
@@ -101,4 +121,33 @@
 
 .active-content{
     display: block;
+}
+
+
+
+@media (max-width: 780px) {
+
+    #settings_columns{
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #options{
+        border-right: none;
+    }
+
+    #options ul{
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+    }
+
+    #options ul li{
+        border-bottom: none;
+        padding: 10px;
+    }
+    
 }

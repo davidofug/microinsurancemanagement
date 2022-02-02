@@ -1,120 +1,227 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../../styles/Settings.css'
-import profile from '../../assets/imgs/image 2.png'
+import { Form, Alert, Modal, Button, Badge } from 'react-bootstrap'
+import { MdCheckCircle } from 'react-icons/md'
+import Header from '../../components/header/Header'
+import DefaultAvatar from '../../components/DefaultAvatar'
+import { authentication, db, functions } from '../../helpers/firebase'
+import { AiOutlineEdit } from 'react-icons/ai'
+import { httpsCallable } from 'firebase/functions';
+import useDialog from '../../hooks/useDialog'
+import useAuth from '../../contexts/Auth'
+import { getAuth, updateProfile, updateEmail, updatePassword, reauthenticateWithCredential } from "firebase/auth";
+import { getDoc, doc, updateDoc } from 'firebase/firestore'
+import { useForm } from '../../hooks/useForm'
+import firebase from 'firebase/compat/app';
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Settings() {
 
-    const [ selectedTab, setSelectedTab ] = useState(1)
+    const [ show, handleShow, handleClose ] = useDialog()
 
-    useEffect(() => document.title = 'Britam - User Profile', [])
+    const [fields, handleFieldChange] = useForm({
+        uid: authentication.currentUser.uid,
+    })
 
-    const toggleTab = (index) => setSelectedTab(index);
+    useEffect(() => { document.title = 'Britam - User Profile'; getUserMeta();}, [])
+
+    const [ meta, setMeta ] = useState([])
+
+    
+
+    const auth = getAuth()
+    const { currentUser } = auth;
+
+    const getUserMeta = async () => {
+        const docRef = doc(db, "usermeta", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        setMeta(docSnap.data());
+      };
+
+   const handleEditFormSubmit = async(event) => {
+       event.preventDefault()
+    const docRef = doc(db, "usermeta", currentUser.uid);
+
+    updateProfile(auth.currentUser, {
+        displayName: event.target.name.value
+      }).then(() => {
+        
+      }).catch((error) => {
+        console.log(error)
+      });
+
+      updateEmail(auth.currentUser, event.target.email.value).then(() => {
+        console.log("email update")
+      }).catch((error) => {
+        console.log(error)
+      });
+
+
+    await updateDoc(docRef, {
+        phone: event.target.phone.value,
+        address: event.target.address.value
+    });
+    toast.success('Successfully updated', {position: "top-center"});
+    getUserMeta()
+   }
+
+   const handlePasswordChange = async (event) => {
+    event.preventDefault()
+
+    // TODO(you): prompt the user to re-provide their sign-in credentials
+    /* const credential = firebase.auth.EmailAuthProvider.credential(
+        currentUser.email, 
+        event.target.oldPassword.value
+    ); */
+
+
+    if(event.target.password.value === event.target.newPassword.value){
+        updatePassword(auth.currentUser, event.target.password.value).then(() => {
+            toast.success('Successfully updated password', {position: "top-center"});
+          }).catch((error) => {
+            error.code === "auth/weak-password" ? toast.error('Weak password', {position: "top-center"}): toast.error('Failed', {position: "top-center"});
+            
+          });
+    } else{
+        toast.error("Password doesn't match", {position: "top-center"});
+    }
+    /* reauthenticateWithCredential(currentUser, credential).then(() => {
+        // User re-authenticated.
+    }).catch((error) => {
+        // An error ocurred
+        // ...
+        console.log(error)
+    }); */
+}
+
+
+
+    
+
+   console.log(currentUser.reloadUserInfo.passwordHash)
 
     return (
         <div className='components'>
-            <header className="heading">
-                <h1 className='title'>My Profile</h1>
-                <p className='subtitle'>MANAGE YOUR ACCOUNT</p>
-            </header>
+            <Header title="Setting" subtitle="CUSTOMIZE YOUR ACCOUNT" />
+            <ToastContainer />
 
-                <div id='settings_columns'>
-                    <div id="options">
-                        <ul>
-                            <li><button onClick={() => toggleTab(1)} className={selectedTab === 1 ? "tabs active-tabs" : "tabs"}>Edit Profile</button></li>
-                            <li><button onClick={() => toggleTab(2)} className={selectedTab === 2 ? "tabs active-tabs" : "tabs"}>Notifications</button></li>
-                            <li><button onClick={() => toggleTab(3)} className={selectedTab === 3 ? "tabs active-tabs" : "tabs"}>Password & security</button></li>
-                        </ul>
-                    </div>
-            <form action="">
-                    <div className="tabs-content">
-                        <div className={selectedTab === 1 ? "content  active-content" : "content"}>
-                            <div id="edit_profile">
-                                <h2>Edit Profile</h2>
-                                <hr />
-                                <img src={profile} alt="profile image" />
-                                <div className="first_last">
-                                    <div className="names">
-                                        <label htmlFor="">First Name</label>
-                                        <input type="text" name="" id="" value="Charles" />
-                                    </div >
-                                    <div className="names">
-                                        <label htmlFor="">Last Name</label>
-                                        <input type="text" name="" id="" value="Kasasira" />
-                                    </div>
-                                </div>
-                                <div className="first_last">
-                                    <div className="names">
-                                        <label htmlFor="">phone Number</label>
-                                        <input type="tel" name="" id="" value="0770123456" />
-                                    </div>
-                                    <div className="names">
-                                        <label htmlFor="gender">Gender</label>
-                                        <div className='first_last'>
-                                            <div>
-                                                <input type="radio" name="gender" id="" checked  />
-                                                <label htmlFor="">Male</label>
+            <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Form id="update_claim" onSubmit={handleEditFormSubmit}>
+          <Modal.Body>
+                <DefaultAvatar />
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Change Name</Form.Label>
+                    <Form.Control type="text" id='name' placeholder="Enter full Name" defaultValue={currentUser.displayName}/>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Change Email</Form.Label>
+                    <Form.Control type="email" id='email' placeholder="Enter new address" defaultValue={currentUser.email}/>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Change Phone Number</Form.Label>
+                    <Form.Control type="tel" id='phone' placeholder="Enter new phone number" defaultValue={meta.phone} />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Change Address</Form.Label>
+                    <Form.Control type="text" id='address' placeholder="Enter new address" defaultValue={meta.address}/>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGridAddress1">
+                    <Form.Label htmlFor='newPassword'>Enter Password to confirm</Form.Label>
+                    <Form.Control type="password" id='newPassword' placeholder="Enter password" />
+                </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+          <Button
+              variant="primary"
+              type="submit"
+              onClick={handleClose}
+              id="submit"
+            >
+              Save
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+
+                <div >
+                                <div id="edit_profile" className="componentsData myProfile shadow-sm mb-3">
+                                        <div className='mt-3'>
+                                            <h2>Profile</h2>
+                                            <p>User Detail</p>
+                                            <div className='profileSection'>
+                                                <div className="avatarSection">
+                                                    <DefaultAvatar />
+                                                    <div>
+                                                        <h6 style={{margin: "0"}}>{currentUser.displayName}</h6>
+                                                        <p>{currentUser.email}</p>
+                                                    </div>
+                                                </div>
+                                                <button className="btn btn-primary cta" onClick={handleShow}><AiOutlineEdit /></button>
+                                                
                                             </div>
-                                            <div>
-                                                <input type="radio" name="gender" id=""  />
-                                                <label htmlFor="">Female</label>
+                                            
+                                        </div>
+
+                                        <div className='mb-3 mt-3'>
+                                        <h6>General Information</h6>
+                                            <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
+                                                <th style={{paddingRight: "10rem"}}><p>Role</p></th>
+                                                <td><Badge>Agent</Badge></td>
+                                            </div>
+                                            <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
+                                                <th style={{paddingRight: "10rem"}}><p>Gender</p></th>
+                                                <td><p>{meta.gender}</p></td>
+                                            </div>
+                                            <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
+                                                <th style={{paddingRight: "10rem"}}><p>Address</p></th>
+                                                <td><p>{meta.address}</p></td>
+                                            </div>
+                                            <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
+                                                <th style={{paddingRight: "10rem"}}><p>Contact</p></th>
+                                                <td><p>{meta.phone}</p></td>
                                             </div>
                                         </div>
-                                    </div>
+                                        
+                                        
                                 </div>
-                                <div className="names">
-                                    <label htmlFor="">email</label>
-                                    <input type="email" name="" id="" value="charleskasasira01@gmail.com" />
-                                </div>
-                                <div className="names">
-                                    <label htmlFor="">Address</label>
-                                    <input type="text" name="" id="" value="Namuwongo" />
-                                </div>
-                                <div className="names">
-                                    <label htmlFor="">Branch Name</label>
-                                    <input type="text" name="" id="" value="Kampala" />
-                                </div>
-                                <div className="names">
-                                    <label htmlFor="">Enter password to confirm</label>
-                                    <input type="password" name="" id="" />
-                                </div>
-                                <input type="submit" value="Update Profile" className="btn btn-primary cta" />
-                            </div>
-                        </div>
 
-                        <div className={selectedTab === 2 ? "content  active-content" : "content"}>
-                            <h2>Notifications</h2>
-                            <hr />
-                            <p>
-                                You don't have any notifications yets
-                            </p>
-                        </div>
+                                <div id="edit_profile" className="componentsData myProfile shadow-sm mb-3">
+                                        <div>
+                                            <h2>Notification</h2>
+                                            <Alert variant='success'> <MdCheckCircle /> You don't have any notifications</Alert>
+                                            
+                                        </div>
+                                </div>
 
-                        <div className={selectedTab === 3 ? "content  active-content" : "content"}
-                            >
-                            <h2>Password and Security</h2>
-                            <hr />
-                            <form action="">                            
-                                    <div className="names">
-                                        <label htmlFor="">Enter old password</label>
-                                        <input type="password" name="" id="" />
-                                    </div>
-                                    <div className="names">
-                                        <label htmlFor="">Enter new password</label>
-                                        <input type="password" name="" id="" />
-                                    </div>
-                                    <div className="names">
-                                        <label htmlFor="">Confirm Password</label>
-                                        <input type="password" name="" id="" />
-                                    </div>
-                                    <input type="submit" value="Submit" className="btn btn-primary cta" />                              
-                            </form>
-                        </div>
-
-                    </div>
-            </form>
+                                <div id="edit_profile" className="componentsData myProfile shadow-sm mb-3">
+                                        <form onSubmit={handlePasswordChange}>
+                                            <h2>Password and Security</h2>
+                                            <p>change your password</p>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label htmlFor='oldPassword'>Old Password</Form.Label>
+                                            <Form.Control type="password" id='oldPassword' placeholder="Enter old password" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label htmlFor='newPassword'>New Password</Form.Label>
+                                            <Form.Control type="password" id='newPassword' placeholder="Enter new password" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                                            <Form.Label htmlFor='confirmPassword'>Confirm Password</Form.Label>
+                                            <Form.Control placeholder="Match password" id='password' type="password" />
+                                        </Form.Group>
+                                        <input type="submit" value="Update Password" className="btn btn-primary cta" />                              
+                                        </form>
+                                </div>
                 </div>
         </div>
     )
 }
 
 export default Settings
+
+

@@ -57,7 +57,7 @@ form{
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-    padding: 20px;
+    /* padding: 20px; */
     justify-content: space-between;
 }
 
@@ -74,11 +74,59 @@ form{
 
 #submit{
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 #gender{
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
+}
+
+#addForm{
+    display: flex;
+    justify-content: "center";
+    align-items: center;
+    background-color: #fff;
+    margin-top: 60px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+#addForm form{
+    margin: auto;
+}
+
+.submitcta{
+    margin: 0;
+}
+
+.addFormGroups {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.addFormRadio{
+    margin-right: 5px;
+}
+
+.organisation-columns{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 50px;
+}
+
+.gender-options{
+    display: flex;
+    gap: 10px;
+}
+
+
+
+@media (max-width: 798px) {
+    .organisation-columns{
+        display: flex;
+        flex-direction: column;
+    }
 }

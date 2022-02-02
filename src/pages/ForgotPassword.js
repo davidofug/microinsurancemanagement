@@ -1,45 +1,74 @@
-import {useState,useEffect} from 'react'
-import { useAuth } from '../contexts/Auth'
-import logo from '../assets/imgs/britam-logo.png'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from "react";
+import useAuth from "../contexts/Auth";
+import logo from "../assets/imgs/britam-logo.png";
+import { Link, Redirect } from "react-router-dom";
+import { sendPasswordResetEmail, getAuth } from 'firebase/auth'
 
-import '../assets/styles/login.css'
+import "../assets/styles/login.css";
+
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function ForgotPassword() {
-    let [isLogin, setLogin] = useState(false)
+  let [isLogin, setLogin] = useState(false);
 
-    let { setCurrentUser } = useAuth()
+  let { setCurrentUser } = useAuth();
 
-    useEffect(() => {
-        const loggedIn = Number(localStorage.getItem('loggedIn'))
+  const auth = getAuth()
 
-        if(loggedIn === 1 || loggedIn === 2 || loggedIn === 3|| loggedIn === 4){
-            setCurrentUser(loggedIn)
-            setLogin(loggedIn)
-        }
+  useEffect(() => {
+    const loggedIn = Number(localStorage.getItem("loggedIn"));
+    if (loggedIn === 1 || loggedIn === 2 || loggedIn === 3 || loggedIn === 4) {
+      setCurrentUser(loggedIn);
+      setLogin(loggedIn);
+    }
+    document.title = "Britam - With you every step of the way";
+  });
 
-        document.title = 'Britam - With you every step of the way'
-    }, [])
-        
+  const handleResetPassword = (event) => {
+    event.preventDefault()
+    sendPasswordResetEmail(auth, event.target.email.value)
+      .then(() => {
+        toast.success(`Password reset email sent to ${event.target.email.value}`, {position: "top-center"});
+      })
+      .catch((error) => {
+        error.code === 'auth/user-not-found' ? toast.error(`User with email ${event.target.email.value} not found`, {position: "top-center"}) : toast.error('Failed to send email', {position: "top-center"});
+      })
+  }
 
-    return (
-        <div className='logout'>
-                <img src={logo} alt='Britam'style={{"margin-bottom": "40px"}}/>
-                <form action="" >
-                    <p style={{"font-size": "1.1rem"}}>Forgot Password?</p>
-                    <p style={{"font-size": ".9rem"}}>Enter your e-mail address to reset your password</p>
-                    <div className='login-inputs'>
-                        <label htmlFor="">Email</label>
-                        <input type="email" placeholder='Enter email' name="" id="" />
-                    </div>
-                    
-                    <input type="submit" style={{"width": "100%", "margin": "0"}} className='btn btn-primary cta' value="Submit"/>
-                        
-                    <Link to="/login" style={{"text-decoration": "none",  "margin-top": "10px", "margin-bottom": "0"}}><p style={{"text-align": "center", "color": "#1475CF", "margin": "0"}}>Remember password? Login</p></Link>
+  if (isLogin) return <Redirect to={{ pathname: "/supervisor-dashboard" }} />;
 
-                </form>
+  return (
+    <div className="auth-wrapper">
+      <ToastContainer />
+      <img src={logo} alt="Britam" />
+      <form onSubmit={handleResetPassword}>
+        <p>Forgot Password?</p>
+        <p id="enter">Enter your e-mail address to reset your password</p>
+        <div className="login-inputs">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            placeholder="Enter email"
+            name=""
+            id="email"
+            required
+          />
         </div>
-    )
+
+        <input
+          type="submit"
+          id="forgotSubmit"
+          className="btn btn-primary cta"
+          value="Submit"
+        />
+
+        <Link to="/login" id="forgotLink">
+          <p id="forgotRemember">Remember password? Login</p>
+        </Link>
+      </form>
+    </div>
+  );
 }
 
-export default ForgotPassword
+export default ForgotPassword;
