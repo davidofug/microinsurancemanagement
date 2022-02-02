@@ -13,6 +13,7 @@ import { ImFilesEmpty } from 'react-icons/im'
 import { httpsCallable } from 'firebase/functions';
 import { authentication, functions } from '../../helpers/firebase'
 import { generateReport } from '../../helpers/generateReport'
+import Chat from '../../components/messenger/Chat'
 
 function Reports() {
   useEffect(() => {
@@ -323,6 +324,9 @@ function Reports() {
         
         
           }
+          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <Chat />
+          </div> 
 
       
     </div>

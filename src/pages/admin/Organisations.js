@@ -19,6 +19,8 @@ import useDialog from "../../hooks/useDialog";
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import Chat from '../../components/messenger/Chat'
+
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
@@ -274,7 +276,9 @@ export default function Organisations() {
       </div>
     </div>
         }
-
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+        <Chat />
+      </div> 
       
     </div>
   );

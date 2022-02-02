@@ -21,6 +21,8 @@ import {ClaimModelNotification, ClaimModel} from '../components/ClaimModel'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import Chat from '../components/messenger/Chat'
+
 export default function Claims() {
   const [claims, setClaims] = useState([]);
   const claimsCollectionRef = collection(db, "claims");
@@ -382,6 +384,9 @@ export default function Claims() {
         :
           <Loader />
       }
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+        <Chat />
+      </div> 
     </div>
   );
 }

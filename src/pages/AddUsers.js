@@ -18,6 +18,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../helpers/firebase'
 
+import Chat from '../components/messenger/Chat'
+
 function AddUsers({role}) {
     const { authClaims } = useAuth()
     const addUser = httpsCallable(functions, 'addUser')
@@ -405,6 +407,9 @@ function AddUsers({role}) {
                         
                     </Form>
             </div>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+              <Chat />
+            </div> 
         </div>
     )
 }
