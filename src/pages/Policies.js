@@ -511,7 +511,6 @@ function Policies({cat, btn_txt, pol}) {
                                                     setComprehensiveClient('Existing')
                                                 }
                                             }
-                                            console.log(client)
                                         }}/>
                                             <datalist id="clientNames" >
                                                 {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
@@ -529,7 +528,6 @@ function Policies({cat, btn_txt, pol}) {
                                                     
                                                 }
                                             }
-                                            console.log(client)
                                         }}/>
                                             <datalist id="clientNames" >
                                                 {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
