@@ -66,7 +66,6 @@ function AddUsers({role}) {
         photo: ''
     })
 
-
     const handleSubmit = (event) => {
         setIsLoading(true)
         event.preventDefault()
@@ -78,7 +77,7 @@ function AddUsers({role}) {
         fields['added_by_name'] = authentication.currentUser.displayName
         fields['password'] = password
         fields['addedOn'] = `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`
-
+        if(role === 'agent'){ fields['supervisor'] = event.target.supervisor.value } 
 
         if(logo){
             const storageRef = ref(storage, `images/${logo.name}`)
@@ -163,8 +162,6 @@ function AddUsers({role}) {
     const [ url, setUrl ] = useState('')
     //const [ logo, setLogo ] = useState(null)
     const [ progress, setProgress ] = useState(0)
-
-    console.log(logo)
 
     return (
         <div className='components'>
@@ -311,6 +308,12 @@ function AddUsers({role}) {
                             </>
                         :
                             <>
+                                {role === 'agent' && 
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label htmlFor='name'>Assign Supervisor</Form.Label>
+                                        <Form.Control id="supervisor" placeholder="Name" required/>
+                                    </Form.Group>
+                                }
                                 <Form.Group className="mb-3" >
                                     <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                                     <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
