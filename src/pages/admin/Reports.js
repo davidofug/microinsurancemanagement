@@ -13,6 +13,7 @@ import { ImFilesEmpty } from 'react-icons/im'
 import { httpsCallable } from 'firebase/functions';
 import { authentication, functions } from '../../helpers/firebase'
 import { generateReport } from '../../helpers/generateReport'
+import useAuth from "../../contexts/Auth";
 import Chat from '../../components/messenger/Chat'
 
 function Reports() {
@@ -25,6 +26,7 @@ function Reports() {
   const [policies, setPolicies] = useState([])
   const policyCollectionRef = collection(db, "policies");
 
+  const { authClaims } = useAuth()
 
   const getPolicies = async () => {
     const data = await getDocs(policyCollectionRef);
@@ -33,6 +35,20 @@ function Reports() {
     const listUsers = httpsCallable(functions, 'listUsers')
 
     listUsers().then(({data}) => {
+      if(authClaims.agent){
+        const agentPolicies = policiesArray.filter(policy => policy.added_by_uid === authentication.currentUser.uid)
+        agentPolicies.length === 0 ? setPolicies(null) : setPolicies(agentPolicies)
+      } else if(authClaims.supervisor){
+        const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+
+        const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid]
+
+        const supervisorPolicies = policiesArray.filter(policy => usersUnderSupervisor.includes(policy.added_by_uid))
+        supervisorPolicies.length === 0 ? setPolicies(null) : setPolicies(supervisorPolicies)
+
+      }
+
+
       const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
 
       const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
@@ -78,18 +94,21 @@ function Reports() {
   let stumpDutyTotal = 0
   let stickerFeeTotal = 0
   let commissionTotal = 0
+  let trainingLevy = 0
   
   let basicCurrentTotal = 0
   let vatCurrentTotal = 0
   let stumpDutyCurrentTotal = 0
   let stickerFeeCurrentTotal = 0
   let commissionCurrentTotal = 0
+  let trainingCurrentLevy = 0
 
   !policies || policies.map(policy => !policy.stickersDetails || (basicTotal += +policy.stickersDetails[0].totalPremium)) // grand total for all policies
-  !policies || policies.map(policy => !policy.stickersDetails || (vatTotal += 11704)) // grand total for all policies
+  !policies || policies.map(policy => !policy.stickersDetails || (vatTotal += 1080)) // grand total for all policies
   !policies || policies.map(policy => !policy.stickersDetails || (stumpDutyTotal += 35000)) // grand total for all policies
   !policies || policies.map(policy => !policy.stickersDetails || (stickerFeeTotal += 6000)) // grand total for all policies
   !policies || policies.map(policy => !policy.stickersDetails || (commissionTotal += 2191)) // grand total for all policies
+  !policies || policies.map(policy => !policy.stickersDetails || (trainingCurrentLevy += +policy.stickersDetails[0].trainingLevy)) // grand total for all policies
 
   // {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
 
@@ -159,7 +178,7 @@ function Reports() {
                       <Form.Label htmlFor='category'>Status</Form.Label>
                       <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchStatus(value)}>
                           <option value={""}>Select a status</option>
-                          <option value="active">Active</option>
+                          <option value="new">New</option>
                           <option value="renewed">Renewed</option>
                           <option value="paid">Paid</option>
                           <option value="expired">Expired</option>
@@ -242,10 +261,11 @@ function Reports() {
                           {paginatedShownPolicies.map((policy, index) => {
                                 
                                 {basicCurrentTotal += +policy.stickersDetails[0].totalPremium} // total for currentPolicies
-                                {vatCurrentTotal += 11704} // total for  currentPolicies
+                                {vatCurrentTotal += 1080} // total for  currentPolicies
                                 {stumpDutyCurrentTotal += 35000} // total for currentPolicies
                                 {stickerFeeCurrentTotal += 6000} // total for currentPolicies
                                 {commissionCurrentTotal += 2191} // total for currentPolicies
+                                {trainingLevy += +policy.stickersDetails[0].trainingLevy}
 
                             return (
                               <>
@@ -264,9 +284,9 @@ function Reports() {
                                   <td>{policy.policyEndDate}</td>
                                   <td>1 YR(s)</td>
                                   {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
-                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
+                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].trainingLevy)}</td>}
                                   <td>6,000</td>
-                                  <td>11,704</td>
+                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].vat)}</td>}
                                   <td>35,000</td>
                                   <td>2,191</td>
                                   <td>branch location</td>
@@ -278,17 +298,21 @@ function Reports() {
 
                             
                           })}
-                          <tr>
-                            <th>Subtotal Total</th>
-                            <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
-                            <th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(basicCurrentTotal)}</th><th>{currencyFormatter(stickerFeeCurrentTotal)}</th><th>{currencyFormatter(vatCurrentTotal)}</th><th>{currencyFormatter(stumpDutyCurrentTotal)}</th><th>{currencyFormatter(commissionCurrentTotal)}</th><th></th><th></th><th>UGX</th>
-                          </tr>
+                          
               </tbody>
               <tfoot>
                 <tr>
                   <th>Grand Total</th>
                   <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
-                  <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
+                  <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevy)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
+                </tr>
+              </tfoot>
+                
+              <tfoot>
+                <tr>
+                  <td>Subtotal Total</td>
+                  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                  <td>{currencyFormatter(basicCurrentTotal)}</td><td>{currencyFormatter(trainingCurrentLevy)}</td><td>{currencyFormatter(stickerFeeCurrentTotal)}</td><td>{currencyFormatter(vatCurrentTotal)}</td><td>{currencyFormatter(stumpDutyCurrentTotal)}</td><td>{currencyFormatter(commissionCurrentTotal)}</td><td></td><td></td><td>UGX</td>
                 </tr>
               </tfoot>
             </Table>
@@ -303,7 +327,7 @@ function Reports() {
               <div className="no-table-data">
                 <i><ImFilesEmpty /></i>
                 <h4>No data yet</h4>
-                <p>You have not created any Motor Third Party Stickers Yet</p>
+                <p>You have not created any Motor third Party Stickers Yet</p>
               </div>
             }
 
