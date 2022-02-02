@@ -254,7 +254,7 @@ export default function Mtp() {
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-newImport">
+          <Link to="/supervisor/add-new-import">
             <button className="btn btn-primary cta">Add New Import</button>
           </Link>
         </div>
