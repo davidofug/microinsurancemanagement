@@ -18,6 +18,7 @@ import Chat from '../components/messenger/Chat'
 function Dashboard() {
     const [clients, setClients] = useState([]);
     const [claims, setClaims] = useState([])
+    const [claimsSettled, setClaimsSettled] = useState([])
     const [stickers, setStickers] = useState(0)
     // const [policies, setPolicies] = useState(2)
     const [claimNotifications, setClaimNotifications] = useState(0)
@@ -113,8 +114,9 @@ function Dashboard() {
               const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
               
               const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
-      
               const adminClaims = allClaims.filter(claim => usersUnderAdmin.includes(claim.added_by_uid))
+              const settledClaims = adminClaims.filter(claim => claim.status === "settled")
+              setClaimsSettled(settledClaims)
               setClaims(adminClaims)
             })
         }
@@ -197,7 +199,7 @@ function Dashboard() {
                                     <div className="col">
                                         <div className="custom-card" style={{backgroundColor:"#804C75"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{`${claims.length}`}</div>
+                                                <div className="statistics">{`${claimsSettled.length}`}</div>
                                                 <div className="card-text">Claim Settlements</div>
                                             </Card.Body>
                                         </div>
@@ -215,7 +217,7 @@ function Dashboard() {
                                     <div className="col">
                                         <div className="custom-card" style={{backgroundColor:"#C82E29"}}>
                                             <Card.Body className="card-body">
-                                                <div className="statistics">{stickers}</div>
+                                                <div className="statistics">{policies.length}</div>
                                                 <div className="card-text">Stickers</div>
                                             </Card.Body>
                                         </div>
