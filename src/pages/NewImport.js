@@ -17,6 +17,8 @@ import { httpsCallable } from 'firebase/functions';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import Chat from '../components/messenger/Chat'
+
 export default function Mtp() {
   useEffect(() => { document.title = "Britam - New Imports"; getMTP()}, []);
 
@@ -252,7 +254,7 @@ export default function Mtp() {
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-newImport">
+          <Link to="/supervisor/add-new-import">
             <button className="btn btn-primary cta">Add New Import</button>
           </Link>
         </div>
@@ -460,13 +462,9 @@ export default function Mtp() {
         :
           <Loader />
       }
-                
-
-
-                
-
-        
-      
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+        <Chat />
+      </div> 
     </div>
   );
 }

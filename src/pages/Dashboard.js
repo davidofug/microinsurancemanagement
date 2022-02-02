@@ -12,6 +12,8 @@ import Loader from '../components/Loader'
 import { authentication } from '../helpers/firebase'
 import moment from 'moment'
 
+import Chat from '../components/messenger/Chat'
+
 function Dashboard() {
     const [clients, setClients] = useState([]);
     const [claims, setClaims] = useState([])
@@ -329,6 +331,9 @@ function Dashboard() {
                         </Row>
                     </div>
                 </div>  
+                <div style={{position:"fixed", display:"flex", justifyContent:"flex-end", height:"100%", alignItems:"end", justifyContent:"flex-end", width:"80%"}}> 
+                    <Chat/>
+                </div>
             </div>
         )
 }

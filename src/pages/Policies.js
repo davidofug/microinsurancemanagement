@@ -15,7 +15,7 @@ import { authentication, db } from '../helpers/firebase'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-
+import Chat from '../components/messenger/Chat'
 
 // import { FaSolarPanel } from 'react-icons/fa'
 // import AddClient from '../parts/AddClient'
@@ -844,6 +844,9 @@ function Policies({cat, btn_txt, pol}) {
                     </div> 
                 </Form>
             </div>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+              <Chat />
+            </div> 
         </div>
     )
 }

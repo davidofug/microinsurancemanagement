@@ -17,6 +17,8 @@ import { httpsCallable } from 'firebase/functions';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import Chat from '../components/messenger/Chat'
+
 export default function Mtp() {
   useEffect(() => { document.title = "Britam - Comprehensive"; getMTP()}, []);
 
@@ -460,13 +462,9 @@ export default function Mtp() {
         :
           <Loader />
       }
-                
-
-
-                
-
-        
-      
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+        <Chat />
+      </div> 
     </div>
   );
 }

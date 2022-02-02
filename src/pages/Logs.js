@@ -9,6 +9,9 @@ import { ImFilesEmpty } from 'react-icons/im'
 import { RiCalendarTodoFill } from 'react-icons/ri'
 import useAuth from '../contexts/Auth'
 
+import Chat from '../components/messenger/Chat'
+
+
 function Logs() {
 
     useEffect(() => {document.title = 'Britam - Logtrails'; getLogs()}, [])
@@ -159,7 +162,9 @@ function Logs() {
                 :
                 <Loader />
             }
-            
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+              <Chat />
+            </div> 
         </div>
     )
 }

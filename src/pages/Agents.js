@@ -21,6 +21,9 @@ import StickerModal from '../components/StickersModal';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import Chat from '../components/messenger/Chat'
+
+
 function Agents({role}) {
 
   useEffect(() => {document.title = 'Britam - Agents';getAgents()}, [])
@@ -175,6 +178,8 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
   const paginatedShownAgent = !agents || shownAgents.slice(indexOfFirstAgent, indexOfLastAgent)
 
     return (
+      <>
+      
         <div className='components'>
             <Header title="Agents" subtitle="MANAGING AGENTS" />
             <ToastContainer />
@@ -335,13 +340,7 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
                     <p>There is no match for current search</p>
                   </div>
                   }
-
-                  
-
-                  
-
-               
-            </div>
+               </div>
               </>
             :
               agents === null
@@ -354,9 +353,12 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
               :
                 <Loader />
             }
-
-              
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+              <Chat />
+            </div>
         </div>
+      </>
+      
     )
 }
 
