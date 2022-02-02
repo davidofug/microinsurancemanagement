@@ -1,80 +1,85 @@
 import Mtp from '../pages/Mtp'
 import Users from '../pages/Users'
 import Claims from '../pages/Claims'
-import Reports from '../pages/Reports'
+import Reports from '../pages/superAdmin/Reports'
 import Clients from '../pages/Clients'
 import Policies from '../pages/Policies'
-import Settings from '../pages/admin/Settings'
+import Settings from '../pages/Settings'
 import PrivateRoute  from './PrivateRoute'
-import { Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
-import AddClients from '../pages/AddClients'
 import Windscreen from '../pages/Windscreen'
 import Comprehensive from '../pages/Comprehensive'
 import Organisations from '../pages/admin/Organisations'
 import Logs from '../pages/Logs.js'
 import Supervisors from '../pages/admin/Supervisors'
 import Agents from '../pages/Agents'
-import AddAgents from '../pages/AddAgents'
-import AddSupervisors from '../pages/admin/AddSupervisors'
-import Logout from '../pages/Logout'
+import AddUsers from '../pages/AddUsers'
+import Admins from '../pages/superAdmin/Admins'
+import NewImport from '../pages/NewImport'
+import Transit from '../pages/Transit'
+import SystemLogs from '../pages/superAdmin/SystemLogs'
 
 
 function SuperAdminRoutes() {
     return (
         <>
-            <PrivateRoute path="/super-admin-dashboard" >
+            <PrivateRoute path="/superadmin/dashboard" >
                 <Dashboard />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-organisations" >
+            <PrivateRoute path="/superadmin/organisations" >
                 <Organisations />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-view-log-trail" >
+            <PrivateRoute path="/superadmin/view-log-trail" >
                 <Logs />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-supervisor" >
+            <PrivateRoute path="/superadmin/admins" >
+                <Admins />
+            </PrivateRoute>
+            <PrivateRoute path="/superadmin/supervisors" >
                 <Supervisors />
             </PrivateRoute>
-            <PrivateRoute path="/super-add-supervisors" >
-                <AddSupervisors />
-            </PrivateRoute>
-            <PrivateRoute path="/super-admin-agents" >
+            <PrivateRoute path="/superadmin/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/super-add-agents" >
-                <AddAgents />
+            <PrivateRoute path="/superadmin/add-admin" >
+                <AddUsers role="admin" />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-clients" >
+            <PrivateRoute path="/superadmin/clients" >
                 <Clients />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-user-management" >
+            <PrivateRoute path="/superadmin/user-management" >
                 <Users />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-policies" >
+            <PrivateRoute path="/superadmin/policies" >
                 <Policies />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-claims" >
+            <PrivateRoute path="/superadmin/claims" >
                 <Claims />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-reports" >
+            <PrivateRoute path="/superadmin/reports" >
                 <Reports />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-settings" >
+            <PrivateRoute path="/superadmin/settings" >
                 <Settings />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-motor-third-party" >
+            <PrivateRoute path="/superadmin/system-logs" >
+                <SystemLogs />
+            </PrivateRoute>
+            <PrivateRoute path="/superadmin/motor-third-party" >
                 <Mtp />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-windscreen" >
+            <PrivateRoute path="/superadmin/windscreen" >
                 <Windscreen />
             </PrivateRoute>
-            <PrivateRoute path="/super-admin-comprehensive" >
+            <PrivateRoute path="/superadmin/comprehensive" >
                 <Comprehensive />
             </PrivateRoute>
-            <PrivateRoute path="/super-add-clients" >
-                <AddClients />
+            <PrivateRoute path="/superadmin/new-import" >
+                <NewImport />
             </PrivateRoute>
-            <Route path="/logout" component={Logout} />
+            <PrivateRoute path="/superadmin/transit" >
+                <Transit />
+            </PrivateRoute>
         </>
         
     )

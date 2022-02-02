@@ -4,15 +4,43 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 260px;
 }
 
 .sidebar{
     display: grid; 
-    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-rows: 11vh 80vh 9vh;
     width: 260px;
     border-right: 1px solid #c6c7c8;
     align-items: stretch;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
+}
+
+/* SideBar Miniminised */
+
+.sidebar-m{
+    display: grid; 
+    grid-template-rows: 11vh 80vh 9vh;
+    border-right: 1px solid #c6c7c8;
+    align-items: stretch;
+    width: 80px;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
+}
+
+
+.mobileSidebar{
+    display: grid; 
+    grid-template-rows: 11vh 80vh 9vh;
+    border-right: 1px solid #c6c7c8;
+    align-items: stretch;
+    width: 80px;
     height: 100vh;
     top: 0;
     left: 0;
@@ -100,8 +128,53 @@
     
 }
 
+.logoutIcon{
+    color: #000;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.logoutIcon:hover{
+    background-color: #F4F4F4;
+    border-radius: 10px;
+    cursor: pointer;
+}
 
 /* End Menu CSS */
+
+
+/* .dropdown{
+} */
+
+.buttonDetail{
+    list-style: none;
+    list-style-type: none;
+}
+
+.dropdown ul{
+    padding-left: 60px;
+}
+
+/* .dropdown ul li{
+} */
+
+.dropdown ul li a {
+    text-decoration: none;
+}
+
+/* .buttonDetail a{
+    color: #000;
+} */
+
+  /* .dropdown[open] > summary::before {
+      content: ' ';
+      display: block;
+      position: fixed;
+      z-index: 1;
+  } */
+
+
 
 
 
@@ -155,8 +228,21 @@
 /* footer account */
 
 footer{
+    display: flex;
     position: relative;
-    bottom: 0;
+    /* bottom: 0; */
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+
+footer p{
+    margin: 0;
+}
+
+footer{
+    position: relative;
+    /* bottom: 0; */
     padding: 10px 5px;
     width: inherit;
     color: #000;
@@ -181,7 +267,7 @@ footer:hover{
     color: #000;
 }
 
-footer a img{
+ footer a img{
     height: 50px;
     width: 50px;
     border-radius: 50%;
@@ -209,19 +295,7 @@ footer a img{
 
 
 
-/* SideBar Miniminised */
 
-.sidebar-m{
-    top: 0;
-    left: 0;
-    display: grid; 
-    grid-template-rows: 1fr 3fr 1fr;
-    border-right: 1px solid #c6c7c8;
-    align-items: stretch;
-    width: 80px;
-    height: 100vh;
-    background-color: #fff;
-}
 
 #menu_section_m {
     align-items: center;
@@ -322,6 +396,18 @@ footer a img{
 
 
 
+.footerContext{
+    text-decoration: none;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.footerContextShow{
+    display: block;
+}
 
 /* account context */
 footer ul{
@@ -332,6 +418,10 @@ footer ul{
     z-index: 1001;
     box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
     border-radius: 5px; 
+    position: absolute; 
+    bottom: 65px;
+    left: -15px;
+    width: 97%;
 }
 
 footer ul li{
@@ -339,12 +429,13 @@ footer ul li{
     display: block;
 }
 
-footer:hover > ul{
+/* footer:hover > ul{
     display: block;
     position: absolute; 
     bottom: 60px;
     left: 0;
-}
+} */
+
 
 footer ul li a{
     color: #000;
@@ -362,10 +453,11 @@ footer ul li a:hover{
 
 .mobile-sidebar{
     display: none;
+    z-index: 1001;
 }
 
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
     .mobile-sidebar{
         display: block;
     }
@@ -396,7 +488,21 @@ footer ul li a:hover{
 
     .navbar-nav .nav-link{
         color: #fff;
-        margin-left: 10pc;
+        margin-left: 10px;
+    }
+
+    .navbar-light .navbar-toggler{
+        border: none;
+    }
+
+    .navbar-toggler:focus {
+        text-decoration: none;
+        outline: none;
+        box-shadow: none !important;
+    }
+
+    .navbar-light .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgb(20, 117, 207)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='3' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
     }
 
     

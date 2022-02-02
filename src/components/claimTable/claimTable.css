@@ -1,0 +1,45 @@
+
+
+.offSwitch + ul {
+    display: none;
+}
+
+.started{
+    position: relative;
+    width: 8rem;
+    text-align: center;
+}
+
+.onSwitch + ul {
+    display: none;
+}
+
+.actions + ul{
+    display: none;
+}
+
+.hello + ul{
+    display: block;
+    position: absolute;
+    background-color: #fff;
+    padding: 10px 30px;
+    list-style-type: none;
+    border-radius: 10px;
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    z-index: 1001;
+    top: 0;
+    left: -160px;
+}
+
+
+#actionsUl li button {
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: .8rem;
+}
+
+#actionsUl li button:hover{
+    background-color: #fafafa
+}

@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Loader() {
+function Windscreen() {
     return (
         <div>
-            <h1>Loading</h1>
+            
         </div>
     )
 }
 
-export default Loader
+export default Windscreen

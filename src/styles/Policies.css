@@ -1,3 +1,168 @@
-Table {
+/* Table {
     border: 1px solid black;
+
+} */
+    
+
+@media (min-width: 430px) and (max-width: 900px) {
+   
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    .currency {
+        display: flex;
+
+    }
+
+    .dates {
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    #policy-end-date {
+        width: 20vw;
+    }
+
+    .form-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    /* tr {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        grid-template-areas: "sticker-no sticker-no" 
+                            "first second"
+                            "third fourth"
+                            "repeater-buttons repeater-buttons";   
+    } */
+
+    /* td {
+        display: flex;
+    } */
+
+    .sticker-number {
+        grid-row: 1;
+        grid-area: sticker-no;
+    } 
+
+    .first-cell {
+        grid-row: 2; 
+        grid-area: first; 
+    }
+
+    .second-cell {
+        grid-row: 2;
+        grid-area: second;
+    }
+
+    .third-cell {
+        grid-row: 3;
+        grid-area: third;
+    }
+
+    .fourth-cell {
+        grid-row:3;
+        grid-area: fourth;
+    }
+
+    .fifth-cell {
+        grid-row:4;
+        grid-area: repeater-buttons;
+    }
+
+    .form-buttons {
+        width: 100%;
+        justify-content: end;
+    }  
+}
+
+@media (max-width: 428px) {
+    /* td {
+        display: flex;
+        justify-content: center;
+    } */
+
+    .form-buttons {
+        display: flex;
+        gap: 5px;
+        flex-direction: row;
+    }
+
+    .add-new-client
+    .client-details {
+        width: 50px;
+    }
+
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    .currency {
+        display: flex; 
+    }
+
+    .dates {
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    #policy-end-date {
+        width: 20vw;
+    }
+
+    
+    
+}
+
+@media (min-width: 1000px) {
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    .currency {
+        display: flex;
+    }
+
+    .client-details {
+        padding-left: 0px;
+        justify-content: flex-start;
+    }
+
+    .dates {
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    #policy-end-date {
+        width: 11.5vw;    
+    }
+
+    .form-buttons {
+        display: flex;
+        gap: 5px;
+        flex-direction: column;
+    }
+
+
+
+
+
+}
+
+.isInvalid {
+    
+    border:1px solid red;
+    box-shadow: 0 0 13px #719ECE; 
 }

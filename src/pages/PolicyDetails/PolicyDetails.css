@@ -1,0 +1,81 @@
+*{
+    margin: 0;
+}
+
+.fromTo{
+    display: grid;
+    gap: 10px;
+    margin: 20px 0;
+    justify-content: space-between;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#from{
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ececec;
+    border-radius: 5px;
+}
+
+#from p{
+    margin: 0;
+    color: #8e8e93;
+}
+
+#to{
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ececec;
+    border-radius: 5px;
+}
+
+#to p{
+    margin: 0;
+    color: #8e8e93;
+}
+
+#to p b{
+    color: #5b5b60;
+}
+
+#date{
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ececec;
+    border-radius: 5px;
+}
+
+#date p{
+    margin: 0;
+    color: #8e8e93;
+}
+
+#date p b{
+    color: #5b5b60;
+}
+
+table{
+    border: none;
+    width: 100%;
+    margin: 2rem 0;
+    color: #5b5b60;
+    vertical-align: top;
+    border-color: #dee2e6;
+}
+
+tbody{
+    padding: 10px;
+    background-color: #efeff0;
+}
+
+.prepared{
+    font-weight: 500;
+    color: #8e8e93;
+}
+
+@media screen and (max-width: 600px) {
+    .fromTo{ 
+        display: flex;
+        flex-direction: column;  
+    }
+}

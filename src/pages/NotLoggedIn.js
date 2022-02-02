@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../contexts/Auth'
 import { Link, Redirect, useHistory} from 'react-router-dom'
-import Loader from '../parts/Loader'
+import Loader from '../components/Loader'
 function NotLoggedIn() {
     const [isLoading, setLoading] = useState(true)
     const { setCurrentUser } = useAuth()
@@ -19,7 +19,7 @@ function NotLoggedIn() {
             setLoading(false)
         }
         document.title = 'Britam - With you every step of the way'
-    })
+    }, [])
 
     if (isLogin)
         return <Redirect to={{ pathname: `${history.location.state.from.pathname}` }} />
@@ -31,7 +31,7 @@ function NotLoggedIn() {
         <div>
             <h1>You're not Logged in</h1>
             <p>
-                <Link to="/login">Login</Link>
+                <Link to="/login" className='btn btn-primary cta'>Login</Link>
             </p>
         </div>
     )
