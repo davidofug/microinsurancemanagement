@@ -114,6 +114,8 @@ export default function Organisations() {
     );
     const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
 
+    console.log(organisations)
+
   return (
     <div className="components">
       <Header title="Organisations" subtitle="VIEW COMPANY DETAILS" />
@@ -143,7 +145,7 @@ export default function Organisations() {
 
 
       <Modal show={show} onHide={handleClose}>
-            <OrganisationModal singleDoc={singleDoc} />
+            <OrganisationModal singleDoc={singleDoc} handleClose={handleClose} />
       </Modal>
 
       {organisations === null  || organisations.length <= 0
