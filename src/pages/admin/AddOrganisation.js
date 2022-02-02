@@ -172,12 +172,16 @@ export default function AddOrganisation() {
                                             <Form.Control type="text" id='name' placeholder="Enter organisation's name" onChange={handleFieldChange} required/>
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
+                                            <Form.Label htmlFor='companyCode'>Company Code </Form.Label>
+                                            <Form.Control type="text" id='companyCode' placeholder="Code" onChange={handleFieldChange} />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
                                             <Form.Label htmlFor="org_email">Organisation Email <span className='required'>*</span></Form.Label>
                                             <Form.Control id="org_email" type="email" placeholder="Enter email" onChange={handleFieldChange} required/>
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
-                                            <Form.Label htmlFor="tel">Phone Number <span className='required'>*</span></Form.Label>
-                                            <Form.Control id="tel" type="tel" placeholder="Phone Number" onChange={handleFieldChange} />
+                                            <Form.Label htmlFor="tel">Telephone <span className='required'>*</span></Form.Label>
+                                            <Form.Control id="tel" type="tel" placeholder="Phone Number" onChange={handleFieldChange} required/>
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                             <Form.Label htmlFor='address'>Address</Form.Label>
