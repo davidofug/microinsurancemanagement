@@ -12,6 +12,7 @@ import Loader from '../../components/Loader';
 import { ImFilesEmpty } from 'react-icons/im'
 import { currencyFormatter } from "../../helpers/currency.format";
 import { generateReport } from '../../helpers/generateReport';
+import Chat from '../../components/messenger/Chat'
 
 function Reports() {
 
@@ -178,7 +179,9 @@ function Reports() {
                             :
                             <Loader />
                         }
-
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+              <Chat />
+            </div> 
                         
 
                     
