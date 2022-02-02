@@ -20,6 +20,10 @@ function AddClaims() {
     // initialising the logs doc.
     const logCollectionRef = collection(db, "logs");
 
+    const [ attachedDocs, setAttachedDocs ] = useState('')
+
+    console.log(attachedDocs)
+
     const { authClaims } = useAuth()
 
     const claimsCollectionRef = collection(db, 'claims')
@@ -84,7 +88,7 @@ function AddClaims() {
 
     return (
         <div className='components'>
-            <Header title="Add Claim" subtitle="ADD A NEW CLAIM" />
+            <Header title="Add Claim" subtitle="ADD A NEW CLAIM NOTIFICATION" />
             <ToastContainer/>
             
 
@@ -111,7 +115,7 @@ function AddClaims() {
                             
                         </Row>
                         <Row className="mb-3">
-                        <h5>Claim Details</h5>
+                        {/* <h5>Claim Details</h5> */}
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='dateReported'>Date Reported</Form.Label>
                                 <Form.Control type="date" id="dateReported" onChange={handleFieldChange} max={today} required/>
@@ -184,11 +188,9 @@ function AddClaims() {
                                 <Form.Control type="text" name="" id="detailsOfIncident" placeholder="Enter details of incident" onChange={handleFieldChange} required/>
                         </Form.Group>
                         
-                        <Form.Group className="mb-3">
-                            <Form.Label>upload support documents</Form.Label>
-                            <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} />
-                            <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} />
-                            <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} />
+                        <Form.Group className="mb-3 mt-3">
+                            <Form.Label>Upload support documents</Form.Label>
+                            <Form.Control type="file" id="attachedDocuments" onChange={handleFieldChange} className="mb-1" onChange={event => setAttachedDocs(event.target.files)} multiple/>
                         </Form.Group>
                         
                         <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
