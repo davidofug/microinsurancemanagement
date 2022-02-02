@@ -11,6 +11,7 @@ import { httpsCallable } from 'firebase/functions';
 import Loader from '../components/Loader'
 import { authentication } from '../helpers/firebase'
 import moment from 'moment'
+import { ImFilesEmpty } from 'react-icons/im'
 
 import Chat from '../components/messenger/Chat'
 
@@ -129,9 +130,13 @@ function Dashboard() {
         listUsers().then((results) => {
             const resultsArray = results.data
             const myUsers = resultsArray.filter(user => user.role.Customer)
-            setClients(myUsers)
+            if(authClaims.agent){
+                const myClients = myUsers.filter(client => client.added_by_uid === authentication.currentUser.uid).slice(0, 5)
+                myClients.length === 0 ? setClients(null) : setClients(myClients)
+            } else {
+                setClients(myUsers)
+            }
         }).catch((err) => {
-            console.log(err)
         })
     }
 
@@ -141,10 +146,9 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.agent)
-            setAgents(myUsers)
+            const myAgents = resultsArray.filter(user => user.role.agent).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).slice(0, 5)
+            myAgents.length === 0 ? setAgents(null) : setAgents(myAgents)
         }).catch((err) => {
-            console.log(err)
         })
     }
 
@@ -154,10 +158,9 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.supervisor)
-            setSupervisors(myUsers)
+            const mySupervisors = resultsArray.filter(user => user.role.supervisor).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).slice(0, 5)
+            mySupervisors.length === 0 ? setSupervisors(null) : setSupervisors(mySupervisors)
         }).catch((err) => {
-            console.log(err)
         })
     }
 
@@ -167,10 +170,9 @@ function Dashboard() {
         const listUsers = httpsCallable(functions, 'listUsers')
         listUsers().then((results) => {
             const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.admin)
+            const myUsers = resultsArray.filter(user => user.role.admin).slice(0, 5)
             setAdmins(myUsers)
         }).catch((err) => {
-            console.log(err)
         })
     }
 
@@ -273,7 +275,7 @@ function Dashboard() {
                                 )}
 
                                 {authClaims.supervisor && (
-                                    agents.length > 0 
+                                    agents && agents.length > 0 
                                     ? <>
                                     <h5 className="heading">Latest Agents</h5>
                                     <table>
@@ -289,11 +291,19 @@ function Dashboard() {
                                     </table>
                                     </>
                                     : 
+                                    agents === null
+                                    ?
+                                    <div className="no-table-data">
+                                        <i><ImFilesEmpty /></i>
+                                        <h4>No Agents</h4>
+                                        <p>You have not added any agent Yet</p>
+                                    </div>
+                                    :
                                     <Loader />
                                 )}
                                     
                                 {authClaims.agent && (
-                                    clients.length > 0
+                                    clients && clients.length > 0
                                     ? <>
                                     <h5 className="heading">Latest Clients</h5>
                                     <table>
@@ -309,6 +319,14 @@ function Dashboard() {
                                     </table>
                                     <h6 className="heading">Total Number of Clients: {clients.length}</h6>
                                     </>
+                                    :
+                                    clients === null
+                                    ?
+                                    <div className="no-table-data">
+                                        <i><ImFilesEmpty /></i>
+                                        <h4>No Clients</h4>
+                                        <p>You have not added any client Yet</p>
+                                    </div>
                                     :
                                     <Loader />
                                 )}
