@@ -108,11 +108,10 @@ export default function Organisations() {
     //pagination
     const indexOfLastOrganisation = currentPage * organisationsPerPage;
     const indexOfFirstOrganisation = indexOfLastOrganisation - organisationsPerPage;
-    const currentOrganisations = !organisations || searchByName(organisations).slice(
-      indexOfFirstOrganisation,
-      indexOfLastOrganisation
-    );
+    const currentOrganisations = !organisations || searchByName(organisations)
     const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
+
+    const paginatedShownOrganisations = !organisations || currentOrganisations.slice(indexOfFirstOrganisation, indexOfLastOrganisation)
 
     console.log(organisations)
 
@@ -251,7 +250,7 @@ export default function Organisations() {
              <Pagination
                 pages={totalPagesNum}
                 setCurrentPage={setCurrentPage}
-                currentClients={currentOrganisations}
+                currentClients={paginatedShownOrganisations}
                 sortedEmployees={organisations}
                 entries={"Organisations"}
               />
