@@ -1,0 +1,38 @@
+input:focus {
+    outline: none !important;
+    border: none;
+}
+
+input {
+    border:none;
+}
+
+form {
+    margin-top:-20px;
+}
+
+.collapse-form {
+    max-height:0px;    
+}
+
+.collapse-chatbox {
+    height:50px;
+}
+
+.expand-form {
+    height:60px;
+}
+
+#search-users:focus {
+    outline: none !important;
+    border: none;
+}
+
+.hide-msg-form {
+    visibility: hidden;
+}
+
+.show-msg-form {
+    visibility: initial;
+}
+

@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import Upload from '../components/uploader/Upload'
 import Header from '../components/header/Header'
+import Chat from '../components/messenger/Chat'
+
 
 function AddAgents() {
 
@@ -58,6 +60,7 @@ function AddAgents() {
                     </Form>
                 </form>
             </div>
+            <Chat />
         </div>
     )
 }
