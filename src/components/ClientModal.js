@@ -38,33 +38,12 @@ console.log(singleDoc)
         </Modal.Header>
         <Form id="update_client" onSubmit={handleEditFormSubmit}>
           <Modal.Body>
-            <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantName">Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="name"
-                  id="name"
-                  placeholder="Enter Client's name"
-                  defaultValue={singleDoc.name}
-                  onChange={handleFieldChange}
-                />
-              </Form.Group>
               <Row className='mb-3'>
-              <Form.Group
-                as={Col}
-                style={{
+              <Form.Group as={Col} style={{
                   display: "flex",
                   "flex-direction": "column",
                   "align-items": "start",
-                }}
-              >
+                }} >
                 <Form.Label htmlFor="dateReported">Date of birth</Form.Label>
                 <Form.Control
                   type="date"
@@ -98,34 +77,29 @@ console.log(singleDoc)
                                       </>
                                     }
                                 </div>
-                            </Form.Group>
-                            </Row>
+                </Form.Group>
+              </Row>
 
-                            <Form.Group as={Col} className='addFormGroups'>
-                                <Form.Label htmlFor='email'>Email Address</Form.Label>
-                                <Form.Control type="email" id="email" placeholder="Enter email" defaultValue={singleDoc.email}/>
-                            </Form.Group>
+              <Form.Group as={Col} className='addFormGroups'>
+                  <Form.Label htmlFor='NIN'>NIN</Form.Label>
+                  <Form.Control type="text" id="NIN" placeholder="Enter email" defaultValue={singleDoc.meta.NIN}/>
+              </Form.Group>
 
-                            <Form.Group as={Col} className='addFormGroups'>
-                                <Form.Label htmlFor='NIN'>NIN</Form.Label>
-                                <Form.Control type="text" id="NIN" placeholder="Enter email" defaultValue={singleDoc.meta.NIN}/>
-                            </Form.Group>
+              <Row>
+                <Form.Group as={Col} className='addFormGroups'>
+                    <Form.Label htmlFor='phone'>Phone Number</Form.Label>
+                    <Form.Control type="tel" id="phone" defaultValue={singleDoc.meta.phone} />
+                </Form.Group>
+                <Form.Group as={Col} className='addFormGroups'>
+                    <Form.Label htmlFor='licenseNo'>LicenseNo</Form.Label>
+                    <Form.Control type="text" id="licenseNo" defaultValue={singleDoc.meta.licenseNo} />
+                </Form.Group>
+              </Row>
+              
 
-                            <Row>
-                              <Form.Group as={Col} className='addFormGroups'>
-                                  <Form.Label htmlFor='phone'>Phone Number</Form.Label>
-                                  <Form.Control type="tel" id="phone" defaultValue={singleDoc.meta.phone} />
-                              </Form.Group>
-                              <Form.Group as={Col} className='addFormGroups'>
-                                  <Form.Label htmlFor='licenseNo'>LicenseNo</Form.Label>
-                                  <Form.Control type="text" id="licenseNo" defaultValue={singleDoc.meta.licenseNo} />
-                              </Form.Group>
-                            </Row>
-                            
-
-                            <Form.Group className="mb-3" >
-                            <Form.Label htmlFor='address'>Address</Form.Label>
-                            <Form.Control id="address" placeholder="Enter your address" defaultValue={singleDoc.meta.address}/>
+              <Form.Group className="mb-3" >
+              <Form.Label htmlFor='address'>Address</Form.Label>
+              <Form.Control id="address" placeholder="Enter your address" defaultValue={singleDoc.meta.address}/>
                     </Form.Group>
             
           </Modal.Body>
