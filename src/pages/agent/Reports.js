@@ -11,6 +11,7 @@ import Pagination from '../../helpers/Pagination';
 import Loader from '../../components/Loader';
 import { ImFilesEmpty } from 'react-icons/im'
 import { currencyFormatter } from "../../helpers/currency.format";
+import { generateReport } from '../../helpers/generateReport';
 import Chat from '../../components/messenger/Chat'
 
 function Reports() {
@@ -51,9 +52,28 @@ function Reports() {
     const currentPolicies = !policies || searchByName(policies).slice(indexOfFirstPolicy, indexOfLastPolicy)
     const totalPagesNum = !policies || Math.ceil(policies.length / policiesPerPage)
 
-    let basicTotal = 0
+    /* let basicTotal = 0
     let trainingLevyTotal = 0
-    let totalPremiumTotal = 0
+    let totalPremiumTotal = 0 */
+
+    let basicTotal = 0
+    let vatTotal = 0
+    let stumpDutyTotal = 0
+    let stickerFeeTotal = 0
+    let commissionTotal = 0
+    let trainingLevy = 0
+    
+    let basicCurrentTotal = 0
+    let vatCurrentTotal = 0
+    let stumpDutyCurrentTotal = 0
+    let stickerFeeCurrentTotal = 0
+    let commissionCurrentTotal = 0
+
+    !policies || policies.map(policy => !policy.stickersDetails || (basicTotal += +policy.stickersDetails[0].totalPremium)) // grand total for all policies
+    !policies || policies.map(policy => !policy.stickersDetails || (vatTotal += 1080)) // grand total for all policies
+    !policies || policies.map(policy => !policy.stickersDetails || (stumpDutyTotal += 35000)) // grand total for all policies
+    !policies || policies.map(policy => !policy.stickersDetails || (stickerFeeTotal += 6000)) // grand total for all policies
+    !policies || policies.map(policy => !policy.stickersDetails || (commissionTotal += 2191)) // grand total for all policies
 
     console.log(policies)
 
@@ -71,19 +91,12 @@ function Reports() {
                     <div className="table-card">
                                 <div id="search">
                             <SearchBar placeholder={"Search Reports by Policy Holder"} value={searchText} handleSearch={handleSearch}/>
-                                <div></div>
-                                <CSVLink
-                                data={policies}
-                                filename={"Issued-Reports.csv"}
-                                className="btn btn-primary cta"
-                                target="_blank"
-                            >
-                                Export <MdDownload />
-                            </CSVLink>
-                
+                            <div style={{display: "flex", justifyContent: "flex-end"}}>
+                                <button onClick={() => generateReport("myTable")} className="btn btn-primary cta">Export <MdDownload /></button> 
+                            </div>
                             </div>
 
-                        <Table responsive hover striped bordered>
+                        <Table responsive hover striped bordered id='myTable'>
                         <thead>
                             <tr>
                                 <th>#</th><th>Policy Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge(18%)</th><th>Stamp Duty</th><th>Gross Commission</th><th>Total Premium</th><th>Net Commission</th><th>Currency</th>
@@ -92,9 +105,17 @@ function Reports() {
 
                         <tbody>
                         {policies && currentPolicies.map((policy, index) => {
-                            {basicTotal += +policy.stickersDetails[0].basicPremium}
+                            /* {basicTotal += +policy.stickersDetails[0].basicPremium}
                             {trainingLevyTotal += +policy.stickersDetails[0].trainingLevy}
-                            {totalPremiumTotal += +policy.stickersDetails[0].totalPremium}
+                            {totalPremiumTotal += +policy.stickersDetails[0].totalPremium} */
+
+                            {basicCurrentTotal += +policy.stickersDetails[0].totalPremium} // total for currentPolicies
+                                {vatCurrentTotal += 11704} // total for  currentPolicies
+                                {stumpDutyCurrentTotal += 35000} // total for currentPolicies
+                                {stickerFeeCurrentTotal += 6000} // total for currentPolicies
+                                {commissionCurrentTotal += 2191} // total for currentPolicies
+                                {trainingLevy += +policy.stickersDetails[0].trainingLevy}
+
                             return (
                             <tr key={policy.id}>
                                 <td>{indexOfFirstPolicy + index + 1}</td>
@@ -125,8 +146,9 @@ function Reports() {
 
                         <tfoot>
                             <tr>
-                            <th colSpan={12}>Grand Total</th><th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevyTotal)}</th>
-                            <th></th><th></th><th></th><th></th><th>{currencyFormatter(totalPremiumTotal)}</th>
+                            <th>Grand Total</th>
+                            <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                            <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevy)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
                             </tr>
                         </tfoot>
 
