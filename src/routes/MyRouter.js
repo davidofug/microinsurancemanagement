@@ -37,7 +37,7 @@ function MyRouter() {
 /* something */
     return (
         <Router>
-             <Switch >
+            <Switch >
                 <Route path="/forgot-password" component={ForgotPassword} />
                 <Route path="/logout" component={Logout} />
                 <Route path="/" exact component={Login} />     
@@ -45,7 +45,6 @@ function MyRouter() {
             </Switch>
             <div className={largeContentClass ? 'top-container-large': `top-container` }>
                 {currentUser?.loggedIn && 
-                <>
                 <div className='MenuSide'>
                     {authClaims?.admin && <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.supervisor && <SupervisorMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
@@ -66,16 +65,15 @@ function MyRouter() {
                     {/* mtp and comprehensive and windscreen agents */}
                     {authClaims?.agent && authClaims?.mtp && authClaims?.comprehensive && authClaims?.windscreen &&  <AgentMtpCompWindMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                 </div>
-                </>
                 }
-                <main className='displayLeft'>
+                <div className='displayLeft'>
                     <AdminRoutes />
                     <SupervisorRoutes />
                     <AgentsRoutes />
                     <SuperAdminRoutes />
-                </main>
+                </div>
             </div>
-               
+            
         </Router>
     )
 }
