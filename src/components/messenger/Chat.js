@@ -98,6 +98,8 @@ function Chat() {
               const incharge = data.filter(user => user.uid === data.filter(user => user.uid ===  authentication.currentUser.uid)[0].meta.added_by_uid)
               const supervisors = data.filter( user => user?.role?.supervisor === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
               const myAgents = data.filter(user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
+              console.log(incharge)
+              console.log([...incharge, ...myAgents, ...supervisors])
 
               setAcceptedChats([...supervisors, ...myAgents, ...incharge])
               return [...supervisors, ...myAgents, ...incharge]
@@ -346,7 +348,7 @@ function Chat() {
                             return (
                                 <>
                                     {
-                                        sendersUID === authentication.currentUser.uid 
+                                        sendersUID !== authentication.currentUser.uid 
                                         ? 
                                         <div key={index} style={{marginTop:"20px"}}>
                                             <div style={{display:"flex", gap:"5px"}}>
