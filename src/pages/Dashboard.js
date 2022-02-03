@@ -31,6 +31,15 @@ function Dashboard() {
         getAdmins()
         getPolicies()
         setStickers(handlePolicyStickers(await getPolicies()))
+
+        return () => {
+            getClaims()
+            getClients()
+            getAgents()
+            getSupervisors()
+            getAdmins()
+            getPolicies()   
+        }
     }, [])
 
     // policies

@@ -1,5 +1,5 @@
-import { Modal, Form, Row, Col, Button, Table } from 'react-bootstrap'
-import { getAuth  } from "firebase/auth";
+import { Modal, Table } from 'react-bootstrap'
+// import { getAuth  } from "firebase/auth";
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { useState, useEffect } from 'react'
@@ -11,6 +11,7 @@ function StickerModal({ name, user_id }) {
 
     useEffect(() => {
         getPolicies()
+        return () => getPolicies()
     }, [])
 
     const [policies, setPolicies] = useState([])
