@@ -13,19 +13,24 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function PolicyDetails() {
-    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP(id)}, []);
+    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP()}, []);
 
     const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [editID, setEditID] = useState(null);
+
+    const { id } = useParams()  
+
+    const [ policy, setPolicy ] = useState({})
+    const policyCollectionRef = collection(db, "policies");
 
   const [ showPayment, handleShowPayment, handleClosePayment ] = useDialog()
 
-    // Confirm Box
+  // Confirm Box
+  const [ openToggle, setOpenToggle ] = useState(false)
   const [ openToggleCancel, setOpenToggleCancel ] = useState(false)
   window.onclick = (event) => {
-    if(openToggleCancel === true) {
+    if(openToggleCancel) {
       if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
         setOpenToggleCancel(false)
     }
@@ -33,54 +38,38 @@ function PolicyDetails() {
   }
 
   // cancel a policy
-  const handleCancel = async (id) => {
-    console.log("handle cancel")
+  const handleCancel = async () => {
+    handleClosePayment()
+    const docRef = doc(db, "policies", id);
+    await updateDoc(docRef, {
+        stickersDetails: [{ ...policy.stickersDetails[0], status: "cancelled" }]
+    });
+    toast.success('sticker has been cancelled.', {position: "top-center"});
+
+    getMTP()
 }
 
-    const { id } = useParams()  
+    
 
-    const [ policy, setPolicy ] = useState({})
-    const policyCollectionRef = collection(db, "policies");
-
-    const getMTP = async (id) => {
+    const getMTP = async () => {
         const policyRef = doc(db, "policies", id)
         const data = await getDoc(policyRef);
         // console.log(data.data())
         setPolicy(data.data())
       }
 
-      const handleSubmitPayment = async (event) => {
+    const handleSubmitPayment = async (event) => {
 
-        event.preventDefault()
-        handleClosePayment()
-        const docRef = doc(db, "policies", id);
-        await updateDoc(docRef, {
-            stickersDetails: [{
-                basicPremium: "",
-                category: policy.stickersDetails[0].category,
-                ccPower: policy.stickersDetails[0].ccPower,
-                chasisNo: policy.stickersDetails[0].chasisNo,
-                grossWeight: policy.stickersDetails[0].grossWeight,
-                motorClass: policy.stickersDetails[0].motorClass,
-                motorMake: policy.stickersDetails[0].motorMake,
-                plateNo: policy.stickersDetails[0].plateNo,
-                referenceNo: policy.stickersDetails[0].referenceNo,
-                seatingCapacity: policy.stickersDetails[0].seatingCapacity,
-                stampDuty: policy.stickersDetails[0].stampDuty,
-                status: "paid",
-                stickerFee: policy.stickersDetails[0].stickerFee,
-                totalPremium: policy.stickersDetails[0].totalPremium,
-                trainingLevy: policy.stickersDetails[0].trainingLevy,
-                vat: policy.stickersDetails[0].vat,
-                vehicleUse: policy.stickersDetails[0].vehicleUse
+    event.preventDefault()
+    handleClosePayment()
+    const docRef = doc(db, "policies", id);
+    await updateDoc(docRef, {
+        stickersDetails: [{ ...policy.stickersDetails[0], status: "paid" }]
+    });
+    toast.success('Payment Reference successfully saved.', {position: "top-center"});
 
-            }]
-        });
-        toast.success('Payment Reference successfully saved.', {position: "top-center"});
-      }
-
-      console.log(policy)
-
+    getMTP()
+    }
       
     
     return (
@@ -102,11 +91,11 @@ function PolicyDetails() {
             <div className={openToggleCancel ? 'myModal is-active': 'myModal'}>
                 <div className="modal__content wack">
                 <h1 className='wack'>Confirm</h1>
-                <p className='wack'>Are you sure you want to cancel</p>
+                <p className='wack'>Are you sure you want to cancel <b>{policy.clientDetails && policy.clientDetails.name}</b>'s sticker</p>
                 <div className="buttonContainer wack" >
                     <button id="yesButton" onClick={() => {
                     setOpenToggleCancel(false)
-                    handleCancel(editID)
+                    handleCancel()
                     }} className='wack'>Yes</button>
                     <button id="noButton" onClick={() => setOpenToggleCancel(false)} className='wack'>No</button>
                 </div>
@@ -214,8 +203,9 @@ function PolicyDetails() {
                                 }
                                     <tr>
                                         <button className='btn btn-danger mb-2 mt-2' 
-                                        onClick={() => {
+                                        onClick={(event) => {
                                             setOpenToggleCancel(true)
+                                            event.stopPropagation()
                                         }}>Cancel Sticker</button>
                                     </tr>
                             </td>
