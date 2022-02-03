@@ -125,7 +125,6 @@ function Policies({cat, btn_txt, pol}) {
         listUsers().then(({data}) => {
             setExistingClients(data.filter(user => user?.role?.Customer))
             // console.log(data.filter(user => user?.role?.Customer))
-            // console.log(data)
         }).catch((err) => {
             console.log(err)
         })
