@@ -95,8 +95,6 @@ export default function StickerMgt() {
       
     }
 
-    console.log(stickerRange)
-
     return (
         <div className="components">
             <Header title="Sticker No. Management" subtitle="MANAGING STICKER NUMBERS" />
@@ -141,6 +139,10 @@ export default function StickerMgt() {
                       <div style={{display: "flex", justifyContent: "space-between"}}>
                           <div><p>Total Number of stickers: </p></div>
                           <div><p><b>{singleDoc.rangeTo - singleDoc.rangeFrom}</b></p></div>
+                      </div>
+                      <div style={{display: "flex", justifyContent: "space-between"}} className="mt-3">
+                          <div><p>Used Stickers: </p></div>
+                          <div><p><b>{singleDoc.used && singleDoc.used.length > 0 && singleDoc.used.map(number => <p>{number} </p>)}</b></p></div>
                       </div>
                   </div>
                   </Modal.Body>
