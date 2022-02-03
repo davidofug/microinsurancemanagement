@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap'
 import Header from '../components/header/Header'
-import useDialog from '../hooks/useDialog'
-import { addDoc, collection, getDoc, doc, getDocs, updateDoc} from 'firebase/firestore'
+import { addDoc, collection, doc, getDocs, updateDoc} from 'firebase/firestore'
 import { authentication, db } from '../helpers/firebase'
 import Loader from '../components/Loader'
-import { ImFilesEmpty } from 'react-icons/im'
 import { RiCalendarTodoFill } from 'react-icons/ri'
 import useAuth from '../contexts/Auth'
 
@@ -78,7 +76,6 @@ function Logs() {
 
     // const num = Math.round((new Date(todayAttendence.checkout).getTime() - new Date(todayAttendence.checkin).getTime())/1000/60)
     const num = Math.round(new Date('2022-02-01 13:36:57'))
-    console.log(num)
 
     function timeConvert(n) {
         var num = n;
@@ -88,8 +85,6 @@ function Logs() {
         var rminutes = Math.round(minutes);
         return rhours + " hour(s) and " + rminutes + " minute(s).";
     }
-
-    console.log(attendence)
 
     return (
         <div className='components'>
@@ -135,7 +130,7 @@ function Logs() {
                         <tbody>
 
                             {attendence.map(attend => (
-                                <tr>
+                                <tr key={attend.id}>
                                     <td>{attend.checkin}</td>
                                     <td>{!attend.checkout ? "Didn't check out" : attend.checkout}</td>
                                     <td>{!attend.checkout ? "Can not be determined!" 
