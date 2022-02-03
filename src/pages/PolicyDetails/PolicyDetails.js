@@ -2,7 +2,7 @@ import logo from '../../assets/imgs/britam-logo2.png'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { getDoc, collection, doc, updateDoc} from 'firebase/firestore'
+import { getDoc, getDocs, collection, doc, updateDoc} from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import './PolicyDetails.css'
 import { currencyFormatter } from '../../helpers/currency.format'
@@ -13,11 +13,9 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function PolicyDetails() {
-    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP()}, []);
+    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP(); getStickerRange()}, []);
 
-    const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+    const [ show, handleShow, handleClose ] = useDialog()
 
     const { id } = useParams()  
 
@@ -25,6 +23,9 @@ function PolicyDetails() {
     const policyCollectionRef = collection(db, "policies");
 
   const [ showPayment, handleShowPayment, handleClosePayment ] = useDialog()
+
+
+  
 
   // Confirm Box
   const [ openToggle, setOpenToggle ] = useState(false)
@@ -58,18 +59,43 @@ function PolicyDetails() {
         setPolicy(data.data())
       }
 
+    // get the ranges
+    const [stickerRange, setStickerRange] = useState([]);
+    const rangesCollectionRef = collection(db, "ranges");
+
+    const getStickerRange = async () => {
+        const data = await getDocs(rangesCollectionRef)
+        const rangeArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        rangeArray.length === 0 ? setStickerRange(null) : setStickerRange(rangeArray)
+        
+    }
+
+
     const handleSubmitPayment = async (event) => {
 
     event.preventDefault()
     handleClosePayment()
     const docRef = doc(db, "policies", id);
     await updateDoc(docRef, {
-        stickersDetails: [{ ...policy.stickersDetails[0], status: "paid" }]
-    });
+        stickersDetails: [{ ...policy.stickersDetails[0], status: "paid", stickerNo: event.target.stickerNo.value }]
+    }).then(() => {
+        stickerRange.filter(range => +range.rangeFrom <= +event.target.stickerNo.value && +range.rangeTo >= +event.target.stickerNo.value).forEach(async range => {
+            const docRef = doc(db, "ranges", range.id);
+            await updateDoc(docRef, {
+                used: [ ...range.used, event.target.stickerNo.value ]
+            })
+        })
+    })
     toast.success('Payment Reference successfully saved.', {position: "top-center"});
 
     getMTP()
     }
+
+    const submitStickerNo = () => {
+
+    }
+
+    console.log(stickerRange)
       
     
     return (
@@ -125,6 +151,7 @@ function PolicyDetails() {
                 <Modal.Footer className="hideOnPrint">
                     <button className='btn btn-primary cta hideOnPrint' onClick={() => {
                         window.print()
+                        submitStickerNo()
                     }} >Print</button>
                 </Modal.Footer>
             </Modal>
@@ -136,9 +163,14 @@ function PolicyDetails() {
                 </Modal.Header>
                 <Modal.Body id="stickerPrint">
                     
-                        <Form.Group as={Col} className='addFormGroups'>
+                        <Form.Group as={Col} className='addFormGroups mb-3'>
                             <Form.Label htmlFor='paymentReference'>Enter Payment Reference</Form.Label>
                             <Form.Control type="text" id="paymentReference" required/>
+                        </Form.Group>
+
+                        <Form.Group as={Col} className='addFormGroups'>
+                            <Form.Label htmlFor='stickerNo'>Enter Sticker Number</Form.Label>
+                            <Form.Control type="text" id="stickerNo" required/>
                         </Form.Group>
                     
                 </Modal.Body>

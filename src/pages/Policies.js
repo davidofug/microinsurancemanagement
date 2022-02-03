@@ -225,7 +225,8 @@ function Policies({cat, btn_txt, pol}) {
             added_by_name: authentication.currentUser.displayName,  
             category: cat,
             totalValuation: await generateTotalValuation(stickers),
-            createdAt: created_at
+            createdAt: created_at,
+            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
         }).then(() => {
             toast.success(`succesfully created ${clientInfo.name}'s sticker`, {position: "top-center"})
             document.policyForm.reset()
