@@ -1,5 +1,4 @@
 import useAuth from '../contexts/Auth'
-import NotLoggedIn from '../pages/NotLoggedIn'
 import Login from '../pages/Login'
 import Logout from '../pages/Logout'
 import ForgotPassword from '../pages/ForgotPassword'
@@ -39,12 +38,11 @@ function MyRouter() {
     return (
         <Router>
              <Switch >
-                    <Route path="/forgot-password" component={ForgotPassword} />
-                    <Route path="/logout" component={Logout} />
-                    <Route path="/not-logged-in" component={NotLoggedIn} />
-                    <Route path="/" exact component={Login} />     
-                    <Route path="/login" exact component={Login} />
-                </Switch>
+                <Route path="/forgot-password" component={ForgotPassword} />
+                <Route path="/logout" component={Logout} />
+                <Route path="/" exact component={Login} />     
+                <Route path="/login" exact component={Login} />
+            </Switch>
             <div className={largeContentClass ? 'top-container-large': `top-container` }>
                 {currentUser?.loggedIn && 
                 <>
