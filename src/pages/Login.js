@@ -71,7 +71,6 @@ function Login() {
 
   if (isLoading) return <Loader />;
 
-  console.log(from)
 
   if (currentUser?.loggedIn){
     if(authClaims.admin){
