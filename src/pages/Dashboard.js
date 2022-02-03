@@ -351,9 +351,9 @@ function Dashboard() {
                         </Row>
                     </div>
                 </div>  
-                <div style={{position:"fixed", display:"flex", justifyContent:"flex-end", height:"100%", alignItems:"end", justifyContent:"flex-end", width:"80%"}}> 
-                    <Chat/>
-                </div>
+                <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+                    <Chat />
+                </div> 
             </div>
         )
 }
