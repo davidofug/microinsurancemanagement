@@ -90,8 +90,11 @@ function Dashboard() {
     const getClaims = async () => {
         const data = await getDocs(claimsCollectionRef);
         const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-
-        authClaims.agent && setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid)) // agent's claims
+        const allSettledClaims = allClaims.filter(claim => claim.status === 'settled')
+        if(authClaims.agent){ // agent's claims
+            setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid)) 
+            setClaimsSettled(allSettledClaims.filter(claim => claim.uid === authentication.currentUser.uid))
+        } 
 
         if(authClaims.supervisor){ // supervisor's claims
             const listUsers = httpsCallable(functions, 'listUsers')
