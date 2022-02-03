@@ -12,6 +12,7 @@ import Loader from '../components/Loader'
 import { authentication } from '../helpers/firebase'
 import moment from 'moment'
 import { ImFilesEmpty } from 'react-icons/im'
+import { getAgentClients } from '../helpers/smallFunctions'
 
 import Chat from '../components/messenger/Chat'
 
@@ -27,14 +28,16 @@ function Dashboard() {
 
     useEffect(async () => {
         document.title = 'Britam - Dashboard'
+        getAgentClients().then(result => setClients(result))
         getClaims()
-        getClients()
         getAgents()
         getSupervisors()
         getAdmins()
         getPolicies()
         setStickers(handlePolicyStickers(await getPolicies()))
     }, [])
+
+    
 
     // policies
     const [policies, setPolicies] = useState([])
@@ -129,18 +132,6 @@ function Dashboard() {
         authClaims.superadmin && setClaims(allClaims) && setClaimsSettled(allClaims.filter(claim => claim.status === "settled")) // superadmin's claims
           
           
-    }
-
-    // clients
-    const getClients = () => {
-        const listUsers = httpsCallable(functions, 'listUsers')
-        listUsers().then((results) => {
-            const resultsArray = results.data
-            const myUsers = resultsArray.filter(user => user.role.Customer)
-                const myClients = myUsers.filter(client => client.meta.added_by_uid === authentication.currentUser.uid).slice(0, 5)
-                myClients.length === 0 ? setClients(null) : setClients(myClients)
-        }).catch((err) => {
-        })
     }
 
     // getting agents
