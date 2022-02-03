@@ -41,6 +41,8 @@ function AddUsers({role}) {
     const logCollectionRef = collection(db, "logs");
 
     const [ logo, setLogo ] = useState(null)
+
+    console.log(authClaims)
     
 
     /* const checkedOrganisation = () => {
@@ -254,7 +256,7 @@ function AddUsers({role}) {
                                         <Row className="mb-3">
                                             <Form.Group as={Col} className='addFormGroups'>
                                                 <Form.Label htmlFor='tinNumber'>Tin Number</Form.Label>
-                                                <Form.Control type="number" id="tinNumber" placeholder="Enter TIN" onChange={handleFieldChange} />
+                                                <Form.Control type="text" id="tinNumber" placeholder="Enter TIN" onChange={handleFieldChange} />
                                             </Form.Group>
                                             <Form.Group as={Col} className='addFormGroups'>
                                                 <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
@@ -271,13 +273,13 @@ function AddUsers({role}) {
                                                 <Form.Label htmlFor='driverLicense'>Driver's License</Form.Label>
                                                 <Form.Control id="driverLicense" placeholder="Driver's License" onChange={handleFieldChange} />
                                             </Form.Group>
-                                            <Form.Group as={Col} className="addFormGroups" >
+                                            <Form.Group as={Col} className="addFormGroups mb-3" >
                                                 <Form.Label htmlFor='nin'>NIN</Form.Label>
                                                 <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
                                             </Form.Group>
                                         </Row>
-                                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                        <Upload setLogo={setLogo}/>
+                                        {/* <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
+                                        <Upload setLogo={setLogo}/> */}
                                 </>
                                 }
                                 {clientType === 'corporateEntity' && 
@@ -365,7 +367,7 @@ function AddUsers({role}) {
                                         </Form.Group> */}
                                 </Row>
                                 <Row>
-                                    <Form.Group as={Col} className="addFormGroups" >
+                                    <Form.Group as={Col} className="addFormGroups mb-3" >
                                         <Form.Label htmlFor='nin'>NIN</Form.Label>
                                         <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
                                     </Form.Group>
@@ -394,8 +396,8 @@ function AddUsers({role}) {
                                         </Form.Group>
                                     </>
                                 }
-                                <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                <Upload setLogo={setLogo}/>
+                                {role !== 'client' && <><Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
+                                <Upload setLogo={setLogo}/></>}
 
                                 {role !== 'client' && <PasswordGenerator password={password} setPassword={setPassword} />}
                                 
