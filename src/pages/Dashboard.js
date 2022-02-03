@@ -132,12 +132,9 @@ function Dashboard() {
         listUsers().then((results) => {
             const resultsArray = results.data
             const myUsers = resultsArray.filter(user => user.role.Customer)
-            if(authClaims.agent){
-                const myClients = myUsers.filter(client => client.added_by_uid === authentication.currentUser.uid).slice(0, 5)
+                const myClients = myUsers.filter(client => client.meta.added_by_uid === authentication.currentUser.uid).slice(0, 5)
+                console.log(myClients)
                 myClients.length === 0 ? setClients(null) : setClients(myClients)
-            } else {
-                setClients(myUsers)
-            }
         }).catch((err) => {
         })
     }
