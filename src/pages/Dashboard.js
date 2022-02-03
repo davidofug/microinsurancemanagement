@@ -40,12 +40,13 @@ function Dashboard() {
     const [policies, setPolicies] = useState([])
     const policyCollectionRef = collection(db, "policies");
 
+    
     const getPolicies = async () => {
         const data = await getDocs(policyCollectionRef);
         const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
 
         if(authClaims.agent){// agent's policies
-            setPolicies(allPolicies.filter(claim => claim.uid === authentication.currentUser.uid)) 
+            setPolicies(allPolicies.filter(claim => claim.added_by_uid === authentication.currentUser.uid)) 
             return (allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
         }
 
@@ -133,7 +134,6 @@ function Dashboard() {
             const resultsArray = results.data
             const myUsers = resultsArray.filter(user => user.role.Customer)
                 const myClients = myUsers.filter(client => client.meta.added_by_uid === authentication.currentUser.uid).slice(0, 5)
-                console.log(myClients)
                 myClients.length === 0 ? setClients(null) : setClients(myClients)
         }).catch((err) => {
         })
