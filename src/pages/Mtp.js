@@ -20,7 +20,13 @@ import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../components/messenger/Chat'
 
 export default function Mtp() {
-  useEffect(() => { document.title = "Britam - Motor Third Party"; getMTP()}, []);
+  useEffect(() => { 
+    document.title = "Britam - Motor Third Party"; 
+    getMTP()
+    updateExpiredStickers()
+
+    return () => getMTP()
+}, []);
 
   
   // policies
@@ -263,7 +269,7 @@ export default function Mtp() {
     }
   }
 
-  console.log(deleteArray)
+  
 
   // actions context
   const [showContext, setShowContext] = useState(false)
@@ -290,6 +296,16 @@ export default function Mtp() {
   const shownPolicies = !policies || currentPolicies.filter(policy => !switchCategory || policy.stickersDetails[0].status === switchCategory)
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
+
+
+  const updateExpiredStickers = () => {
+    policies.filter(policy => policy.stickersDetails[0].status === 'new').filter(policy => new Date(policy.policyEndDate) <= new Date()).forEach(async policy => {
+      const policyDoc = doc(db, "policies", policy.id)
+      await updateDoc(policyDoc, {
+        stickersDetails: [{ ...policy.stickersDetails[0], status: "expired" }]
+      })
+    })
+  }
 
 
 
