@@ -108,11 +108,12 @@ export default function Organisations() {
     //pagination
     const indexOfLastOrganisation = currentPage * organisationsPerPage;
     const indexOfFirstOrganisation = indexOfLastOrganisation - organisationsPerPage;
-    const currentOrganisations = !organisations || searchByName(organisations).slice(
-      indexOfFirstOrganisation,
-      indexOfLastOrganisation
-    );
+    const currentOrganisations = !organisations || searchByName(organisations)
     const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
+
+    const paginatedShownOrganisations = !organisations || currentOrganisations.slice(indexOfFirstOrganisation, indexOfLastOrganisation)
+
+    console.log(organisations)
 
   return (
     <div className="components">
@@ -143,7 +144,7 @@ export default function Organisations() {
 
 
       <Modal show={show} onHide={handleClose}>
-            <OrganisationModal singleDoc={singleDoc} />
+            <OrganisationModal singleDoc={singleDoc} handleClose={handleClose} />
       </Modal>
 
       {organisations === null  || organisations.length <= 0
@@ -183,7 +184,7 @@ export default function Organisations() {
               <th></th>
               <th colSpan={4} style={{border: "1px solid #000", textAlign: "center"}}>Contact Person</th></tr>
             <tr style={{borderTop: "1px solid #000"}}>
-              <th>Logo</th>
+              <th className="text-center">Logo</th>
               <th>Name</th>
               <th>Email</th>
               <th>Phone No.</th>
@@ -198,7 +199,7 @@ export default function Organisations() {
           <tbody>
             {currentOrganisations.map((organisation, index) => (
               <tr key={organisation.id}>
-                <td><img src={organisation.logo} width={40} height={40} style={{borderRadius: "50%"}} /></td>
+                <td className="text-center"><img src={organisation.logo} width={40} height={40} style={{borderRadius: "50%"}} /></td>
                 <td>{organisation.name}</td>
                 <td>{organisation.org_email}</td>
                 <td>{organisation.tel}</td>
@@ -249,7 +250,7 @@ export default function Organisations() {
              <Pagination
                 pages={totalPagesNum}
                 setCurrentPage={setCurrentPage}
-                currentClients={currentOrganisations}
+                currentClients={paginatedShownOrganisations}
                 sortedEmployees={organisations}
                 entries={"Organisations"}
               />
@@ -259,7 +260,7 @@ export default function Organisations() {
 
           <tfoot>
             <tr>
-              <th>Logo</th>
+              <th className="text-center">Logo</th>
               <th>Name</th>
               <th>Email</th>
               <th>Phone No.</th>

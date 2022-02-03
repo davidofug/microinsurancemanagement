@@ -13,7 +13,6 @@ import Logs from '../pages/Logs.js'
 import Supervisors from '../pages/admin/Supervisors'
 import Agents from '../pages/Agents'
 import AddAgents from '../pages/AddAgents'
-import Logout from '../pages/Logout'
 import AddClaims from '../pages/AddClaims'
 import AddOrganisation from '../pages/admin/AddOrganisation'
 import StickerMgt from '../pages/admin/StickerMgt'
@@ -105,9 +104,6 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/add-claim" >
                 <AddClaims />
-            </PrivateRoute>
-            <PrivateRoute path="/logout" >
-                <Logout />
             </PrivateRoute>
             <PrivateRoute path="/admin/add-agent" >
                 <AddUsers role="agent" />

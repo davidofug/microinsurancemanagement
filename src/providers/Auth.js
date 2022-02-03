@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AuthContext } from '../contexts/Auth'
-import { signOut, getAuth } from 'firebase/auth'
+import { signOut, getAuth, onAuthStateChanged } from 'firebase/auth'
 
 
 
@@ -11,22 +11,20 @@ function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true)
     const [authClaims, setAuthClaims] = useState(null)
 
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          setCurrentUser(user);
+        //   console.log('user status changed: ', user);
+        });
+        return unsubscribe;
+      }, []);
+
 
     const auth = getAuth()
     const logout = () => {
+        localStorage.removeItem('onRefresh')
         signOut(auth)
     }
-    
-
-        // //try persisting the log in on refresh
-        // useEffect(() => {
-        //     const loggedIn = JSON.parse(localStorage.getItem('currentUser'))
-        //     if(loggedIn !== null){
-        //         setCurrentUser(loggedIn.authentication.currentUser)
-        //         setAuthClaims()
-        //     }
-        // })
-
 
     const value = {
         loading,

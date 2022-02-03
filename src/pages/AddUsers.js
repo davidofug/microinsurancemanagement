@@ -41,6 +41,8 @@ function AddUsers({role}) {
     const logCollectionRef = collection(db, "logs");
 
     const [ logo, setLogo ] = useState(null)
+
+    console.log(authClaims)
     
 
     /* const checkedOrganisation = () => {
@@ -66,7 +68,6 @@ function AddUsers({role}) {
         photo: ''
     })
 
-
     const handleSubmit = (event) => {
         setIsLoading(true)
         event.preventDefault()
@@ -78,7 +79,7 @@ function AddUsers({role}) {
         fields['added_by_name'] = authentication.currentUser.displayName
         fields['password'] = password
         fields['addedOn'] = `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`
-
+        if(role === 'agent'){ fields['supervisor'] = event.target.supervisor.value } 
 
         if(logo){
             const storageRef = ref(storage, `images/${logo.name}`)
@@ -164,7 +165,7 @@ function AddUsers({role}) {
     //const [ logo, setLogo ] = useState(null)
     const [ progress, setProgress ] = useState(0)
 
-    console.log(logo)
+    
 
     return (
         <div className='components'>
@@ -255,7 +256,7 @@ function AddUsers({role}) {
                                         <Row className="mb-3">
                                             <Form.Group as={Col} className='addFormGroups'>
                                                 <Form.Label htmlFor='tinNumber'>Tin Number</Form.Label>
-                                                <Form.Control type="number" id="tinNumber" placeholder="Enter TIN" onChange={handleFieldChange} />
+                                                <Form.Control type="text" id="tinNumber" placeholder="Enter TIN" onChange={handleFieldChange} />
                                             </Form.Group>
                                             <Form.Group as={Col} className='addFormGroups'>
                                                 <Form.Label htmlFor='phone'>Phone Number <span className='required'>*</span></Form.Label>
@@ -272,13 +273,13 @@ function AddUsers({role}) {
                                                 <Form.Label htmlFor='driverLicense'>Driver's License</Form.Label>
                                                 <Form.Control id="driverLicense" placeholder="Driver's License" onChange={handleFieldChange} />
                                             </Form.Group>
-                                            <Form.Group as={Col} className="addFormGroups" >
+                                            <Form.Group as={Col} className="addFormGroups mb-3" >
                                                 <Form.Label htmlFor='nin'>NIN</Form.Label>
                                                 <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
                                             </Form.Group>
                                         </Row>
-                                        <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                        <Upload setLogo={setLogo}/>
+                                        {/* <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
+                                        <Upload setLogo={setLogo}/> */}
                                 </>
                                 }
                                 {clientType === 'corporateEntity' && 
@@ -311,6 +312,12 @@ function AddUsers({role}) {
                             </>
                         :
                             <>
+                                {role === 'agent' && 
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label htmlFor='name'>Assign Supervisor</Form.Label>
+                                        <Form.Control id="supervisor" placeholder="Name" required/>
+                                    </Form.Group>
+                                }
                                 <Form.Group className="mb-3" >
                                     <Form.Label htmlFor='name'>Name<span className='required'>*</span></Form.Label>
                                     <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
@@ -360,7 +367,7 @@ function AddUsers({role}) {
                                         </Form.Group> */}
                                 </Row>
                                 <Row>
-                                    <Form.Group as={Col} className="addFormGroups" >
+                                    <Form.Group as={Col} className="addFormGroups mb-3" >
                                         <Form.Label htmlFor='nin'>NIN</Form.Label>
                                         <Form.Control id="NIN" placeholder="NIN" onChange={handleFieldChange}/>
                                     </Form.Group>
@@ -389,8 +396,8 @@ function AddUsers({role}) {
                                         </Form.Group>
                                     </>
                                 }
-                                <Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
-                                <Upload setLogo={setLogo}/>
+                                {role !== 'client' && <><Form.Label htmlFor='upload'>Upload Profile photo</Form.Label>
+                                <Upload setLogo={setLogo}/></>}
 
                                 {role !== 'client' && <PasswordGenerator password={password} setPassword={setPassword} />}
                                 

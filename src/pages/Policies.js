@@ -225,7 +225,8 @@ function Policies({cat, btn_txt, pol}) {
             added_by_name: authentication.currentUser.displayName,  
             category: cat,
             totalValuation: await generateTotalValuation(stickers),
-            createdAt: created_at
+            createdAt: created_at,
+            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
         }).then(() => {
             toast.success(`succesfully created ${clientInfo.name}'s sticker`, {position: "top-center"})
             document.policyForm.reset()
@@ -510,7 +511,6 @@ function Policies({cat, btn_txt, pol}) {
                                                     setComprehensiveClient('Existing')
                                                 }
                                             }
-                                            console.log(client)
                                         }}/>
                                             <datalist id="clientNames" >
                                                 {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
@@ -528,7 +528,6 @@ function Policies({cat, btn_txt, pol}) {
                                                     
                                                 }
                                             }
-                                            console.log(client)
                                         }}/>
                                             <datalist id="clientNames" >
                                                 {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}

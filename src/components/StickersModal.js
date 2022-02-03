@@ -18,16 +18,20 @@ function StickerModal({ name, user_id }) {
 
     const getPolicies = async() => {
         const data = await getDocs(policyCollectionRef);
+        
+
         setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         // const policiesArray = (data.docs.map((doc) => ({ ...doc.data(), id: doc.id })).filter(policy => policy.added_by_uid === user_id))
         // policiesArray.length === 0 ? setPolicies(null) : setPolicies(policiesArray)
     }
 
+    
+
 
     return (
         <>
             <Modal.Header closeButton>
-                <Modal.Title> Agent {name} Issued stickers</Modal.Title>
+                <Modal.Title> Agent {name}'s Issued stickers</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {policies !== null && policies.length > 0
