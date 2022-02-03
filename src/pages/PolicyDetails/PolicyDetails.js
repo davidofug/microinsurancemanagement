@@ -2,7 +2,7 @@ import logo from '../../assets/imgs/britam-logo2.png'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { getDoc, collection, doc, updateDoc} from 'firebase/firestore'
+import { getDoc, getDocs, collection, doc, updateDoc} from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import './PolicyDetails.css'
 import { currencyFormatter } from '../../helpers/currency.format'
@@ -13,19 +13,25 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function PolicyDetails() {
-    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP(id)}, []);
+    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP(); getStickerRange()}, []);
 
-    const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [editID, setEditID] = useState(null);
+    const [ show, handleShow, handleClose ] = useDialog()
+
+    const { id } = useParams()  
+
+    const [ policy, setPolicy ] = useState({})
+    const policyCollectionRef = collection(db, "policies");
 
   const [ showPayment, handleShowPayment, handleClosePayment ] = useDialog()
 
-    // Confirm Box
+
+  
+
+  // Confirm Box
+  const [ openToggle, setOpenToggle ] = useState(false)
   const [ openToggleCancel, setOpenToggleCancel ] = useState(false)
   window.onclick = (event) => {
-    if(openToggleCancel === true) {
+    if(openToggleCancel) {
       if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
         setOpenToggleCancel(false)
     }
@@ -33,54 +39,63 @@ function PolicyDetails() {
   }
 
   // cancel a policy
-  const handleCancel = async (id) => {
-    console.log("handle cancel")
+  const handleCancel = async () => {
+    handleClosePayment()
+    const docRef = doc(db, "policies", id);
+    await updateDoc(docRef, {
+        stickersDetails: [{ ...policy.stickersDetails[0], status: "cancelled" }]
+    });
+    toast.success('sticker has been cancelled.', {position: "top-center"});
+
+    getMTP()
 }
 
-    const { id } = useParams()  
+    
 
-    const [ policy, setPolicy ] = useState({})
-    const policyCollectionRef = collection(db, "policies");
-
-    const getMTP = async (id) => {
+    const getMTP = async () => {
         const policyRef = doc(db, "policies", id)
         const data = await getDoc(policyRef);
         // console.log(data.data())
         setPolicy(data.data())
       }
 
-      const handleSubmitPayment = async (event) => {
+    // get the ranges
+    const [stickerRange, setStickerRange] = useState([]);
+    const rangesCollectionRef = collection(db, "ranges");
 
-        event.preventDefault()
-        handleClosePayment()
-        const docRef = doc(db, "policies", id);
-        await updateDoc(docRef, {
-            stickersDetails: [{
-                basicPremium: "",
-                category: policy.stickersDetails[0].category,
-                ccPower: policy.stickersDetails[0].ccPower,
-                chasisNo: policy.stickersDetails[0].chasisNo,
-                grossWeight: policy.stickersDetails[0].grossWeight,
-                motorClass: policy.stickersDetails[0].motorClass,
-                motorMake: policy.stickersDetails[0].motorMake,
-                plateNo: policy.stickersDetails[0].plateNo,
-                referenceNo: policy.stickersDetails[0].referenceNo,
-                seatingCapacity: policy.stickersDetails[0].seatingCapacity,
-                stampDuty: policy.stickersDetails[0].stampDuty,
-                status: "paid",
-                stickerFee: policy.stickersDetails[0].stickerFee,
-                totalPremium: policy.stickersDetails[0].totalPremium,
-                trainingLevy: policy.stickersDetails[0].trainingLevy,
-                vat: policy.stickersDetails[0].vat,
-                vehicleUse: policy.stickersDetails[0].vehicleUse
+    const getStickerRange = async () => {
+        const data = await getDocs(rangesCollectionRef)
+        const rangeArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        rangeArray.length === 0 ? setStickerRange(null) : setStickerRange(rangeArray)
+        
+    }
 
-            }]
-        });
-        toast.success('Payment Reference successfully saved.', {position: "top-center"});
-      }
 
-      console.log(policy)
+    const handleSubmitPayment = async (event) => {
 
+    event.preventDefault()
+    handleClosePayment()
+    const docRef = doc(db, "policies", id);
+    await updateDoc(docRef, {
+        stickersDetails: [{ ...policy.stickersDetails[0], status: "paid", stickerNo: event.target.stickerNo.value }]
+    }).then(() => {
+        stickerRange.filter(range => +range.rangeFrom <= +event.target.stickerNo.value && +range.rangeTo >= +event.target.stickerNo.value).forEach(async range => {
+            const docRef = doc(db, "ranges", range.id);
+            await updateDoc(docRef, {
+                used: [ ...range.used, event.target.stickerNo.value ]
+            })
+        })
+    })
+    toast.success('Payment Reference successfully saved.', {position: "top-center"});
+
+    getMTP()
+    }
+
+    const submitStickerNo = () => {
+
+    }
+
+    console.log(stickerRange)
       
     
     return (
@@ -102,11 +117,11 @@ function PolicyDetails() {
             <div className={openToggleCancel ? 'myModal is-active': 'myModal'}>
                 <div className="modal__content wack">
                 <h1 className='wack'>Confirm</h1>
-                <p className='wack'>Are you sure you want to cancel</p>
+                <p className='wack'>Are you sure you want to cancel <b>{policy.clientDetails && policy.clientDetails.name}</b>'s sticker</p>
                 <div className="buttonContainer wack" >
                     <button id="yesButton" onClick={() => {
                     setOpenToggleCancel(false)
-                    handleCancel(editID)
+                    handleCancel()
                     }} className='wack'>Yes</button>
                     <button id="noButton" onClick={() => setOpenToggleCancel(false)} className='wack'>No</button>
                 </div>
@@ -136,6 +151,7 @@ function PolicyDetails() {
                 <Modal.Footer className="hideOnPrint">
                     <button className='btn btn-primary cta hideOnPrint' onClick={() => {
                         window.print()
+                        submitStickerNo()
                     }} >Print</button>
                 </Modal.Footer>
             </Modal>
@@ -147,9 +163,14 @@ function PolicyDetails() {
                 </Modal.Header>
                 <Modal.Body id="stickerPrint">
                     
-                        <Form.Group as={Col} className='addFormGroups'>
+                        <Form.Group as={Col} className='addFormGroups mb-3'>
                             <Form.Label htmlFor='paymentReference'>Enter Payment Reference</Form.Label>
                             <Form.Control type="text" id="paymentReference" required/>
+                        </Form.Group>
+
+                        <Form.Group as={Col} className='addFormGroups'>
+                            <Form.Label htmlFor='stickerNo'>Enter Sticker Number</Form.Label>
+                            <Form.Control type="text" id="stickerNo" required/>
                         </Form.Group>
                     
                 </Modal.Body>
@@ -214,8 +235,9 @@ function PolicyDetails() {
                                 }
                                     <tr>
                                         <button className='btn btn-danger mb-2 mt-2' 
-                                        onClick={() => {
+                                        onClick={(event) => {
                                             setOpenToggleCancel(true)
+                                            event.stopPropagation()
                                         }}>Cancel Sticker</button>
                                     </tr>
                             </td>
