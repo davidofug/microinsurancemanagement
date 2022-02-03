@@ -372,14 +372,14 @@ export default function Mtp() {
                        <i><MdAutorenew /></i> Renew
                      </div>
                    </Link>
-                   <li onClick={() => {
+                   {/* <li onClick={() => {
                                  setOpenToggleCancel(true)
                                  setShowContext(false)
                                }}>
                      <div className="actionDiv">
                        <i><MdCancel /></i> Cancel
                      </div>
-                   </li>
+                   </li> */}
                    <li 
                          onClick={() => {
                                  setOpenToggle(true)
