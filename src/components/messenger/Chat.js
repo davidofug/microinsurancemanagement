@@ -136,7 +136,6 @@ function Chat() {
             setAllChats(capables)   
             
             const receivedUnreadMessages = messages.filter(msg => msg?.sendersUID === authentication.currentUser.uid).filter(msg => uids.includes(msg.receiversUID)).filter(message => message?.read !== true)
-            console.log(receivedUnreadMessages)
         
         }).catch((error) => {
             console.log(error)
