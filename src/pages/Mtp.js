@@ -100,8 +100,8 @@ export default function Mtp() {
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => data.filter(row => row.clientDetails).filter(row => row.clientDetails.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
-  // delete a policy
-  const handleDelete = async () => {
+  // actual delete a policy
+  /* const handleDelete = async () => {
     const policyDoc = doc(db, "policies", singleDoc.id);
     await deleteDoc(policyDoc)
       .then(() => toast.success(`Successfully deleted ${singleDoc.clientDetails.name}'s sticker`, {position: "top-center"}))
@@ -125,10 +125,39 @@ export default function Mtp() {
 
       getMTP()
     
+  } */
+
+  // change status to deleted
+  const handleDelete = async () => {
+    const policyDoc = doc(db, "policies", singleDoc.id);
+    await updateDoc(policyDoc, {
+      stickersDetails: [{ ...singleDoc.stickersDetails[0], status: "deleted" }]
+    })
+      .then(() => toast.success(`Successfully deleted ${singleDoc.clientDetails.name}'s sticker`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'successful',
+          message: `Successfully deleted ${singleDoc.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch(async() => {
+        toast.error(`Failed to deleted ${singleDoc.clientDetails.name}'s sticker`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete ${singleDoc.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+
+      getMTP()
+    
   }
 
   // delete multiple policies
-  const handleMultipleDelete = async (arr) => {
+  /* const handleMultipleDelete = async (arr) => {
     const policyDoc = doc(db, "policies", arr[0]);
 
     await deleteDoc(policyDoc)
@@ -148,6 +177,36 @@ export default function Mtp() {
           type: 'sticker deletion',
           status: 'failed',
           message: `Failed to delete ${arr[1]}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+
+      getMTP()
+    
+  } */
+
+  // delete multiple policies
+  const handleMultipleDelete = async (arr) => {
+    const policyDoc = doc(db, "policies", arr.id);
+
+    await updateDoc(policyDoc, {
+      stickersDetails: [{ ...arr.stickersDetails[0], status: "deleted" }]
+    })
+      .then(() => toast.success(`Successfully deleted ${arr.clientDetails.name}'s sticker`, {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'successful',
+          message: `Successfully deleted ${arr.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch(async() => {
+        toast.error(`Failed to deleted ${arr[1]}'s claim`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'sticker deletion',
+          status: 'failed',
+          message: `Failed to delete ${arr.clientDetails.name}'s sticker by ${authentication.currentUser.displayName}`
         })
       })
 
@@ -195,7 +254,7 @@ export default function Mtp() {
     }
   }
 
-  // delete multiple agents
+  // delete multiple sticker
   const [ bulkDelete, setBulkDelete ] = useState(null)
   const [ deleteArray, setDeleteArray ] = useState([])
   const handleBulkDelete = async () => {
@@ -203,6 +262,8 @@ export default function Mtp() {
       deleteArray.map(policy=> handleMultipleDelete(policy))
     }
   }
+
+  console.log(deleteArray)
 
   // actions context
   const [showContext, setShowContext] = useState(false)
@@ -214,12 +275,6 @@ export default function Mtp() {
     }
   }
   const [clickedIndex, setClickedIndex] = useState(null)
-
-  const [ deleteName, setDeleteName ] = useState('')
-  const getPolicy = async (id) => {
-    const policyDoc = doc(db, "policies", id);
-    return await getDoc(policyDoc).then(result => setDeleteName(result.data().clientDetails.name))
-  }
 
   // pagination
   const [ currentPage, setCurrentPage ] = useState(1)
@@ -321,8 +376,8 @@ export default function Mtp() {
          <tbody>
              {paginatedShownPolicies.map((policy, index) => (
                <tr key={policy.id}>
-                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [policy.id, policy.clientDetails.name]]) : 
-                   setDeleteArray(deleteArray.filter(element => element[0] !== policy.id))
+                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, policy]) : 
+                   setDeleteArray(deleteArray.filter(element => element.id !== policy.id))
                  }/></td>
                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
@@ -355,12 +410,18 @@ export default function Mtp() {
                         style={{backgroundColor: "#dc3545", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
                       >{policy.stickersDetails[0].status}</span>
                    }
+                   {policy.stickersDetails[0].status === 'deleted'  && 
+                      <span
+                        style={{backgroundColor: "#dc3545", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                      >{policy.stickersDetails[0].status}</span>
+                   }
                  </td>
                  <td>{policy.policyStartDate}</td>
 
                  <td className="started">
-                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy); getPolicy(policy.id)}}>&#8942;</button>
+                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy)}}>&#8942;</button>
 
+                 {policy.stickersDetails[0].status !== 'deleted' &&
                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                    <Link to={`/admin/policy-details/${policy.id}`}>
                      <div className="actionDiv">
@@ -390,7 +451,7 @@ export default function Mtp() {
                            <i><MdDelete/></i> Delete
                          </div>
                    </li>
-                 </ul>
+                 </ul>}
                  </td>
          
                </tr>
