@@ -16,17 +16,6 @@ function AuthProvider({ children }) {
     const logout = () => {
         signOut(auth)
     }
-    
-
-        // //try persisting the log in on refresh
-        // useEffect(() => {
-        //     const loggedIn = JSON.parse(localStorage.getItem('currentUser'))
-        //     if(loggedIn !== null){
-        //         setCurrentUser(loggedIn.authentication.currentUser)
-        //         setAuthClaims()
-        //     }
-        // })
-
 
     const value = {
         loading,
