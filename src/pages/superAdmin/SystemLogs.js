@@ -8,6 +8,8 @@ import Pagination from "../../helpers/Pagination";
 import Loader from "../../components/Loader";
 import { ImFilesEmpty } from 'react-icons/im'
 
+import Chat from '../../components/messenger/Chat'
+
 
 function SystemLogs() {
   useEffect(() => {document.title = "Britam - System Logs"; getLogs()}, []);
@@ -155,6 +157,10 @@ function SystemLogs() {
         :
           <Loader />
       }
+      
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+        <Chat />
+      </div>
 
             
     </div>
