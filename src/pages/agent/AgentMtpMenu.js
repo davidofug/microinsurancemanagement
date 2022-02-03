@@ -20,8 +20,11 @@ import useAuth from '../../contexts/Auth'
 
 function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
 
+    const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
     const { Agent_mtp } = menuData
-    const [ toggleMenu, setToggeMenu ] = useState(true)
+    const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
+    const [ show, handleShow, handleClose ] = useDialog();
+
 
     const { logout } = useAuth()
     const handleLogout = async () => {
@@ -35,22 +38,9 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
   }
 
     // actions context
-  const [show, handleShow, handleClose] = useDialog()
   if(show){
     window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
   }
-
-  const auth = getAuth();
-  const history = useHistory()
-  const signOutUser = async () => {
-      await signOut(auth).then(() => {
-        history.push("/logout")
-      console.log("signed out successfully")
-    }).catch((error) => {
-      console.log(error)
-    });
-  }
-
 
     return (
         <div className='menuSide'>
@@ -61,8 +51,9 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
                         <div id='brand'>
                             <img src={logo} width={150} alt="Britam" />
                             <div id="arrowCircle" onClick={() => {
-                                    setToggeMenu(!toggleMenu)
-                                    setLargeContentClass(!largeContentClass)
+                                    hideToggleMenu()
+                                    setLargeContentClass(true)
+                                    localStorage.setItem('preferredToggleMenu', false)
                                     }}>
                                     
                                         <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -100,8 +91,9 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
             <nav className='sidebar-m'>
                 <section id='brand_m'>
                     <div id="arrowOutCircle" onClick={() => {
-                        setToggeMenu(!toggleMenu)
+                        showToggleMenu()
                         setLargeContentClass(!largeContentClass)
+                        localStorage.setItem('preferredToggleMenu', true)
                         }}>
                         
                             <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
