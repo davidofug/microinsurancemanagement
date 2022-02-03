@@ -105,27 +105,28 @@ function Dashboard() {
       
               const supervisorClaims = allClaims.filter(claim => usersUnderSupervisor.includes(claim.added_by_uid))
               setClaims(supervisorClaims)
+              setClaimsSettled(supervisorClaims.filter(claim => claim.status === 'settled'))
             })
           }
         
         if(authClaims.admin){ // admin's claims
             const listUsers = httpsCallable(functions, 'listUsers')
             listUsers().then(({data}) => {
-              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+              const myAgents = data.filter(user => user.role.agent).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
       
-              const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+              const mySupervisors = data.filter(user => user.role.supervisor).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
       
-              const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+              const agentsUnderMySupervisors = data.filter(user => user.role.agent).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
               
               const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
-              const adminClaims = allClaims.filter(claim => usersUnderAdmin.includes(claim.added_by_uid))
+              const adminClaims = allClaims.filter(claim => usersUnderAdmin.includes(claim.uid))
               const settledClaims = adminClaims.filter(claim => claim.status === "settled")
               setClaimsSettled(settledClaims)
               setClaims(adminClaims)
             })
         }
 
-        authClaims.superadmin && setClaims(allClaims) // superadmin's claims
+        authClaims.superadmin && setClaims(allClaims) && setClaimsSettled(allClaims.filter(claim => claim.status === "settled")) // superadmin's claims
           
           
     }
