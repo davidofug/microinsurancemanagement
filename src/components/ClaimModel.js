@@ -1,55 +1,62 @@
 import { Modal, Form, Col, Row, Button } from "react-bootstrap";
+import useAuth from '../contexts/Auth'
 
-export function ClaimModelNotification({ singleDoc }) {
+export function ClaimModelNotification({ singleDoc, handleClose, changeClaimStatus }) {
+  const { authClaims } = useAuth()
   return <div>
       <Modal.Header closeButton>
           <Modal.Title>View Claim Settlement</Modal.Title>
         </Modal.Header>
-        <Form id="update_claim">
+        <Form id="update_claim" onSubmit={changeClaimStatus}>
           <Modal.Body>
               <div className="mb-3">
                 Status:
-                <span style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                > {singleDoc.status}</span>
+                {singleDoc.status === "pending" &&
+                    <span
+                      style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                    >{singleDoc.status}</span>
+                 }
+                 {singleDoc.status === "settled" &&
+                    <span
+                      style={{backgroundColor: "#3EC089", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                    >{singleDoc.status}</span>
+                 }
+                 {singleDoc.status === "cancelled" &&
+                    <span
+                      style={{backgroundColor: "#dc3545", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                    >{singleDoc.status}</span>
+                 }
               </div>
+
+              {authClaims.admin &&
+                <Form.Group as={Row} >
+                  <Form.Label htmlFor="status">Settle Claim</Form.Label>
+                  <Form.Select id="status">
+                    <option value="hide">Change Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="settled">Settle</option>
+                    <option value="cancelled">Cancel</option>
+                  </Form.Select>
+                </Form.Group>
+              }
 
               <hr />
 
               <h6>Client Details</h6>
               <Row className="mb-3">
-                <Form.Group as={Col} style={{display: "flex",
-                    "flex-direction": "column", "align-items": "start",
-                  }}
-                >
+                <Form.Group>
                   <Form.Label htmlFor="claimantName">Name</Form.Label>
                   <p>{singleDoc.claimantName}</p>
                 </Form.Group>
-                <Form.Group
-                  as={Col}
-                  style={{
-                    display: "flex",
-                    "flex-direction": "column",
-                    "align-items": "start",
-                  }}
-                >
-                  <Form.Label htmlFor="claimantEmail">Email Address</Form.Label>
-                  <p>{singleDoc.claimantEmail}</p>
+                <Form.Group>
+                  <Form.Label htmlFor="claimantPhoneNumber">
+                    Phone Number
+                  </Form.Label>
+                  <p>{singleDoc.claimantPhoneNumber}</p>
                 </Form.Group>
               </Row>
 
-            <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="claimantPhoneNumber">
-                  Phone Number
-                </Form.Label>
-                <p>{singleDoc.claimantPhoneNumber}</p>
-              </Form.Group>
+            
 
               <hr />
             
@@ -105,39 +112,44 @@ export function ClaimModelNotification({ singleDoc }) {
                 <p>{singleDoc.numberPlate}</p>
               </Form.Group>
             </Row>
-            
-            <Row>
               
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }} className="mb-3"
-              >
-                <Form.Label htmlFor="dateOfIncident">
-                  Date of Incident
-                </Form.Label>
-                <p>{singleDoc.dateOfIncident}</p>
-              </Form.Group>
-            </Row>
-
             <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                style={{
-                  display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
-                }}
-              >
-                <Form.Label htmlFor="estimate">Claim Estimate</Form.Label>
-                <p>{singleDoc.estimate}</p>
-              </Form.Group>
+                <Form.Group
+                  as={Col}
+                  style={{
+                    display: "flex",
+                    "flex-direction": "column",
+                    "align-items": "start",
+                  }} className="mb-3"
+                >
+                  <Form.Label htmlFor="dateOfIncident">
+                    Date of Incident
+                  </Form.Label>
+                  <p>{singleDoc.dateOfIncident}</p>
+                </Form.Group>
+
+                <Form.Group
+                  as={Col}
+                  style={{
+                    display: "flex",
+                    "flex-direction": "column",
+                    "align-items": "start",
+                  }}
+                >
+                  <Form.Label htmlFor="estimate">Claim Estimate</Form.Label>
+                  <p>{singleDoc.estimate}</p>
+                </Form.Group>
             </Row>
-            
           </Modal.Body>
+
+          {authClaims.admin &&
+            <Modal.Footer>
+              <Button variant="primary" type="submit" onClick={handleClose}id="submit">
+                Submit claim settlement
+              </Button>
+            </Modal.Footer>
+          }
+
         </Form>
   </div>;
 }
