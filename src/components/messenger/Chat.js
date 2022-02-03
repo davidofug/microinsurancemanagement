@@ -43,12 +43,9 @@ function Chat() {
 
     const { authClaims } = useAuth()
 
-    useEffect(async ()=> {
-        onSnapshot(collection(db, "messages"), (snapshot)=> {
-            const data = snapshot.docs.map(doc =>  ({...doc.data(), id:doc.id})) 
-            setAllMessages(data)    
-        })
+    useEffect(()=> {
         process()
+        return () => process()
     }, [])
 
     
@@ -115,6 +112,7 @@ function Chat() {
                 const uids = [...new Set(receivers)]
                 const prevs = capables.filter(capable => uids.includes(capable.uid))
                 setPreviousChats(prevs)
+                setAllMessages(data)
 
             })
             const data = await getDocs(collection(db, 'messages'))
@@ -126,14 +124,11 @@ function Chat() {
             setPreviousChats(capables.filter(capable => uids.includes(capable.uid)))   
             setAcceptedChats(capables)  
             setAllChats(capables)   
-            
-            const receivedUnreadMessages = messages.filter(msg => msg?.sendersUID === authentication.currentUser.uid).filter(msg => uids.includes(msg.receiversUID)).filter(message => message?.read !== true)
-            
+                        
         }).catch((error) => {
             console.log(error)
         })
     }
-    console.log(`here ${unread}`)
 
     return (     
         <div id="chatbox" style={{display:"flex", flexDirection:"column", backgroundColor:"white", borderTopLeftRadius:"15px 15px", borderTopRightRadius:"15px 15px", width:"350px"}} className="shadow-sm collapse-chatbox" >
@@ -239,7 +234,7 @@ function Chat() {
                                     }, index) => {
                                         const unseenMsgs = allMessages.filter( msg => msg.sendersUID === uid).filter(msg => msg?.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true)
                                         return (
-                                            <div style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={ async () => {
+                                            <div key={index} style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={ async () => {
                                                 document.getElementById("msg-form").classList.remove('hide-msg-form')
                                                 setReceiversUID(uid)
                                                 const sentMessages = await allMessages.filter(message => message?.receiversUID === uid).filter(message => message?.sendersUID === authentication.currentUser.uid)

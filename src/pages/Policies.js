@@ -128,6 +128,8 @@ function Policies({cat, btn_txt, pol}) {
         }).catch((err) => {
             console.log(err)
         })
+
+        return () => listUsers()
     }, [])
 
     const handleInputChange = (index, event) => {
