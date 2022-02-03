@@ -18,7 +18,6 @@ import {
     collection, 
     onSnapshot, 
     getDocs,
-    setDoc,
     doc, 
 } from 'firebase/firestore'
 
@@ -27,7 +26,6 @@ import { getFormattedDate } from '../../helpers/formatDate'
 
 
 function Chat() {
-    // const [ receiversUIDS, setReceiversUIDS] = useState([])
     const [ unread, setUnread ] = useState(0)
     const [ searchKey, setSearchKey ] = useState('')
     const [ allChats, setAllChats ] = useState([])
@@ -86,6 +84,8 @@ function Chat() {
     const process = () => {            
         const listUsers = httpsCallable(functions,'listUsers')
         listUsers().then(({ data }) => {
+            console.log(data)
+            console.log(authentication.currentUser)
             if(authClaims?.supervisor) {
               const myAgents = data.filter(user => user.role.agent === true && user?.meta.added_by_uid === authentication.currentUser.uid)
               const incharge = data.filter(user => user.uid === data.filter(user => user.uid === authentication.currentUser.uid)[0].meta.added_by_uid)
@@ -98,18 +98,17 @@ function Chat() {
               const incharge = data.filter(user => user.uid === data.filter(user => user.uid ===  authentication.currentUser.uid)[0].meta.added_by_uid)
               const supervisors = data.filter( user => user?.role?.supervisor === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
               const myAgents = data.filter(user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
-            //   console.log([...supervisors, ...myAgents, ...incharge])
 
               setAcceptedChats([...supervisors, ...myAgents, ...incharge])
               return [...supervisors, ...myAgents, ...incharge]
 
-            } else if (authClaims?.superAdmin) {
-                const supervisorsAdmins = data.filter( user => user?.role?.admin === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
+            } else if (authClaims?.superadmin) {
+                const myAdmins = data.filter( user => user?.role?.admin === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
                 const myAgents = data.filter( user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
-                // console.log([...supervisorsAdmins, ...myAgents])
+                const mySupervisors = data.filter( user => user?.role?.supervisor === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
 
-                setAcceptedChats([...myAgents, ...supervisorsAdmins])
-                return [...myAgents, ...supervisorsAdmins]
+                setAcceptedChats([...myAgents, ...myAdmins, ...mySupervisors])
+                return [...myAgents, ...myAdmins, ...mySupervisors]
             } else if (authClaims?.agent) {
                 const incharge = data.filter(user => user.uid === data.filter(user => user.uid === authentication.currentUser.uid)[0].meta.added_by_uid)
                 console.log(incharge)
@@ -243,7 +242,6 @@ function Chat() {
                                         uid
                                     }, index) => {
                                         const unseenMsgs = allMessages.filter( msg => msg.sendersUID === uid).filter(msg => msg?.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true)
-                                        // setReceiver(name)
                                         return (
                                             <div style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={ async () => {
                                                 document.getElementById("msg-form").classList.remove('hide-msg-form')
@@ -291,7 +289,6 @@ function Chat() {
                                         uid
                                     }, index) => {
                                         const unseenMsgs = allMessages.filter( msg => msg.sendersUID === uid).filter(msg => msg?.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true)
-                                        // setReceiver(name)
                                         return (
                                             <div key={index} style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={async () => {
                                                 document.getElementById("msg-form").classList.remove('hide-msg-form')
