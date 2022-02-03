@@ -307,7 +307,7 @@ export default function Mtp() {
     })
   }
 
-
+  console.log(policies)
 
   return (
     <div className="components">
@@ -432,7 +432,7 @@ export default function Mtp() {
                       >{policy.stickersDetails[0].status}</span>
                    }
                  </td>
-                 <td>{policy.policyStartDate}</td>
+                 <td>{policy.timeCreated}</td>
 
                  <td className="started">
                  <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy)}}>&#8942;</button>
