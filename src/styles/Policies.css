@@ -2,7 +2,9 @@
     border: 1px solid black;
 
 } */
-    
+.form-field {
+    width: 180px;
+}   
 
 @media (min-width: 430px) and (max-width: 900px) {
    
@@ -154,6 +156,7 @@
         gap: 5px;
         flex-direction: column;
     }
+
 
 
 

@@ -18,6 +18,8 @@ import { collection, addDoc } from 'firebase/firestore'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import Chat from '../../components/messenger/Chat'
+
 function Admins() {
 
   useEffect(() => {document.title = 'Britam - Admins'; getAdmins()}, [])
@@ -291,8 +293,9 @@ function Admins() {
               :
                 <Loader />
           }
-
-            
+          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <Chat />
+          </div>     
         </div>
     )
 }

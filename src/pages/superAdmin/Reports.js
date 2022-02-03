@@ -7,6 +7,8 @@ import { CSVLink } from "react-csv";
 import SearchBar from "../../components/searchBar/SearchBar";
 import Header from "../../components/header/Header";
 
+import Chat from '../../components/messenger/Chat'
+
 function Reports() {
   useEffect(() => {
     document.title = "Britam - Reports";
@@ -100,6 +102,9 @@ function Reports() {
           />
         </div>
       </div>
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+        <Chat />
+      </div> 
     </div>
   );
 }

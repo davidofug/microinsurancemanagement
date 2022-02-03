@@ -201,9 +201,7 @@ function Policies({cat, btn_txt, pol}) {
         const created_at = moment().toString()
         setIsLoading(true)
         event.preventDefault()
-        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client
-
-            
+        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client            
 
         client['added_by_uid'] = authentication.currentUser.uid
         client['added_by_name'] = authentication.currentUser.displayName
@@ -328,17 +326,17 @@ function Policies({cat, btn_txt, pol}) {
                     <td className="sticker-number" style={{verticalAlign:"middle", paddingLeft:"1vw", paddingRight:"1vw"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
                     <td className="first-cell" style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
+                            <div className="form-field">
                                 <Form.Group controlId="referenceNo">
                                     <Form.Control type="text" name="referenceNo" placeholder="Reference No" value={singleSticker.referenceNo} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className="form-field">
                                 <Form.Group controlId="grossWeight">
                                     <Form.Control type="text" name="grossWeight" placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
                                     <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)} required>
                                         <option>Motor Make</option>
@@ -350,12 +348,12 @@ function Policies({cat, btn_txt, pol}) {
                     </td>
                     <td className="second-cell"style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="plateNo">
                                     <Form.Control type="text" name="plateNo" placeholder="Plate No" value={singleSticker.plateNo} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="category" >
                                     <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} required onChange={event => {
                                         handleInputChange(index, event)
@@ -385,7 +383,7 @@ function Policies({cat, btn_txt, pol}) {
                                     </Form.Select>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="vehicleUse">
                                     <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
                                         <option>Vehicle use</option>
@@ -397,12 +395,12 @@ function Policies({cat, btn_txt, pol}) {
                     </td>
                     <td className="third-cell" style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="seatingCapacity">
                                     <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="motorClass" >
                                     <Form.Select type="text" name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
                                         <option>Class</option>
@@ -410,7 +408,7 @@ function Policies({cat, btn_txt, pol}) {
                                     </Form.Select>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="totalPremium" >
                                     <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
@@ -419,12 +417,12 @@ function Policies({cat, btn_txt, pol}) {
                     </td>
                     <td className="fourth-cell" style={{verticalAlign:"top", paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="ccPower">
                                     <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="chasisNo" aria-label="chasisNo">
                                     <Form.Control type="text" name="chasisNo" placeholder="Chasis No" value={singleSticker.chasisNo} onChange={event => {
                                         handleInputChange(index, event) 
@@ -433,7 +431,7 @@ function Policies({cat, btn_txt, pol}) {
                             </div>
                             {
                                 cat === 'comprehensive' ?
-                                <div>
+                                <div className='form-field'>
                                     <Form.Group controlId="chasisNo" aria-label="chasisNo">
                                         <Form.Control type="text" name="basicPremium" placeholder="BasicPremium" value={singleSticker.basicPremium} onChange={event => {
                                             handleInputChange(index, event) 
@@ -486,7 +484,7 @@ function Policies({cat, btn_txt, pol}) {
 
             {isLoading && 
                 <div className='loader-wrapper'>
-                        <Loader />
+                    <Loader />
                 </div>
             }
 
