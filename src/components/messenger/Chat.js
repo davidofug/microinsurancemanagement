@@ -128,11 +128,12 @@ function Chat() {
             setAllChats(capables)   
             
             const receivedUnreadMessages = messages.filter(msg => msg?.sendersUID === authentication.currentUser.uid).filter(msg => uids.includes(msg.receiversUID)).filter(message => message?.read !== true)
-        
+            
         }).catch((error) => {
             console.log(error)
         })
-      }
+    }
+    console.log(`here ${unread}`)
 
     return (     
         <div id="chatbox" style={{display:"flex", flexDirection:"column", backgroundColor:"white", borderTopLeftRadius:"15px 15px", borderTopRightRadius:"15px 15px", width:"350px"}} className="shadow-sm collapse-chatbox" >
@@ -145,6 +146,9 @@ function Chat() {
                             setSelectChat(true)
                             document.getElementById("msg-form").classList.add('hide-msg-form')
                             document.getElementById("msg-form").classList.remove('show-msg-form')
+                            console.log(receiversUID)
+                            setUnread(allMessages.filter(msg => msg.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true).length)
+
                             
                         }} style={{height:"30px", width:"30px", borderRadius:"50%", border:"none"}}>
                             <i style={{height:"100%", width:"100%", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", backgroundColor:"#f7f9f9"}}><IoArrowBackOutline /></i>
@@ -249,9 +253,7 @@ function Chat() {
                                                     updateDoc(doc(db, 'messages', id), {
                                                         read: true
                                                     }).then(result => console.log(result))   
-                                                })
-                                                setUnread(unseenMsgs.filter(msg => msg.sendersUID !== uid).length)
-
+                                                })                                                
                                             }}>
                                                 <div >
                                                     <div style={{width:"40px",  height:"40px", borderRadius:"50%", backgroundColor:"gray", opacity:"0.2", display:"flex", justifyContent:"center", alignItems:"center"}}><div>{photoURL !== null ? <img src={photoURL} alt={`${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}/> : `${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}</div></div>
@@ -297,7 +299,11 @@ function Chat() {
                                                         read: true
                                                     }).then(result => console.log(result))    
                                                 })
-                                                setUnread(unseenMsgs.filter(msg => msg.sendersUID !== uid).length)
+
+                                                onSnapshot(collection(db, 'messages')).then((snapshot) => {
+                                                    const messages = snapshot.docs.map(doc => ({...doc.data(), id: doc.id}))
+                                                    setUnread(allMessages.filter(msg => msg.receiversUID === authentication.currentUser.uid).filter(msg =>  msg?.read !== true).length)
+                                                })
 
                                             }}>
                                                 <div>
