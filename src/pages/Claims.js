@@ -215,7 +215,7 @@ export default function Claims() {
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
 
   return (
-    <div className="components">
+    <div /* className="components" */>
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
       <ToastContainer />
 

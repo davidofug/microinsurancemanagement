@@ -181,15 +181,15 @@ function Dashboard() {
     }
 
     return (
-            <div className='components'>
+            <div /* className='components' */ /* style={{margin: "30px"}} */>
                 <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" />
 
-                <div className="componentsData" >
-                    <div id="first-row" className='mb-5 first-row' style={{display:"flex", width: "100%", justifyContent: "space-between"}}>
+                <div className="componentsData">
+                    <div id="first-row" className='mb-5 first-row' style={{display:"flex", width: "100%", justifyContent: "space-between", overflowX: "hidden"}}>
                         <div id="bin" className="shadow-sm bg-body rounded first-container">
-                            <Container className="row-container">
+                            <div /* className="row-container" */>
                                     <div className="col">
-                                        <div className="custom-card" style={{backgroundColor:"#804C75"}}>
+                                        <div className="custom-card m-1" style={{backgroundColor:"#804C75"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${claimsSettled.length}`}</div>
                                                 <div className="card-text">Claim Settlements</div>
@@ -197,17 +197,17 @@ function Dashboard() {
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <div className="custom-card" style={{backgroundColor:"#FFB848"}}>
+                                        <div className="custom-card m-1" style={{backgroundColor:"#FFB848"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${policies.length}`}</div>
                                                 <div className="card-text">Policies</div>
                                             </Card.Body>
                                         </div>
                                     </div>
-                            </Container>
-                            <Container className="row-container">
+                            </div>
+                            <div /* className="row-container" */>
                                     <div className="col">
-                                        <div className="custom-card" style={{backgroundColor:"#C82E29"}}>
+                                        <div className="custom-card m-1" style={{backgroundColor:"#C82E29"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{policies.length}</div>
                                                 <div className="card-text">Stickers</div>
@@ -215,14 +215,14 @@ function Dashboard() {
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <div className="custom-card" style={{backgroundColor:"#1FBBA6"}}>
+                                        <div className="custom-card m-1" style={{backgroundColor:"#1FBBA6"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${claims.length}`}</div>
                                                 <div className="card-text">Claim Notifications</div>
                                             </Card.Body>
                                         </div>
                                     </div>
-                            </Container>
+                            </div>
                         </div>
 
                         <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex", alignItems: "flex-start"}}>
@@ -232,7 +232,7 @@ function Dashboard() {
                                     ?
                                         <>
                                             <h5 className="heading">Admins</h5>
-                                            <table>
+                                            <table className='responsive'>
                                                 <thead><tr><th>Name</th><th>Address</th></tr></thead>
                                                 <tbody>
                                                     {admins.map(admin => (
@@ -253,7 +253,7 @@ function Dashboard() {
                                     ?
                                     <>
                                         <h5 className="heading">Supervisors</h5>
-                                        <table>
+                                        <table className='table table-responsive'>
                                             <thead><tr><th>Name</th><th>Address</th></tr></thead>
                                             <tbody>
                                                 {supervisors.map(supervisor => (

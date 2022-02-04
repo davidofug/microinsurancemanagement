@@ -478,7 +478,7 @@ function Policies({cat, btn_txt, pol}) {
     }
 
     return (
-        <div className='components'>
+        <div /* className='components' */>
             <Header title="Policies" subtitle={`MANAGING ${pol} POLICIES`.toUpperCase()}/>
 
             <ToastContainer />
