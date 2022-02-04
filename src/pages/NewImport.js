@@ -36,7 +36,7 @@ export default function Mtp() {
   const getMTP = async () => {
     const data = await getDocs(policyCollectionRef);
     const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    const mtpPolicies = policiesArray.filter(policy => policy.category === 'newImport')
+    const mtpPolicies = policiesArray.filter(policy => policy.category === 'newImport').sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     
     // agent mtp policies
     if(authClaims.agent){
