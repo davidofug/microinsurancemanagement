@@ -176,7 +176,7 @@ const getClients = () => {
                   <>
                     <Table hover striped responsive className='mt-5' id='myTable'>
                       <thead>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}<th>Action</th></tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}{!authClaims.admin && <th>Action</th>}</tr>
                       </thead>
                       <tbody>
                         {currentClients.map((client, index) => (
@@ -188,34 +188,28 @@ const getClients = () => {
                             <td>{client.meta.phone}</td>
                             <td>{client.meta.address}</td>
                             <td>{client.meta.added_by_name}</td>
-              <td className="started">
-                <button className="sharebtn" onClick={() => {
-                  setClickedIndex(index);
-                  setSingleDoc(client)
-                  showContext ? handleCloseContext() : handleShowContext() 
-                  }}>&#8942;</button>
 
-                <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                            <li onClick={() => {
-                                          handleShowToggle()
-                                          handleCloseContext()
-                                        }}
-                                >
-                                  <div className="actionDiv">
-                                    <i><MdDelete/></i> Delete
-                                  </div>
-                            </li>
-                            <li onClick={() => {
-                                    handleCloseContext()
-                                    handleShow();
-                                  }}
-                                >
-                                  <div className="actionDiv">
-                                    <i><MdEdit/></i> Edit
-                                  </div>
-                            </li>
-                </ul>
-              </td>
+                            {!authClaims.admin &&
+                            <td className="started">
+                              <button className="sharebtn" onClick={() => {
+                                setClickedIndex(index);
+                                setSingleDoc(client)
+                                showContext ? handleCloseContext() : handleShowContext() }}>&#8942;</button>
+
+                              <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                          <li onClick={() => {handleShowToggle();handleCloseContext()}}>
+                                                <div className="actionDiv">
+                                                  <i><MdDelete/></i> Delete
+                                                </div>
+                                          </li>
+                                          <li onClick={() => {handleCloseContext();handleShow();}}>
+                                                <div className="actionDiv">
+                                                  <i><MdEdit/></i> Edit
+                                                </div>
+                                          </li>
+                              </ul>
+                            </td>
+                            }
                         </tr>
                         ))}
                           
@@ -223,19 +217,19 @@ const getClients = () => {
 
                       <tfoot>
                         <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
-                        <td colSpan={7}>
-                      <Pagination 
-                  pages={totalPagesNum}
-                  setCurrentPage={setCurrentPage}
-                  currentClients={currentClients}
-                  sortedEmployees={clients}
-                  entries={'Clients'} />
-                  </td>
+                          <td colSpan={7}>
+                            <Pagination 
+                            pages={totalPagesNum}
+                            setCurrentPage={setCurrentPage}
+                            currentClients={currentClients}
+                            sortedEmployees={clients}
+                            entries={'Clients'} />
+                          </td>
                         </tr>
-                        </tfoot>
+                      </tfoot>
 
                       <tfoot>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}<th>Action</th></tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}{!authClaims.admin && <th>Action</th>}</tr>
                       </tfoot>
                   </Table>
             
