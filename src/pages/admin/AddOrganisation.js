@@ -140,7 +140,7 @@ export default function AddOrganisation() {
 
 
     return (
-        <div className='components'>
+        <div /* className='components' */>
             <Header title="Add Organisations" subtitle="ADD A NEW ORGANISATION" />
             <ToastContainer/>
             <div className="addComponentsData mb-5 shadow-sm">
