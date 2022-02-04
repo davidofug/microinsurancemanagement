@@ -95,11 +95,12 @@ function PolicyDetails() {
 
     }
 
-    console.log(stickerRange)
+    console.log(policy)
       
     
     return (
         <div style={{margin: "30px"}}>
+            <ToastContainer />
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <div>
                     <img src={logo} width={150} height="auto" alt="britam" />
@@ -131,7 +132,7 @@ function PolicyDetails() {
             
             <Modal show={show} onHide={handleClose} className="hideOnPrint" >
                 <Modal.Header closeButton className='hideOnPrint'>
-                    <Modal.Title className='hideOnPrint'>Print Sticker #{policy.stickersDetails && policy.stickersDetails[0].referenceNo}</Modal.Title>
+                    <Modal.Title className='hideOnPrint'>Print Sticker #{policy.stickersDetails && policy.stickersDetails[0].stickerNo}</Modal.Title>
                 </Modal.Header>
                 {show &&
                     <Modal.Body id="stickerPrint">
