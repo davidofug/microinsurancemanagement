@@ -203,94 +203,87 @@ function Policies({cat, btn_txt, pol}) {
         const created_at = moment().toString()
         setIsLoading(true)
         event.preventDefault()
-        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client            
-
+        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client 
+        
         client['added_by_uid'] = authentication.currentUser.uid
         client['added_by_name'] = authentication.currentUser.displayName
         
-        
-        addUser(clientInfo).then((results) => {
-            document.policy.reset()
-            setPolicyEndDate('')
-            setPolicyStartDate('')
-        }).catch( error => console.log( error ))
-
-        await addDoc(policiesRef, {
-            currency,
-            policyStartDate: policyStartDate, 
-            policyEndDate: policyEndDate,
-            stickersDetails: stickers,
-            clientDetails: clientInfo,
-            added_by_uid: authentication.currentUser.uid,
-            added_by_name: authentication.currentUser.displayName,  
-            category: cat,
-            totalValuation: await generateTotalValuation(stickers),
-            createdAt: created_at
-        }).then(() => {
-            toast.success(`succesfully created ${clientInfo.name}'s sticker`, {position: "top-center"})
-            document.policyForm.reset()
-        }).then(async () => {
-            await addDoc(logCollectionRef, {
-                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                type: 'sticker creation',
-                status: 'successful',
-                message: `Successfully created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
-            })
-        }).catch(async () => {
-            toast.error(`Failed: couldn't added ${clientInfo.name}'s sticker`, {position: "top-center"});
-            await addDoc(logCollectionRef, {
-                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                type: 'sticker creation',
-                status: 'failed',
-                message: `Failed to created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
-            })
-        })
-
-        
-
-        /* await addDoc(logCollectionRef, {
-            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-            type: 'user creation',
-            status: 'successful',
-            message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
-        }) */
- 
-
-        /* setStickers([
-            {
-                referenceNo:'',
-                plateNo:'',
-                seatingCapacity:'',
-                ccPower:'',
-                grossWeight:'',
-                category:'',
-                motorClass:'',
-                chasisNo:'',
-                motorMake:'',
-                vehicleUse:'',
-                totalPremium:'',
-                basicPremium:'',
-                stickerFee: 6000,
-                stampDuty: 35000,
-                status: "new",
-            }
-        ]) */
-
-        setIsLoading(false)
-
-        /* console.log(
-            {
+        if(clientInfo?.name?.length > 0 && clientInfo?.email?.length > 0)  {
+            addUser(clientInfo).then((results) => {
+                document.policy.reset()
+                setPolicyEndDate('')
+                setPolicyStartDate('')
+            }).catch( error => console.log( error ))
+    
+            await addDoc(policiesRef, {
                 currency,
+                policyStartDate: policyStartDate, 
+                policyEndDate: policyEndDate,
                 stickersDetails: stickers,
-                clientDetails: cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) : client,
+                clientDetails: clientInfo,
                 added_by_uid: authentication.currentUser.uid,
                 added_by_name: authentication.currentUser.displayName,  
-                policyStartDate: moment(policyStartDate).toDate(), 
-                policyEndDate: moment(policyEndDate).toDate(),
                 category: cat,
                 totalValuation: await generateTotalValuation(stickers),
-            }
-        ) */
+                createdAt: created_at
+            }).then(() => {
+                toast.success(stickers.length > 1 ? `Succesfully created ${clientInfo.name}'s stickers` : `Successfully created ${clientInfo.name}'s sticker`, {position: "top-center"})
+                document.policyForm.reset()
+                setStickers([
+                    {
+                        referenceNo:'',
+                        plateNo:'',
+                        seatingCapacity:'',
+                        ccPower:'',
+                        grossWeight:'',
+                        category:'',
+                        motorClass:'',
+                        chasisNo:'',
+                        motorMake:'',
+                        vehicleUse:'',
+                        totalPremium:'',
+                        basicPremium:'',
+                        stickerFee:6000,
+                        stampDuty:35000, 
+                        status: "new",
+                    }
+                ])
+                setPolicyEndDate('')
+                setPolicyStartDate('')
+            }).then(async () => {
+                await addDoc(logCollectionRef, {
+                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                    type: 'sticker creation',
+                    status: 'successful',
+                    message: `Successfully created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
+                })
+            }).catch(async () => {
+                toast.error(`Failed: couldn't added ${clientInfo.name}'s sticker`, {position: "top-center"});
+                await addDoc(logCollectionRef, {
+                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                    type: 'sticker creation',
+                    status: 'failed',
+                    message: `Failed to created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
+                })
+            })
+    
+            
+    
+            /* await addDoc(logCollectionRef, {
+                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                type: 'user creation',
+                status: 'successful',
+                message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+            }) */
+     
+    
+            setIsLoading(false)
+        } else {
+            toast.error('Please select a client', {position: "top-center"})
+            setIsLoading(false)
+        }  
+        
+        
     }    
 
     const handleComprehesiveClientInfo = async (type, individualClient, organisationInfo, contactInfo) => {
@@ -324,7 +317,7 @@ function Policies({cat, btn_txt, pol}) {
     const renderStickerDetails = (singleSticker, index) => {
         return (
             <React.Fragment key={index}>
-                <tr className="table-row">
+                <tr className="table-row tab-row">
                     <td className="sticker-number" style={{verticalAlign:"middle", paddingLeft:"1vw", paddingRight:"1vw"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
                     <td className="first-cell" style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
@@ -340,7 +333,7 @@ function Policies({cat, btn_txt, pol}) {
                             </div>
                             <div className='form-field'>
                                 <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
-                                    <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)} required>
+                                    <Form.Select style={{width:"100%"}} type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)} required>
                                         <option>Motor Make</option>
                                         {make.map((motorMake, index) => <option key={index} value={motorMake[0]}>{motorMake[1]}</option>)}
                                     </Form.Select>
@@ -357,7 +350,7 @@ function Policies({cat, btn_txt, pol}) {
                             </div>
                             <div className='form-field'>
                                 <Form.Group controlId="category" >
-                                    <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} required onChange={event => {
+                                    <Form.Select style={{width:"100%"}} type="text" name="category" aria-label="category" value={singleSticker.category} required onChange={event => {
                                         handleInputChange(index, event)
 
                                         const result = categories.filter(category => category.label === event.target.value)
@@ -387,7 +380,7 @@ function Policies({cat, btn_txt, pol}) {
                             </div>
                             <div className='form-field'>
                                 <Form.Group controlId="vehicleUse">
-                                    <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
+                                    <Form.Select style={{width:"100%"}}className="form-field" type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
                                         <option>Vehicle use</option>
                                         {vehicleUses.map((item, index) => <option key={index} value={item}>{item}</option>)}
                                     </Form.Select>
@@ -402,9 +395,9 @@ function Policies({cat, btn_txt, pol}) {
                                     <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div className='form-field'>
+                            <div className="form-field">
                                 <Form.Group controlId="motorClass" >
-                                    <Form.Select type="text" name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
+                                    <Form.Select type="text" style={{width:"100%"}} name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
                                         <option>Class</option>
                                         {classes.map((item, index) => <option key={index} value={item}>{item}</option>)}
                                     </Form.Select>
@@ -420,7 +413,7 @@ function Policies({cat, btn_txt, pol}) {
                     <td className="fourth-cell" style={{verticalAlign:"top", paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
                             <div className='form-field'>
-                                <Form.Group controlId="ccPower">
+                                <Form.Group controlId="ccPower" >
                                     <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
@@ -805,7 +798,7 @@ function Policies({cat, btn_txt, pol}) {
                                                     setPolicyEndDate(end)
                                                     setPolicyDisplayEndDate(moment(end).format('DD/MM/YYYY'))   
                                                     setPolicyStartDate(event.target.value)
-                                                }}/>
+                                                }} required/>
                                             </Form.Group>
                                         </div>
                                     </div>
@@ -828,12 +821,12 @@ function Policies({cat, btn_txt, pol}) {
                                                 const end = moment(event.target.value).add(1, 'years').subtract(1, 'days').calendar()
                                                 setPolicyEndDate(end)
                                                 setPolicyDisplayEndDate(moment(end).format('DD/MM/YYYY'))
-                                            }}/>
+                                            }} required/>
                                         </Form.Group>
                                     </Col>
                                 </Row>
                         }
-                        <div style={{display:"flex", width:"100%", justifyContent:"flex-end"}}>
+                        <div style={{display:"flex", width:"100%", justifyContent:"flex-end", margin:"0px"}}>
                             <div>
                                 <Button variant="primary" type="submit">
                                     {btn_txt}
