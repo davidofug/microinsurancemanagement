@@ -31,7 +31,7 @@ function Reports() {
   const getPolicies = async () => {
     const data = await getDocs(policyCollectionRef);
     const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-
+    
     const listUsers = httpsCallable(functions, 'listUsers')
 
     listUsers().then(({data}) => {
@@ -46,6 +46,19 @@ function Reports() {
         const supervisorPolicies = policiesArray.filter(policy => usersUnderSupervisor.includes(policy.added_by_uid))
         supervisorPolicies.length === 0 ? setPolicies(null) : setPolicies(supervisorPolicies)
 
+      } else if(authClaims.admin){
+        const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+
+        const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
+
+        const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
+        
+        const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
+
+        const AdminPolicies = policiesArray.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
+        AdminPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminPolicies)
+      } else if(authClaims.superadmin){
+        policiesArray.length === 0 ? setPolicies(null) : setPolicies(policiesArray)
       }
 
 
@@ -62,6 +75,8 @@ function Reports() {
     })
 
   }
+
+  
 
   // TODO: look for a better way to switch between categories
   const [ switchCategory, setSwitchCategory ] = useState("")
@@ -124,7 +139,7 @@ function Reports() {
   const [policiesPerPage] = useState(10)
   const indexOfLastPolicy = currentPage * policiesPerPage
   const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
-  const currentPolicies = !policies || searchByName(policies)
+  const currentPolicies = !policies || searchByName(policies.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)))
 
   const shownPolicies = !policies || (currentPolicies
                         .filter(policy => !switchCategory || policy.category === switchCategory)
@@ -141,6 +156,7 @@ function Reports() {
 
   
   const totalPagesNum = !policies || Math.ceil(shownPolicies.length / policiesPerPage)
+
 
   return (
     <div /* className="components" */>
