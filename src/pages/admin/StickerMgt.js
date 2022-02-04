@@ -113,7 +113,7 @@ export default function StickerMgt() {
     }
 
     return (
-        <div className="components">
+        <div /* className="components" */>
             <Header title="Sticker No. Management" subtitle="MANAGING STICKER NUMBERS" />
             <ToastContainer />
 

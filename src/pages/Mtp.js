@@ -310,7 +310,7 @@ export default function Mtp() {
   console.log(policies)
 
   return (
-    <div className="components">
+    <div /* className="components" */>
       <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&

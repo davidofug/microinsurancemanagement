@@ -248,7 +248,7 @@ export default function Mtp() {
 
 
   return (
-    <div className="components">
+    <div /* className="components" */>
       <Header title="Comprehensive" subtitle="MANAGING COMPREHENSIVE POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&
