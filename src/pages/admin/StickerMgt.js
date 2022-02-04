@@ -77,8 +77,7 @@ export default function StickerMgt() {
 
     const numberOfCategory = (category) => {
         let totalNumber = 0
-        const categorySticker = !stickerRange || stickerRange.filter(range => range.category === category).map(range => totalNumber += (range.rangeTo - range.rangeFrom))
-
+        !stickerRange || stickerRange.filter(range => range.category === category).map(range => totalNumber += (range.rangeTo - range.rangeFrom))
         return totalNumber || 0
     }
 
