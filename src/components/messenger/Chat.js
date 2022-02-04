@@ -28,7 +28,7 @@ import useSound from 'use-sound'
 import notificationSound from '../../assets/media/audios/sound1.mp3'
 
 function Chat() {
-    const [play] = useSound(notificationSound)
+    const [ play ] = useSound(notificationSound)
 
     const [ unread, setUnread ] = useState(0)
     const [ searchKey, setSearchKey ] = useState('')
