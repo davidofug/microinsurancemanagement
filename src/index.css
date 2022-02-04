@@ -73,7 +73,7 @@ body{
 /* root container */
 .top-container{
     display: grid;
-    grid-template-columns: 260px auto;
+    grid-template-columns: 260px calc(100vw - 260px);
     min-height: 100vh;
     width: 100vw;
 }
@@ -257,12 +257,13 @@ tbody, td, tfoot, th, thead, tr{
 
 #add_client_group {
     display: flex;
-    grid-template-columns: 5fr 1fr;
-    width: 100%;
+    grid-template-columns: 0.5fr 1fr;
+    /* width: 100%; */
     flex-direction: row;
     justify-content: space-between;
     padding: 0 50px;
     margin: 0 20px;
+    border: 1px solid red;
 }
 
 #action{
