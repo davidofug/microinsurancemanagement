@@ -25,6 +25,7 @@ function StickerModal({ name, user_id }) {
                 <Modal.Title> Agent {name}'s Issued stickers</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <p>Stickers Issued: <b>{policies !== undefined ? policies.length : 0}</b></p>
                 {policies !== null && policies.length > 0
                 ?
                     <Table responsive hover striped>
