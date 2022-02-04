@@ -767,7 +767,7 @@ function Policies({cat, btn_txt, pol}) {
                     </div>
                     <Row style={{paddingBottom:"6vh", display:"flex"}}>
                         <div className="currency">
-                            <Form.Group classname="mb-3" >
+                            <Form.Group className="mb-3" >
                                 <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={(event)=>{
                                     setCurrency(event.target.value)
                                     }}>
