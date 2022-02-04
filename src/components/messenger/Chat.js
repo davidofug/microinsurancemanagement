@@ -24,8 +24,12 @@ import {
 import { Form } from 'react-bootstrap'
 import { getFormattedDate } from '../../helpers/formatDate'
 
+import useSound from 'use-sound'
+import notificationSound from '../../assets/media/audios/sound1.mp3'
 
 function Chat() {
+    const [play] = useSound(notificationSound)
+
     const [ unread, setUnread ] = useState(0)
     const [ searchKey, setSearchKey ] = useState('')
     const [ allChats, setAllChats ] = useState([])
@@ -232,7 +236,11 @@ function Chat() {
                                         photoURL,
                                         uid
                                     }, index) => {
+
                                         const unseenMsgs = allMessages.filter( msg => msg.sendersUID === uid).filter(msg => msg?.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true)
+                                        for(let msg of unseenMsgs){
+                                            play()
+                                        }
                                         return (
                                             <div key={index} style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={ async () => {
                                                 document.getElementById("msg-form").classList.remove('hide-msg-form')
@@ -278,6 +286,9 @@ function Chat() {
                                         uid
                                     }, index) => {
                                         const unseenMsgs = allMessages.filter( msg => msg.sendersUID === uid).filter(msg => msg?.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true)
+                                        for(let msg of unseenMsgs){
+                                            play()
+                                        }
                                         return (
                                             <div key={index} style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={async () => {
                                                 document.getElementById("msg-form").classList.remove('hide-msg-form')
