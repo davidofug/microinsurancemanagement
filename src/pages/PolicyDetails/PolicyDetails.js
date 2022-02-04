@@ -94,8 +94,6 @@ function PolicyDetails() {
     const submitStickerNo = () => {
 
     }
-
-    console.log(policy)
       
     
     return (
@@ -136,17 +134,51 @@ function PolicyDetails() {
                 </Modal.Header>
                 {show &&
                     <Modal.Body id="stickerPrint">
-                            <p>{policy.clientDetails.name}</p>
-                            <p>9000</p>
-                            <p>{policy.stickersDetails[0].plateNo} {policy.stickersDetails[0].motorMake}</p>
-                            <p>{policy.stickersDetails[0].seatingCapacity}</p>
-                            <p>{policy.stickersDetails[0].ccPower}</p>
-                            <p>{policy.stickersDetails[0].chasisNo}</p>
-                            <p>{currencyFormatter(policy.stickersDetails[0].totalPremium)} {policy.currency}</p>
-                            <p>{policy.policyStartDate}</p>
-                            <p>{policy.policyEndDate}</p>
-                            <p>Britam Insurance Co. (U) Ltd.</p>
-                            <p>{policy.added_by_name}</p>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>{policy.clientDetails.name}</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>9000</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>{policy.stickersDetails[0].plateNo} {policy.stickersDetails[0].motorMake}</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>{policy.stickersDetails[0].seatingCapacity}</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>{policy.stickersDetails[0].grossWeight}</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>{policy.stickersDetails[0].chasisNo}</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>{currencyFormatter(policy.stickersDetails[0].totalPremium)} {policy.currency}</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>{policy.policyStartDate}</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>{policy.policyEndDate}</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>Britam Insurance Co. (U) Ltd.</p>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <div></div>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>{policy.added_by_name}</p>
+                                <div></div>
+                            </div>  
                     </Modal.Body>
                 }
                 <Modal.Footer className="hideOnPrint">
@@ -194,7 +226,7 @@ function PolicyDetails() {
                 {policy.clientDetails != undefined &&
                     <div id="to">
                         <p>To: <b>{policy.clientDetails.name}</b></p>
-                        <p>Address: {policy.clientDetails.meta.address}</p>
+                        <p>Address: {policy.clientDetails.meta && policy.clientDetails?.meta.address}</p>
                     </div>
                 }
 
