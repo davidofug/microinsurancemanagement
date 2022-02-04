@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../helpers/firebase'
 
-function OrganisationModal({ singleDoc, handleClose }) {
+function OrganisationModal({ singleDoc, handleClose, getOrganisations }) {
 
     const [ logo, setLogo ] = useState('')
     // initialising the logs doc.
@@ -85,7 +85,6 @@ function OrganisationModal({ singleDoc, handleClose }) {
             org_email: event.target.org_email.value,
             tel: event.target.tel.value,
             address: event.target.address.value,
-            logo: event.target.logo.value,
             role: event.target.role.value,
             title: event.target.title.value,
             contactName: event.target.contactName.value,
@@ -104,7 +103,8 @@ function OrganisationModal({ singleDoc, handleClose }) {
                     })
             })
     }       
-    handleClose()      
+    handleClose()  
+    getOrganisations()
     
     }
     

@@ -144,7 +144,7 @@ export default function Organisations() {
 
 
       <Modal show={show} onHide={handleClose}>
-            <OrganisationModal singleDoc={singleDoc} handleClose={handleClose} />
+            <OrganisationModal singleDoc={singleDoc} handleClose={handleClose} getOrganisations={getOrganisations} />
       </Modal>
 
       {organisations === null  || organisations.length <= 0
@@ -229,12 +229,6 @@ export default function Organisations() {
                                     >
                                       <div className="actionDiv">
                                         <i><MdEdit/></i> Edit
-                                      </div>
-                                </li>
-                                <li onClick={() => setShowContext(false)}
-                                    >
-                                      <div className="actionDiv">
-                                        <i><AiFillCloseCircle/></i> Close
                                       </div>
                                 </li>
                     </ul>
