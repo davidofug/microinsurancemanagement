@@ -175,7 +175,7 @@ function Supervisors() {
   console.log(supervisors)
 
     return (
-        <div className='components'>
+        <div /* className='components' */>
           <Header title="Supervisors" subtitle="MANAGING SUPERVISORS" />
           <ToastContainer />
 
