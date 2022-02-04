@@ -116,7 +116,7 @@ export default function Organisations() {
     console.log(organisations)
 
   return (
-    <div className="components">
+    <div /* className="components" */>
       <Header title="Organisations" subtitle="VIEW COMPANY DETAILS" />
       <ToastContainer/>
       <div id="add_client_group">

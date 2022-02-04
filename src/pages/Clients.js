@@ -125,7 +125,7 @@ const getClients = () => {
 
 
     return (
-        <div className='components'>
+        <div /* className='components' */>
             <Header title="Clients" subtitle="MANAGING CLIENTS" />
             <ToastContainer />
    

@@ -258,10 +258,10 @@ tbody, td, tfoot, th, thead, tr{
 #add_client_group {
     display: flex;
     grid-template-columns: 0.5fr 1fr;
-    /* width: 100%; */
+    width: 100%;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0 50px;
+    padding: 0 20px;
     margin: 0 20px;
     border: 1px solid red;
 }
