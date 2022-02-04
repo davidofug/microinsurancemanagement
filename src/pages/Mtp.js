@@ -43,7 +43,7 @@ export default function Mtp() {
   const getMTP = async () => {
     const data = await getDocs(policyCollectionRef);
     const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    const mtpPolicies = policiesArray.filter(policy => policy.category === 'mtp')
+    const mtpPolicies = policiesArray.filter(policy => policy.category === 'mtp').sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     
     // agent mtp policies
     if(authClaims.agent){
@@ -307,10 +307,8 @@ export default function Mtp() {
     })
   }
 
-  console.log(policies)
-
   return (
-    <div className="components">
+    <div /* className="components" */>
       <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&
@@ -467,7 +465,8 @@ export default function Mtp() {
                            <i><MdDelete/></i> Delete
                          </div>
                    </li>
-                 </ul>}
+                 </ul>
+                 }
                  </td>
          
                </tr>

@@ -3,14 +3,14 @@ import Badge from "../../components/Badge"
 import { useEffect, useState } from 'react'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
-import { Table, Modal } from "react-bootstrap"
+import { Table, Modal, Form } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { MdOutlinePedalBike } from 'react-icons/md'
 import { FiTruck } from 'react-icons/fi'
 import { AiOutlineCar } from 'react-icons/ai'
 import { BiBus } from 'react-icons/bi'
 import { MdCancel, MdDelete, MdInfo } from 'react-icons/md'
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
 import '../../components/modal/ConfirmBox.css'
 import Loader from "../../components/Loader";
@@ -77,8 +77,7 @@ export default function StickerMgt() {
 
     const numberOfCategory = (category) => {
         let totalNumber = 0
-        const categorySticker = !stickerRange || stickerRange.filter(range => range.category === category).map(range => totalNumber += (range.rangeTo - range.rangeFrom))
-
+        !stickerRange || stickerRange.filter(range => range.category === category).map(range => totalNumber += (range.rangeTo - range.rangeFrom))
         return totalNumber || 0
     }
 
@@ -95,8 +94,26 @@ export default function StickerMgt() {
       
     }
 
+    console.log(singleDoc)
+
+    const returnedSticker = async (event) => {
+      event.preventDefault()
+
+      const docRef = doc(db, "ranges", singleDoc.id);
+      await updateDoc(docRef, {
+        returned: [ ...singleDoc.returned, event.target.returned.value ]
+      })
+      .then(() => {
+        toast.success(`Successfully added #${event.target.returned.value} to returned sticker numbers`, {position: "top-center"}); 
+        getStickerRange()
+      })
+      .catch(error => console.log(error))
+      handleClose()
+
+    }
+
     return (
-        <div className="components">
+        <div /* className="components" */>
             <Header title="Sticker No. Management" subtitle="MANAGING STICKER NUMBERS" />
             <ToastContainer />
 
@@ -134,7 +151,7 @@ export default function StickerMgt() {
                       </div>
                       <div style={{display: "flex", justifyContent: "space-between"}}>
                           <div><p>Returned Sticker Numbers: </p></div>
-                          <div><p><b>{singleDoc.used && singleDoc.used.length}</b></p></div>
+                          <div><p><b>{singleDoc.returned ? singleDoc.returned.length : 0}</b></p></div>
                       </div>
                       <div style={{display: "flex", justifyContent: "space-between"}}>
                           <div><p>Total Number of stickers: </p></div>
@@ -142,9 +159,23 @@ export default function StickerMgt() {
                       </div>
                       <div style={{display: "flex", justifyContent: "space-between"}} className="mt-3">
                           <div><p>Used Stickers: </p></div>
-                          <div><p><b>{singleDoc.used && singleDoc.used.length > 0 && singleDoc.used.map(number => <p>{number} </p>)}</b></p></div>
+                          <div><p><b>[{singleDoc.used && singleDoc.used.length > 0 && singleDoc.used.map(number => <> {number}, </>)}]</b></p></div>
+                      </div>
+                      <div style={{display: "flex", justifyContent: "space-between"}} className="mt-3">
+                          <div><p>Returned Stickers: </p></div>
+                          <div><p><b>[{singleDoc.returned && singleDoc.returned.length > 0 && singleDoc.returned.map(number => <> {number}, </>)}]</b></p></div>
                       </div>
                   </div>
+                      <hr></hr>
+                      <form onSubmit={returnedSticker}>
+                        <Form.Group className="mb-3" >
+                            <Form.Label htmlFor='returned'>Add Returned Stickers:</Form.Label>
+                            <Form.Control type="text" placeholder="Enter sticker Number" id="returned"/>
+                        </Form.Group>
+                        <input type="submit" className='btn btn-primary cta' value="Submit" />
+                      </form>
+                      
+                  
                   </Modal.Body>
               </Modal>
             }

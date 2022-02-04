@@ -60,10 +60,11 @@ function Logs() {
     }
 
     return (
-        <div className='components'>
+        <div /* className='components' */>
             <Header title="Logs" subtitle="USER LOG TRAILS" />
 
 
+            <div id="add_client_group">
                 {attendence !== null && attendence.length > 0
                 ?
                     new Date().toISOString().slice(0, 10) !== todayAttendence.checkin.slice(0, 10)
@@ -88,6 +89,8 @@ function Logs() {
                         submitLogin()
                     }} className='btn btn-primary cta'>check in</button>
                 }
+                <div></div>
+            </div>
                 
                 
                 
