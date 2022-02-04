@@ -181,7 +181,7 @@ function Dashboard() {
     }
 
     return (
-            <div className='components'>
+            <div /* className='components' */>
                 <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" />
 
                 <div className="componentsData" >
