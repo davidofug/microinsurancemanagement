@@ -494,7 +494,7 @@ function Policies({cat, btn_txt, pol}) {
                             {
                                 cat === "comprehensive" ? 
                                 <Col className="client-details" md={3}>
-                                    <Form.Group className="mb-3" controlId="clientDetails">
+                                    <Form.Group className="mb-3">
                                         <Form.Control list="clientNames" placeholder='Existing comprehensive client' id="existingClient"onChange={()=> {
                                             const list = document.getElementById('clientNames')
                                             for(let clientName = 0; clientName < list.options.length; clientName++) {
@@ -506,13 +506,13 @@ function Policies({cat, btn_txt, pol}) {
                                             console.log(client)
                                         }}/>
                                             <datalist id="clientNames" >
-                                                {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
+                                                {existingClients.map((customer, index)=> <option key={index} data-value={JSON.stringify(customer)} value={customer.name}/>)}
                                             </datalist> 
                                     </Form.Group>
                                 </Col>
                                 :
                                 <Col className="client-details" md={3}>
-                                    <Form.Group className="mb-3" controlId="clientDetails">
+                                    <Form.Group className="mb-3">
                                         <Form.Control list="clientNames" placeholder='Existing client' id="existingClient"onChange={()=> {
                                             const list = document.getElementById('clientNames')
                                             for(let clientName = 0; clientName < list.options.length; clientName++) {
@@ -524,7 +524,7 @@ function Policies({cat, btn_txt, pol}) {
                                             console.log(client)
                                         }}/>
                                             <datalist id="clientNames" >
-                                                {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
+                                                {existingClients.map((customer, index) => <option key={index} data-value={JSON.stringify(customer)} value={customer.name}/>)}
                                             </datalist> 
                                     </Form.Group>
                                 </Col>
@@ -734,13 +734,13 @@ function Policies({cat, btn_txt, pol}) {
                                                         <Form.Group className="mb-3" >
                                                             <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
                                                         </Form.Group>
-                                                        <Form.Group className="mb-3" controlId="comprehensive">
+                                                        <Form.Group className="mb-3" >
                                                             <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
                                                         </Form.Group>
-                                                        <Form.Group className="mb-3" controlId="mtp">
+                                                        <Form.Group className="mb-3">
                                                             <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
                                                         </Form.Group>
-                                                        <Form.Group className="mb-3" controlId="windscreen">
+                                                        <Form.Group className="mb-3" >
                                                             <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
                                                         </Form.Group>
                                                     </>
@@ -767,12 +767,12 @@ function Policies({cat, btn_txt, pol}) {
                     </div>
                     <Row style={{paddingBottom:"6vh", display:"flex"}}>
                         <div className="currency">
-                            <Form.Group classname="mb-3" controlId="currency">
+                            <Form.Group classname="mb-3" >
                                 <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={(event)=>{
                                     setCurrency(event.target.value)
                                     }}>
                                     <option>Currency</option>
-                                    {currencies.map((currency, index) => <option value={currency["code"]}>{currency["code"]}</option>)}  
+                                    {currencies.map((currency, index) => <option key={index} value={currency["code"]}>{currency["code"]}</option>)}  
                                 </Form.Select>
                             </Form.Group>
                         </div>
@@ -804,7 +804,7 @@ function Policies({cat, btn_txt, pol}) {
                                     </div>
                                     <Row style={{paddingBottom:"3vh"}}>
                                         <Col>
-                                            <Form.Group controlId="policyEndDate" id="policy-end-date" >
+                                            <Form.Group id="policy-end-date" >
                                                 <Form.Label><h5>Policy End Date</h5></Form.Label>
                                                 <Form.Control type="text" name="policy_start_date" value={ policyDisplayEndDate } readOnly/>
                                             </Form.Group>
@@ -814,7 +814,7 @@ function Policies({cat, btn_txt, pol}) {
                                 :
                                 <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                                     <Col>
-                                        <Form.Group controlId="policyStartDate" >
+                                        <Form.Group  >
                                             <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                             <Form.Control type="date" name="policy_start_date" value={policyStartDate} onChange={event=> {
                                                 setPolicyStartDate(event.target.value)
