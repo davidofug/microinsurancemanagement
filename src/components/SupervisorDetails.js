@@ -47,8 +47,6 @@ function SupervisorDetails({ name, user_id }) {
     
   }
 
-  console.log(stickerRange.filter(range => range.assignedTo === 'Charles Kasasira'))
-
     return (
         <>
             <Modal.Header closeButton>
