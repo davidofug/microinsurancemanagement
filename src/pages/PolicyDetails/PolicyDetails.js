@@ -100,10 +100,7 @@ function PolicyDetails() {
     
    
 
-   console.log(agentRange)
-
-   /* let newArr = []
-   console.log(newArr) */
+   console.log(stickerRange)
 
       
     

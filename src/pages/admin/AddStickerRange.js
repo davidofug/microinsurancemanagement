@@ -45,7 +45,8 @@ function AddStickerRange() {
                 rangeTo: event.target.rangeTo.value,
                 assignedTo: event.target.assignedTo.value,
                 used: [],
-                returned: []
+                returned: [],
+                agentAssignTo: []
             })
             toast.success(`Successfully added sticker Range`, {position: "top-center"});
             document.stickerForm.reset()
