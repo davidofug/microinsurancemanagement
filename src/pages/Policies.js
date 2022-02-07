@@ -128,6 +128,8 @@ function Policies({cat, btn_txt, pol}) {
         }).catch((err) => {
             console.log(err)
         })
+
+        return () => listUsers()
     }, [])
 
     const handleInputChange = (index, event) => {
@@ -201,97 +203,87 @@ function Policies({cat, btn_txt, pol}) {
         const created_at = moment().toString()
         setIsLoading(true)
         event.preventDefault()
-        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client
-
-            
-
+        const clientInfo = cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) || client : client 
+        
         client['added_by_uid'] = authentication.currentUser.uid
         client['added_by_name'] = authentication.currentUser.displayName
         
-        
-        addUser(clientInfo).then((results) => {
-            document.policy.reset()
-            setPolicyEndDate('')
-            setPolicyStartDate('')
-        }).catch( error => console.log( error ))
-
-        await addDoc(policiesRef, {
-            currency,
-            policyStartDate: policyStartDate, 
-            policyEndDate: policyEndDate,
-            stickersDetails: stickers,
-            clientDetails: clientInfo,
-            added_by_uid: authentication.currentUser.uid,
-            added_by_name: authentication.currentUser.displayName,  
-            category: cat,
-            totalValuation: await generateTotalValuation(stickers),
-            createdAt: created_at,
-            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-        }).then(() => {
-            toast.success(`succesfully created ${clientInfo.name}'s sticker`, {position: "top-center"})
-            document.policyForm.reset()
-        }).then(async () => {
-            await addDoc(logCollectionRef, {
-                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                type: 'sticker creation',
-                status: 'successful',
-                message: `Successfully created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
-            })
-        }).catch(async () => {
-            toast.error(`Failed: couldn't added ${clientInfo.name}'s sticker`, {position: "top-center"});
-            await addDoc(logCollectionRef, {
-                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                type: 'sticker creation',
-                status: 'failed',
-                message: `Failed to created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
-            })
-        })
-
-        
-
-        /* await addDoc(logCollectionRef, {
-            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-            type: 'user creation',
-            status: 'successful',
-            message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
-        }) */
- 
-
-        /* setStickers([
-            {
-                referenceNo:'',
-                plateNo:'',
-                seatingCapacity:'',
-                ccPower:'',
-                grossWeight:'',
-                category:'',
-                motorClass:'',
-                chasisNo:'',
-                motorMake:'',
-                vehicleUse:'',
-                totalPremium:'',
-                basicPremium:'',
-                stickerFee: 6000,
-                stampDuty: 35000,
-                status: "new",
-            }
-        ]) */
-
-        setIsLoading(false)
-
-        /* console.log(
-            {
+        if(clientInfo?.name?.length > 0 && clientInfo?.email?.length > 0)  {
+            addUser(clientInfo).then((results) => {
+                document.policy.reset()
+                setPolicyEndDate('')
+                setPolicyStartDate('')
+            }).catch( error => console.log( error ))
+    
+            await addDoc(policiesRef, {
                 currency,
+                policyStartDate: policyStartDate, 
+                policyEndDate: policyEndDate,
                 stickersDetails: stickers,
-                clientDetails: cat === "comprehensive" ? await handleComprehesiveClientInfo(comprehensiveClient, individualComprehensiveClient, corporateComprehensiveEntity, contactPerson) : client,
+                clientDetails: clientInfo,
                 added_by_uid: authentication.currentUser.uid,
                 added_by_name: authentication.currentUser.displayName,  
-                policyStartDate: moment(policyStartDate).toDate(), 
-                policyEndDate: moment(policyEndDate).toDate(),
                 category: cat,
                 totalValuation: await generateTotalValuation(stickers),
-            }
-        ) */
+                createdAt: created_at
+            }).then(() => {
+                toast.success(stickers.length > 1 ? `Succesfully created ${clientInfo.name}'s stickers` : `Successfully created ${clientInfo.name}'s sticker`, {position: "top-center"})
+                document.policyForm.reset()
+                setStickers([
+                    {
+                        referenceNo:'',
+                        plateNo:'',
+                        seatingCapacity:'',
+                        ccPower:'',
+                        grossWeight:'',
+                        category:'',
+                        motorClass:'',
+                        chasisNo:'',
+                        motorMake:'',
+                        vehicleUse:'',
+                        totalPremium:'',
+                        basicPremium:'',
+                        stickerFee:6000,
+                        stampDuty:35000, 
+                        status: "new",
+                    }
+                ])
+                setPolicyEndDate('')
+                setPolicyStartDate('')
+            }).then(async () => {
+                await addDoc(logCollectionRef, {
+                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                    type: 'sticker creation',
+                    status: 'successful',
+                    message: `Successfully created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
+                })
+            }).catch(async () => {
+                toast.error(`Failed: couldn't added ${clientInfo.name}'s sticker`, {position: "top-center"});
+                await addDoc(logCollectionRef, {
+                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                    type: 'sticker creation',
+                    status: 'failed',
+                    message: `Failed to created ${clientInfo.name}'s sticker by ${authentication.currentUser.displayName}`
+                })
+            })
+    
+            
+    
+            /* await addDoc(logCollectionRef, {
+                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                type: 'user creation',
+                status: 'successful',
+                message: `Successfully created ${fields.user_role} [ ${fields.name} ] by ${authentication.currentUser.displayName}`
+            }) */
+     
+    
+            setIsLoading(false)
+        } else {
+            toast.error('Please select a client', {position: "top-center"})
+            setIsLoading(false)
+        }  
+        
+        
     }    
 
     const handleComprehesiveClientInfo = async (type, individualClient, organisationInfo, contactInfo) => {
@@ -325,23 +317,23 @@ function Policies({cat, btn_txt, pol}) {
     const renderStickerDetails = (singleSticker, index) => {
         return (
             <React.Fragment key={index}>
-                <tr className="table-row">
+                <tr className="table-row tab-row">
                     <td className="sticker-number" style={{verticalAlign:"middle", paddingLeft:"1vw", paddingRight:"1vw"}}>{index + 1 > 9 ? index + 1 : `0${index+1}`}</td>
                     <td className="first-cell" style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
+                            <div className="form-field">
                                 <Form.Group controlId="referenceNo">
                                     <Form.Control type="text" name="referenceNo" placeholder="Reference No" value={singleSticker.referenceNo} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className="form-field">
                                 <Form.Group controlId="grossWeight">
                                     <Form.Control type="text" name="grossWeight" placeholder="Gross Weight" value={singleSticker.grossWeight} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="motorMake" value={singleSticker.motorMake}>
-                                    <Form.Select type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)} required>
+                                    <Form.Select style={{width:"100%"}} type="text" name="motorMake" aria-label="Motor Make" onChange={event => handleInputChange(index, event)} required>
                                         <option>Motor Make</option>
                                         {make.map((motorMake, index) => <option key={index} value={motorMake[0]}>{motorMake[1]}</option>)}
                                     </Form.Select>
@@ -351,14 +343,14 @@ function Policies({cat, btn_txt, pol}) {
                     </td>
                     <td className="second-cell"style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="plateNo">
                                     <Form.Control type="text" name="plateNo" placeholder="Plate No" value={singleSticker.plateNo} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="category" >
-                                    <Form.Select type="text" name="category" aria-label="category" value={singleSticker.category} required onChange={event => {
+                                    <Form.Select style={{width:"100%"}} type="text" name="category" aria-label="category" value={singleSticker.category} required onChange={event => {
                                         handleInputChange(index, event)
 
                                         const result = categories.filter(category => category.label === event.target.value)
@@ -386,9 +378,9 @@ function Policies({cat, btn_txt, pol}) {
                                     </Form.Select>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="vehicleUse">
-                                    <Form.Select type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
+                                    <Form.Select style={{width:"100%"}}className="form-field" type="text" name="vehicleUse" aria-label="Vehicle Use" value={singleSticker.vehicleUse} onChange={event => handleInputChange(index, event)}>
                                         <option>Vehicle use</option>
                                         {vehicleUses.map((item, index) => <option key={index} value={item}>{item}</option>)}
                                     </Form.Select>
@@ -398,20 +390,20 @@ function Policies({cat, btn_txt, pol}) {
                     </td>
                     <td className="third-cell" style={{paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="seatingCapacity">
                                     <Form.Control type="text" name="seatingCapacity" placeholder="Seating Capacity" value={singleSticker.seatingCapacity} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className="form-field">
                                 <Form.Group controlId="motorClass" >
-                                    <Form.Select type="text" name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
+                                    <Form.Select type="text" style={{width:"100%"}} name="motorClass" aria-label="Motor Class" value={singleSticker.motorClass} onChange={event => handleInputChange(index, event)}>
                                         <option>Class</option>
                                         {classes.map((item, index) => <option key={index} value={item}>{item}</option>)}
                                     </Form.Select>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="totalPremium" >
                                     <Form.Control type="text" name="totalPremium" placeholder="Total Premium" value={singleSticker.totalPremium} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
@@ -420,12 +412,12 @@ function Policies({cat, btn_txt, pol}) {
                     </td>
                     <td className="fourth-cell" style={{verticalAlign:"top", paddingLeft:"1vh", paddingRight:"1vh"}}>
                         <div style={{display:"flex", flexDirection:"column", gap:"2vh"}}>
-                            <div>
-                                <Form.Group controlId="ccPower">
+                            <div className='form-field'>
+                                <Form.Group controlId="ccPower" >
                                     <Form.Control type="text" name="ccPower" placeholder="CC Power" value={singleSticker.ccPower} onChange={event => handleInputChange(index, event)} required/>
                                 </Form.Group>
                             </div>
-                            <div>
+                            <div className='form-field'>
                                 <Form.Group controlId="chasisNo" aria-label="chasisNo">
                                     <Form.Control type="text" name="chasisNo" placeholder="Chasis No" value={singleSticker.chasisNo} onChange={event => {
                                         handleInputChange(index, event) 
@@ -434,7 +426,7 @@ function Policies({cat, btn_txt, pol}) {
                             </div>
                             {
                                 cat === 'comprehensive' ?
-                                <div>
+                                <div className='form-field'>
                                     <Form.Group controlId="chasisNo" aria-label="chasisNo">
                                         <Form.Control type="text" name="basicPremium" placeholder="BasicPremium" value={singleSticker.basicPremium} onChange={event => {
                                             handleInputChange(index, event) 
@@ -478,7 +470,7 @@ function Policies({cat, btn_txt, pol}) {
     }
 
     return (
-        <div /* className='components' */>
+        <div className='components'>
             <Header title="Policies" subtitle={`MANAGING ${pol} POLICIES`.toUpperCase()}/>
 
             <ToastContainer />
@@ -487,7 +479,7 @@ function Policies({cat, btn_txt, pol}) {
 
             {isLoading && 
                 <div className='loader-wrapper'>
-                        <Loader />
+                    <Loader />
                 </div>
             }
 
@@ -502,7 +494,7 @@ function Policies({cat, btn_txt, pol}) {
                             {
                                 cat === "comprehensive" ? 
                                 <Col className="client-details" md={3}>
-                                    <Form.Group className="mb-3" controlId="clientDetails">
+                                    <Form.Group className="mb-3">
                                         <Form.Control list="clientNames" placeholder='Existing comprehensive client' id="existingClient"onChange={()=> {
                                             const list = document.getElementById('clientNames')
                                             for(let clientName = 0; clientName < list.options.length; clientName++) {
@@ -511,15 +503,16 @@ function Policies({cat, btn_txt, pol}) {
                                                     setComprehensiveClient('Existing')
                                                 }
                                             }
+                                            console.log(client)
                                         }}/>
                                             <datalist id="clientNames" >
-                                                {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
+                                                {existingClients.map((customer, index)=> <option key={index} data-value={JSON.stringify(customer)} value={customer.name}/>)}
                                             </datalist> 
                                     </Form.Group>
                                 </Col>
                                 :
                                 <Col className="client-details" md={3}>
-                                    <Form.Group className="mb-3" controlId="clientDetails">
+                                    <Form.Group className="mb-3">
                                         <Form.Control list="clientNames" placeholder='Existing client' id="existingClient"onChange={()=> {
                                             const list = document.getElementById('clientNames')
                                             for(let clientName = 0; clientName < list.options.length; clientName++) {
@@ -528,9 +521,10 @@ function Policies({cat, btn_txt, pol}) {
                                                     
                                                 }
                                             }
+                                            console.log(client)
                                         }}/>
                                             <datalist id="clientNames" >
-                                                {existingClients.map(customer => <option data-value={JSON.stringify(customer)} value={customer.name}/>)}
+                                                {existingClients.map((customer, index) => <option key={index} data-value={JSON.stringify(customer)} value={customer.name}/>)}
                                             </datalist> 
                                     </Form.Group>
                                 </Col>
@@ -740,13 +734,13 @@ function Policies({cat, btn_txt, pol}) {
                                                         <Form.Group className="mb-3" >
                                                             <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
                                                         </Form.Group>
-                                                        <Form.Group className="mb-3" controlId="comprehensive">
+                                                        <Form.Group className="mb-3" >
                                                             <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
                                                         </Form.Group>
-                                                        <Form.Group className="mb-3" controlId="mtp">
+                                                        <Form.Group className="mb-3">
                                                             <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
                                                         </Form.Group>
-                                                        <Form.Group className="mb-3" controlId="windscreen">
+                                                        <Form.Group className="mb-3" >
                                                             <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
                                                         </Form.Group>
                                                     </>
@@ -773,12 +767,12 @@ function Policies({cat, btn_txt, pol}) {
                     </div>
                     <Row style={{paddingBottom:"6vh", display:"flex"}}>
                         <div className="currency">
-                            <Form.Group classname="mb-3" controlId="currency">
+                            <Form.Group className="mb-3" >
                                 <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={(event)=>{
                                     setCurrency(event.target.value)
                                     }}>
                                     <option>Currency</option>
-                                    {currencies.map((currency, index) => <option value={currency["code"]}>{currency["code"]}</option>)}  
+                                    {currencies.map((currency, index) => <option key={index} value={currency["code"]}>{currency["code"]}</option>)}  
                                 </Form.Select>
                             </Form.Group>
                         </div>
@@ -804,13 +798,13 @@ function Policies({cat, btn_txt, pol}) {
                                                     setPolicyEndDate(end)
                                                     setPolicyDisplayEndDate(moment(end).format('DD/MM/YYYY'))   
                                                     setPolicyStartDate(event.target.value)
-                                                }}/>
+                                                }} required/>
                                             </Form.Group>
                                         </div>
                                     </div>
                                     <Row style={{paddingBottom:"3vh"}}>
                                         <Col>
-                                            <Form.Group controlId="policyEndDate" id="policy-end-date" >
+                                            <Form.Group id="policy-end-date" >
                                                 <Form.Label><h5>Policy End Date</h5></Form.Label>
                                                 <Form.Control type="text" name="policy_start_date" value={ policyDisplayEndDate } readOnly/>
                                             </Form.Group>
@@ -820,19 +814,19 @@ function Policies({cat, btn_txt, pol}) {
                                 :
                                 <Row style={{paddingTop:"4vh", paddingBottom:"4vh"}}>
                                     <Col>
-                                        <Form.Group controlId="policyStartDate" >
+                                        <Form.Group  >
                                             <Form.Label><h5>Policy Start Date</h5></Form.Label>
                                             <Form.Control type="date" name="policy_start_date" value={policyStartDate} onChange={event=> {
                                                 setPolicyStartDate(event.target.value)
                                                 const end = moment(event.target.value).add(1, 'years').subtract(1, 'days').calendar()
                                                 setPolicyEndDate(end)
                                                 setPolicyDisplayEndDate(moment(end).format('DD/MM/YYYY'))
-                                            }}/>
+                                            }} required/>
                                         </Form.Group>
                                     </Col>
                                 </Row>
                         }
-                        <div style={{display:"flex", width:"100%", justifyContent:"flex-end"}}>
+                        <div style={{display:"flex", width:"100%", justifyContent:"flex-end", margin:"0px"}}>
                             <div>
                                 <Button variant="primary" type="submit">
                                     {btn_txt}
@@ -850,3 +844,4 @@ function Policies({cat, btn_txt, pol}) {
 }
 
 export default Policies
+
