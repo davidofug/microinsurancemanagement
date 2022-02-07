@@ -235,12 +235,68 @@
 }
 
 /* // Large devices (desktops, less than 1200px) */
-@media (max-width: 1199.98px) { 
+@media (max-width: 1199.98px) {
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+        color:#ffffff;
+        background-color:#1475cf;
+    }
+
+
     
 }
 
 /* // X-Large devices (large desktops, less than 1400px) */
 @media (max-width: 1399.98px) { 
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+        color:#ffffff;
+        background-color:#1475cf;
+    }
+
+}
+
+
+@media (min-width: 1400px) {
+    .new-client-cta {
+        border: none;
+        padding:8px;
+        border-radius: 5px;
+        color:#ffffff;
+        background-color: #1475cf; 
+
+    }
+
+    .form-buttons {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        /* align-items: center; */
+        padding-left:20px;
+    }
+
+    .dates {
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    #policy-end-date {
+        width: 10.4vw;
+    }
+
+    .chat-container {
+        padding-right: 10%;
+    }
+
+     
+
 
 }
 
@@ -270,4 +326,6 @@
    #chatbox {
        margin-right:34px;
    }
+
+
 }
