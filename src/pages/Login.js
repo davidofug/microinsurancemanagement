@@ -34,7 +34,6 @@ function Login() {
 
 
 
-
   useEffect(() => {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
     document.title = "Britam - With you every step of the way";
@@ -56,7 +55,7 @@ function Login() {
       if (result) {
         setLoading(false);
         onAuthStateChange(setCurrentUser, setAuthClaims);
-        history.push(from); // had removed claim from the route.
+        // history.push(from); // had removed claim from the route.
       }
     } catch(err) {
       // console.log(err.code)
@@ -71,6 +70,7 @@ function Login() {
 }
 
   if (isLoading) return <Loader />;
+
 
   if (currentUser?.loggedIn){
     if(authClaims.admin){

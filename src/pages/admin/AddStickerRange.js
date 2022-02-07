@@ -1,9 +1,10 @@
 import Header from '../../components/header/Header'
 import { Row, Form, Col } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
-import { authentication, db } from '../../helpers/firebase'
+import { authentication, functions, db } from '../../helpers/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import Loader from '../../components/Loader'
+import { httpsCallable } from 'firebase/functions';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -11,7 +12,7 @@ import Chat from '../../components/messenger/Chat'
 
 function AddStickerRange() {
 
-    useEffect(() => {document.title = 'Britam - Add Sticker Range'}, [])
+    useEffect(() => {document.title = 'Britam - Add Sticker Range'; getSupervisors()}, [])
 
     const [ isLoading, setIsLoading ] = useState(false)
 
@@ -20,17 +21,31 @@ function AddStickerRange() {
     const [ rangeTo, setRangeTo ] = useState(0)
     const rangesCollectionRef = collection(db, 'ranges')
 
+    // getting supervisors
+    const [ supervisors, setSupervisors ] = useState([])
+    const getSupervisors = () => {
+        const listUsers = httpsCallable(functions, 'listUsers')
+        listUsers().then((results) => {
+            const mySupervisors = results.data.filter(user => user.role.supervisor).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid)
+            setSupervisors(mySupervisors)
+        }).catch((err) => {
+        })
+    }
+
     const handleStickerRange = async (event) => {
         setIsLoading(true)
         event.preventDefault()
         try{
             await addDoc(rangesCollectionRef, {
+                timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
                 added_by_uid: authentication.currentUser.uid,
                 added_by_name: authentication.currentUser.displayName,
                 category: event.target.category.value,
                 rangeFrom: event.target.rangeFrom.value,
                 rangeTo: event.target.rangeTo.value,
-                used: []
+                assignedTo: event.target.assignedTo.value,
+                used: [],
+                returned: []
             })
             toast.success(`Successfully added sticker Range`, {position: "top-center"});
             document.stickerForm.reset()
@@ -44,7 +59,7 @@ function AddStickerRange() {
     }
 
     return (
-        <div className='components'>
+        <div /* className='components' */>
             <Header title="Add Sticker Number" subtitle="ADD NEW STICKER NUMBERS" />
             <ToastContainer />
 
@@ -84,6 +99,14 @@ function AddStickerRange() {
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='name'>Total Amount Received</Form.Label>
                             <Form.Control type="text" id='total' value={(rangeTo > 0) ? rangeTo - rangeFrom : ''} readOnly/>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" >
+                            <Form.Label htmlFor='assignedTo'>Assign to:</Form.Label>
+                            <Form.Control list="supervisorNames" placeholder="Enter supervisor's name" id="assignedTo"/>
+                            <datalist id="supervisorNames" >
+                                {supervisors.map(supervisor => <option data-value={JSON.stringify(supervisor)} value={supervisor.name}/>)}
+                            </datalist> 
                         </Form.Group>
                     </Row>
                     <input type="submit" className='btn btn-primary cta' value="Submit" />

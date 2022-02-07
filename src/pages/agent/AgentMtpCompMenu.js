@@ -1,7 +1,7 @@
 import menuData from '../../components/menuData'
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import logo from '../../assets/imgs/britam-logo2.png'
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import MobileNav from '../../components/menu/MobileNav'
@@ -12,15 +12,19 @@ import { MdLogout } from 'react-icons/md'
 import DefaultAvatar from '../../components/DefaultAvatar'
 import { Badge } from 'react-bootstrap'
 import { ImProfile } from 'react-icons/im'
+import useDialog from '../../hooks/useDialog'
+import { getAuth, signOut } from "firebase/auth";
+import { useHistory } from 'react-router-dom'
 import useAuth from '../../contexts/Auth'
 
-function AgentMtpCompMenu({setLargeContentClass, largeContentClass}) {
 
+function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
+
+    const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
     const { Agent_mtp_comprehensive } = menuData
+    const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
+    const [ show, handleShow, handleClose ] = useDialog();
 
-    const [ selected, setSelected ] = useState({ activeObject: null, Agent_mtp_comprehensive })
-    const [ toggleMenu, setToggeMenu ] = useState(true)
-    const [ openFooterContext, setOpenFooterContext ] = useState(false)
 
     const { logout } = useAuth()
     const handleLogout = async () => {
@@ -31,7 +35,12 @@ function AgentMtpCompMenu({setLargeContentClass, largeContentClass}) {
         catch(error){
             console.log(error)
         }
-    }
+  }
+
+    // actions context
+  if(show){
+    window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
+  }
 
     return (
         <div className='menuSide'>
@@ -42,8 +51,9 @@ function AgentMtpCompMenu({setLargeContentClass, largeContentClass}) {
                         <div id='brand'>
                             <img src={logo} width={150} alt="Britam" />
                             <div id="arrowCircle" onClick={() => {
-                                    setToggeMenu(!toggleMenu)
-                                    setLargeContentClass(!largeContentClass)
+                                    hideToggleMenu()
+                                    setLargeContentClass(true)
+                                    localStorage.setItem('preferredToggleMenu', false)
                                     }}>
                                     
                                         <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -54,9 +64,13 @@ function AgentMtpCompMenu({setLargeContentClass, largeContentClass}) {
                         <SideBar role={Agent_mtp_comprehensive} user="agent" displayName={authentication?.currentUser?.displayName} />
 
                         <footer>
-                            {/* <Link to='/admin/settings'> */}
-                            <div className="footerContext" onClick={() => setOpenFooterContext(!openFooterContext)}>
-                                <DefaultAvatar />
+                            <div className="footerContext" onClick={(event) => { show ? handleClose() : handleShow(); event.stopPropagation()}}>
+                                {authentication?.currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8"
+                                ?
+                                    <img src={authentication?.currentUser.photoURL} alt='profile' width={50} height={50} style={{borderRadius: "50%"}}/>
+                                :
+                                    <DefaultAvatar />
+                                }
                                 <div>
                                     <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
                                     <p style={{"color": "#646464"}}>
@@ -65,8 +79,8 @@ function AgentMtpCompMenu({setLargeContentClass, largeContentClass}) {
                                 </div>
                                 <h3 style={{color: "#000"}}>&hellip;</h3>
                             </div>
-                            {/* </Link> */}
-                            <ul className={openFooterContext ? "footerContextShow" : ""} id="contextUl">
+                            {/* context menu */}
+                            <ul className={show ? "footerContextShow" : ""} id="contextUl" >
                                 <li><Link to="/agent/settings"><ImProfile /> My Profile</Link></li>
                                 <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                             </ul>
@@ -77,8 +91,9 @@ function AgentMtpCompMenu({setLargeContentClass, largeContentClass}) {
             <nav className='sidebar-m'>
                 <section id='brand_m'>
                     <div id="arrowOutCircle" onClick={() => {
-                        setToggeMenu(!toggleMenu)
+                        showToggleMenu()
                         setLargeContentClass(!largeContentClass)
+                        localStorage.setItem('preferredToggleMenu', true)
                         }}>
                         
                             <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -88,13 +103,16 @@ function AgentMtpCompMenu({setLargeContentClass, largeContentClass}) {
                 </section>
                 <MinimisedSideBar role={Agent_mtp_comprehensive}/>
                 <footer>
-                        <ul>
-                            <li><Link to="/admin/settings">Settings</Link></li>
-                            <li onClick={handleLogout}><Link><MdLogout /></Link></li>
-                        </ul>
-                    <Link to={'/admin-settings'} id="account">
+                    <div className="footerContext" onClick={(event) => {
+                      show ? handleClose() : handleShow();
+                      event.stopPropagation();
+                    }}>
                         <DefaultAvatar />
-                    </Link>
+                    </div>
+                    <ul className={show ? "footerContextShow" : ""} id="contextUl">
+                        <li><Link to="/admin/settings"><ImProfile /></Link></li>
+                        <li onClick={handleLogout}><Link><MdLogout /></Link></li>
+                    </ul>
                 </footer>
             </nav>
 }
@@ -102,4 +120,4 @@ function AgentMtpCompMenu({setLargeContentClass, largeContentClass}) {
     )
 }
 
-export default AgentMtpCompMenu
+export default AgentMtpMenu

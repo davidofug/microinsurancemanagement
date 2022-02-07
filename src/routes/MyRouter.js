@@ -1,5 +1,4 @@
 import useAuth from '../contexts/Auth'
-import NotLoggedIn from '../pages/NotLoggedIn'
 import Login from '../pages/Login'
 import Logout from '../pages/Logout'
 import ForgotPassword from '../pages/ForgotPassword'
@@ -38,16 +37,14 @@ function MyRouter() {
 /* something */
     return (
         <Router>
-             <Switch >
-                    <Route path="/forgot-password" component={ForgotPassword} />
-                    <Route path="/logout" component={Logout} />
-                    <Route path="/not-logged-in" component={NotLoggedIn} />
-                    <Route path="/" exact component={Login} />     
-                    <Route path="/login" exact component={Login} />
-                </Switch>
+            <Switch >
+                <Route path="/forgot-password" component={ForgotPassword} />
+                <Route path="/logout" component={Logout} />
+                <Route path="/" exact component={Login} />     
+                <Route path="/login" exact component={Login} />
+            </Switch>
             <div className={largeContentClass ? 'top-container-large': `top-container` }>
                 {currentUser?.loggedIn && 
-                <>
                 <div className='MenuSide'>
                     {authClaims?.admin && <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                     {authClaims?.supervisor && <SupervisorMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
@@ -68,16 +65,16 @@ function MyRouter() {
                     {/* mtp and comprehensive and windscreen agents */}
                     {authClaims?.agent && authClaims?.mtp && authClaims?.comprehensive && authClaims?.windscreen &&  <AgentMtpCompWindMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                 </div>
-                </>
                 }
-                <main className='displayLeft'>
+                <div className='displayLeft'>
                     <AdminRoutes />
                     <SupervisorRoutes />
                     <AgentsRoutes />
                     <SuperAdminRoutes />
-                </main>
+                </div>
+                
             </div>
-               
+            
         </Router>
     )
 }

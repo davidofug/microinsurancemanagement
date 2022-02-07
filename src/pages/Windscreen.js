@@ -36,7 +36,7 @@ export default function Mtp() {
   const getMTP = async () => {
     const data = await getDocs(policyCollectionRef);
     const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    const mtpPolicies = policiesArray.filter(policy => policy.category === 'windscreen')
+    const mtpPolicies = policiesArray.filter(policy => policy.category === 'windscreen').sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     
     // agent mtp policies
     if(authClaims.agent){
@@ -248,7 +248,7 @@ export default function Mtp() {
 
 
   return (
-    <div className="components">
+    <div /* className="components" */>
       <Header title="Windscreen" subtitle="MANAGING WINDSCREEN POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&

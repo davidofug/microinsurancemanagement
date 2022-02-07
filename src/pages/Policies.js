@@ -844,3 +844,4 @@ function Policies({cat, btn_txt, pol}) {
 }
 
 export default Policies
+

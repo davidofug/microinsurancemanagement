@@ -1,5 +1,4 @@
 import { Modal, Table } from 'react-bootstrap'
-// import { getAuth  } from "firebase/auth";
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 import { useState, useEffect } from 'react'
@@ -9,28 +8,24 @@ import Loader from './Loader';
 
 function StickerModal({ name, user_id }) {
 
-    useEffect(() => {
-        getPolicies()
-        return () => getPolicies()
-    }, [])
+    useEffect(() => { getPolicies() }, [])
 
     const [policies, setPolicies] = useState([])
     const policyCollectionRef = collection(db, "policies");
 
     const getPolicies = async() => {
         const data = await getDocs(policyCollectionRef);
-        setPolicies(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        // const policiesArray = (data.docs.map((doc) => ({ ...doc.data(), id: doc.id })).filter(policy => policy.added_by_uid === user_id))
-        // policiesArray.length === 0 ? setPolicies(null) : setPolicies(policiesArray)
+        const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id })).filter(policy => policy.added_by_uid === user_id)
+        policiesArray.length === 0 ? setPolicies(null) : setPolicies(policiesArray)
     }
-
 
     return (
         <>
             <Modal.Header closeButton>
-                <Modal.Title> Agent {name} Issued stickers</Modal.Title>
+                <Modal.Title> Agent {name}'s Issued stickers</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <p>Stickers Issued: <b>{policies !== undefined ? policies.length : 0}</b></p>
                 {policies !== null && policies.length > 0
                 ?
                     <Table responsive hover striped>
