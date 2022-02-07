@@ -1,172 +1,4 @@
-/* Table {
-    border: 1px solid black;
 
-} */
- 
-
-@media (min-width: 430px) and (max-width: 900px) {
-   
-    .new-client-cta {
-        border: none;
-        padding: 8px;
-        border-radius: 5px;
-    }
-
-    .currency {
-        display: flex;
-
-    }
-
-    .dates {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    #policy-end-date {
-        width: 20vw;
-    }
-
-    .form-buttons {
-        display: flex;
-        gap: 5px;
-        justify-content: center;
-    }
-
-    /* tr {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); 
-        grid-template-areas: "sticker-no sticker-no" 
-                            "first second"
-                            "third fourth"
-                            "repeater-buttons repeater-buttons";   
-    } */
-
-    /* td {
-        display: flex;
-    } */
-
-    .sticker-number {
-        grid-row: 1;
-        grid-area: sticker-no;
-    } 
-
-    .first-cell {
-        grid-row: 2; 
-        grid-area: first; 
-    }
-
-    .second-cell {
-        grid-row: 2;
-        grid-area: second;
-    }
-
-    .third-cell {
-        grid-row: 3;
-        grid-area: third;
-    }
-
-    .fourth-cell {
-        grid-row:3;
-        grid-area: fourth;
-    }
-
-    .fifth-cell {
-        grid-row:4;
-        grid-area: repeater-buttons;
-    }
-
-    .form-buttons {
-        width: 100%;
-        justify-content: end;
-    }  
-}
-
-@media (max-width: 428px) {
-    /* td {
-        display: flex;
-        justify-content: center;
-    } */
-
-    .form-buttons {
-        display: flex;
-        gap: 5px;
-        flex-direction: row;
-    }
-
-    .add-new-client
-    .client-details {
-        width: 50px;
-    }
-
-    .new-client-cta {
-        border: none;
-        padding: 8px;
-        border-radius: 5px;
-    }
-
-    .currency {
-        display: flex; 
-    }
-
-    .dates {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    #policy-end-date {
-        width: 20vw;
-    }
-
-    
-    
-}
-
-@media (min-width: 1000px) {
-    .new-client-cta {
-        border: none;
-        padding: 8px;
-        border-radius: 5px;
-    }
-
-    .currency {
-        display: flex;
-    }
-
-    .client-details {
-        padding-left: 0px;
-        justify-content: flex-start;
-    }
-
-    .dates {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    #policy-end-date {
-        width: 11.5vw;    
-    }
-
-    .form-buttons {
-        display: flex;
-        gap: 5px;
-        flex-direction: column;
-    }
-
-
-
-
-
-
-}
-
-.isInvalid {
-    
-    border:1px solid red;
-    box-shadow: 0 0 13px #719ECE; 
-}
 
 
 /* // X-Small devices (portrait phones, less than 576px) */
@@ -183,6 +15,8 @@
     .sticker-number {
         grid-row: 1;
         grid-area: sticker-no;
+        display: flex;
+        justify-content: center;
     } 
 
     .first-cell {
@@ -208,34 +42,212 @@
     .fifth-cell {
         grid-row:4;
         grid-area: repeater-buttons;
+        
     }
 
     .form-buttons {
         width: 100%;
-        justify-content: end;
+        justify-content: center;
+        display: flex;
+        gap: 5px;
     } 
-
+    
     .form-field {
         width: 160px;
     }  
 
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+    }
 
 
+    .chat-container {
+        padding-left:380px;
+    }
+
+    .dates {
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    #policy-end-date {
+        width: 20vw;
+    }
 }
 
 /* // Small devices (landscape phones, less than 768px) */
 @media (max-width: 767.98px) { 
+    .tab-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        grid-template-areas: "sticker-no sticker-no" 
+                            "first second"
+                            "third fourth"
+                            "repeater-buttons repeater-buttons";   
+    } 
 
+    .sticker-number {
+        grid-row: 1;
+        grid-area: sticker-no;
+        display: flex;
+        justify-content: center;
+    } 
+
+    .first-cell {
+        grid-row: 2; 
+        grid-area: first; 
+    }
+
+    .second-cell {
+        grid-row: 2;
+        grid-area: second;
+    }
+
+    .third-cell {
+        grid-row: 3;
+        grid-area: third;
+    }
+
+    .fourth-cell {
+        grid-row:3;
+        grid-area: fourth;
+    }
+
+    .fifth-cell {
+        grid-row:4;
+        grid-area: repeater-buttons;
+        
+    }
+
+    .form-buttons {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+        gap: 5px;
+    }  
+
+    .dates {
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    #policy-end-date {
+        width: 20vw;
+    }
+    
+    .form-field {
+        width: 160px;
+    } 
+
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+    }
 }
 
 /* // Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {
+    .tab-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        grid-template-areas: "sticker-no sticker-no" 
+                            "first second"
+                            "third fourth"
+                            "repeater-buttons repeater-buttons";   
+    } 
+
+    .sticker-number {
+        grid-row: 1;
+        grid-area: sticker-no;
+        display: flex;
+        justify-content: center;
+    } 
+
+    .first-cell {
+        grid-row: 2; 
+        grid-area: first; 
+    }
+
+    .second-cell {
+        grid-row: 2;
+        grid-area: second;
+    }
+
+    .third-cell {
+        grid-row: 3;
+        grid-area: third;
+    }
+
+    .fourth-cell {
+        grid-row:3;
+        grid-area: fourth;
+    }
+
+    .fifth-cell {
+        grid-row:4;
+        grid-area: repeater-buttons;
+        
+    }
+
+    .form-buttons {
+        width: 100%;
+        justify-content: center;
+    } 
+
+    /* @media (max-width: 360px) {
+
+    } */
+
+    /* @media (max-width: 412px) {
+
+    } */
+    
+    /* .form-field {
+        width: 160px;
+    }  */
+    .new-client-cta {
+        border: none;
+        padding: 8px;
+        border-radius: 5px;
+        color:#ffffff;
+        background-color:#1475cf;
+    }
+
+    .chat-container {
+        padding-right: 100px;
+    }
+
+    .dates {
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    #policy-end-date {
+        width: 20vw;
+    }
+
+    .form-buttons {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+        gap: 5px;
+    } 
+
+
+
+
 
 }
 
 /* // Large devices (desktops, less than 1200px) */
 @media (max-width: 1199.98px) { 
-
+    
 }
 
 /* // X-Large devices (large desktops, less than 1400px) */
