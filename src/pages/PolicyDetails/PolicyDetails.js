@@ -100,7 +100,7 @@ function PolicyDetails() {
     
    
 
-   console.log(stickerRange)
+   console.log(agentRange)
 
       
     
@@ -214,14 +214,12 @@ function PolicyDetails() {
                             <Form.Control type="text" id="stickerNo" required/>
                         </Form.Group>
 
-                        {agentRange.map(range => {
-                            for(let i = 0; i < (+range.agentTo - +range.agentFrom); i++){
-                                // console.log(+range.agentTo - +range.agentFrom)
-                                // console.log(i)
-                                // console.log(`000${+range.agentFrom + i}`)
-                                (<>hello</>)
-                            }
-                        })}
+                        {agentRange.map(range => 
+                        <>
+                            <span>{range.agentFrom} to {range.agentTo}</span><br />
+                            <span>used: []</span>
+                        </>
+                        )}
                     
                 </Modal.Body>
                 <Modal.Footer className="hideOnPrint">
