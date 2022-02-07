@@ -19,7 +19,7 @@ function StickerModal({ name, user_id }) {
         policiesArray.length === 0 ? setPolicies(null) : setPolicies(policiesArray)
     }
 
-      // get sticker Numbers.
+  // get sticker Numbers.
   const [stickerRange, setStickerRange] = useState([]);
   const rangesCollectionRef = collection(db, "ranges");
 
