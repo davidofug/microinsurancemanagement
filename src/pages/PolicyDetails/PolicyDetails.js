@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { getDoc, getDocs, collection, doc, updateDoc} from 'firebase/firestore'
-import { db } from '../../helpers/firebase'
+import { authentication, db } from '../../helpers/firebase'
 import './PolicyDetails.css'
 import { currencyFormatter } from '../../helpers/currency.format'
 import { Modal, Form, Col } from 'react-bootstrap'
@@ -13,7 +13,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function PolicyDetails() {
-    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP(); getStickerRange()}, []);
+    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP(); getStickerRange(); }, []);
 
     const [ show, handleShow, handleClose ] = useDialog()
 
@@ -63,11 +63,13 @@ function PolicyDetails() {
     const [stickerRange, setStickerRange] = useState([]);
     const rangesCollectionRef = collection(db, "ranges");
 
+    const [ agentRange, setAgentRange ] = useState([])
+
     const getStickerRange = async () => {
         const data = await getDocs(rangesCollectionRef)
         const rangeArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         rangeArray.length === 0 ? setStickerRange(null) : setStickerRange(rangeArray)
-        
+        setAgentRange(rangeArray.filter(range => range.agentAssignTo).map(range => range.agentAssignTo).flat(1).filter(range => range.agent_uid === authentication.currentUser.uid))
     }
 
 
@@ -94,6 +96,11 @@ function PolicyDetails() {
     const submitStickerNo = () => {
 
     }
+
+    
+   
+
+   console.log(agentRange)
       
     
     return (
@@ -205,6 +212,13 @@ function PolicyDetails() {
                             <Form.Label htmlFor='stickerNo'>Enter Sticker Number</Form.Label>
                             <Form.Control type="text" id="stickerNo" required/>
                         </Form.Group>
+
+                        {agentRange.map(range => {
+                            for(let i = 0; i < (+range.agentTo - +range.agentFrom); i++){
+                                console.log(+range.agentTo - +range.agentFrom)
+                                return <span>{`000${+range.agentFrom + i}`} </span>
+                            }
+                        })}
                     
                 </Modal.Body>
                 <Modal.Footer className="hideOnPrint">

@@ -312,7 +312,7 @@ function AddUsers({role}) {
                             </>
                         :
                             <>
-                                {role === 'agent' && 
+                                {role === 'agent' && authClaims.admin &&
                                     <Form.Group className="mb-3" >
                                         <Form.Label htmlFor='name'>Assign Supervisor</Form.Label>
                                         <Form.Control id="supervisor" placeholder="Name" required/>
