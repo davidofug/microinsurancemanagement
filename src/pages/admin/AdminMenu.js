@@ -39,6 +39,7 @@ export default function AdminMenu({ setLargeContentClass }) {
     window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
   }
 
+
   return (
     <div className="menuSide">
       <MobileNav role={Admin} user="admin" displayName={authentication?.currentUser?.displayName}/>

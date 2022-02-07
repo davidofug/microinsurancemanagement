@@ -170,6 +170,18 @@ export default function Claims() {
     getClaims();
   };
 
+  const changeClaimStatus = async (event) => {
+    event.preventDefault();
+
+    const claimRef = doc(db, "claims", singleDoc.id);
+
+    await updateDoc(claimRef, {
+      status: event.target.status.value,
+    });
+    handleCloseNotification()
+    getClaims();
+  };
+
   // search for client
   const [searchText, setSearchText] = useState('')
   const handleSearch = ({ target: {value} }) => setSearchText(value);
@@ -203,7 +215,7 @@ export default function Claims() {
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
 
   return (
-    <div className="components">
+    <div /* className="components" */>
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
       <ToastContainer />
 
@@ -241,7 +253,7 @@ export default function Claims() {
       </div>
 
       <Modal show={showNotification} onHide={handleCloseNotification}>
-        <ClaimModelNotification singleDoc={singleDoc}/>
+        <ClaimModelNotification singleDoc={singleDoc} handleClose={handleClose} changeClaimStatus={changeClaimStatus}/>
       </Modal>
 
       <Modal show={show} onHide={handleClose}>
@@ -259,7 +271,7 @@ export default function Claims() {
                 <option value={""}>Filter by status</option>
                 <option value="pending">Pending</option>
                 <option value="settled">Settled</option>
-                <option value="closed">Closed</option>
+                <option value="cancelled">Cancelled</option>
             </Form.Select>
           </Form.Group>
         </div>
@@ -289,9 +301,21 @@ export default function Claims() {
                <td>{claim.estimate}</td>
                {!authClaims.agent && <td>{claim.added_by_name}</td>}
                <td>
-                 <span
-                   style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
-                 >{claim.status}</span>
+                 {claim.status === "pending" &&
+                    <span
+                      style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                    >{claim.status}</span>
+                 }
+                 {claim.status === "settled" &&
+                    <span
+                      style={{backgroundColor: "#3EC089", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                    >{claim.status}</span>
+                 }
+                 {claim.status === "cancelled" &&
+                    <span
+                      style={{backgroundColor: "#dc3545", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
+                    >{claim.status}</span>
+                 }
                </td>
 
                <td className="started">
@@ -315,13 +339,6 @@ export default function Claims() {
                                              >
                                                <div className="actionDiv">
                                                  <i><MdEdit/></i> Edit
-                                               </div>
-                                         </li>
-
-                                         <li onClick={() => setShowContext(false)}
-                                             >
-                                               <div className="actionDiv">
-                                                 <i><AiFillCloseCircle/></i> Cancel
                                                </div>
                                          </li>
 

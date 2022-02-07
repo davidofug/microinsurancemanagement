@@ -180,7 +180,7 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
     return (
       <>
       
-        <div className='components'>
+        <div style={{margin: "30px"}}>
             <Header title="Agents" subtitle="MANAGING AGENTS" />
             <ToastContainer />
    

@@ -9,17 +9,20 @@ import { httpsCallable } from 'firebase/functions';
 import { Table, Modal, Form } from 'react-bootstrap'
 import { useForm } from "../../hooks/useForm";
 import ClientModal from '../../components/ClientModal';
-import { MdEdit, MdDelete } from 'react-icons/md'
+import { MdEdit, MdDelete, MdStickyNote2 } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { ImFilesEmpty } from 'react-icons/im'
 import Loader from '../../components/Loader';
 import useAuth from '../../contexts/Auth';
 import { CSVLink } from "react-csv";
 import { addDoc, collection } from 'firebase/firestore';
+import useDialog from '../../hooks/useDialog';
+import StickerModal from '../../components/StickersModal';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../../components/messenger/Chat' 
+import SupervisorDetails from '../../components/SupervisorDetails';
 
 
 function Supervisors() {
@@ -55,6 +58,9 @@ function Supervisors() {
 
   const [ currentPage, setCurrentPage ] = useState(1)
   const [supervisorsPerPage] = useState(10)
+
+
+  const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
 
 
   // search by name
@@ -169,7 +175,7 @@ function Supervisors() {
   console.log(supervisors)
 
     return (
-        <div className='components'>
+        <div /* className='components' */>
           <Header title="Supervisors" subtitle="MANAGING SUPERVISORS" />
           <ToastContainer />
 
@@ -195,7 +201,11 @@ function Supervisors() {
             </div>
 
             <Modal show={show} onHide={handleClose}>
-              <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
+              <ClientModal singleDoc={singleDoc} handleClose={handleClose} getUsers={getSupervisors} />
+            </Modal>
+
+            <Modal show={openSticker} onHide={handleCloseSticker}>
+              <SupervisorDetails name={singleDoc.name} user_id={singleDoc.uid} />
             </Modal>
 
             {supervisors !== null && supervisors.length > 0
@@ -204,14 +214,6 @@ function Supervisors() {
                 <div className="shadow-sm table-card componentsData">   
                 <div id="search">
                       <SearchBar placeholder={"Search Supervisor by name"} value={searchText} handleSearch={handleSearch} />
-                      {/* <CSVLink
-                        data={supervisors}
-                        filename={"Britam-Supervisors.csv"}
-                        className="btn btn-primary cta"
-                        target="_blank"
-                      >
-                        Export <MdDownload />
-                      </CSVLink> */}
                 </div>
 
                 {currentSupervisors.length > 0
@@ -238,6 +240,15 @@ function Supervisors() {
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(supervisor)}}>&#8942;</button>
 
                                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                            <li onClick={() => {
+                                                    setShowContext(false)
+                                                    handleOpenSticker(); 
+                                                  }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><MdStickyNote2/></i> Issued Stickers
+                                                  </div>
+                                            </li>
                                             <li onClick={() => {
                                                     setShowContext(false)
                                                     handleShow();
