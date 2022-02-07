@@ -255,7 +255,7 @@ export default function Mtp() {
         <div id="add_client_group">
           <div></div>
           <Link to="/supervisor/add-windscreen">
-            <button className="btn btn-primary cta">Add Windscreen</button>
+            <button className="btn btn-primary cta">Add Transit</button>
           </Link>
         </div>
       }
@@ -264,7 +264,7 @@ export default function Mtp() {
         <div id="add_client_group">
           <div></div>
           <Link to="/agent/add-windscreen">
-            <button className="btn btn-primary cta">Add Windscreen</button>
+            <button className="btn btn-primary cta">Add Transit</button>
           </Link>
         </div>
       }

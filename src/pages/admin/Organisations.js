@@ -274,7 +274,6 @@ export default function Organisations() {
       <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
         <Chat />
       </div> 
-      
     </div>
   );
 }
