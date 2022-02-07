@@ -24,8 +24,12 @@ import {
 import { Form } from 'react-bootstrap'
 import { getFormattedDate } from '../../helpers/formatDate'
 
+import useSound from 'use-sound'
+import notificationSound from '../../assets/media/audios/sound1.mp3'
 
 function Chat() {
+    const [ play ] = useSound(notificationSound)
+
     const [ unread, setUnread ] = useState(0)
     const [ searchKey, setSearchKey ] = useState('')
     const [ allChats, setAllChats ] = useState([])
@@ -43,14 +47,9 @@ function Chat() {
 
     const { authClaims } = useAuth()
 
-    useEffect(async ()=> {
-        onSnapshot(collection(db, "messages"), (snapshot)=> {
-            const data = snapshot.docs.map(doc =>  ({...doc.data(), id:doc.id})) 
-            setAllMessages(data)    
-            console.log(data.filter(message => message?.read === false).length)
-            console.log(data.filter(message => message?.read !== true).sort((a, b) => a?.createdAt?.seconds - b?.createdAt?.seconds))
-        })
+    useEffect(()=> {
         process()
+        return () => process()
     }, [])
 
     
@@ -72,7 +71,6 @@ function Chat() {
 
     const filterAcceptedChats = ({target:{ value }}) => {
         setSearchKey(value)
-        console.log(acceptedChats)
         const chats = allChats.filter(chat => {
             return chat?.name.toLowerCase().includes(value.toLowerCase())
         })
@@ -84,22 +82,17 @@ function Chat() {
     const process = () => {            
         const listUsers = httpsCallable(functions,'listUsers')
         listUsers().then(({ data }) => {
-            console.log(data)
-            console.log(authentication.currentUser)
             if(authClaims?.supervisor) {
               const myAgents = data.filter(user => user.role.agent === true && user?.meta.added_by_uid === authentication.currentUser.uid)
               const incharge = data.filter(user => user.uid === data.filter(user => user.uid === authentication.currentUser.uid)[0].meta.added_by_uid)
               
               setAcceptedChats([...myAgents, ...incharge])
-              console.log([...myAgents, ...incharge])
               return [...myAgents, ...incharge]
     
             } else if (authClaims?.admin) {
               const incharge = data.filter(user => user.uid === data.filter(user => user.uid ===  authentication.currentUser.uid)[0].meta.added_by_uid)
               const supervisors = data.filter( user => user?.role?.supervisor === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
               const myAgents = data.filter(user => user?.role?.agent === true && user?.meta?.added_by_uid === authentication.currentUser.uid)
-              console.log(incharge)
-              console.log([...incharge, ...myAgents, ...supervisors])
 
               setAcceptedChats([...supervisors, ...myAgents, ...incharge])
               return [...supervisors, ...myAgents, ...incharge]
@@ -113,11 +106,9 @@ function Chat() {
                 return [...myAgents, ...myAdmins, ...mySupervisors]
             } else if (authClaims?.agent) {
                 const incharge = data.filter(user => user.uid === data.filter(user => user.uid === authentication.currentUser.uid)[0].meta.added_by_uid)
-                console.log(incharge)
                 return [...incharge]
             }
         }).then(async (capables) => {
-            console.log(capables)
             onSnapshot(collection(db, 'messages'), (snapshot) => {
                 const data = snapshot.docs.map(doc => ({...doc.data(), id:doc.id}))
                 const sentMessages = data.filter(message => message?.sendersUID === authentication.currentUser.uid)
@@ -125,6 +116,7 @@ function Chat() {
                 const uids = [...new Set(receivers)]
                 const prevs = capables.filter(capable => uids.includes(capable.uid))
                 setPreviousChats(prevs)
+                setAllMessages(data)
 
             })
             const data = await getDocs(collection(db, 'messages'))
@@ -136,13 +128,11 @@ function Chat() {
             setPreviousChats(capables.filter(capable => uids.includes(capable.uid)))   
             setAcceptedChats(capables)  
             setAllChats(capables)   
-            
-            const receivedUnreadMessages = messages.filter(msg => msg?.sendersUID === authentication.currentUser.uid).filter(msg => uids.includes(msg.receiversUID)).filter(message => message?.read !== true)
-        
+                        
         }).catch((error) => {
             console.log(error)
         })
-      }
+    }
 
     return (     
         <div id="chatbox" style={{display:"flex", flexDirection:"column", backgroundColor:"white", borderTopLeftRadius:"15px 15px", borderTopRightRadius:"15px 15px", width:"350px"}} className="shadow-sm collapse-chatbox" >
@@ -155,6 +145,9 @@ function Chat() {
                             setSelectChat(true)
                             document.getElementById("msg-form").classList.add('hide-msg-form')
                             document.getElementById("msg-form").classList.remove('show-msg-form')
+                            console.log(receiversUID)
+                            setUnread(allMessages.filter(msg => msg.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true).length)
+
                             
                         }} style={{height:"30px", width:"30px", borderRadius:"50%", border:"none"}}>
                             <i style={{height:"100%", width:"100%", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", backgroundColor:"#f7f9f9"}}><IoArrowBackOutline /></i>
@@ -172,10 +165,8 @@ function Chat() {
                             setExpanded(!expanded)
                         } else {
                             document.getElementById("chatbox").classList.add("collapse-chatbox")
-                            document.getElementById("msg-form").classList.add("collapse-form")
-                            // document.getElementById('')
+                            document.getElementById("msg-form").classList.add("collapse-form")                            
                             setExpanded(!expanded)
-                            
                         }
                     }}>
                         <i style={{height:"100%", width:"100%", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", backgroundColor:"#f7f9f9"}}>{expanded === true ? <FaAngleDoubleDown /> : <FaAngleDoubleUp />}</i>
@@ -186,7 +177,10 @@ function Chat() {
                     <div style={{paddingTop:"5px", display:"flex", gap:"5px"}}>
                         <div style={{paddingTop:"2px"}}>Messages</div>
                         <div style={{paddingTop:"2px", width:"30px", height:"30px", borderRadius:"50%", backgroundColor:"#F8FAFA", justifyContent:"center", alignItems:"center", display:"flex"}}><BiEnvelope /></div>
-                        <div>{unread}</div>
+                        {
+                            unread > 0 &&
+                            <div>{unread}</div>
+                        }
                     </div>
                     <div style={{display:"flex", gap:"5px"}}>
                         {
@@ -242,9 +236,13 @@ function Chat() {
                                         photoURL,
                                         uid
                                     }, index) => {
+
                                         const unseenMsgs = allMessages.filter( msg => msg.sendersUID === uid).filter(msg => msg?.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true)
+                                        for(let msg of unseenMsgs){
+                                            play()
+                                        }
                                         return (
-                                            <div style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={ async () => {
+                                            <div key={index} style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={ async () => {
                                                 document.getElementById("msg-form").classList.remove('hide-msg-form')
                                                 setReceiversUID(uid)
                                                 const sentMessages = await allMessages.filter(message => message?.receiversUID === uid).filter(message => message?.sendersUID === authentication.currentUser.uid)
@@ -258,9 +256,7 @@ function Chat() {
                                                     updateDoc(doc(db, 'messages', id), {
                                                         read: true
                                                     }).then(result => console.log(result))   
-                                                })
-                                                setUnread(unread - unseenMsgs.length)
-
+                                                })                                                
                                             }}>
                                                 <div >
                                                     <div style={{width:"40px",  height:"40px", borderRadius:"50%", backgroundColor:"gray", opacity:"0.2", display:"flex", justifyContent:"center", alignItems:"center"}}><div>{photoURL !== null ? <img src={photoURL} alt={`${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}/> : `${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}</div></div>
@@ -290,6 +286,9 @@ function Chat() {
                                         uid
                                     }, index) => {
                                         const unseenMsgs = allMessages.filter( msg => msg.sendersUID === uid).filter(msg => msg?.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true)
+                                        for(let msg of unseenMsgs){
+                                            play()
+                                        }
                                         return (
                                             <div key={index} style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={async () => {
                                                 document.getElementById("msg-form").classList.remove('hide-msg-form')
@@ -307,7 +306,11 @@ function Chat() {
                                                     }).then(result => console.log(result))    
                                                 })
 
-                                                setUnread(unread - unseenMsgs)
+                                                onSnapshot(collection(db, 'messages')).then((snapshot) => {
+                                                    const messages = snapshot.docs.map(doc => ({...doc.data(), id: doc.id}))
+                                                    setUnread(allMessages.filter(msg => msg.receiversUID === authentication.currentUser.uid).filter(msg =>  msg?.read !== true).length)
+                                                })
+
                                             }}>
                                                 <div>
                                                     <div style={{width:"40px",  height:"40px", borderRadius:"50%", backgroundColor:"gray", opacity:"0.2", display:"flex", justifyContent:"center", alignItems:"center"}}><div>{photoURL !== null ? <img src={photoURL} alt={`${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}/> : `${name.split(" ")[0][0].toUpperCase()}${name.split(" ")[1][0].toUpperCase()}`}</div></div>
@@ -334,7 +337,6 @@ function Chat() {
                     :
 
                     <>
-                    {console.log(messages)}
                     {
                         messages?.length > 0 && messages.map((mes, index) => {
                             const { message, createdAt, sendersUID, receiversUID, id } = mes  
@@ -399,6 +401,9 @@ function Chat() {
                                             const sentMessages = data.filter(message => message?.receiversUID === receiversUID).filter(message => message?.sendersUID === authentication.currentUser.uid)
                                             const receivedMessages = data.filter(message => message?.receiversUID === authentication.currentUser.uid).filter(message => message?.sendersUID === receiversUID)
                                             setMessages([...sentMessages, ...receivedMessages].sort((a, b) => a?.createdAt?.seconds - b?.createdAt?.seconds))
+                                            // const unseenMsgs = allMessages.filter( msg => msg.sendersUID === receiver).filter(msg => msg?.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true) + unread
+                                            // setUnread(unseenMsgs)
+
                                         })
                                     } }  style={{backgroundColor:"#f7f9f9", height:"20px", border:"none"}}/>
                                 </div>

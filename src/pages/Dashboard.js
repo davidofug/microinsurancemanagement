@@ -343,7 +343,7 @@ function Dashboard() {
                         </Row>
                     </div>
                 </div>  
-                <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+                <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"200px"}}>
                     <Chat />
                 </div> 
             </div>
@@ -351,3 +351,4 @@ function Dashboard() {
 }
 
 export default Dashboard
+
