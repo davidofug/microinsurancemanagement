@@ -203,70 +203,81 @@ export default function StickerMgt() {
                             <SearchBar placeholder={"Search Stickers by Category"} value={searchText} handleSearch={handleSearch}/>
                       </div>
 
+                      {currentStickers.length > 0
+                      ?
                       <Table responsive hover bordered striped>
-                          <thead>
-                            <tr><th className="text-center">#</th><th>Category</th><th>Sticker Nos</th><th>used/Total No Received</th><th>Created At</th><th className="text-center">Actions</th></tr>
-                          </thead>
-                          <tbody>
-                            {currentStickers.map((sticker, index) => (
-                              <tr key={sticker.id}>
-                                <td className="text-center" style={{width: "9rem"}}>{index + 1}</td>
-                                <td>{sticker.category}</td>
-                                <td>[<span style={{color: "#c82e29"}}>{`${sticker.rangeFrom} - ${sticker.rangeTo}`}</span>]</td>
-                                <td>{sticker.used && sticker.used.length}/{sticker.rangeTo - sticker.rangeFrom}</td>
-                                <td>{sticker.timeCreated && sticker.timeCreated}</td>
-                                
-                                <td className="started text-center">
-                                  <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(sticker)}}>&#8942;</button>
+                      <thead>
+                        <tr><th className="text-center">#</th><th>Category</th><th>Sticker Nos</th><th>used/Total No Received</th><th>Created At</th><th className="text-center">Actions</th></tr>
+                      </thead>
+                      <tbody>
+                        {currentStickers.map((sticker, index) => (
+                          <tr key={sticker.id}>
+                            <td className="text-center" style={{width: "9rem"}}>{index + 1}</td>
+                            <td>{sticker.category}</td>
+                            <td>[<span style={{color: "#c82e29"}}>{`${sticker.rangeFrom} - ${sticker.rangeTo}`}</span>]</td>
+                            <td>{sticker.used && sticker.used.length}/{sticker.rangeTo - sticker.rangeFrom}</td>
+                            <td>{sticker.timeCreated && sticker.timeCreated}</td>
+                            
+                            <td className="started text-center">
+                              <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(sticker)}}>&#8942;</button>
 
-                                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                                    <li onClick={() => {handleShow(); setShowContext(false)}}>
+                              <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
+                                <li onClick={() => {handleShow(); setShowContext(false)}}>
+                                  <div className="actionDiv">
+                                    <i><MdInfo /></i> Details
+                                  </div>
+                                </li>
+                                <li onClick={() => {
+                                              setShowContext(false)
+                                            }}>
+                                  <div className="actionDiv">
+                                    <i><MdCancel /></i> Cancel
+                                  </div>
+                                </li>
+                                <li 
+                                      onClick={() => {
+                                              setOpenToggle(true)
+                                              setShowContext(false)
+                                            }}
+                                    >
                                       <div className="actionDiv">
-                                        <i><MdInfo /></i> Details
+                                        <i><MdDelete/></i> Delete
                                       </div>
-                                    </li>
-                                    <li onClick={() => {
-                                                  setShowContext(false)
-                                                }}>
-                                      <div className="actionDiv">
-                                        <i><MdCancel /></i> Cancel
-                                      </div>
-                                    </li>
-                                    <li 
-                                          onClick={() => {
-                                                  setOpenToggle(true)
-                                                  setShowContext(false)
-                                                }}
-                                        >
-                                          <div className="actionDiv">
-                                            <i><MdDelete/></i> Delete
-                                          </div>
-                                    </li>
-                                  </ul>
-                                </td>
+                                </li>
+                              </ul>
+                            </td>
 
-                              </tr>
-                            ))}
-                          </tbody>
+                          </tr>
+                        ))}
+                      </tbody>
 
-                          <tfoot>
-                            <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
-                                <td colSpan={4}>
-                                <Pagination 
-                                  pages={totalPagesNum}
-                                  setCurrentPage={setCurrentPage}
-                                  currentClients={currentStickers}
-                                  sortedEmployees={stickerRange}
-                                  entries={'Sticker Ranges'} />
-                                </td>
-                              </tr>
-                            </tfoot>
+                      <tfoot>
+                        <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+                            <td colSpan={4}>
+                            <Pagination 
+                              pages={totalPagesNum}
+                              setCurrentPage={setCurrentPage}
+                              currentClients={currentStickers}
+                              sortedEmployees={stickerRange}
+                              entries={'Sticker Ranges'} />
+                            </td>
+                          </tr>
+                        </tfoot>
 
 
-                          <tfoot>
-                            <tr><th className="text-center">#</th><th>Category</th><th>Sticker Nos</th><th>used/Total No Received</th><th>Created At</th><th className="text-center">Actions</th></tr>
-                          </tfoot>
-                      </Table>
+                      <tfoot>
+                        <tr><th className="text-center">#</th><th>Category</th><th>Sticker Nos</th><th>used/Total No Received</th><th>Created At</th><th className="text-center">Actions</th></tr>
+                      </tfoot>
+                  </Table>
+                      :
+                      <div className="no-table-data">
+                        <i><ImFilesEmpty /></i>
+                        <h4>No match</h4>
+                        <p>You have not added any Stickers Ranges</p>
+                      </div>
+                      }
+
+                      
 
                                 
 
