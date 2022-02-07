@@ -199,17 +199,6 @@
         justify-content: center;
     } 
 
-    /* @media (max-width: 360px) {
-
-    } */
-
-    /* @media (max-width: 412px) {
-
-    } */
-    
-    /* .form-field {
-        width: 160px;
-    }  */
     .new-client-cta {
         border: none;
         padding: 8px;
@@ -253,4 +242,32 @@
 /* // X-Large devices (large desktops, less than 1400px) */
 @media (max-width: 1399.98px) { 
 
+}
+
+@media (max-width: 390px) {
+    /* .tab-row {
+        display:grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: "sticker-no"
+                             "first"
+                             "second"
+                             "third"
+                             "fourth"
+                             "repeater-buttons";
+
+    } */
+
+    .tab-row {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .form-field {
+        width: 260px;
+    }
+
+   #chatbox {
+       margin-right:34px;
+   }
 }
