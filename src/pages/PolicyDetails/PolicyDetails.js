@@ -101,6 +101,10 @@ function PolicyDetails() {
    
 
    console.log(agentRange)
+
+   /* let newArr = []
+   console.log(newArr) */
+
       
     
     return (
@@ -215,8 +219,10 @@ function PolicyDetails() {
 
                         {agentRange.map(range => {
                             for(let i = 0; i < (+range.agentTo - +range.agentFrom); i++){
-                                console.log(+range.agentTo - +range.agentFrom)
-                                return <span>{`000${+range.agentFrom + i}`} </span>
+                                // console.log(+range.agentTo - +range.agentFrom)
+                                // console.log(i)
+                                // console.log(`000${+range.agentFrom + i}`)
+                                (<>hello</>)
                             }
                         })}
                     
