@@ -315,7 +315,7 @@ export default function Mtp() {
         <div id="add_client_group">
           <div></div>
           <Link to="/supervisor/add-mtp">
-            <button className="btn btn-primary cta">Add MTP</button>
+            <button className="btn btn-primary cta mr-2">Add MTP</button>
           </Link>
         </div>
       }
@@ -324,7 +324,7 @@ export default function Mtp() {
         <div id="add_client_group">
           <div></div>
           <Link to="/agent/add-mtp">
-            <button className="btn btn-primary cta">Add MTP</button>
+            <button className="btn btn-primary cta mx-3">Add MTP</button>
           </Link>
         </div>
       }
@@ -366,7 +366,7 @@ export default function Mtp() {
         <div id="search">
           <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
           <div></div>
-          <Form.Group className="m-3 categories" width="200px">
+          <Form.Group className="mb-3 mt-2 categories" width="200px">
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
                 <option value="new">New</option>
@@ -476,7 +476,7 @@ export default function Mtp() {
          <tfoot>
          <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
              
-           <td colSpan={3}>
+           <td colSpan={3} style={{paddingLeft: 0}}>
              <div style={{display: "flex"}}>
                <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
                    <option value="">Bulk Action</option>
