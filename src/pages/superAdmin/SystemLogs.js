@@ -66,7 +66,7 @@ function SystemLogs() {
       {logs !== null && logs.length > 0
       ?
                         <>
-        <div className="componentsData  shadow-sm table-card my-5" style={{ "maxWidth": "80vw", margin: "auto" }}>
+        <div className="componentsData  shadow-sm table-card my-5">
             <div id="search">
                 <Form.Group className=" categories" style={{marginRight: "5px"}} width="180px">
                     <Form.Label htmlFor='category'>Status</Form.Label>
