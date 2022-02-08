@@ -44,7 +44,7 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
 
     return (
         <div className='menuSide'>
-            <MobileNav role={Agent} user="agent" displayName={authentication?.currentUser?.displayName}/>
+            <MobileNav role={Agent} user="agent" displayName={authentication?.currentUser?.displayName} show={show} handleClose={handleClose} handleShow={handleShow}/>
             {toggleMenu === true 
             ?
                     <nav className="sidebar">

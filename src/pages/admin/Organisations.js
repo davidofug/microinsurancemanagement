@@ -116,13 +116,13 @@ export default function Organisations() {
     console.log(organisations)
 
   return (
-    <div /* className="components" */>
+    <div className="components">
       <Header title="Organisations" subtitle="VIEW COMPANY DETAILS" />
       <ToastContainer/>
       <div id="add_client_group">
         <div></div>
         <Link to="/admin/add-organisations">
-          <button className="btn btn-primary cta">Add Organisation</button>
+          <button className="btn btn-primary cta m-3">Add Organisation</button>
         </Link>
       </div>
 

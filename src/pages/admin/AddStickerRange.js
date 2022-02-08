@@ -45,7 +45,8 @@ function AddStickerRange() {
                 rangeTo: event.target.rangeTo.value,
                 assignedTo: event.target.assignedTo.value,
                 used: [],
-                returned: []
+                returned: [],
+                agentAssignTo: []
             })
             toast.success(`Successfully added sticker Range`, {position: "top-center"});
             document.stickerForm.reset()
@@ -59,7 +60,7 @@ function AddStickerRange() {
     }
 
     return (
-        <div /* className='components' */>
+        <div className='components'>
             <Header title="Add Sticker Number" subtitle="ADD NEW STICKER NUMBERS" />
             <ToastContainer />
 
