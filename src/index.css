@@ -109,7 +109,7 @@ body{
     background-color: #fff;
     margin-top: 60px;
     border-radius: 10px;
-    position: relative;
+    /* position: relative; */
 }
 
 
@@ -317,6 +317,7 @@ tbody, td, tfoot, th, thead, tr{
     .components{
         width: 100vw;
         padding: 0 10px;
+        margin-top: 80px;
     }
     .componentsData{
         margin: 0 10px;
