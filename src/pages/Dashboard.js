@@ -181,13 +181,13 @@ function Dashboard() {
     }
 
     return (
-            <div /* className='components' */ /* style={{margin: "30px"}} */>
-                <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" />
+            <div className='components' /* style={{margin: "30px"}} */>
+                <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" className="heading"/>
 
                 <div className="componentsData">
-                    <div id="first-row" className='mb-5 first-row' style={{display:"flex", width: "100%", justifyContent: "space-between", overflowX: "hidden"}}>
+                    <div id="first-row" className='mb-5 first-row' style={{display:"flex", width: "100%", justifyContent: "space-between"}}>
                         <div id="bin" className="shadow-sm bg-body rounded first-container">
-                            <div /* className="row-container" */>
+                            <div /* className="row-container" */ className="card-row-container">
                                     <div className="col">
                                         <div className="custom-card m-1" style={{backgroundColor:"#804C75"}}>
                                             <Card.Body className="card-body">
@@ -205,7 +205,7 @@ function Dashboard() {
                                         </div>
                                     </div>
                             </div>
-                            <div /* className="row-container" */>
+                            <div /* className="row-container" className=""*/ className="card-row-container">
                                     <div className="col">
                                         <div className="custom-card m-1" style={{backgroundColor:"#C82E29"}}>
                                             <Card.Body className="card-body">
@@ -343,7 +343,7 @@ function Dashboard() {
                         </Row>
                     </div>
                 </div>  
-                <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"200px"}}>
+                <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
                     <Chat />
                 </div> 
             </div>
