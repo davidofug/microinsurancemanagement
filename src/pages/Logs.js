@@ -60,7 +60,7 @@ function Logs() {
     }
 
     return (
-        <div /* className='components' */>
+        <div className='components'>
             <Header title="Logs" subtitle="USER LOG TRAILS" />
 
 
@@ -71,14 +71,14 @@ function Logs() {
                     ?
                         <button onClick={() => {
                             submitLogin()
-                        }} className='btn btn-primary cta'>check in</button>
+                        }} className='btn btn-primary cta mb-2'>check in</button>
                         
                     :
                     (new Date().toISOString().slice(0, 10)) !== todayAttendence?.checkout.slice(0, 10) ?
                         <button onClick={() => {
                             submitLogout()
                             
-                        }} className='btn btn-primary cta'>check out</button>
+                        }} className='btn btn-primary cta mb-2'>check out</button>
     
                         :
                             <div style={{backgroundColor: "#fff", width: "95%", margin: "10px 0", padding: "10px", border: "1px solid #dedee0", borderLeft: "5px solid #00a32a", borderRight: "1px solid #dedee0"}}>
@@ -97,7 +97,7 @@ function Logs() {
 
             {attendence !== null && attendence.length > 0
             ?
-                <div className="shadow-sm table-card componentsData"> 
+                <div className="shadow-sm table-card componentsData mb-3"> 
                     <Table striped hover responsive>
                         <thead>
                             <tr><th>Check in</th><th>Check out</th><th>Duration</th></tr>
