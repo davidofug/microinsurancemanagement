@@ -127,20 +127,15 @@ const getClients = () => {
 
 
     return (
-        <div /* className='components' */>
+        <div className='components'>
             <Header title="Clients" subtitle="MANAGING CLIENTS" />
             <ToastContainer />
    
             <div id="add_client_group">
                 <div></div>
-                {authClaims.supervisor && 
-                  <Link to="/supervisor/add-clients">
-                      <button className='btn btn-primary cta'>Add Client</button>
-                  </Link>
-                }
-                {authClaims.agent && 
-                  <Link to="/agent/add-clients">
-                      <button className='btn btn-primary cta'>Add Client</button>
+                {!authClaims.admin && !authClaims.superadmin &&
+                  <Link to={authClaims.supervisor && "/supervisor/add-clients" || authClaims.agent && "/agent/add-clients"}>
+                      <button className='btn btn-primary cta m-2'>Add Client</button>
                   </Link>
                 }
             </div>
@@ -189,7 +184,7 @@ const getClients = () => {
                             <td>{client.meta.gender === '' ? 'Corporate Entity' : client.meta.gender}</td>
                             <td>{client.meta.phone}</td>
                             <td>{client.meta.address}</td>
-                            <td>{client.meta.added_by_name}</td>
+                            {!authClaims.agent && <td>{client.meta.added_by_name}</td>}
 
                             {!authClaims.admin &&
                             <td className="started">
