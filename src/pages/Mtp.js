@@ -308,14 +308,14 @@ export default function Mtp() {
   }
 
   return (
-    <div /* className="components" */>
+    <div className="components">
       <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>
           <Link to="/supervisor/add-mtp">
-            <button className="btn btn-primary cta mr-2">Add MTP</button>
+            <button className="btn btn-primary cta mr-2 mb-2">Add MTP</button>
           </Link>
         </div>
       }
@@ -324,7 +324,7 @@ export default function Mtp() {
         <div id="add_client_group">
           <div></div>
           <Link to="/agent/add-mtp">
-            <button className="btn btn-primary cta mx-3">Add MTP</button>
+            <button className="btn btn-primary cta mx-3 my-2">Add MTP</button>
           </Link>
         </div>
       }
