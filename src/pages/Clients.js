@@ -160,7 +160,7 @@ const getClients = () => {
 
             {clients !== null && clients.length > 0
             ?
-              <div className="componentsData shadow-sm table-card">
+              <div className="componentsData shadow-sm table-card mb-3">
                 <div id="search">
                   <SearchBar placeholder={"Search Client by name"} value={searchText} handleSearch={handleSearch}/>
                   <div style={{display: "flex", justifyContent: "flex-end"}}>

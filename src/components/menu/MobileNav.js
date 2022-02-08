@@ -15,6 +15,10 @@ export default function MobileNav ({role, user, displayName }) {
     const [ selected, setSelected ] = useState({ activeObject: null, role })
     const [ show, handleShow, handleClose ] = useDialog();
 
+    if(show){
+        window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
+    }
+
     useEffect(() => {
         sessionStorage.getItem('session1')
             ? setSelected({...selected, activeObject: selected.role[sessionStorage.getItem('session1')-1]})
@@ -104,9 +108,9 @@ export default function MobileNav ({role, user, displayName }) {
                                     <DefaultAvatar />
                                 }
                                 <div>
-                                    <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{authentication?.currentUser?.displayName}</p>
+                                    <p style={{"fontWeight": "500", "fontSize": "1.05rem"}}>{displayName}</p>
                                     <p style={{"color": "#646464"}}>
-                                        <Badge color='black'>agent</Badge>
+                                        <Badge color='black'>{user}</Badge>
                                     </p>
                                 </div>
                                 <h3 style={{color: "#000"}}>&hellip;</h3>
