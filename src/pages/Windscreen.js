@@ -248,7 +248,7 @@ export default function Mtp() {
 
 
   return (
-    <div /* className="components" */>
+    <div className="components">
       <Header title="Windscreen" subtitle="MANAGING WINDSCREEN POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&

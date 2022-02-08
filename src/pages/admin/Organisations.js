@@ -122,7 +122,7 @@ export default function Organisations() {
       <div id="add_client_group">
         <div></div>
         <Link to="/admin/add-organisations">
-          <button className="btn btn-primary cta">Add Organisation</button>
+          <button className="btn btn-primary cta m-3">Add Organisation</button>
         </Link>
       </div>
 
