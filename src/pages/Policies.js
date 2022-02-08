@@ -144,7 +144,7 @@ function Policies({cat, btn_txt, pol}) {
             } 
         }        
         else{
-            values[index][event.target.name] = event.target.value    
+            values[index][event.target.name] = event.target.value   
         }
 
         if(event.target.name === 'basicPremium') { 
@@ -493,7 +493,7 @@ function Policies({cat, btn_txt, pol}) {
                         <Row>
                             {
                                 cat === "comprehensive" ? 
-                                <Col className="client-details" md={3}>
+                                <Col className="client-details" md={4}>
                                     <Form.Group className="mb-3">
                                         <Form.Control list="clientNames" placeholder='Existing comprehensive client' id="existingClient"onChange={()=> {
                                             const list = document.getElementById('clientNames')
@@ -767,7 +767,7 @@ function Policies({cat, btn_txt, pol}) {
                     </div>
                     <Row style={{paddingBottom:"6vh", display:"flex"}}>
                         <div className="currency">
-                            <Form.Group className="mb-3" >
+                            <Form.Group >
                                 <Form.Select type="text" name="currency" aria-label="currency" id="currency" onChange={(event)=>{
                                     setCurrency(event.target.value)
                                     }}>
@@ -828,15 +828,15 @@ function Policies({cat, btn_txt, pol}) {
                         }
                         <div style={{display:"flex", width:"100%", justifyContent:"flex-end", margin:"0px"}}>
                             <div>
-                                <Button variant="primary" type="submit">
+                                <button className="new-client-cta" variant="primary" type="submit">
                                     {btn_txt}
-                                </Button>
+                                </button>
                             </div>
                         </div>
                     </div> 
                 </Form>
             </div>
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <div className="chat-container" style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}}>
               <Chat />
             </div> 
         </div>
