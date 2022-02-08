@@ -211,7 +211,7 @@ function Reports() {
 
             <div style={{display: "flex", alignItems: "center"}}>
             <Form.Group controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                <Form.Label>Today</Form.Label>
+                <Form.Label>Daily</Form.Label>
                 <Form.Control type="date" onChange={({target: {value}}) => setCurrentDay(value)}/>
             </Form.Group>
 
@@ -350,8 +350,8 @@ function Reports() {
             :
               <div className="no-table-data">
                 <i><ImFilesEmpty /></i>
-                <h4>No data yet</h4>
-                <p>You have not created any Motor third Party Stickers Yet</p>
+                <h4>No match</h4>
+                <p>No stickers Yet</p>
               </div>
             }
 
