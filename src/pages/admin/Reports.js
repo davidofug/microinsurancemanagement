@@ -15,6 +15,7 @@ import { authentication, functions } from '../../helpers/firebase'
 import { generateReport } from '../../helpers/generateReport'
 import useAuth from "../../contexts/Auth";
 import Chat from '../../components/messenger/Chat'
+import useMediaQuery from "../../hooks/useMediaQuery";
 
 function Reports() {
   useEffect(() => {
@@ -157,15 +158,19 @@ function Reports() {
   
   const totalPagesNum = !policies || Math.ceil(shownPolicies.length / policiesPerPage)
 
+  const isMobile = useMediaQuery("(max-width: 760px)")
+
+  console.log(isMobile)
+
 
   return (
-    <div /* className="components" */>
+    <div className="components">
       <Header title="Reports" subtitle="MANAGING REPORTS" />
 
         {policies !== null && policies.length > 0 
         ?
           <>
-        <div className="componentsData  shadow-sm table-card" style={{ "maxWidth": "80vw", margin: "auto" }}>
+        <div className="componentsData  shadow-sm table-card mb-3" style={{overflowX: "hidden"}} /* style={{ "maxWidth": "80vw", margin: "auto" }} */>
             
           <div id="search">
               <SearchBar
@@ -178,7 +183,7 @@ function Reports() {
           </div>
 
             <div style={{display: "flex", alignItems: "center"}}>  
-                  <Form.Group className="m-3 categories" width="180px">
+                  <Form.Group className="categories" width="180px">
                       <Form.Label htmlFor='category'>Policy Category</Form.Label>
                       <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                           <option value={""}>Select a category</option>
@@ -205,8 +210,8 @@ function Reports() {
             </div>
 
             <div style={{display: "flex", alignItems: "center"}}>
-            <Form.Group controlId="formGridEmail"  className="m-3" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                <Form.Label>Today</Form.Label>
+            <Form.Group controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                <Form.Label>Daily</Form.Label>
                 <Form.Control type="date" onChange={({target: {value}}) => setCurrentDay(value)}/>
             </Form.Group>
 
@@ -229,27 +234,30 @@ function Reports() {
                       </Form.Select>
                   </Form.Group>
 
-                  <Form.Group className="m-3" width="150px">
-                      <Form.Label htmlFor='category'>Year</Form.Label>
-                      <Form.Select aria-label="User role" id='category' onChange={(event) => setSelectedYear(event.target.value)}>
-                          <option value="">Select a year</option>
-                          <option value="2022">2022</option>
-                          <option value="2021">2021</option>
-                          <option value="2020">2020</option>
-                          <option value="2019">2019</option>
-                          <option value="2018">2018</option>
-                          <option value="2017">2017</option>
-                      </Form.Select>
-                  </Form.Group>
+                  {!isMobile &&
+                  <>
+                    <Form.Group className="m-3" width="150px">
+                        <Form.Label htmlFor='category'>Year</Form.Label>
+                        <Form.Select aria-label="User role" id='category' onChange={(event) => setSelectedYear(event.target.value)}>
+                            <option value="">Select a year</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                        </Form.Select>
+                    </Form.Group>
 
-                  {/* <Form.Group controlId="formGridEmail"  className="m-3" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}> */}
-                      <div style={{diplay: "flex", flexDirection: "row"}}>
-                        <Form.Label>Date Range</Form.Label>
-                        <div className="dateRange">
-                          <span>From</span><input type="date" onChange={({target: {value}}) => setDateFrom(value)}/><span>To</span><input type="date" onChange={({target: {value}}) => setDateTo(value)}/>
-                        </div>
+                    
+                    <div style={{diplay: "flex", flexDirection: "row"}}>
+                      <Form.Label>Date Range</Form.Label>
+                      <div className="dateRange">
+                        <span>From</span><input type="date" onChange={({target: {value}}) => setDateFrom(value)}/><span>To</span><input type="date" onChange={({target: {value}}) => setDateTo(value)}/>
                       </div>
-                  {/* </Form.Group> */}
+                    </div>
+                  </>
+                  }
             </div>
 
             {shownPolicies.length > 0
@@ -257,17 +265,14 @@ function Reports() {
               <>
                 <Table striped hover responsive id="myTable">
               <thead>
-
-              <tr style={{borderBottom: "1px solid #000"}}>
+                <tr style={{borderBottom: "1px solid #000"}}>
                       {switchCategory === "" && <th colspan={20} style={{textAlign: "center"}}>{`All Reports`.toUpperCase()}</th>}
                       {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>{`MTP Report`.toUpperCase()}</th>}
                       {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>{`comprehensive Report`.toUpperCase()}</th>}
                       {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>{`windscreen Report`.toUpperCase()}</th>}
                       {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>{`new import Report`.toUpperCase()}</th>}
                       {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>{`transit Report`.toUpperCase()}</th>}
-                      
                 </tr>
-
                 <tr>
                   <th>#</th><th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
                 </tr>
@@ -342,8 +347,8 @@ function Reports() {
             :
               <div className="no-table-data">
                 <i><ImFilesEmpty /></i>
-                <h4>No data yet</h4>
-                <p>You have not created any Motor third Party Stickers Yet</p>
+                <h4>No match</h4>
+                <p>No stickers Yet</p>
               </div>
             }
 

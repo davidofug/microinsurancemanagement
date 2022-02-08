@@ -1,23 +1,18 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { MdDownload } from 'react-icons/md'
 import Pagination from '../../helpers/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Header from '../../components/header/Header';
 import { functions, authentication, db } from '../../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { Table, Modal, Form } from 'react-bootstrap'
-import { useForm } from "../../hooks/useForm";
 import ClientModal from '../../components/ClientModal';
 import { MdEdit, MdDelete, MdStickyNote2 } from 'react-icons/md'
-import { AiFillCloseCircle } from 'react-icons/ai'
 import { ImFilesEmpty } from 'react-icons/im'
 import Loader from '../../components/Loader';
 import useAuth from '../../contexts/Auth';
-import { CSVLink } from "react-csv";
 import { addDoc, collection } from 'firebase/firestore';
 import useDialog from '../../hooks/useDialog';
-import StickerModal from '../../components/StickersModal';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -27,7 +22,7 @@ import SupervisorDetails from '../../components/SupervisorDetails';
 
 function Supervisors() {
 
-    useEffect(() => {document.title = 'Britam - Supervisors'; getSupervisors()}, [])
+    useEffect(() => { document.title = 'Britam - Supervisors'; getSupervisors() }, [])
 
     const { authClaims } = useAuth()
 
@@ -172,17 +167,17 @@ function Supervisors() {
   }
   const [clickedIndex, setClickedIndex] = useState(null)
 
-  console.log(supervisors)
+
 
     return (
-        <div /* className='components' */>
+        <div className='components'>
           <Header title="Supervisors" subtitle="MANAGING SUPERVISORS" />
           <ToastContainer />
 
             <div id="add_client_group">
                 <div></div>
                 <Link to="/admin/add-supervisor">
-                    <button className="btn btn-primary cta">Add supervisor</button>
+                    <button className="btn btn-primary cta m-3">Add supervisor</button>
                 </Link>               
             </div>
 
@@ -277,7 +272,7 @@ function Supervisors() {
 
                         <tfoot>
                           <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
-                            <td colSpan={3}>
+                            <td colSpan={3} style={{paddingLeft: 0}}>
                               <div style={{display: "flex"}}>
                                 <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
                                     <option value="">Bulk Action</option>

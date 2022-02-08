@@ -5,13 +5,14 @@ import { useState, useEffect } from 'react'
 import { ImFilesEmpty } from 'react-icons/im'
 import Loader from './Loader';
 import { httpsCallable } from 'firebase/functions';
-import { db, functions } from '../helpers/firebase'
+import { db, functions, authentication } from '../helpers/firebase'
 
 
 function SupervisorDetails({ name, user_id }) {
 
     useEffect(() => {
         getPolicies()
+        getStickerRange()
     }, [])
 
     const [policies, setPolicies] = useState([])
@@ -34,7 +35,17 @@ function SupervisorDetails({ name, user_id }) {
             supervisorMtpPolicies.length === 0 ? setPolicies(null) : setPolicies(supervisorMtpPolicies)
         })
     }
-console.log(agents)
+
+    // get sticker Numbers.
+  const [stickerRange, setStickerRange] = useState([]);
+  const rangesCollectionRef = collection(db, "ranges");
+
+  const getStickerRange = async () => {
+    const data = await getDocs(rangesCollectionRef)
+    const rangeArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    rangeArray.length === 0 ? setStickerRange(null) : setStickerRange(rangeArray)
+    
+  }
 
     return (
         <>
@@ -42,7 +53,15 @@ console.log(agents)
                 <Modal.Title>{name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {stickerRange.filter(range => range.assignedTo === name).map(range => 
+                    <>
+                       <b>Range :</b> {range.rangeFrom} - {range.rangeTo}<br />
+                    </>
+                )}
+                <br />
                 <h6>Stickers Sold Under {name}</h6>
+
+
                 {policies !== null && policies.length > 0
                 ?
                     <Table responsive hover striped>

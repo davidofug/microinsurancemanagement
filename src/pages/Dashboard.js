@@ -181,7 +181,7 @@ function Dashboard() {
     }
 
     return (
-            <div /* className='components' */ /* style={{margin: "30px"}} */>
+            <div className='components' /* style={{margin: "30px"}} */>
                 <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" />
 
                 <div className="componentsData">

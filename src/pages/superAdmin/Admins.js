@@ -158,7 +158,7 @@ function Admins() {
             <div id="add_client_group">
                 <div></div>
                 <Link to="/superadmin/add-admin">
-                    <button className="btn btn-primary cta">Add admin</button>
+                    <button className="btn btn-primary cta m-2">Add admin</button>
                 </Link>
                 
             </div>
@@ -244,7 +244,7 @@ function Admins() {
 
                         <tfoot>
                           <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
-                            <td colSpan={3}>
+                            <td colSpan={3} style={{paddingLeft: 0}}>
                               <div style={{display: "flex"}}>
                                 <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
                                     <option value="">Bulk Action</option>

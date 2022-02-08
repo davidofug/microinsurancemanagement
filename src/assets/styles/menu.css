@@ -480,6 +480,7 @@ footer ul li a:hover{
         position: fixed;
         width: 100vw;
         height: 80px;
+        z-index: 5;
     }
 
     main{
