@@ -362,7 +362,7 @@ export default function Mtp() {
       {policies !== null && policies.length > 0 
       ?
         <>
-        <div className="table-card componentsData shadow-sm">
+        <div className="table-card componentsData shadow-sm mb-3">
         <div id="search">
           <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
           <div></div>
