@@ -300,7 +300,7 @@ function PolicyDetails() {
             }
 
             <p><span className='prepared'>Prepared by:  </span><b>{policy.added_by_name}</b></p>
-            {policy.stickersDetails && policy.stickersDetails[0].status !== 'paid' && <button className='btn btn-success' onClick={handleShowPayment}>$ Proceed with Payments</button>}
+            {policy.stickersDetails && policy.stickersDetails[0].status !== 'paid' && <button className='btn btn-success mb-3' onClick={handleShowPayment}>$ Proceed with Payments</button>}
         </div>
     )
 }

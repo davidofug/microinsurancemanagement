@@ -180,7 +180,7 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
     return (
       <>
       
-        <div style={{margin: "30px"}}>
+        <div className='components'>
             <Header title="Agents" subtitle="MANAGING AGENTS" />
             <ToastContainer />
    
@@ -188,12 +188,12 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
                 <div></div>
                 {authClaims.supervisor && 
                   <Link to="/supervisor/add-agents">
-                      <button className="btn btn-primary cta">Add Agent</button>
+                      <button className="btn btn-primary cta m-2">Add Agent</button>
                   </Link>
                 }
                 {authClaims.admin && 
                   <Link to="/admin/add-agent">
-                      <button className="btn btn-primary cta">Add Agent</button>
+                      <button className="btn btn-primary cta m-2">Add Agent</button>
                   </Link>
                 }
             </div>
@@ -223,11 +223,11 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
             {agents !== null && agents.length > 0
             ?
               <>
-                <div className="shadow-sm table-card componentsData">   
+                <div className="shadow-sm table-card componentsData mb-3">   
                 <div id="search">
                   <SearchBar placeholder={"Search for agent's name"} value={searchText} handleSearch={handleSearch}/>
                   <div></div>
-                  <Form.Group className="m-3 categories" width="180px">
+                  <Form.Group className="mt-1 categories" width="180px">
                         <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                             <option value={""}>Filter by category</option>
                             <option value="mtp">MTP</option>
@@ -308,7 +308,7 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
 
                         <tfoot>
                           <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
-                            <td colSpan={3}>
+                            <td colSpan={3} style={{paddingLeft: 0}}>
                               <div style={{display: "flex"}}>
                                 <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
                                     <option value="">Bulk Action</option>

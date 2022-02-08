@@ -79,7 +79,7 @@ body{
 }
 .top-container-large{
     display: grid;
-    grid-template-columns: 80px auto;
+    grid-template-columns: 80px calc(100vw - 80px);
     min-height: 100vh;
     width: 100vw;
 }
@@ -370,9 +370,9 @@ tbody, td, tfoot, th, thead, tr{
 
 /* 769px to 1024px: small screens, laptops */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
-    .components {
+    /* .components {
         width: 98%;
-    }
+    } */
     
 }
 
