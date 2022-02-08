@@ -338,6 +338,7 @@ tbody, td, tfoot, th, thead, tr{
     .components{
         width: 100vw;
         padding: 0 10px;
+        margin-top: 80px;
     }
 
     .componentsData{
