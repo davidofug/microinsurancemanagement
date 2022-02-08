@@ -66,9 +66,9 @@ function SystemLogs() {
       {logs !== null && logs.length > 0
       ?
                         <>
-        <div className="componentsData  shadow-sm table-card" style={{ "maxWidth": "80vw", margin: "auto" }}>
+        <div className="componentsData  shadow-sm table-card my-5" style={{ "maxWidth": "80vw", margin: "auto" }}>
             <div id="search">
-                <Form.Group className="m-3 categories" width="200px">
+                <Form.Group className=" categories" style={{marginRight: "5px"}} width="180px">
                     <Form.Label htmlFor='category'>Status</Form.Label>
                     <Form.Select id='category' onChange={({target: {value}}) => setSwitchStatus(value)}>
                         <option value="">Select Log Status</option>
@@ -76,11 +76,11 @@ function SystemLogs() {
                         <option value="failed">Failed</option>
                     </Form.Select>
                 </Form.Group>
-                <Form.Group className="m-3 categories" width="200px">
-                    <Form.Label htmlFor='date'>Date</Form.Label>
-                    <Form.Control type="date" id="date" onChange={({target: {value}}) => setDate(value)}/>
+                <Form.Group className="categories">
+                    <Form.Label htmlFor='date'>Date</Form.Label><br />
+                    <input type="date" id="date" style={{padding: "10px"}} onChange={({target: {value}}) => setDate(value)}/>
                 </Form.Group>
-                <Form.Group className="m-3 categories" width="200px">
+                <Form.Group className="categories" width="200px">
                     <Form.Label htmlFor='logType'>Logs</Form.Label>
                     <Form.Select id='logType' onChange={({target: {value}}) => setLogType(value)}>
                         <option value="">Select Log Type</option>
