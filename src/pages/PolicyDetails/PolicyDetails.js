@@ -105,11 +105,11 @@ function PolicyDetails() {
       
     
     return (
-        <div style={{margin: "30px"}}>
+        <div className="components">
             <ToastContainer />
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <div>
-                    <img src={logo} width={150} height="auto" alt="britam" />
+                    <img src={logo} width={150} height="auto" alt="britam" className='mb-3' />
                 </div>
                 <div id="policyDetails">
                     <p>Receipt # 12801</p>

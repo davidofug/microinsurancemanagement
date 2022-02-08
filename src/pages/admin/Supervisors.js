@@ -170,14 +170,14 @@ function Supervisors() {
 
 
     return (
-        <div /* className='components' */>
+        <div className='components'>
           <Header title="Supervisors" subtitle="MANAGING SUPERVISORS" />
           <ToastContainer />
 
             <div id="add_client_group">
                 <div></div>
                 <Link to="/admin/add-supervisor">
-                    <button className="btn btn-primary cta">Add supervisor</button>
+                    <button className="btn btn-primary cta m-3">Add supervisor</button>
                 </Link>               
             </div>
 
