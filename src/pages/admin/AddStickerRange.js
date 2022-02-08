@@ -60,7 +60,7 @@ function AddStickerRange() {
     }
 
     return (
-        <div /* className='components' */>
+        <div className='components'>
             <Header title="Add Sticker Number" subtitle="ADD NEW STICKER NUMBERS" />
             <ToastContainer />
 
