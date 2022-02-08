@@ -294,7 +294,7 @@
     .heading {
         width: 100%;
         align-items: start;
-        padding-left: 50px;
+        /* padding-left: 50px; */
     }
     
     .summaries {
