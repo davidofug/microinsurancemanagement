@@ -72,6 +72,34 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
   const currentAgents = !agents || searchByName(agents).slice(indexOfFirstAgent, indexOfLastAgent)
   const totalPagesNum = !agents || Math.ceil(agents.length / clientsPerPage)
 
+
+  // upgrade a single agent's authClaims
+  /* const handleUpdate = async () => {
+    const updateUser = httpsCallable(functions, 'updateUser')
+
+    updateUser({uid: singleDoc.uid})
+      .then()
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user update',
+          status: 'successful',
+          message: `Successfully updated agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch( async () => {
+        toast.error(`Failed to update ${singleDoc.name}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: ' user update',
+          status: 'failed',
+          message: `Failed to update agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+    })
+  }; */
+
+
+
   // delete a single agent
   const handleDelete = async () => {
     const deleteUser = httpsCallable(functions, 'deleteUser')
@@ -89,7 +117,7 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
         toast.error(`Failed to deleted ${singleDoc.name}`, {position: "top-center"});
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-          type: 'sticker deletion',
+          type: 'user deletion',
           status: 'failed',
           message: `Failed to delete agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
         })
@@ -114,7 +142,7 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
         toast.error(`Failed to deleted ${arr[1]}`, {position: "top-center"});
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-          type: 'sticker deletion',
+          type: 'user deletion',
           status: 'failed',
           message: `Failed to delete agent - ${arr[1].toUpperCase()} by ${authentication.currentUser.displayName}`
         })

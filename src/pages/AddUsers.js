@@ -175,7 +175,7 @@ function AddUsers({role}) {
         <div /* className='components' */>
             <Header title={`Add ${role}`} subtitle={`Add a new ${role}`.toUpperCase()} />
             <ToastContainer/>
-            <div className="addComponentsData shadow-sm mb-3">
+            <div className="addComponentsData shadow-sm mb-3" /* style={{position: "relative"}} */>
                     {isLoading && 
                         <div className='loader-wrapper'>
                             <Loader />

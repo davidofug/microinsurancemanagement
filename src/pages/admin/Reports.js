@@ -282,7 +282,7 @@ function Reports() {
                       {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>{`transit Report`.toUpperCase()}</th>}
                 </tr>
                 <tr>
-                  <th>#</th><td>Polic Holder</td><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
+                  <th>#</th><th>Policy Holder</th><th>PlateNo.</th><th>Car Make</th><th>Seating Capacity</th><th>G.weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th>
                 </tr>
               </thead>
               
@@ -312,15 +312,15 @@ function Reports() {
                                   <td>{policy.policyStartDate}</td>
                                   <td>{policy.policyEndDate}</td>
                                   <td>1 YR(s)</td>
-                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
-                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].trainingLevy)}</td>}
-                                  <td>6,000</td>
-                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].vat)}</td>}
-                                  <td>35,000</td>
-                                  <td>2,191</td>
+                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)} {typeof policy.currency === "string" ? policy.currency : ''}</td>}
+                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].trainingLevy)} {typeof policy.currency === "string" ? policy.currency : ''}</td>}
+                                  <td>6,000 {typeof policy.currency === "string" ? policy.currency : ''}</td>
+                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].vat)} {typeof policy.currency === "string" ? policy.currency : ''}</td>}
+                                  <td>35,000 {typeof policy.currency === "string" ? policy.currency : ''}</td>
+                                  <td>2,191 {typeof policy.currency === "string" ? policy.currency : ''}</td>
                                   <td>branch location</td>
                                   <td>{policy.added_by_name}</td>
-                                  <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
+                                  {/* <td>{typeof policy.currency === "string" ? policy.currency : ''}</td> */}
                                 </tr>
                               </>
                             )
@@ -333,7 +333,7 @@ function Reports() {
                 <tr>
                   <th>Grand Total</th>
                   <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
-                  <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevy)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
+                  <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevy)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th>
                 </tr>
               </tfoot>
                 
@@ -341,7 +341,7 @@ function Reports() {
                 <tr>
                   <td>Subtotal Total</td>
                   <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                  <td>{currencyFormatter(basicCurrentTotal)}</td><td>{currencyFormatter(trainingCurrentLevy)}</td><td>{currencyFormatter(stickerFeeCurrentTotal)}</td><td>{currencyFormatter(vatCurrentTotal)}</td><td>{currencyFormatter(stumpDutyCurrentTotal)}</td><td>{currencyFormatter(commissionCurrentTotal)}</td><td></td><td></td><td>UGX</td>
+                  <td>{currencyFormatter(basicCurrentTotal)}</td><td>{currencyFormatter(trainingCurrentLevy)}</td><td>{currencyFormatter(stickerFeeCurrentTotal)}</td><td>{currencyFormatter(vatCurrentTotal)}</td><td>{currencyFormatter(stumpDutyCurrentTotal)}</td><td>{currencyFormatter(commissionCurrentTotal)}</td><td></td><td></td>
                 </tr>
               </tfoot>
             </Table>
