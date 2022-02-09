@@ -248,7 +248,7 @@ export default function Mtp() {
 
 
   return (
-    <div /* className="components" */>
+    <div className="components">
       <Header title="Comprehensive" subtitle="MANAGING COMPREHENSIVE POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&
@@ -302,11 +302,11 @@ export default function Mtp() {
       {policies !== null && policies.length > 0 
       ?
         <>
-        <div className="table-card componentsData shadow-sm">
+        <div className="table-card componentsData shadow-sm mb-3">
         <div id="search">
           <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
           <div></div>
-          <Form.Group className="m-3 categories" width="200px">
+          <Form.Group className="categories mt-1" width="200px">
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
                 <option value="new">New</option>
@@ -409,7 +409,7 @@ export default function Mtp() {
          <tfoot>
          <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
              
-           <td colSpan={3}>
+           <td colSpan={3} style={{paddingLeft: 0}}>
              <div style={{display: "flex"}}>
                <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
                    <option value="">Bulk Action</option>

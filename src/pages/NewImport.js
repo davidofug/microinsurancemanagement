@@ -248,7 +248,7 @@ export default function Mtp() {
 
 
   return (
-    <div /* className="components" */>
+    <div className="components">
       <Header title="New Import" subtitle="MANAGING NEW IMPORT POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&
@@ -409,7 +409,7 @@ export default function Mtp() {
          <tfoot>
          <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
              
-           <td colSpan={3}>
+           <td colSpan={3} style={{paddingLeft: 0}}>
              <div style={{display: "flex"}}>
                <Form.Select aria-label="User role" id='category' onChange={(event) => setBulkDelete(event.target.value)}>
                    <option value="">Bulk Action</option>
