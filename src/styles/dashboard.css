@@ -366,6 +366,25 @@
     .chat-container {
         margin-left: 66px;
     }
+
+    .card-body {
+        width: 120px;
+        height: 90px;
+    }
+
+    .card-row-container {
+        width: 130px;
+        /* height: 120px; */
+    }
+
+    .card-text {
+        font-size:10px;
+
+    }
+
+    #custom-card {
+        height:90px;
+    }
 }
 
 @media (max-width: 1024px) {

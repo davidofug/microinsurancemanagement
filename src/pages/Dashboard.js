@@ -189,7 +189,7 @@ function Dashboard() {
                         <div id="bin" className="shadow-sm bg-body rounded first-container">
                             <div /* className="row-container" */ className="card-row-container">
                                     <div className="col">
-                                        <div id="custom-card"className="custom-card m-1" style={{backgroundColor:"#804C75"}}>
+                                        <div id="custom-card" className="custom-card m-1" style={{backgroundColor:"#804C75"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${claimsSettled.length}`}</div>
                                                 <div className="card-text">Claim Settlements</div>
