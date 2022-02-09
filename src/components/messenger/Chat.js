@@ -135,7 +135,7 @@ function Chat() {
     }
 
     return (     
-        <div id="chatbox" style={{display:"flex", flexDirection:"column", backgroundColor:"white", borderTopLeftRadius:"15px 15px", borderTopRightRadius:"15px 15px", width:"350px"}} className="shadow-sm collapse-chatbox" >
+        <div id="chatbox" style={{display:"flex", flexDirection:"column", backgroundColor:"white", borderTopLeftRadius:"15px 15px", borderTopRightRadius:"15px 15px"}} className="shadow-sm collapse-chatbox" >
             {
                 selectChat === false 
                 ? 
@@ -220,7 +220,7 @@ function Chat() {
                 
             }
                 
-            <div id="display" style={{height:"400px", width:"300px", backgroundColor:"white", borderTopLeftRadius:"15px 15px", borderTopRightRadius:"15px 15px", paddingLeft:"20px", overflow:"scroll", scrollBehavior:"smooth"}}>
+            <div id="display" style={{width:"300px", backgroundColor:"white", borderTopLeftRadius:"15px 15px", borderTopRightRadius:"15px 15px", paddingLeft:"20px", overflow:"scroll", scrollBehavior:"smooth"}}>
                 {
                     selectChat === true ? 
                     <>
@@ -286,9 +286,6 @@ function Chat() {
                                         uid
                                     }, index) => {
                                         const unseenMsgs = allMessages.filter( msg => msg.sendersUID === uid).filter(msg => msg?.receiversUID === authentication.currentUser.uid).filter(msg => msg?.read !== true)
-                                        for(let msg of unseenMsgs){
-                                            play()
-                                        }
                                         return (
                                             <div key={index} style={{display:"flex", gap:"5px", alignItems:"center", cursor:"pointer"}} onClick={async () => {
                                                 document.getElementById("msg-form").classList.remove('hide-msg-form')

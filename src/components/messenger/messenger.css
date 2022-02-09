@@ -36,3 +36,30 @@ form {
     visibility: initial;
 }
 
+#chatbox {
+    width: 350px;
+    
+}
+
+#display {
+    height: 400px;
+}
+
+
+
+@media (max-width: 350px) {
+    #chatbox {
+        width: 300px; 
+        /* padding-right:20px; */
+    }
+
+    #display {
+        height: 250px;
+        /* margin-right: 10px; */
+    }
+
+
+    
+}
+
+
