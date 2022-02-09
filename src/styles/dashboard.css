@@ -146,7 +146,7 @@
 
     .custom-card {
         width:8rem;
-        height:6rem; 
+        height:9rem; 
     }
 
     .card-text {
@@ -168,9 +168,23 @@
     }    
     
     .graph-space { 
-        height: 40vh;
+        height: 35vh;
+    }
+    
+    .custom-card {
+         height: 100px;
+         width: 135px;
     }
 
+    .card-row-container {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .components {
+        margin-top:18px;
+
+    }
     
 }
 
@@ -312,21 +326,72 @@
 
 
 
-@media (max-width: 320px) {
+@media (max-width: 360px) {
+    .chat-container {
+        margin-left:0px;
+    }
+
+    .card-body {
+        width: 120px;
+        height: 90px;
+    }
+
+    .card-row-container {
+        width: 130px;
+        /* height: 120px; */
+    }
+
+    #bin {
+        height:250px;
+    }
+
+    #custom-card {
+        width:140px;
+        height:100px;
+    }
+
 
 }
+
 @media (max-width: 480px) {
+   .chat-container{
+       padding-left: 320px;
+   }
+
+
 
 }
+
 @media (max-width: 768px) {
-
+    .chat-container {
+        margin-left: 66px;
+    }
 }
+
 @media (max-width: 1024px) {
+    .custom-card {
+        width:10rem;
+        height:7rem; 
+    }
+
+    .graph-space {
+        height:35vh;
+    }
+
+    #short-stats {
+        padding: 4vh 5vh;
+    }
+
+    .chat-container {
+        padding-right:100px;
+
+    }
+
 
 }
 @media (max-width: 1200px) {
 
 }
 @media (min-width: 1201px) {
-    
+
 }

@@ -189,15 +189,15 @@ function Dashboard() {
                         <div id="bin" className="shadow-sm bg-body rounded first-container">
                             <div /* className="row-container" */ className="card-row-container">
                                     <div className="col">
-                                        <div className="custom-card m-1" style={{backgroundColor:"#804C75"}}>
+                                        <div id="custom-card"className="custom-card m-1" style={{backgroundColor:"#804C75"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${claimsSettled.length}`}</div>
                                                 <div className="card-text">Claim Settlements</div>
                                             </Card.Body>
                                         </div>
                                     </div>
-                                    <div className="col">
-                                        <div className="custom-card m-1" style={{backgroundColor:"#FFB848"}}>
+                                    <div  className="col">
+                                        <div id="custom-card" className="custom-card m-1" style={{backgroundColor:"#FFB848"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${policies.length}`}</div>
                                                 <div className="card-text">Policies</div>
@@ -207,7 +207,7 @@ function Dashboard() {
                             </div>
                             <div /* className="row-container" className=""*/ className="card-row-container">
                                     <div className="col">
-                                        <div className="custom-card m-1" style={{backgroundColor:"#C82E29"}}>
+                                        <div id="custom-card"className="custom-card m-1" style={{backgroundColor:"#C82E29"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{policies.length}</div>
                                                 <div className="card-text">Stickers</div>
@@ -215,7 +215,7 @@ function Dashboard() {
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <div className="custom-card m-1" style={{backgroundColor:"#1FBBA6"}}>
+                                        <div id="custom-card" className="custom-card m-1" style={{backgroundColor:"#1FBBA6"}}>
                                             <Card.Body className="card-body">
                                                 <div className="statistics">{`${claims.length}`}</div>
                                                 <div className="card-text">Claim Notifications</div>
@@ -225,7 +225,7 @@ function Dashboard() {
                             </div>
                         </div>
 
-                        <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex", alignItems: "flex-start"}}>
+                        <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex"}}>
                             <div id="short_stats">
                                 {authClaims.superadmin && (
                                     admins.length > 0
