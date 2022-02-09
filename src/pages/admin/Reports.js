@@ -252,10 +252,18 @@ function Reports() {
                     
                     <div style={{diplay: "flex", flexDirection: "row"}}>
                       <Form.Label>Date Range</Form.Label>
+
                       <div className="dateRange">
-                        <span>From</span><input type="date" onChange={({target: {value}}) => setDateFrom(value)}/><span>To</span><input type="date" onChange={({target: {value}}) => setDateTo(value)}/>
+                        {/* <span>From</span> */}
+                        
+                        <input type="text" style={{width: "120px"}} onFocus={() => document.getElementById('changeDate').type = 'date'} id="changeDate" onBlur={() => document.getElementById('changeDate').type = 'text'} placeholder="Start date" onChange={({target: {value}}) => setDateFrom(value)}/>
+                      
+                      {/* <span>To</span> */}
+                      
+                      <input type="text" style={{width: "120px"}} onFocus={() => document.getElementById('changeDate2').type = 'date'} id="changeDate2" onBlur={() => document.getElementById('changeDate2').type = 'text'} placeholder="- End date" onChange={({target: {value}}) => setDateTo(value)}/>
                       </div>
                     </div>
+
                   </>
                   }
             </div>
@@ -274,7 +282,7 @@ function Reports() {
                       {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>{`transit Report`.toUpperCase()}</th>}
                 </tr>
                 <tr>
-                  <th>#</th><th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
+                  <th>#</th><td>Polic Holder</td><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
                 </tr>
               </thead>
               

@@ -563,10 +563,11 @@ left: auto;
 
 
 .dateRange {
-    border: 1px solid #1475cf;
-    background-color: #1475cf;
-    color: #fff;
+    border: 1px solid #ced4da;
+    /* background-color: #1475cf; */
+    /* color: #fff; */
     border-radius: 3px;
+    padding: .375rem 2.25rem .375rem .75rem;
 }
 
 
