@@ -19,6 +19,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../components/messenger/Chat'
+import '../styles/clients.css'
 
 
 export default function Clients() {
@@ -213,7 +214,7 @@ const getClients = () => {
                       </tbody>
 
                       <tfoot>
-                        <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+                        <tr id="pag-btns" style={{border: "1px solid white", borderTop: "1px solid #000"}}>
                           <td colSpan={7}>
                             <Pagination 
                             pages={totalPagesNum}
@@ -250,7 +251,7 @@ const getClients = () => {
             :
               <Loader />
           }
-          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}} className="chat-container">
             <Chat />
           </div> 
         </div>
