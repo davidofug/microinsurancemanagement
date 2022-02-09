@@ -57,17 +57,7 @@ body{
 /* tbody > tr:hover {
 } */
 
-.table{
-    border: 1px solid #000;
-}
 
-/* .table-hover > tbody > tr:hover > * {
-    color: white;
-} */
-
-.table > :not(:first-child) {
-    border-top: 1px solid currentColor;
-}
 
 
 /* root container */
@@ -109,7 +99,7 @@ body{
     background-color: #fff;
     margin-top: 60px;
     border-radius: 10px;
-    /* position: relative; */
+    position: relative;
 }
 
 
@@ -224,8 +214,28 @@ body{
 }
 
 
-tbody, td, tfoot, th, thead, tr{
+tbody, td, tfoot, thead, tr{
     border-style: none;
+}
+
+.table{
+    /* border: 1px solid #000; */
+    border: 1px solid #cccccc;
+}
+
+th{
+    font-weight: 500;
+}
+
+
+
+/* .table-hover > tbody > tr:hover > * {
+    color: white;
+} */
+
+.table > :not(:first-child) {
+    /* border-top: 1px solid currentColor; */
+    border: 1px solid #ccc;
 }
 
 .table {
@@ -572,7 +582,7 @@ left: auto;
 
 
 .loader-wrapper{
-    z-index: 1000;
+    z-index: 100;
     position: absolute;
     width: 100%;
     background: rgba(245,245,245,0.8);
