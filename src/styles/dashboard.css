@@ -409,8 +409,33 @@
 
 }
 @media (max-width: 1200px) {
+    .graph-space {
+        height:50vh;
+    }
+
+    .chat-container {
+        padding-right:280px;
+    }
+
+    .custom-card {
+        width:10rem;
+        height:7rem;
+    }
 
 }
 @media (min-width: 1201px) {
+    .chat-container {
+        padding-right:280px;
+    }
+
+    .graph-space {
+        height:50vh;
+    }
+
+    
+
+
+
+
 
 }
