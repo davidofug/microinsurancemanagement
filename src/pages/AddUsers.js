@@ -28,6 +28,8 @@ function AddUsers({role}) {
     const [comprehensive, setComprehensive] = useState(false)
     const [windscreen, setWindscreen] = useState(false)
     const [mtp, setMTP] = useState(false)
+    const [ newImport, setNewImport ] = useState(false)
+    const [ transit, setTransit ] = useState(false)
 
     const [ isLoading, setIsLoading ] = useState(false)
     const [ password, setPassword ] = useState('')
@@ -74,12 +76,14 @@ function AddUsers({role}) {
         if(comprehensive) fields['comprehensive'] = true
         if(mtp) fields['mtp'] = true
         if (windscreen) fields['windscreen'] = true
+        if (newImport) fields['newImport'] = true
+        if (transit) fields['transit'] = true
 
         fields['added_by_uid'] = authentication.currentUser.uid
         fields['added_by_name'] = authentication.currentUser.displayName
         fields['password'] = password
         fields['addedOn'] = `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`
-        if(role === 'agent'){ fields['supervisor'] = event.target.supervisor.value } 
+        if(role === 'agent' && authClaims.admin){ fields['supervisor'] = event.target.supervisor.value } 
 
         if(logo){
             const storageRef = ref(storage, `images/${logo.name}`)
@@ -312,7 +316,7 @@ function AddUsers({role}) {
                             </>
                         :
                             <>
-                                {role === 'agent' && 
+                                {role === 'agent' && authClaims.admin &&
                                     <Form.Group className="mb-3" >
                                         <Form.Label htmlFor='name'>Assign Supervisor</Form.Label>
                                         <Form.Control id="supervisor" placeholder="Name" required/>
@@ -380,7 +384,7 @@ function AddUsers({role}) {
                                             <Form.Label htmlFor='agentcan'>Agent Can?</Form.Label>
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="comprehensive">
-                                            <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value="true" onChange={(event) => setComprehensive(!comprehensive)}/>
+                                            <Form.Check type="checkbox" label="Handle Comprehensive" id="handle_comprehensive" value={true} onChange={(event) => setComprehensive(!comprehensive)}/>
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="mtp">
                                             <Form.Check type="checkbox" label="Handle Motor Third Party" id="handle_mtp" value={true} onChange={()=> setMTP(!mtp)}/>
@@ -388,11 +392,11 @@ function AddUsers({role}) {
                                         <Form.Group className="mb-3" controlId="windscreen">
                                             <Form.Check type="checkbox" label="Handle Windscreen" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
                                         </Form.Group>
-                                        <Form.Group className="mb-3" controlId="windscreen">
-                                            <Form.Check type="checkbox" label="Handle New Imports" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                                        <Form.Group className="mb-3" controlId="newImport">
+                                            <Form.Check type="checkbox" label="Handle New Imports" id="handle_newImport" value={true} onChange={()=> setNewImport(!newImport)}/>
                                         </Form.Group>
-                                        <Form.Group className="mb-3" controlId="windscreen">
-                                            <Form.Check type="checkbox" label="Handle Transit" id="handle_windscreen" value={true} onChange={()=> setWindscreen(!windscreen)}/>
+                                        <Form.Group className="mb-3" controlId="transit">
+                                            <Form.Check type="checkbox" label="Handle Transit" id="handle_transit" value={true} onChange={()=> setTransit(!transit)}/>
                                         </Form.Group>
                                     </>
                                 }

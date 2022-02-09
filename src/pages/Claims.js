@@ -215,7 +215,7 @@ export default function Claims() {
   const paginatedShownClaim = !claims || shownClaims.slice(indexOfFirstClaim, indexOfLastClaim)
 
   return (
-    <div /* className="components" */>
+    <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
       <ToastContainer />
 
@@ -223,7 +223,7 @@ export default function Claims() {
         <div id="add_client_group">
           <div></div>
           <Link to="/agent/add-claim">
-            <button className="btn btn-primary cta">Add Claim</button>
+            <button className="btn btn-primary cta m-2">Add Claim</button>
           </Link>
         </div>
       }
@@ -231,7 +231,7 @@ export default function Claims() {
       {authClaims.supervisor && 
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-claim">
+          <Link to="/supervisor/add-claim m-2">
             <button className="btn btn-primary cta">Add Claim</button>
           </Link>
         </div>
@@ -262,11 +262,11 @@ export default function Claims() {
 
       {claims !== null && claims.length > 0 ?
       <>
-      <div className="table-card componentsData shadow-sm">
+      <div className="table-card componentsData shadow-sm mb-3">
         <div id="search">
           <SearchBar placeholder={"Search for claimant's name"} value={searchText} handleSearch={handleSearch} />
           <div></div>
-          <Form.Group className="m-3 categories" width="200px">
+          <Form.Group className="categories mt-2" width="200px">
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
                 <option value="pending">Pending</option>
