@@ -6,6 +6,7 @@ import { Bar } from 'react-chartjs-2'
 import moment from 'moment'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
+// import '../styles/barchart.css'
 
 import {
     Chart as ChartJS,
@@ -187,7 +188,7 @@ function BarChart () {
             },
         ],
     };
-    return <Bar options={options} data={data}/>
+    return <Bar options={options} data={data} className="bar-chart"/>
 }
 
 export default BarChart
