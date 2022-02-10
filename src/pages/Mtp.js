@@ -313,9 +313,9 @@ export default function Mtp() {
       <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&
-        <div id="add_client_group" className="classic">
+        <div id="add_client_group" >
           <div></div>
-          <Link to="/supervisor/add-mtp">
+          <Link to="/supervisor/add-mtp" className="classic">
             <button className="btn btn-primary cta m-2">Add MTP</button>
           </Link>
         </div>
