@@ -18,6 +18,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../components/messenger/Chat'
+import '../styles/ctas.css'
 
 export default function Mtp() {
   useEffect(() => { document.title = "Britam - New Imports"; getMTP()}, []);
@@ -254,7 +255,7 @@ export default function Mtp() {
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-new-import">
+          <Link to="/supervisor/add-new-import" className="classic">
             <button className="btn btn-primary cta">Add New Import</button>
           </Link>
         </div>
@@ -263,7 +264,7 @@ export default function Mtp() {
       {authClaims.agent &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/agent/add-newImport">
+          <Link to="/agent/add-newImport" className="classic">
             <button className="btn btn-primary cta">Add New Import</button>
           </Link>
         </div>

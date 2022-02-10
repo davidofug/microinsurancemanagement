@@ -2,7 +2,7 @@
     margin-right: 10px;
 }
 
-@media (max-width:360px) {
+/* @media (max-width:360px) {
 
 }  
 
@@ -24,10 +24,17 @@
 
 @media (max-width:1200px) {
 
-}
+} */
 
 @media (min-width:1201px) {
     .classic {
         margin-right: 15px;
     }
+}
+
+@media (max-width:1200px) {
+    .chat-container {
+        padding-right: 200px;
+    }
+
 }
