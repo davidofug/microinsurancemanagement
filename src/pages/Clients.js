@@ -132,7 +132,7 @@ const getClients = () => {
             <Header title="Clients" subtitle="MANAGING CLIENTS" />
             <ToastContainer />
    
-            <div id="add_client_group">
+            <div id="add_client_group" className="add_client_group">
                 <div></div>
                 {!authClaims.admin && !authClaims.superadmin &&
                   <Link to={authClaims.supervisor && "/supervisor/add-clients" || authClaims.agent && "/agent/add-clients"}>

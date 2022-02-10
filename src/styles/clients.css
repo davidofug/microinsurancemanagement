@@ -20,6 +20,9 @@
 }
 
 @media (max-width: 1024px) {
+    .add_client_group {
+        margin-left: 50px;
+    }
     
 }
 
