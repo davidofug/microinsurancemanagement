@@ -1,0 +1,33 @@
+.classic {
+    margin-right: 10px;
+}
+
+@media (max-width:360px) {
+
+}  
+
+@media (max-width:480px) {
+   
+}
+
+@media (max-width:768px) {
+
+}
+
+@media (max-width:820px) {
+
+}
+
+@media (max-width:1024px) {
+
+}
+
+@media (max-width:1200px) {
+
+}
+
+@media (min-width:1201px) {
+    .classic {
+        margin-right: 10px;
+    }
+}

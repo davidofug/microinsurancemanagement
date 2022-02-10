@@ -1,6 +1,12 @@
-@media (max-width: 360px) {
+/* @media (max-width: 360px) {
     .chat-container {
-        margin-left: -4px
+        margin-left: 0px;
     }
 }
+*/
 
+@media (min-width: 1201px) {
+    .classic {
+       margin-right: 30px;
+    }
+} 
