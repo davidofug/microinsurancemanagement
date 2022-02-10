@@ -172,7 +172,7 @@ function AddUsers({role}) {
     
 
     return (
-        <div /* className='components' */>
+        <div /* className='components' */ className="boom">
             <Header title={`Add ${role}`} subtitle={`Add a new ${role}`.toUpperCase()} />
             <ToastContainer/>
             <div className="addComponentsData shadow-sm mb-3">
@@ -190,7 +190,7 @@ function AddUsers({role}) {
                         }
 
                         {role === 'client' && authClaims.agent &&
-                            <Row>
+                        <Row style={{marginLeft:"0"}}>
                             <Form.Group className="m-3 categories" width="200px">
                                 <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)} required>
                                     <option value={""}>Policy Type</option>
@@ -419,7 +419,7 @@ function AddUsers({role}) {
                         
                     </Form>
             </div>
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
               <Chat />
             </div> 
         </div>

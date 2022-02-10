@@ -1,0 +1,35 @@
+@media (max-width: 360px) {
+    .chat-container {
+        margin-left:0px;
+    }
+
+    /* #pag-btns {
+        display:flex;
+        width:100%;
+        justify-content:flex-start;
+    } */
+
+}
+
+@media (max-width: 480px) {
+    
+}
+
+@media (max-width: 768px) {
+    
+}
+
+@media (max-width: 1024px) {
+    .add_client_group {
+        margin-left: 50px;
+    }
+    
+}
+
+@media (max-width: 1200px) {
+    
+}
+
+@media (min-width: 1201px) {
+    
+}

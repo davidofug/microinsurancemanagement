@@ -129,4 +129,47 @@ form{
         display: flex;
         flex-direction: column;
     }
+
+
 }
+
+@media (max-width:320px) {
+    .chat-container {
+        margin-left:25px;
+        
+    }
+}
+
+@media (max-width: 480px) {
+    .boom {
+        width: 100vw;
+    }
+
+    .row-fields {
+        display: flex;
+        flex-direction:column;
+    }
+    
+}
+
+@media (max-width: 768px) {
+    .chat-container{
+        padding-right:90px;
+    }
+
+    .boom {
+        width: 100vw;
+    }
+}
+
+/* @media (max-width: 1024px) {
+    
+}
+
+@media (max-width: 1200px) {
+    
+}
+
+@media (min-width: 1201px) {
+    
+} */
