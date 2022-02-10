@@ -647,7 +647,11 @@ left: auto;
   }
 
 
-
+@media (max-width:480px) {
+    .display-left {
+        width: 100vw;
+    }
+}
 
 
 
