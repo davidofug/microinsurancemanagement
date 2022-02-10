@@ -21,6 +21,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../components/messenger/Chat'
 import '../styles/clients.css'
 
+import '../styles/ctas.css'
+
 
 export default function Clients() {
 
@@ -135,7 +137,7 @@ const getClients = () => {
             <div id="add_client_group" className="add_client_group">
                 <div></div>
                 {!authClaims.admin && !authClaims.superadmin &&
-                  <Link to={authClaims.supervisor && "/supervisor/add-clients" || authClaims.agent && "/agent/add-clients"}>
+                  <Link to={authClaims.supervisor && "/supervisor/add-clients" || authClaims.agent && "/agent/add-clients"} className="classic">
                       <button className='btn btn-primary cta m-2'>Add Client</button>
                   </Link>
                 }
