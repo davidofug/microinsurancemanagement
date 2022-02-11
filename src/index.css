@@ -233,13 +233,8 @@ tbody, td, tfoot, thead, tr{
 
 th{
     font-weight: 500;
+    border-style: none;
 }
-
-
-
-/* .table-hover > tbody > tr:hover > * {
-    color: white;
-} */
 
 .table > :not(:first-child) {
     /* border-top: 1px solid currentColor; */
