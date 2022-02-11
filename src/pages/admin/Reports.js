@@ -184,7 +184,7 @@ function Reports() {
               
           </div>
 
-            <div style={{display: "flex", alignItems: "center"}}>  
+            <div style={{display: "flex", alignItems: "center"}} id="group-1-reports">  
                   <Form.Group className="categories" width="180px">
                       <Form.Label htmlFor='category'>Policy Category</Form.Label>
                       <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
@@ -211,55 +211,55 @@ function Reports() {
                   </Form.Group>
             </div>
 
-            <div style={{display: "flex", alignItems: "center"}}>
-            <Form.Group controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                <Form.Label>Daily</Form.Label>
-                <Form.Control type="date" onChange={({target: {value}}) => setCurrentDay(value)}/>
-            </Form.Group>
+            <div style={{display: "flex", alignItems: "center"}} id="group-2-reports">
+              <Form.Group controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}} id="daily-reports">
+                  <Form.Label>Daily</Form.Label>
+                  <Form.Control type="date" onChange={({target: {value}}) => setCurrentDay(value)}/>
+              </Form.Group>
 
-                  <Form.Group className="m-3" width="150px">
-                      <Form.Label htmlFor='category'>Select Month</Form.Label>
-                      <Form.Select aria-label="User role" id='category' onChange={(event) => setSelectedMonth(event.target.value)}>
-                          <option value={""}>Select a month</option>
-                          <option value={"01"}>January</option>
-                          <option value={"02"}>February</option>
-                          <option value={"03"}>March</option>
-                          <option value={"04"}>April</option>
-                          <option value={"05"}>May</option>
-                          <option value={"06"}>June</option>
-                          <option value={"07"}>July</option>
-                          <option value={"08"}>August</option>
-                          <option value={"09"}>september</option>
-                          <option value={"10"}>October</option>
-                          <option value={"11"}>november</option>
-                          <option value={"12"}>December</option>
-                      </Form.Select>
-                  </Form.Group>
+              <Form.Group className="m-3" width="150px">
+                  <Form.Label htmlFor='category'>Select Month</Form.Label>
+                  <Form.Select aria-label="User role" id='category' onChange={(event) => setSelectedMonth(event.target.value)}>
+                      <option value={""}>Select a month</option>
+                      <option value={"01"}>January</option>
+                      <option value={"02"}>February</option>
+                      <option value={"03"}>March</option>
+                      <option value={"04"}>April</option>
+                      <option value={"05"}>May</option>
+                      <option value={"06"}>June</option>
+                      <option value={"07"}>July</option>
+                      <option value={"08"}>August</option>
+                      <option value={"09"}>september</option>
+                      <option value={"10"}>October</option>
+                      <option value={"11"}>november</option>
+                      <option value={"12"}>December</option>
+                  </Form.Select>
+              </Form.Group>
 
-                  {!isMobile &&
-                  <>
-                    <Form.Group className="m-3" width="150px">
-                        <Form.Label htmlFor='category'>Year</Form.Label>
-                        <Form.Select aria-label="User role" id='category' onChange={(event) => setSelectedYear(event.target.value)}>
-                            <option value="">Select a year</option>
-                            <option value="2022">2022</option>
-                            <option value="2021">2021</option>
-                            <option value="2020">2020</option>
-                            <option value="2019">2019</option>
-                            <option value="2018">2018</option>
-                            <option value="2017">2017</option>
-                        </Form.Select>
-                    </Form.Group>
+              {!isMobile &&
+              <>
+                <Form.Group className="m-3" width="150px">
+                    <Form.Label htmlFor='category'>Year</Form.Label>
+                    <Form.Select aria-label="User role" id='category' onChange={(event) => setSelectedYear(event.target.value)}>
+                        <option value="">Select a year</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                    </Form.Select>
+                </Form.Group>
 
-                    
-                    <div style={{diplay: "flex", flexDirection: "row"}}>
-                      <Form.Label>Date Range</Form.Label>
-                      <div className="dateRange">
-                        <span>From</span><input type="date" onChange={({target: {value}}) => setDateFrom(value)}/><span>To</span><input type="date" onChange={({target: {value}}) => setDateTo(value)}/>
-                      </div>
-                    </div>
-                  </>
-                  }
+                
+                <div style={{diplay: "flex"/*, flexDirection: "row"*/}}>
+                  <Form.Label>Date Range</Form.Label>
+                  <div className="dateRange">
+                    <span>From</span><input type="date" onChange={({target: {value}}) => setDateFrom(value)}/><span>To</span><input type="date" onChange={({target: {value}}) => setDateTo(value)}/>
+                  </div>
+                </div>
+              </>
+              }
             </div>
 
             {shownPolicies.length > 0
