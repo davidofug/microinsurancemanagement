@@ -399,10 +399,12 @@ footer:hover{
 .footerContext{
     text-decoration: none;
     align-items: center;
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    display: flex;
+    justify-content: space-between;
+    /* grid-template-columns: 1fr 3fr 1fr;  */
     gap: 5px;
     cursor: pointer;
+    width: 100%;
 }
 
 .footerContextShow{
