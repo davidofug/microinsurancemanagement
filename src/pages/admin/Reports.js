@@ -21,7 +21,12 @@ import { FaSortDown, FaSortUp } from 'react-icons/fa'
 import '../../styles/ctas.css'
 
 function Reports() {
-  useEffect(() => { document.title = "Britam - Reports"; getPolicies() }, []);
+  useEffect(() => { 
+    document.title = "Britam - Reports"; 
+    getPolicies()
+
+    return () => getPolicies()
+   }, []);
 
   // policies
   const [policies, setPolicies] = useState([])

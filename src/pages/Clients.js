@@ -26,7 +26,13 @@ import '../styles/ctas.css'
 
 export default function Clients() {
 
-  useEffect(() => {document.title = 'Britam - Clients';getClients()}, [])
+  useEffect(() => {
+    document.title = 'Britam - Clients';
+    getClients()
+
+    return () => getClients()
+  
+  }, [])
 
   const { authClaims } = useAuth()
   const [clients, setClients] = useState([]);
