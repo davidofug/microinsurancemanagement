@@ -102,8 +102,6 @@ function PolicyDetails() {
    //media query
    const isMobile = useMediaQuery("(max-width: 768px)")
 
-   console.log(isMobile)
-
       
     
     return (
@@ -280,15 +278,15 @@ function PolicyDetails() {
                             <td>
                                 {policy.stickersDetails[0].status === 'paid' &&
                                     <tr>
-                                        <button className='btn btn-warning mb-2 mt-2' onClick={handleShow}>Print Sticker</button>
+                                        <span className='btn btn-warning mb-2 mt-2' onClick={handleShow}>Print Sticker</span>
                                     </tr>
                                 }
                                     <tr>
-                                        <button className='btn btn-danger mb-2 mt-2' 
+                                        <span className='btn btn-danger mb-2 mt-2' 
                                         onClick={(event) => {
                                             setOpenToggleCancel(true)
                                             event.stopPropagation()
-                                        }}>Cancel Sticker</button>
+                                        }}>Cancel Sticker</span>
                                     </tr>
                             </td>
                         </tr>

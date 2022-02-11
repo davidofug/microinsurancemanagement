@@ -7,6 +7,7 @@ import { httpsCallable } from 'firebase/functions';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useState } from 'react';
 
 
 function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers}) {
@@ -19,22 +20,13 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers}) {
   const handleEditFormSubmit = (event) => {
     event.preventDefault()
 
-    /* const docRef = doc(db, "usermeta", singleDoc.uid);
-    await updateDoc(docRef, {
-        address: event.target.address.value,
-        phone: event.target.phone.value,
-        date_of_birth: event.target.date_of_birth.value,
-        licenseNo: event.target.licenseNo.value,
-        NIN: event.target.NIN.value,
-        gender: event.target.gender.value
-    }); */
-
-    
-
     const updateUser = httpsCallable(functions, 'updateUser')
-    updateUser({uid: singleDoc.uid}, {
+    updateUser({
+      uid: singleDoc.uid,
       name: event.target.name.value,
-      user_role: event.target.user_role.value
+      // user_role: event.target.user_role.value
+      supervisor: agentPromo,
+      agent: !!singleDoc.role.agent
     })
       .then(async () => {
         console.log(event.target.name.value)
@@ -63,8 +55,14 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers}) {
     toast.success('Successfully updated', {position: "top-center"});
 }
 
-
-console.log(singleDoc)
+// handling user promotion
+const [ agentPromo, setAgentPromo ] = useState(false)
+const handleAgentPromotion = () => {
+  setAgentPromo(true)
+}
+const handleAgentPromotionDecline = () => {
+  setAgentPromo(false)
+}
 
     return (
         <>
@@ -77,8 +75,8 @@ console.log(singleDoc)
               <Row className='mb-3'>
               <Form.Group as={Col} style={{
                   display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
+                  flexDirection: "column",
+                  alignItems: "start",
                 }} >
                 <Form.Label htmlFor="dateReported">Date of birth</Form.Label>
                 <Form.Control
@@ -143,10 +141,19 @@ console.log(singleDoc)
                 <Form.Control id="address" placeholder="Enter your address" defaultValue={singleDoc.meta.address}/>
               </Form.Group>
             
-              <Form.Group className="mb-3" >
+              {/* <Form.Group className="mb-3" >
                 <Form.Label htmlFor='user_role'>Role</Form.Label>
                 <Form.Control id="user_role" placeholder="Enter user role" defaultValue={singleDoc.role.agent && 'agent'}/>
-              </Form.Group>
+              </Form.Group> */}
+
+              {singleDoc.role.agent &&
+                <Form.Group className="mb-3" >
+                  <Form.Label htmlFor='user_role'>Agent Promotion</Form.Label>
+                  { !agentPromo && <button type='button' className='btn btn-primary cta' onClick={handleAgentPromotion}>Promote to supervisor</button> } 
+                  { agentPromo && <button type='button' className='btn btn-primary cta bg-danger border border-danger' onClick={handleAgentPromotionDecline}>Decline Promotion</button> } 
+                  {/* <Form.Control id="user_role" placeholder="Enter user role" defaultValue={singleDoc.role.agent && 'agent'}/> */}
+                </Form.Group>
+              }
 
           </Modal.Body>
           <Modal.Footer>

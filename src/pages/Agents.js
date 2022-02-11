@@ -5,7 +5,7 @@ import SearchBar from '../components/searchBar/SearchBar'
 import Header from '../components/header/Header';
 import { functions, authentication, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import { Table, Modal, Form } from 'react-bootstrap'
+import { Table, Modal, Form, Button } from 'react-bootstrap'
 import useAuth from '../contexts/Auth';
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { AiFillCloseCircle } from 'react-icons/ai'
@@ -17,6 +17,8 @@ import { ImFilesEmpty } from 'react-icons/im'
 import { MdStickyNote2 } from 'react-icons/md'
 import { addDoc, collection } from 'firebase/firestore';
 import StickerModal from '../components/StickersModal';
+import { FaUserPlus } from 'react-icons/fa'
+import { IoMdAlert } from 'react-icons/io'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -60,6 +62,7 @@ function Agents({role}) {
 const [ open, handleOpen, handleClose ] = useDialog()
 
 const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
+const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
 
   // search for agent
   const [searchText, setSearchText] = useState('')
@@ -207,6 +210,34 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
 
   const paginatedShownAgent = !agents || shownAgents.slice(indexOfFirstAgent, indexOfLastAgent)
 
+
+  /* // handling user promotion
+  const [ agentPromo, setAgentPromo ] = useState(false)
+  const handleAgentPromotion = () => {
+    setAgentPromo(true)
+  }
+  const handleAgentPromotionDecline = () => {
+    setAgentPromo(false)
+  } */
+
+  const handleAgentPromotionSubmit =(event) => {
+    event.preventDefault()
+    const updateUser = httpsCallable(functions, 'updateUser')
+    updateUser({
+      uid: singleDoc.uid,
+      name: singleDoc.uid,
+      supervisor: true,
+      agent: singleDoc.role.agent
+    }).then(() => {
+      toast.success(`Promoted ${singleDoc.name} to a supervisor`, {position: "top-center"})
+    })
+    handleClosePromo()
+  }
+
+
+
+
+
     return (
       <>
       
@@ -248,6 +279,20 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
 
             <Modal show={openSticker} onHide={handleCloseSticker}>
               <StickerModal name={singleDoc.name} user_id={singleDoc.uid} />
+            </Modal>
+
+            <Modal show={openPromo} onHide={handleClosePromo}>
+                    <Modal.Header closeButton><Modal.Title>Agent Promotion</Modal.Title></Modal.Header>
+                    <form onSubmit={handleAgentPromotionSubmit}>
+                      <Modal.Body>
+                      <Form.Group className='addFormGroups'>
+                        <Form.Label htmlFor='licenseNo'><IoMdAlert /> Promote Agent <b>{singleDoc.name}</b> To supervisor</Form.Label>
+                        {/* { !agentPromo && <button type='button' className='btn btn-primary cta' onClick={handleAgentPromotion}>Promote to supervisor</button> } 
+                        { agentPromo && <button type='button' className='btn btn-primary cta bg-danger border border-danger' onClick={handleAgentPromotionDecline}>Decline Promotion</button> } */} 
+                        <Button variant="primary" type="submit">Approve</Button>
+                      </Form.Group>
+                      </Modal.Body>
+                    </form>
             </Modal>
 
             {agents !== null && agents.length > 0
@@ -319,6 +364,15 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
                                                 >
                                                   <div className="actionDiv">
                                                     <i><MdEdit/></i> Edit
+                                                  </div>
+                                            </li>
+                                            <li onClick={() => {
+                                                    setShowContext(false)
+                                                    handleOpenPromo(); 
+                                                  }}
+                                                >
+                                                  <div className="actionDiv">
+                                                    <i><FaUserPlus/></i> Promotion
                                                   </div>
                                             </li>
                                             <li onClick={() => {
