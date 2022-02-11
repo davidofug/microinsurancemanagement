@@ -18,6 +18,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../components/messenger/Chat'
+import '../styles/ctas.css'
 
 export default function Mtp() {
   useEffect(() => { 
@@ -312,9 +313,9 @@ export default function Mtp() {
       <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
       <ToastContainer/>
       {authClaims.supervisor &&
-        <div id="add_client_group">
+        <div id="add_client_group" >
           <div></div>
-          <Link to="/supervisor/add-mtp">
+          <Link to="/supervisor/add-mtp" className="classic">
             <button className="btn btn-primary cta m-2">Add MTP</button>
           </Link>
         </div>
@@ -323,8 +324,8 @@ export default function Mtp() {
       {authClaims.agent &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/agent/add-mtp">
-            <button className="btn btn-primary cta m-2">Add MTP</button>
+          <Link to="/agent/add-mtp" className="classic">
+            <button className="btn btn-primary cta m-2 btn-cta">Add MTP</button>
           </Link>
         </div>
       }
@@ -529,7 +530,7 @@ export default function Mtp() {
         :
           <Loader />
       }
-      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
         <Chat />
       </div> 
     </div>
