@@ -31,7 +31,7 @@ export default function MinimisedSideBar({role}){
                                 {object?.subMenu &&
                                     (<ul>
                                         {object.subMenu.map((sub, index) => (
-                                            <li>
+                                            <li key={index}>
                                                 <Link to={sub.link} key={index} style={{color: "black"}}>
                                                     {sub.name}
                                                 </Link>
