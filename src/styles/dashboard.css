@@ -1,14 +1,3 @@
-/* .main {
-    display: flex; 
-    height: 100%;
-} */
-
-/* #menu {
-    width:20vw; 
-    background-color:#FFFFFF;
-} */
-
-
 #main-container {
     padding-top:5vh;
     padding-bottom:5vh; 
@@ -157,7 +146,7 @@
 
     .custom-card {
         width:8rem;
-        height:6rem; 
+        height:9rem; 
     }
 
     .card-text {
@@ -179,9 +168,23 @@
     }    
     
     .graph-space { 
-        height: 40vh;
+        height: 35vh;
+    }
+    
+    .custom-card {
+         height: 100px;
+         width: 135px;
     }
 
+    .card-row-container {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .components {
+        margin-top:18px;
+
+    }
     
 }
 
@@ -237,7 +240,6 @@
     .first-container{
         width: 100%;
     }
-
     #first-row{
         gap: 40px;
     }
@@ -246,16 +248,13 @@
         padding:30px;
         gap: 20px;
     }
-
     .first-container {
         gap: 20px;
     }
-
     .custom-card {
         width:7rem;
         height:6rem; 
     }
-
     .card-text {
         color:white;
         font-size:10px;
@@ -325,3 +324,118 @@
    
 }
 
+
+
+@media (max-width: 360px) {
+    .chat-container {
+        margin-left:0px;
+    }
+
+    .card-body {
+        width: 120px;
+        height: 90px;
+    }
+
+    .card-row-container {
+        width: 130px;
+        /* height: 120px; */
+    }
+
+    #bin {
+        height:250px;
+    }
+
+    #custom-card {
+        width:140px;
+        height:100px;
+    }
+
+
+}
+
+@media (max-width: 480px) {
+   .chat-container{
+       padding-left: 320px;
+   }
+
+
+
+}
+
+@media (max-width: 768px) {
+    .chat-container {
+        margin-left: 66px;
+    }
+
+    .card-body {
+        width: 120px;
+        height: 90px;
+    }
+
+    .card-row-container {
+        width: 130px;
+        /* height: 120px; */
+    }
+
+    .card-text {
+        font-size:10px;
+
+    }
+
+    #custom-card {
+        height:90px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .custom-card {
+        width:10rem;
+        height:7rem; 
+    }
+
+    .graph-space {
+        height:35vh;
+    }
+
+    #short-stats {
+        padding: 4vh 5vh;
+    }
+
+    .chat-container {
+        padding-right:100px;
+
+    }
+
+
+}
+@media (max-width: 1200px) {
+    .graph-space {
+        height:50vh;
+    }
+
+    .chat-container {
+        padding-right:280px;
+    }
+
+    .custom-card {
+        width:10rem;
+        height:7rem;
+    }
+
+}
+@media (min-width: 1201px) {
+    .chat-container {
+        padding-right:280px;
+    }
+
+    .graph-space {
+        height:50vh;
+    }
+
+    
+
+
+
+
+
+}

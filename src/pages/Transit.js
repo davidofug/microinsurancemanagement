@@ -19,6 +19,8 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../components/messenger/Chat'
 
+import '../styles/ctas.css'
+
 export default function Mtp() {
   useEffect(() => { document.title = "Britam - Transit"; getMTP()}, []);
 
@@ -254,7 +256,7 @@ export default function Mtp() {
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-windscreen">
+          <Link to="/supervisor/add-windscreen" className="classic">
             <button className="btn btn-primary cta">Add Transit</button>
           </Link>
         </div>
@@ -263,7 +265,7 @@ export default function Mtp() {
       {authClaims.agent &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/agent/add-windscreen">
+          <Link to="/agent/add-windscreen" className="classic">
             <button className="btn btn-primary cta">Add Transit</button>
           </Link>
         </div>
