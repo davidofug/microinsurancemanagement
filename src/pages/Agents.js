@@ -23,6 +23,8 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../components/messenger/Chat'
 
+import '../styles/ctas.css'
+
 
 function Agents({role}) {
 
@@ -215,12 +217,12 @@ const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
             <div id="add_client_group">
                 <div></div>
                 {authClaims.supervisor && 
-                  <Link to="/supervisor/add-agents">
+                  <Link to="/supervisor/add-agents" className="classic">
                       <button className="btn btn-primary cta m-2">Add Agent</button>
                   </Link>
                 }
                 {authClaims.admin && 
-                  <Link to="/admin/add-agent">
+                  <Link to="/admin/add-agent" className="classic">
                       <button className="btn btn-primary cta m-2">Add Agent</button>
                   </Link>
                 }

@@ -19,6 +19,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../../components/messenger/Chat'
+import "../../styles/ctas.css"
 
 function Admins() {
 
@@ -157,7 +158,7 @@ function Admins() {
 
             <div id="add_client_group">
                 <div></div>
-                <Link to="/superadmin/add-admin">
+                <Link to="/superadmin/add-admin" className="classic">
                     <button className="btn btn-primary cta m-2">Add admin</button>
                 </Link>
                 
@@ -293,7 +294,7 @@ function Admins() {
               :
                 <Loader />
           }
-          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
             <Chat />
           </div>     
         </div>
