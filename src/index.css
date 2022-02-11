@@ -164,6 +164,14 @@ body{
 }
 
 
+.sortButton{
+    background-color: transparent;
+    border: none;
+    color: #1475cf;
+    font-size: large;
+}
+
+
 
 
 #action_context li{
