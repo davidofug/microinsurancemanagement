@@ -17,6 +17,8 @@ import useAuth from "../../contexts/Auth";
 import Chat from '../../components/messenger/Chat'
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { convertStringToDate } from "../../helpers/smallFunctions";
+import { BiSort } from 'react-icons/bi'
+import { FaSortDown, FaSortUp } from 'react-icons/fa'
 
 import '../../styles/ctas.css'
 
@@ -24,8 +26,6 @@ function Reports() {
   useEffect(() => {
     document.title = "Britam - Reports";
     getPolicies()
-    // setPaginatedShownPolicies(shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy))
-    functionName()
   }, []);
 
   // policies
@@ -79,7 +79,6 @@ function Reports() {
       const AdminPolicies = policiesArray.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
       AdminPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminPolicies)
     })
-    functionName()
 
   }
 
@@ -141,6 +140,8 @@ function Reports() {
   const [ dateFrom, setDateFrom ] = useState(null)
   const [ dateTo, setDateTo ] = useState(null)
   const [ switchStatus, setSwitchStatus ] = useState(null)
+  const [ sortBasicAsc, setSortBasicAsc ] = useState(false)
+  const [ sortBasicDes, setSortBasicDes ] = useState(false)
 
 
   // pagination
@@ -158,21 +159,16 @@ function Reports() {
                         .filter(policy => !dateFrom || policy.policyStartDate >= dateFrom)
                         .filter(policy => !dateTo || policy.policyStartDate <= dateTo)
                         .filter(policy => !switchStatus || policy.stickersDetails[0].status === switchStatus)
-                        .sort((a, b) => convertStringToDate(b.createdAt) - convertStringToDate(a.createdAt)))
+                        .sort((a, b) => convertStringToDate(b.createdAt) - convertStringToDate(a.createdAt))) 
+
+  if(sortBasicAsc){
+    shownPolicies = shownPolicies.sort((a, b) => b.stickersDetails[0].totalPremium - a.stickersDetails[0].totalPremium)
+  }
+  if(sortBasicDes){
+    shownPolicies = shownPolicies.sort((a, b) => a.stickersDetails[0].totalPremium - b.stickersDetails[0].totalPremium)
+  }
 
   const [ shownPolicies2, setShownPolicies2 ] = useState('')
-
-  const functionName = () => {
-    setShownPolicies2((currentPolicies
-      .filter(policy => !switchCategory || policy.category === switchCategory)
-      .filter(policy => !currentDay && policy.policyStartDate !== undefined || policy.policyStartDate === currentDay)
-      .filter(policy => !selectedMonth && policy.policyStartDate !== undefined || policy.policyStartDate.substring(5, 7) === selectedMonth)
-      .filter(policy => !selectedYear || policy.policyStartDate.substring(0, 4) === selectedYear)
-      .filter(policy => !dateFrom || policy.policyStartDate >= dateFrom)
-      .filter(policy => !dateTo || policy.policyStartDate <= dateTo)
-      .filter(policy => !switchStatus || policy.stickersDetails[0].status === switchStatus)
-      .sort((a, b) => convertStringToDate(b.createdAt) - convertStringToDate(a.createdAt))))
-  }
   
   
   let paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
@@ -186,14 +182,11 @@ function Reports() {
 
   
 
-  const sortByBasicPremium = () => {
-    console.log('clicked')
-
+  /* const sortByBasicPremium = () => {
       setShownPolicies2(shownPolicies.sort((a, b) => b.stickersDetails[0].totalPremium - a.stickersDetails[0].totalPremium))
-    
-  }
+  } */
 
-  console.log(shownPolicies2)
+  // console.log(shownPolicies2)
 
 
   return (
@@ -315,7 +308,17 @@ function Reports() {
                       {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>{`transit Report`.toUpperCase()}</th>}
                 </tr>
                 <tr>
-                  <th>#</th><th>Policy Holder</th><th>PlateNo.</th><th>Car Make</th><th>Seating Capacity</th><th>G.weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium <button onClick={sortByBasicPremium}>sort</button></th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th>
+                  <th>#</th><th>Policy Holder</th><th>PlateNo.</th><th>Car Make</th><th>Seating Capacity</th><th>G.weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium
+                    <button className="sortButton" onClick={() => {
+                      setSortBasicAsc(true)
+                      setSortBasicDes(false) }}><FaSortUp />
+                      
+                    </button>
+                    <button className="sortButton" onClick={() => {
+                      setSortBasicDes(true)
+                      setSortBasicAsc(false) }}><FaSortDown />
+                    </button>
+              </th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th>
                 </tr>
               </thead>
               
