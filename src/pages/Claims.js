@@ -232,7 +232,7 @@ export default function Claims() {
       {authClaims.supervisor && 
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-claim m-2" className="classic">
+          <Link to="/supervisor/add-claim" className="classic">
             <button className="btn btn-primary cta">Add Claim</button>
           </Link>
         </div>
