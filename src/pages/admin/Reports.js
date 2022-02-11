@@ -1,4 +1,3 @@
-// import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react";
 import { MdDownload } from "react-icons/md";
 import SearchBar from "../../components/searchBar/SearchBar";
@@ -17,16 +16,12 @@ import useAuth from "../../contexts/Auth";
 import Chat from '../../components/messenger/Chat'
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { convertStringToDate } from "../../helpers/smallFunctions";
-import { BiSort } from 'react-icons/bi'
 import { FaSortDown, FaSortUp } from 'react-icons/fa'
 
 import '../../styles/ctas.css'
 
 function Reports() {
-  useEffect(() => {
-    document.title = "Britam - Reports";
-    getPolicies()
-  }, []);
+  useEffect(() => { document.title = "Britam - Reports"; getPolicies() }, []);
 
   // policies
   const [policies, setPolicies] = useState([])
@@ -236,7 +231,7 @@ function Reports() {
             </div>
 
             <div style={{display: "flex", alignItems: "center"}}>
-            <Form.Group controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+            <Form.Group controlId="formGridEmail" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
                 <Form.Label>Daily</Form.Label>
                 <Form.Control type="date" onChange={({target: {value}}) => setCurrentDay(value)}/>
             </Form.Group>
@@ -300,12 +295,12 @@ function Reports() {
                 <Table striped hover responsive id="myTable">
               <thead>
                 <tr style={{borderBottom: "1px solid #000"}}>
-                      {switchCategory === "" && <th colspan={20} style={{textAlign: "center"}}>{`All Reports`.toUpperCase()}</th>}
-                      {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>{`MTP Report`.toUpperCase()}</th>}
-                      {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>{`comprehensive Report`.toUpperCase()}</th>}
-                      {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>{`windscreen Report`.toUpperCase()}</th>}
-                      {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>{`new import Report`.toUpperCase()}</th>}
-                      {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>{`transit Report`.toUpperCase()}</th>}
+                      {switchCategory === "" && <th colSpan={20} style={{textAlign: "center"}}>{`All Reports`.toUpperCase()}</th>}
+                      {switchCategory === "mtp" && <th colSpan={20} style={{textAlign: "center"}}>{`MTP Report`.toUpperCase()}</th>}
+                      {switchCategory === "comprehensive" && <th colSpan={20} style={{textAlign: "center"}}>{`comprehensive Report`.toUpperCase()}</th>}
+                      {switchCategory === "windscreen" && <th colSpan={20} style={{textAlign: "center"}}>{`windscreen Report`.toUpperCase()}</th>}
+                      {switchCategory === "newImports" && <th colSpan={20} style={{textAlign: "center"}}>{`new import Report`.toUpperCase()}</th>}
+                      {switchCategory === "transit" && <th colSpan={20} style={{textAlign: "center"}}>{`transit Report`.toUpperCase()}</th>}
                 </tr>
                 <tr>
                   <th>#</th><th>Policy Holder</th><th>PlateNo.</th><th>Car Make</th><th>Seating Capacity</th><th>G.weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium
@@ -324,16 +319,14 @@ function Reports() {
               
               <tbody>
                           {paginatedShownPolicies.map((policy, index) => {
-                                
-                                {basicCurrentTotal += +policy.stickersDetails[0].totalPremium} // total for currentPolicies
-                                {vatCurrentTotal += 1080} // total for  currentPolicies
-                                {stumpDutyCurrentTotal += 35000} // total for currentPolicies
-                                {stickerFeeCurrentTotal += 6000} // total for currentPolicies
-                                {commissionCurrentTotal += 2191} // total for currentPolicies
-                                {trainingLevy += +policy.stickersDetails[0].trainingLevy}
+                                basicCurrentTotal += +policy.stickersDetails[0].totalPremium // total for currentPolicies
+                                vatCurrentTotal += 1080 // total for  currentPolicies
+                                stumpDutyCurrentTotal += 35000 // total for currentPolicies
+                                stickerFeeCurrentTotal += 6000 // total for currentPolicies
+                                commissionCurrentTotal += 2191 // total for currentPolicies
+                                trainingLevy += +policy.stickersDetails[0].trainingLevy
 
                             return (
-                              <>
                                 <tr key={policy.id}>
                                 
                                   <td>{indexOfFirstPolicy + index + 1}</td>
@@ -358,7 +351,6 @@ function Reports() {
                                   <td>{policy.added_by_name}</td>
                                   {/* <td>{typeof policy.currency === "string" ? policy.currency : ''}</td> */}
                                 </tr>
-                              </>
                             )
 
                             
