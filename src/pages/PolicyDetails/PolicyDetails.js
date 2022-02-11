@@ -8,6 +8,7 @@ import './PolicyDetails.css'
 import { currencyFormatter } from '../../helpers/currency.format'
 import { Modal, Form, Col } from 'react-bootstrap'
 import useDialog from '../../hooks/useDialog'
+import useMediaQuery from '../../hooks/useMediaQuery'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -97,15 +98,16 @@ function PolicyDetails() {
 
     }
 
-    
-   
 
-   console.log(agentRange)
+   //media query
+   const isMobile = useMediaQuery("(max-width: 768px)")
+
+   console.log(isMobile)
 
       
     
     return (
-        <div className="components">
+        <div className={isMobile ? "components" : "components detailsMargin"}  >
             <ToastContainer />
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <div>
