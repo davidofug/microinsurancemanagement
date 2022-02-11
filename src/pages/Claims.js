@@ -58,6 +58,8 @@ export default function Claims() {
   useEffect(() => {
     document.title = "Britam - Claims";
     getClaims();
+
+    return() => getClaims()
   }, []);
 
   const { authClaims } = useAuth()
