@@ -22,6 +22,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../components/messenger/Chat'
+import '../styles/ctas.css'
 
 export default function Claims() {
   const [claims, setClaims] = useState([]);
@@ -222,7 +223,7 @@ export default function Claims() {
       {authClaims.agent && 
         <div id="add_client_group">
           <div></div>
-          <Link to="/agent/add-claim">
+          <Link to="/agent/add-claim" className="classic">
             <button className="btn btn-primary cta m-2">Add Claim</button>
           </Link>
         </div>
@@ -231,7 +232,7 @@ export default function Claims() {
       {authClaims.supervisor && 
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-claim">
+          <Link to="/supervisor/add-claim" className="classic">
             <button className="btn btn-primary cta">Add Claim</button>
           </Link>
         </div>

@@ -19,6 +19,9 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../components/messenger/Chat'
+import '../styles/clients.css'
+
+import '../styles/ctas.css'
 
 
 export default function Clients() {
@@ -131,10 +134,10 @@ const getClients = () => {
             <Header title="Clients" subtitle="MANAGING CLIENTS" />
             <ToastContainer />
    
-            <div id="add_client_group">
+            <div id="add_client_group" className="add_client_group">
                 <div></div>
                 {!authClaims.admin && !authClaims.superadmin &&
-                  <Link to={authClaims.supervisor && "/supervisor/add-clients" || authClaims.agent && "/agent/add-clients"}>
+                  <Link to={authClaims.supervisor && "/supervisor/add-clients" || authClaims.agent && "/agent/add-clients"} className="classic">
                       <button className='btn btn-primary cta m-2'>Add Client</button>
                   </Link>
                 }
@@ -213,7 +216,7 @@ const getClients = () => {
                       </tbody>
 
                       <tfoot>
-                        <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
+                        <tr id="pag-btns" style={{border: "1px solid white", borderTop: "1px solid #000"}}>
                           <td colSpan={7}>
                             <Pagination 
                             pages={totalPagesNum}
@@ -250,7 +253,7 @@ const getClients = () => {
             :
               <Loader />
           }
-          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+          <div id="chat-container" style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
             <Chat />
           </div> 
         </div>

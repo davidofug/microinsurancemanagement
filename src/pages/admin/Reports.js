@@ -18,6 +18,8 @@ import Chat from '../../components/messenger/Chat'
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { convertStringToDate } from "../../helpers/smallFunctions";
 
+import '../../styles/ctas.css'
+
 function Reports() {
   useEffect(() => {
     document.title = "Britam - Reports";
@@ -408,7 +410,7 @@ function Reports() {
         
         
           }
-          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
             <Chat />
           </div> 
 
