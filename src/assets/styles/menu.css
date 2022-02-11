@@ -36,11 +36,11 @@
 
 
 .mobileSidebar{
-    display: grid; 
+    display: flex; 
     grid-template-rows: 11vh 80vh 9vh;
     border-right: 1px solid #c6c7c8;
     align-items: stretch;
-    width: 80px;
+    /* width: 80px; */
     height: 100vh;
     top: 0;
     left: 0;
