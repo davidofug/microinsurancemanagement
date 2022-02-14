@@ -146,15 +146,6 @@ const handleAgentPromotionDecline = () => {
                 <Form.Control id="user_role" placeholder="Enter user role" defaultValue={singleDoc.role.agent && 'agent'}/>
               </Form.Group> */}
 
-              {singleDoc.role.agent &&
-                <Form.Group className="mb-3" >
-                  <Form.Label htmlFor='user_role'>Agent Promotion</Form.Label>
-                  { !agentPromo && <button type='button' className='btn btn-primary cta' onClick={handleAgentPromotion}>Promote to supervisor</button> } 
-                  { agentPromo && <button type='button' className='btn btn-primary cta bg-danger border border-danger' onClick={handleAgentPromotionDecline}>Decline Promotion</button> } 
-                  {/* <Form.Control id="user_role" placeholder="Enter user role" defaultValue={singleDoc.role.agent && 'agent'}/> */}
-                </Form.Group>
-              }
-
           </Modal.Body>
           <Modal.Footer>
             <Button

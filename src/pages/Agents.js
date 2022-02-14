@@ -286,7 +286,7 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
                     <form onSubmit={handleAgentPromotionSubmit}>
                       <Modal.Body>
                       <Form.Group className='addFormGroups'>
-                        <Form.Label htmlFor='licenseNo'><IoMdAlert /> Promote Agent <b>{singleDoc.name}</b> To supervisor</Form.Label>
+                        <Form.Label htmlFor='licenseNo'><p style={{display: "flex", alignItems: "center"}}><IoMdAlert />   Promote <b> {singleDoc.name}</b> To a supervisor</p></Form.Label>
                         {/* { !agentPromo && <button type='button' className='btn btn-primary cta' onClick={handleAgentPromotion}>Promote to supervisor</button> } 
                         { agentPromo && <button type='button' className='btn btn-primary cta bg-danger border border-danger' onClick={handleAgentPromotionDecline}>Decline Promotion</button> } */} 
                         <Button variant="primary" type="submit">Approve</Button>
