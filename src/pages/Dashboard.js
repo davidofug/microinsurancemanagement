@@ -274,7 +274,7 @@ function Dashboard() {
                                     ? <>
                                     <h5 className="heading">Latest Agents</h5>
                                     <table className='table table-responsive'>
-                                        <thead><th>Name</th><th>Email Address</th></thead>
+                                        <thead><tr><th>Name</th><th>Email Address</th></tr></thead>
                                         <tbody>
                                             {agents.map(agent => (
                                                 <tr key={agent.uid}>
@@ -304,7 +304,7 @@ function Dashboard() {
                                     <div>
                                         <h5 className="heading">Latest Clients</h5>
                                         <table className='table table-responsive'>
-                                            <thead><th>Name</th><th>Email Address</th></thead>
+                                            <thead><tr><th>Name</th><th>Email Address</th></tr></thead>
                                             <tbody>
                                                 {clients.map(client => (
                                                     <tr key={client.uid}>
