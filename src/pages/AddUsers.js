@@ -158,11 +158,7 @@ function AddUsers({role}) {
 
     }
 
-    const { user_role } = fields
-
     const [ progress, setProgress ] = useState(0)
-
-    
 
     return (
         <div /* className='components' */ className="boom">

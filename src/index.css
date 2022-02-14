@@ -74,6 +74,10 @@ body{
     width: 100vw;
 }
 
+.top-container-large .addComponentsData{
+    margin: 0 10rem;
+}
+
 
 
 .displayContainer{
@@ -93,7 +97,7 @@ body{
 }
 
 .addComponentsData{
-    margin: 0 20px;
+    margin: 0 4rem;
     display: flex;
     justify-content: center;
     background-color: #fff;
