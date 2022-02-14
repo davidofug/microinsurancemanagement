@@ -273,7 +273,7 @@ function Dashboard() {
                                     agents && agents.length > 0 
                                     ? <>
                                     <h5 className="heading">Latest Agents</h5>
-                                    <table>
+                                    <table className='table table-responsive'>
                                         <thead><th>Name</th><th>Email Address</th></thead>
                                         <tbody>
                                             {agents.map(agent => (
@@ -284,6 +284,7 @@ function Dashboard() {
                                             ))}
                                         </tbody>
                                     </table>
+                                    <p className="heading">Total Number of Agents: {agents.length} <Link to={'/supervisor/agents'}>view all</Link></p>
                                     </>
                                     : 
                                     agents === null
