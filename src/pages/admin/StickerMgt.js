@@ -106,6 +106,7 @@ export default function StickerMgt() {
       .then(() => {
         toast.success(`Successfully added #${returned[0]} to returned sticker numbers`, {position: "top-center"}); 
         getStickerRange()
+        setReturned([])
       })
       .catch(error => console.log(error))
       handleClose()
@@ -121,8 +122,6 @@ export default function StickerMgt() {
       returned.splice(index, 1)
       return returned
     }
-
-    console.log(returned)
 
     return (
         <div className="components">
