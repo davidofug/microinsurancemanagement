@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import { RiCalendarTodoFill } from 'react-icons/ri'
 import Chat from '../components/messenger/Chat'
 import { convertStringToDate, timeConvert } from '../helpers/smallFunctions'
+import "../styles/ctas.css"
 
 
 function Logs() {
@@ -133,7 +134,7 @@ function Logs() {
                 :
                 <Loader />
             }
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
               <Chat />
             </div> 
         </div>
