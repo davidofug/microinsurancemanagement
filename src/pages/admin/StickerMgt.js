@@ -16,6 +16,7 @@ import '../../components/modal/ConfirmBox.css'
 import Loader from "../../components/Loader";
 import { ImFilesEmpty } from 'react-icons/im'
 import useDialog from "../../hooks/useDialog";
+// import { MdCancel } from 'react-icons/md'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -94,23 +95,34 @@ export default function StickerMgt() {
       
     }
 
-    console.log(singleDoc)
 
     const returnedSticker = async (event) => {
       event.preventDefault()
 
       const docRef = doc(db, "ranges", singleDoc.id);
       await updateDoc(docRef, {
-        returned: [ ...singleDoc.returned, event.target.returned.value ]
+        returned: [ ...singleDoc.returned, ...returned ]
       })
       .then(() => {
-        toast.success(`Successfully added #${event.target.returned.value} to returned sticker numbers`, {position: "top-center"}); 
+        toast.success(`Successfully added #${returned[0]} to returned sticker numbers`, {position: "top-center"}); 
         getStickerRange()
       })
       .catch(error => console.log(error))
       handleClose()
 
     }
+
+    
+
+
+    const [ returned, setReturned ] = useState([])
+
+    const getCurrentReturned = (index) => {
+      returned.splice(index, 1)
+      return returned
+    }
+
+    console.log(returned)
 
     return (
         <div className="components">
@@ -170,7 +182,29 @@ export default function StickerMgt() {
                       <form onSubmit={returnedSticker}>
                         <Form.Group className="mb-3" >
                             <Form.Label htmlFor='returned'>Add Returned Stickers:</Form.Label>
-                            <Form.Control type="text" placeholder="Enter sticker Number" id="returned"/>
+                            <br></br>
+                            {/* <Form.Control type="text" placeholder="Enter sticker Number" id="returned"/> */}
+                            <input type='text' placeholder='Enter sticker Number' id='returnedArray' />
+                            <button type="button" className="btn btn-primary cta" onClick={() => {
+                              // console.log(document.getElementById('returnedArray').value)
+
+                              if(document.getElementById('returnedArray').value !== '' && !returned.includes(document.getElementById('returnedArray').value)){
+                                setReturned([ ...returned, document.getElementById('returnedArray').value])
+                              }
+
+                              document.getElementById('returnedArray').value = ''
+                            }}>Add</button>
+
+                            <br></br>
+                            <br></br>
+                            {returned.map((sticker, index) => 
+                              <span key={index} style={{margin: "10px", border: "1px solid grey", borderRadius: "20px", padding: "5px"}}>{sticker} 
+                                <MdCancel onClick={() => {
+                                  setReturned([ ...getCurrentReturned(index)])
+                                }}/>
+                              </span>
+                            )}
+
                         </Form.Group>
                         <input type="submit" className='btn btn-primary cta' value="Submit" />
                       </form>
