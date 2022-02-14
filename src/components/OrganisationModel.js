@@ -4,7 +4,7 @@ import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { authentication } from '../helpers/firebase';
 import { useState } from 'react'
 
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 // firebase storage..

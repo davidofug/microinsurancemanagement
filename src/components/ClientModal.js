@@ -1,5 +1,5 @@
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
-import { getAuth  } from "firebase/auth";
+// import { getAuth  } from "firebase/auth";
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../helpers/firebase'
 
@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
 
-  const auth = getAuth();
+  // const auth = getAuth();
 
   const handleEditFormSubmit = async(event) => {
     event.preventDefault()
