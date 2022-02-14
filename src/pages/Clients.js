@@ -132,9 +132,6 @@ const getClients = () => {
   const currentClients = !clients || searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
   const totalPagesNum = !clients || Math.ceil(clients.length / clientsPerPage)
 
-  console.log(clients)
-
-
     return (
         <div className='components'>
             <Header title="Clients" subtitle="MANAGING CLIENTS" />
