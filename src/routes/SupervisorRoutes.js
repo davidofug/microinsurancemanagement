@@ -63,10 +63,10 @@ function SupervisorRoutes() {
                 <Policies cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-new-import" >
-                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="new import"/>
+                <Policies cat="newImport" btn_txt="Process New import" pol="new import"/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-transit" >
-                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="transit"/>
+                <Policies cat="transit" btn_txt="Process Transit" pol="transit"/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/motor-third-party" >
                 <Mtp />

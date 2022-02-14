@@ -216,7 +216,7 @@ function Reports() {
                           <option value="mtp">MTP</option>
                           <option value="comprehensive">Comprehensive</option>
                           <option value="windscreen">Windscreen</option>
-                          <option value="newImports">New Imports</option>
+                          <option value="newImport">New Import</option>
                           <option value="transit">Transit</option>
                       </Form.Select>
                   </Form.Group>

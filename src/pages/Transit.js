@@ -38,7 +38,10 @@ export default function Mtp() {
   const getMTP = async () => {
     const data = await getDocs(policyCollectionRef);
     const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    console.log(policiesArray)
     const mtpPolicies = policiesArray.filter(policy => policy.category === 'transit').sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+
+    console.log(mtpPolicies)
     
     // agent mtp policies
     if(authClaims.agent){
@@ -246,8 +249,6 @@ export default function Mtp() {
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
-  console.log(deleteArray)
-
 
   return (
     <div className="components">
@@ -256,7 +257,7 @@ export default function Mtp() {
       {authClaims.supervisor &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/supervisor/add-windscreen" className="classic">
+          <Link to="/supervisor/add-transit" className="classic">
             <button className="btn btn-primary cta">Add Transit</button>
           </Link>
         </div>
@@ -265,7 +266,7 @@ export default function Mtp() {
       {authClaims.agent &&
         <div id="add_client_group">
           <div></div>
-          <Link to="/agent/add-windscreen" className="classic">
+          <Link to="/agent/add-transit" className="classic">
             <button className="btn btn-primary cta">Add Transit</button>
           </Link>
         </div>
