@@ -245,8 +245,6 @@ export default function Mtp() {
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
-  console.log(deleteArray)
-
 
   return (
     <div className="components">

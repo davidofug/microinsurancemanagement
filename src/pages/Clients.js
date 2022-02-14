@@ -26,7 +26,13 @@ import '../styles/ctas.css'
 
 export default function Clients() {
 
-  useEffect(() => {document.title = 'Britam - Clients';getClients()}, [])
+  useEffect(() => {
+    document.title = 'Britam - Clients';
+    getClients()
+
+    return () => getClients()
+  
+  }, [])
 
   const { authClaims } = useAuth()
   const [clients, setClients] = useState([]);
@@ -125,9 +131,6 @@ const getClients = () => {
   const indexOfFirstClient = indexOfLastClient - clientsPerPage
   const currentClients = !clients || searchByName(clients).slice(indexOfFirstClient, indexOfLastClient)
   const totalPagesNum = !clients || Math.ceil(clients.length / clientsPerPage)
-
-  console.log(clients)
-
 
     return (
         <div className='components'>

@@ -143,28 +143,30 @@ function Settings() {
                         </div>
                     </div>
 
-                    <div className='mb-3 mt-3'>
                         <h6>General Information</h6>
-                        <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
-                            <th style={{paddingRight: "10rem"}}><p>Role</p></th>
-                            {authClaims.agent && <td><Badge>Agent</Badge></td>}
-                            {authClaims.supervisor && <td><Badge>Supervisor</Badge></td>}
-                            {authClaims.admin && <td><Badge>Admin</Badge></td>}
-                            {authClaims.superadmin && <td><Badge>Super Admin</Badge></td>}
-                        </div>
-                        <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
-                            <th style={{paddingRight: "10rem"}}><p>Gender</p></th>
-                            <td><p>{meta.gender}</p></td>
-                        </div>
-                        <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
-                            <th style={{paddingRight: "10rem"}}><p>Address</p></th>
-                            <td><p>{meta.address}</p></td>
-                        </div>
-                        <div style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
-                            <th style={{paddingRight: "10rem"}}><p>Contact</p></th>
-                            <td><p>{meta.phone}</p></td>
-                        </div>
-                    </div>                                
+                    <table className='mb-3 mt-3'>
+                        <tbody style={{backgroundColor: 'transparent'}}>
+                            <tr style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
+                                <th style={{paddingRight: "10rem"}}><p>Role</p></th>
+                                {authClaims.agent && <td><Badge>Agent</Badge></td>}
+                                {authClaims.supervisor && <td><Badge>Supervisor</Badge></td>}
+                                {authClaims.admin && <td><Badge>Admin</Badge></td>}
+                                {authClaims.superadmin && <td><Badge>Super Admin</Badge></td>}
+                            </tr>
+                            <tr style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
+                                <th style={{paddingRight: "10rem"}}><p>Gender</p></th>
+                                <td><p>{meta.gender}</p></td>
+                            </tr>
+                            <tr style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
+                                <th style={{paddingRight: "10rem"}}><p>Address</p></th>
+                                <td><p>{meta.address}</p></td>
+                            </tr>
+                            <tr style={{display: "flex", justifyContent: "space-between", padding: "0 2rem"}} className='mb-2'>
+                                <th style={{paddingRight: "10rem"}}><p>Contact</p></th>
+                                <td><p>{meta.phone}</p></td>
+                            </tr>
+                        </tbody>
+                    </table>                                
             </div>
 
             <div id="edit_profile" className="componentsData myProfile shadow-sm mb-3">
@@ -175,7 +177,7 @@ function Settings() {
             <div id="edit_profile" className="componentsData myProfile shadow-sm mb-3">
                     <form name='passwordForm' onSubmit={handlePasswordChange}>
                         <h2>Password and Security</h2>
-                        <p>change your password</p>
+                        <p>Change your password</p>
                     <Form.Group className="mb-3">
                         <Form.Label htmlFor='oldPassword'>Old Password</Form.Label>
                         <Form.Control type="password" id='oldPassword' placeholder="Enter old password" required/>

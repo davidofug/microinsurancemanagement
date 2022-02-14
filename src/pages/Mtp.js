@@ -26,7 +26,10 @@ export default function Mtp() {
     getMTP()
     updateExpiredStickers()
 
-    return () => getMTP()
+    return () => {
+      getMTP()
+      updateExpiredStickers()
+    }
 }, []);
 
   

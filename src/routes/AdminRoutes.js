@@ -12,7 +12,6 @@ import Organisations from '../pages/admin/Organisations'
 import Logs from '../pages/Logs.js'
 import Supervisors from '../pages/admin/Supervisors'
 import Agents from '../pages/Agents'
-import AddAgents from '../pages/AddAgents'
 import AddClaims from '../pages/AddClaims'
 import AddOrganisation from '../pages/admin/AddOrganisation'
 import StickerMgt from '../pages/admin/StickerMgt'
@@ -45,9 +44,6 @@ function AdminRoutes() {
             <PrivateRoute path="/admin/agents" >
                 <Agents />
             </PrivateRoute>
-            <PrivateRoute path="/add-agents" >
-                <AddAgents />
-            </PrivateRoute>
             <PrivateRoute path="/admin/clients" >
                 <Clients />
             </PrivateRoute>
@@ -62,15 +58,6 @@ function AdminRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/admin/policies" >
                 <Policies />
-            </PrivateRoute>
-            <PrivateRoute path="/admin/add-comprehensive" >
-                <Policies cat="comprehensive" btn_txt="Process Comprehensive" pol="comprehensive"/>
-            </PrivateRoute>
-            <PrivateRoute path="/admin/add-windscreen" >
-                <Policies cat="windscreen" btn_txt="Process Windscreen" pol="windscreen"/>
-            </PrivateRoute>
-            <PrivateRoute path="/admin/add-mtp" >
-                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
             </PrivateRoute>
             <PrivateRoute path="/admin/claims" >
                 <Claims />
