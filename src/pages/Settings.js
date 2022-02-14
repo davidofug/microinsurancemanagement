@@ -177,7 +177,7 @@ function Settings() {
             <div id="edit_profile" className="componentsData myProfile shadow-sm mb-3">
                     <form name='passwordForm' onSubmit={handlePasswordChange}>
                         <h2>Password and Security</h2>
-                        <p>change your password</p>
+                        <p>Change your password</p>
                     <Form.Group className="mb-3">
                         <Form.Label htmlFor='oldPassword'>Old Password</Form.Label>
                         <Form.Control type="password" id='oldPassword' placeholder="Enter old password" required/>
