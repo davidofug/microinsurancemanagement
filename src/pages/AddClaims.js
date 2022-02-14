@@ -101,6 +101,7 @@ function AddClaims() {
 
                                     setIsLoading(false)
                                     document.form1.reset();
+                                    setAttachedDocs('')
                                   }
                             })
                     }
@@ -130,6 +131,7 @@ function AddClaims() {
 
                 setIsLoading(false)
                 document.form1.reset();
+                setAttachedDocs('')
         }
     }
 
@@ -141,7 +143,7 @@ function AddClaims() {
 
 
     return (
-        <div className='components'>
+        <div /* className='components' */>
             <Header title="Add Claim" subtitle="ADD A NEW CLAIM NOTIFICATION" />
             <ToastContainer/>
             
@@ -206,7 +208,7 @@ function AddClaims() {
                             </Form.Group>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}} md="7">
                                 <Form.Label htmlFor='stickerNumber'>Sticker No.</Form.Label>
-                                <Form.Control type="text" name="" id="stickerNumber" placeholder="Enter Sticker Number" onChange={handleFieldChange}/>
+                                <Form.Control type="text" name="" id="stickerNumber" placeholder="Enter Sticker Number" onChange={handleFieldChange} required/>
                             </Form.Group>
                         </div>
                         <h5>Claimant Details</h5>
@@ -231,8 +233,9 @@ function AddClaims() {
                         <Row className="mb-3">
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='estimate'>Claim Estimate</Form.Label>
-                                <Form.Control type="text" name="" id="estimate" placeholder="Enter Claim Estimate" onChange={handleFieldChange}/>
-                            </Form.Group> 
+                                <Form.Control type="text" name="" id="estimate" placeholder="Enter Claim Estimate Amount" onChange={handleFieldChange} required/>
+                            </Form.Group>
+                            
                         </Row>
                         <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='detailsOfIncident'>Details of Incident</Form.Label>

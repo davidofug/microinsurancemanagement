@@ -1,34 +1,68 @@
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
 // import { getAuth  } from "firebase/auth";
 import { doc, updateDoc } from 'firebase/firestore'
-import { db } from '../helpers/firebase'
+import { addDoc, collection } from 'firebase/firestore';
+import { functions, authentication, db } from '../helpers/firebase';
+import { httpsCallable } from 'firebase/functions';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useState } from 'react';
 
 
-function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
+function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers}) {
 
   // const auth = getAuth();
 
-  const handleEditFormSubmit = async(event) => {
+  // initialising the logs collection.
+  const logCollectionRef = collection(db, "logs");
+
+  const handleEditFormSubmit = (event) => {
     event.preventDefault()
 
-    const docRef = doc(db, "usermeta", singleDoc.uid);
-    await updateDoc(docRef, {
-        address: event.target.address.value,
-        phone: event.target.phone.value,
-        date_of_birth: event.target.date_of_birth.value,
-        licenseNo: event.target.licenseNo.value,
-        NIN: event.target.NIN.value,
-        gender: event.target.gender.value
-    });
-    getUsers()
+    const updateUser = httpsCallable(functions, 'updateUser')
+    updateUser({
+      uid: singleDoc.uid,
+      name: event.target.name.value,
+      // user_role: event.target.user_role.value
+      supervisor: agentPromo,
+      agent: !!singleDoc.role.agent
+    })
+      .then(async () => {
+        console.log(event.target.name.value)
+      console.log(event.target.user_role.value)
+      })
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user update',
+          status: 'successful',
+          message: `Successfully updated agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch( async () => {
+        toast.error(`Failed to update ${singleDoc.name}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: ' user update',
+          status: 'failed',
+          message: `Failed to update agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+    })
+
+
+    // getUsers()
     toast.success('Successfully updated', {position: "top-center"});
 }
 
-
-console.log(singleDoc)
+// handling user promotion
+const [ agentPromo, setAgentPromo ] = useState(false)
+const handleAgentPromotion = () => {
+  setAgentPromo(true)
+}
+const handleAgentPromotionDecline = () => {
+  setAgentPromo(false)
+}
 
     return (
         <>
@@ -41,8 +75,8 @@ console.log(singleDoc)
               <Row className='mb-3'>
               <Form.Group as={Col} style={{
                   display: "flex",
-                  "flex-direction": "column",
-                  "align-items": "start",
+                  flexDirection: "column",
+                  alignItems: "start",
                 }} >
                 <Form.Label htmlFor="dateReported">Date of birth</Form.Label>
                 <Form.Control
@@ -85,6 +119,11 @@ console.log(singleDoc)
                   <Form.Control type="text" id="NIN" placeholder="Enter email" defaultValue={singleDoc.meta.NIN}/>
               </Form.Group>
 
+              <Form.Group as={Col} className='addFormGroups'>
+                  <Form.Label htmlFor='name'>Name</Form.Label>
+                  <Form.Control type="text" id="name" defaultValue={singleDoc.name} />
+              </Form.Group>
+
               <Row>
                 <Form.Group as={Col} className='addFormGroups'>
                     <Form.Label htmlFor='phone'>Phone Number</Form.Label>
@@ -98,10 +137,15 @@ console.log(singleDoc)
               
 
               <Form.Group className="mb-3" >
-              <Form.Label htmlFor='address'>Address</Form.Label>
-              <Form.Control id="address" placeholder="Enter your address" defaultValue={singleDoc.meta.address}/>
-                    </Form.Group>
+                <Form.Label htmlFor='address'>Address</Form.Label>
+                <Form.Control id="address" placeholder="Enter your address" defaultValue={singleDoc.meta.address}/>
+              </Form.Group>
             
+              {/* <Form.Group className="mb-3" >
+                <Form.Label htmlFor='user_role'>Role</Form.Label>
+                <Form.Control id="user_role" placeholder="Enter user role" defaultValue={singleDoc.role.agent && 'agent'}/>
+              </Form.Group> */}
+
           </Modal.Body>
           <Modal.Footer>
             <Button
