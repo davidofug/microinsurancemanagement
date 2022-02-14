@@ -25,9 +25,9 @@ function AddUsers({role}) {
     const addUser = httpsCallable(functions, 'addUser')
     useEffect(() => { document.title = 'Britam - Add Users' }, [])
 
-    const [comprehensive, setComprehensive] = useState(false)
-    const [windscreen, setWindscreen] = useState(false)
-    const [mtp, setMTP] = useState(false)
+    const [ comprehensive, setComprehensive ] = useState(false)
+    const [ windscreen, setWindscreen ] = useState(false)
+    const [ mtp, setMTP ] = useState(false)
     const [ newImport, setNewImport ] = useState(false)
     const [ transit, setTransit ] = useState(false)
 
@@ -38,13 +38,9 @@ function AddUsers({role}) {
     const [policyType, setPolicyType] = useState('')
     const [clientType, setClientType] = useState('individual')
 
-
     // initialising the logs doc.
     const logCollectionRef = collection(db, "logs");
-
     const [ logo, setLogo ] = useState(null)
-
-    console.log(authClaims)
     
 
     /* const checkedOrganisation = () => {
@@ -164,9 +160,6 @@ function AddUsers({role}) {
 
     const { user_role } = fields
 
-    
-    const [ url, setUrl ] = useState('')
-    //const [ logo, setLogo ] = useState(null)
     const [ progress, setProgress ] = useState(0)
 
     
@@ -191,7 +184,7 @@ function AddUsers({role}) {
 
                         {role === 'client' && authClaims.agent &&
                         <Row style={{marginLeft:"0"}}>
-                            <Form.Group className="m-3 categories" width="200px">
+                            <Form.Group className="my-3 px-0 categories" width="200px">
                                 <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setPolicyType(value)} required>
                                     <option value={""}>Policy Type</option>
                                     {authClaims.mtp && <option value="mtp">MTP</option>}
