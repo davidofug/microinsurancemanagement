@@ -162,7 +162,7 @@ function Reports() {
 
   const isMobile = useMediaQuery("(max-width: 760px)")
 
-  console.log(isMobile)
+  // console.log(isMobile)
 
 
   return (
