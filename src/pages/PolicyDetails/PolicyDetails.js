@@ -108,10 +108,7 @@ function PolicyDetails() {
    //media query
    const isMobile = useMediaQuery("(max-width: 768px)")
 
-
    const { authClaims } = useAuth()
-
-   console.log(agentUsed)
       
     
     return (
