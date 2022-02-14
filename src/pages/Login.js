@@ -96,16 +96,11 @@ function Login() {
         {error && <Alert variant="danger">{error}</Alert>}
         <div className="login-inputs">
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            placeholder="Enter email"
-            name="email"
-            id="email"
+          <input type="email" placeholder="Enter email" name="email" id="email"
             onChange={(event) =>
               setUser({ ...user, email: event.target.value })
             }
-            required
-          />
+            required />
         </div>
 
         <div className="login-inputs">

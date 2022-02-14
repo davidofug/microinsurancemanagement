@@ -107,7 +107,7 @@ function StickerModal({ name, user_id }) {
                     </Form.Group>
                 </form>
 
-                <p>Stickers Issued: <b>{policies !== undefined ? policies.length : 0}</b></p>
+                <p>Stickers Issued: <b>{policies !== null ? policies.length : 0}</b></p>
                 {policies !== null && policies.length > 0
                 ?
                     <Table responsive hover striped>

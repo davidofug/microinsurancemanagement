@@ -8,6 +8,8 @@ import './PolicyDetails.css'
 import { currencyFormatter } from '../../helpers/currency.format'
 import { Modal, Form, Col } from 'react-bootstrap'
 import useDialog from '../../hooks/useDialog'
+import useMediaQuery from '../../hooks/useMediaQuery'
+import useAuth from '../../contexts/Auth'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -64,12 +66,17 @@ function PolicyDetails() {
     const rangesCollectionRef = collection(db, "ranges");
 
     const [ agentRange, setAgentRange ] = useState([])
+    const [ agentUsed, setAgentUsed ] = useState([])
+    const [ supervisorRange, setSupervisorRange ] = useState([])
 
     const getStickerRange = async () => {
         const data = await getDocs(rangesCollectionRef)
         const rangeArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        console.log(rangeArray)
+        setSupervisorRange(rangeArray.filter(range => range.assignedTo === authentication.currentUser.displayName))
         rangeArray.length === 0 ? setStickerRange(null) : setStickerRange(rangeArray)
         setAgentRange(rangeArray.filter(range => range.agentAssignTo).map(range => range.agentAssignTo).flat(1).filter(range => range.agent_uid === authentication.currentUser.uid))
+        setAgentUsed(rangeArray.filter(range => range.agentAssignTo).map(range => range.used).flat(1))
     }
 
 
@@ -97,15 +104,15 @@ function PolicyDetails() {
 
     }
 
-    
-   
 
-   console.log(agentRange)
+   //media query
+   const isMobile = useMediaQuery("(max-width: 768px)")
 
+   const { authClaims } = useAuth()
       
     
     return (
-        <div className="components">
+        <div className={isMobile ? "components" : "components detailsMargin"}  >
             <ToastContainer />
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <div>
@@ -200,7 +207,7 @@ function PolicyDetails() {
             <Modal show={showPayment} onHide={handleClosePayment}>
             <form onSubmit={handleSubmitPayment}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Process with Payments</Modal.Title>
+                    <Modal.Title>Proceed with Payments</Modal.Title>
                 </Modal.Header>
                 <Modal.Body id="stickerPrint">
                     
@@ -214,10 +221,19 @@ function PolicyDetails() {
                             <Form.Control type="text" id="stickerNo" required/>
                         </Form.Group>
 
-                        {agentRange.map(range => 
+                        {authClaims.agent && agentRange.map(range => 
                         <>
-                            <span>{range.agentFrom} to {range.agentTo}</span><br />
-                            <span>used: []</span>
+                            <span><b>{range.agentFrom}</b> to <b>{range.agentTo}</b></span><br />
+                            <span>used: [ {agentUsed.filter(used => used > range.agentFrom && used < range.agentTo).map((used, index) =>
+                                <span>{used}</span>
+                            )}, ]</span>
+                        </>
+                        )}
+
+                        {authClaims.supervisor && supervisorRange.map(range => 
+                        <>
+                            <span><b>{range.rangeFrom}</b> to <b>{range.rangeTo}</b></span><br />
+                            <span>used: [ {range.used.map((used, index) => used)}, ]</span>
                         </>
                         )}
                     
@@ -278,15 +294,15 @@ function PolicyDetails() {
                             <td>
                                 {policy.stickersDetails[0].status === 'paid' &&
                                     <tr>
-                                        <button className='btn btn-warning mb-2 mt-2' onClick={handleShow}>Print Sticker</button>
+                                        <span className='btn btn-warning mb-2 mt-2' onClick={handleShow}>Print Sticker</span>
                                     </tr>
                                 }
                                     <tr>
-                                        <button className='btn btn-danger mb-2 mt-2' 
+                                        <span className='btn btn-danger mb-2 mt-2' 
                                         onClick={(event) => {
                                             setOpenToggleCancel(true)
                                             event.stopPropagation()
-                                        }}>Cancel Sticker</button>
+                                        }}>Cancel Sticker</span>
                                     </tr>
                             </td>
                         </tr>

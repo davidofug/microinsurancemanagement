@@ -57,17 +57,7 @@ body{
 /* tbody > tr:hover {
 } */
 
-.table{
-    border: 1px solid #000;
-}
 
-/* .table-hover > tbody > tr:hover > * {
-    color: white;
-} */
-
-.table > :not(:first-child) {
-    border-top: 1px solid currentColor;
-}
 
 
 /* root container */
@@ -82,6 +72,10 @@ body{
     grid-template-columns: 80px calc(100vw - 80px);
     min-height: 100vh;
     width: 100vw;
+}
+
+.top-container-large .addComponentsData{
+    margin: 0 10rem;
 }
 
 
@@ -103,13 +97,13 @@ body{
 }
 
 .addComponentsData{
-    margin: 0 20px;
+    margin: 0 4rem;
     display: flex;
     justify-content: center;
     background-color: #fff;
     margin-top: 60px;
     border-radius: 10px;
-    /* position: relative; */
+    position: relative;
 }
 
 
@@ -174,6 +168,14 @@ body{
 }
 
 
+.sortButton{
+    background-color: transparent;
+    border: none;
+    color: #1475cf;
+    font-size: large;
+}
+
+
 
 
 #action_context li{
@@ -224,8 +226,23 @@ body{
 }
 
 
-tbody, td, tfoot, th, thead, tr{
+tbody, td, tfoot, thead, tr{
     border-style: none;
+}
+
+.table{
+    /* border: 1px solid #000; */
+    border: 1px solid #cccccc;
+}
+
+th{
+    font-weight: 500;
+    border-style: none;
+}
+
+.table > :not(:first-child) {
+    /* border-top: 1px solid currentColor; */
+    border: 1px solid #ccc;
 }
 
 .table {
@@ -305,9 +322,9 @@ tbody, td, tfoot, th, thead, tr{
     padding: 10px;
 }
 
-/* footer{
-    padding: 10px 15px;
-} */
+.detailsMargin{
+    margin: 20px;
+}
 
 
 
@@ -563,15 +580,16 @@ left: auto;
 
 
 .dateRange {
-    border: 1px solid #1475cf;
-    background-color: #1475cf;
-    color: #fff;
+    border: 1px solid #ced4da;
+    /* background-color: #1475cf; */
+    /* color: #fff; */
     border-radius: 3px;
+    padding: .375rem 2.25rem .375rem .75rem;
 }
 
 
 .loader-wrapper{
-    z-index: 1000;
+    z-index: 100;
     position: absolute;
     width: 100%;
     background: rgba(245,245,245,0.8);

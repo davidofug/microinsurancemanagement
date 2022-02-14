@@ -1,5 +1,4 @@
 import MTP from '../pages/Mtp'
-import Users from '../pages/Users'
 import Logs from '../pages/Logs.js'
 import Claims from '../pages/Claims'
 import Reports from '../pages/admin/Reports'
@@ -29,9 +28,6 @@ function AgentsRoutes() {
             </PrivateRoute>
             <PrivateRoute path="/agent/add-clients" >
                 <AddUsers role="client" />
-            </PrivateRoute>
-            <PrivateRoute path="/agent/user" >
-                <Users />
             </PrivateRoute>
             <PrivateRoute path="/agent/policies" >
                 <Policies />
@@ -73,10 +69,10 @@ function AgentsRoutes() {
                 <Policies cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
             </PrivateRoute>
             <PrivateRoute path="/agent/add-new-import" >
-                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="new import"/>
+                <Policies cat="newImport" btn_txt="Process New Import" pol="new import"/>
             </PrivateRoute>
             <PrivateRoute path="/agent/add-transit" >
-                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="transit"/>
+                <Policies cat="transit" btn_txt="Process Transit" pol="transit"/>
             </PrivateRoute>
         </>
 

@@ -1,24 +1,15 @@
 import Mtp from '../pages/Mtp'
-import Users from '../pages/Users'
 import Claims from '../pages/Claims'
-import Reports from '../pages/superAdmin/Reports'
-import Clients from '../pages/Clients'
-import Policies from '../pages/Policies'
-import Settings from '../pages/Settings'
-import PrivateRoute  from './PrivateRoute'
-import Dashboard from '../pages/Dashboard'
-import Windscreen from '../pages/Windscreen'
-import Comprehensive from '../pages/Comprehensive'
-import Organisations from '../pages/admin/Organisations'
-import Logs from '../pages/Logs.js'
-import Supervisors from '../pages/admin/Supervisors'
-import Agents from '../pages/Agents'
-import AddUsers from '../pages/AddUsers'
-import Admins from '../pages/superAdmin/Admins'
-import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
+import Settings from '../pages/Settings'
+import AddUsers from '../pages/AddUsers'
+import Dashboard from '../pages/Dashboard'
+import NewImport from '../pages/NewImport'
+import PrivateRoute  from './PrivateRoute'
+import Windscreen from '../pages/Windscreen'
+import Admins from '../pages/superAdmin/Admins'
+import Comprehensive from '../pages/Comprehensive'
 import SystemLogs from '../pages/superAdmin/SystemLogs'
-
 
 function SuperAdminRoutes() {
     return (
@@ -26,38 +17,14 @@ function SuperAdminRoutes() {
             <PrivateRoute path="/superadmin/dashboard" >
                 <Dashboard />
             </PrivateRoute>
-            <PrivateRoute path="/superadmin/organisations" >
-                <Organisations />
-            </PrivateRoute>
-            <PrivateRoute path="/superadmin/view-log-trail" >
-                <Logs />
-            </PrivateRoute>
             <PrivateRoute path="/superadmin/admins" >
                 <Admins />
-            </PrivateRoute>
-            <PrivateRoute path="/superadmin/supervisors" >
-                <Supervisors />
-            </PrivateRoute>
-            <PrivateRoute path="/superadmin/agents" >
-                <Agents />
             </PrivateRoute>
             <PrivateRoute path="/superadmin/add-admin" >
                 <AddUsers role="admin" />
             </PrivateRoute>
-            <PrivateRoute path="/superadmin/clients" >
-                <Clients />
-            </PrivateRoute>
-            <PrivateRoute path="/superadmin/user-management" >
-                <Users />
-            </PrivateRoute>
-            <PrivateRoute path="/superadmin/policies" >
-                <Policies />
-            </PrivateRoute>
             <PrivateRoute path="/superadmin/claims" >
                 <Claims />
-            </PrivateRoute>
-            <PrivateRoute path="/superadmin/reports" >
-                <Reports />
             </PrivateRoute>
             <PrivateRoute path="/superadmin/settings" >
                 <Settings />
