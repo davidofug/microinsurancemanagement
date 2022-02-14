@@ -1,4 +1,3 @@
-// import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react";
 import { MdDownload } from "react-icons/md";
 import SearchBar from "../../components/searchBar/SearchBar";
@@ -16,14 +15,18 @@ import { generateReport } from '../../helpers/generateReport'
 import useAuth from "../../contexts/Auth";
 import Chat from '../../components/messenger/Chat'
 import useMediaQuery from "../../hooks/useMediaQuery";
+import { convertStringToDate } from "../../helpers/smallFunctions";
+import { FaSortDown, FaSortUp } from 'react-icons/fa'
 
 import '../../styles/ctas.css'
 
 function Reports() {
-  useEffect(() => {
-    document.title = "Britam - Reports";
+  useEffect(() => { 
+    document.title = "Britam - Reports"; 
     getPolicies()
-  }, []);
+
+    return () => getPolicies()
+   }, []);
 
   // policies
   const [policies, setPolicies] = useState([])
@@ -81,6 +84,8 @@ function Reports() {
 
   
 
+  
+
   // TODO: look for a better way to switch between categories
   const [ switchCategory, setSwitchCategory ] = useState("")
   // current month
@@ -135,6 +140,8 @@ function Reports() {
   const [ dateFrom, setDateFrom ] = useState(null)
   const [ dateTo, setDateTo ] = useState(null)
   const [ switchStatus, setSwitchStatus ] = useState(null)
+  const [ sortBasicAsc, setSortBasicAsc ] = useState(false)
+  const [ sortBasicDes, setSortBasicDes ] = useState(false)
 
 
   // pagination
@@ -144,16 +151,27 @@ function Reports() {
   const indexOfFirstPolicy = indexOfLastPolicy - policiesPerPage
   const currentPolicies = !policies || searchByName(policies.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)))
 
-  const shownPolicies = !policies || (currentPolicies
+  let shownPolicies = !policies || (currentPolicies
                         .filter(policy => !switchCategory || policy.category === switchCategory)
                         .filter(policy => !currentDay && policy.policyStartDate !== undefined || policy.policyStartDate === currentDay)
                         .filter(policy => !selectedMonth && policy.policyStartDate !== undefined || policy.policyStartDate.substring(5, 7) === selectedMonth)
                         .filter(policy => !selectedYear || policy.policyStartDate.substring(0, 4) === selectedYear)
                         .filter(policy => !dateFrom || policy.policyStartDate >= dateFrom)
                         .filter(policy => !dateTo || policy.policyStartDate <= dateTo)
-                        .filter(policy => !switchStatus || policy.stickersDetails[0].status === switchStatus))
+                        .filter(policy => !switchStatus || policy.stickersDetails[0].status === switchStatus)
+                        .sort((a, b) => convertStringToDate(b.createdAt) - convertStringToDate(a.createdAt))) 
+
+  if(sortBasicAsc){
+    shownPolicies = shownPolicies.sort((a, b) => b.stickersDetails[0].totalPremium - a.stickersDetails[0].totalPremium)
+  }
+  if(sortBasicDes){
+    shownPolicies = shownPolicies.sort((a, b) => a.stickersDetails[0].totalPremium - b.stickersDetails[0].totalPremium)
+  }
+
+  const [ shownPolicies2, setShownPolicies2 ] = useState('')
   
-  const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
+  
+  let paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
 
   
 
@@ -162,7 +180,13 @@ function Reports() {
 
   const isMobile = useMediaQuery("(max-width: 760px)")
 
-  console.log(isMobile)
+  
+
+  /* const sortByBasicPremium = () => {
+      setShownPolicies2(shownPolicies.sort((a, b) => b.stickersDetails[0].totalPremium - a.stickersDetails[0].totalPremium))
+  } */
+
+  // console.log(shownPolicies2)
 
 
   return (
@@ -192,7 +216,7 @@ function Reports() {
                           <option value="mtp">MTP</option>
                           <option value="comprehensive">Comprehensive</option>
                           <option value="windscreen">Windscreen</option>
-                          <option value="newImports">New Imports</option>
+                          <option value="newImport">New Import</option>
                           <option value="transit">Transit</option>
                       </Form.Select>
                   </Form.Group>
@@ -212,7 +236,7 @@ function Reports() {
             </div>
 
             <div style={{display: "flex", alignItems: "center"}}>
-            <Form.Group controlId="formGridEmail" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+            <Form.Group controlId="formGridEmail" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
                 <Form.Label>Daily</Form.Label>
                 <Form.Control type="date" onChange={({target: {value}}) => setCurrentDay(value)}/>
             </Form.Group>
@@ -254,10 +278,18 @@ function Reports() {
                     
                     <div style={{diplay: "flex", flexDirection: "row"}}>
                       <Form.Label>Date Range</Form.Label>
+
                       <div className="dateRange">
-                        <span>From</span><input type="date" onChange={({target: {value}}) => setDateFrom(value)}/><span>To</span><input type="date" onChange={({target: {value}}) => setDateTo(value)}/>
+                        {/* <span>From</span> */}
+                        
+                        <input type="text" style={{width: "120px"}} onFocus={() => document.getElementById('changeDate').type = 'date'} id="changeDate" onBlur={() => document.getElementById('changeDate').type = 'text'} placeholder="Start date" onChange={({target: {value}}) => setDateFrom(value)}/>
+                      
+                      {/* <span>To</span> */}
+                      
+                      <input type="text" style={{width: "120px"}} onFocus={() => document.getElementById('changeDate2').type = 'date'} id="changeDate2" onBlur={() => document.getElementById('changeDate2').type = 'text'} placeholder="- End date" onChange={({target: {value}}) => setDateTo(value)}/>
                       </div>
                     </div>
+
                   </>
                   }
             </div>
@@ -268,30 +300,38 @@ function Reports() {
                 <Table striped hover responsive id="myTable">
               <thead>
                 <tr style={{borderBottom: "1px solid #000"}}>
-                      {switchCategory === "" && <th colspan={20} style={{textAlign: "center"}}>{`All Reports`.toUpperCase()}</th>}
-                      {switchCategory === "mtp" && <th colspan={20} style={{textAlign: "center"}}>{`MTP Report`.toUpperCase()}</th>}
-                      {switchCategory === "comprehensive" && <th colspan={20} style={{textAlign: "center"}}>{`comprehensive Report`.toUpperCase()}</th>}
-                      {switchCategory === "windscreen" && <th colspan={20} style={{textAlign: "center"}}>{`windscreen Report`.toUpperCase()}</th>}
-                      {switchCategory === "newImports" && <th colspan={20} style={{textAlign: "center"}}>{`new import Report`.toUpperCase()}</th>}
-                      {switchCategory === "transit" && <th colspan={20} style={{textAlign: "center"}}>{`transit Report`.toUpperCase()}</th>}
+                      {switchCategory === "" && <th colSpan={20} style={{textAlign: "center"}}>{`All Reports`.toUpperCase()}</th>}
+                      {switchCategory === "mtp" && <th colSpan={20} style={{textAlign: "center"}}>{`MTP Report`.toUpperCase()}</th>}
+                      {switchCategory === "comprehensive" && <th colSpan={20} style={{textAlign: "center"}}>{`comprehensive Report`.toUpperCase()}</th>}
+                      {switchCategory === "windscreen" && <th colSpan={20} style={{textAlign: "center"}}>{`windscreen Report`.toUpperCase()}</th>}
+                      {switchCategory === "newImports" && <th colSpan={20} style={{textAlign: "center"}}>{`new import Report`.toUpperCase()}</th>}
+                      {switchCategory === "transit" && <th colSpan={20} style={{textAlign: "center"}}>{`transit Report`.toUpperCase()}</th>}
                 </tr>
                 <tr>
-                  <th>#</th><th>Polic Holder</th><th>Plate No.</th><th>Car Make</th><th>Seating Capacity</th><th>G. weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium</th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th><th>Currency</th>
+                  <th>#</th><th>Policy Holder</th><th>PlateNo.</th><th>Car Make</th><th>Seating Capacity</th><th>G.weight</th><th>Sticker No.</th><th>Category</th><th>Cover Type</th><th>Start Date</th><th>End Date</th><th>Validity</th><th>Basic Premium
+                    <button className="sortButton" onClick={() => {
+                      setSortBasicAsc(true)
+                      setSortBasicDes(false) }}><FaSortUp />
+                      
+                    </button>
+                    <button className="sortButton" onClick={() => {
+                      setSortBasicDes(true)
+                      setSortBasicAsc(false) }}><FaSortDown />
+                    </button>
+              </th><th>Training Levy</th><th>Sticker Fees</th><th>VAT Charge</th><th>Stamp Duty</th><th>Gross Commission</th><th>Issuing Branch</th><th>Issuing Officer</th>
                 </tr>
               </thead>
               
               <tbody>
                           {paginatedShownPolicies.map((policy, index) => {
-                                
-                                {basicCurrentTotal += +policy.stickersDetails[0].totalPremium} // total for currentPolicies
-                                {vatCurrentTotal += 1080} // total for  currentPolicies
-                                {stumpDutyCurrentTotal += 35000} // total for currentPolicies
-                                {stickerFeeCurrentTotal += 6000} // total for currentPolicies
-                                {commissionCurrentTotal += 2191} // total for currentPolicies
-                                {trainingLevy += +policy.stickersDetails[0].trainingLevy}
+                                basicCurrentTotal += +policy.stickersDetails[0].totalPremium // total for currentPolicies
+                                vatCurrentTotal += 1080 // total for  currentPolicies
+                                stumpDutyCurrentTotal += 35000 // total for currentPolicies
+                                stickerFeeCurrentTotal += 6000 // total for currentPolicies
+                                commissionCurrentTotal += 2191 // total for currentPolicies
+                                trainingLevy += +policy.stickersDetails[0].trainingLevy
 
                             return (
-                              <>
                                 <tr key={policy.id}>
                                 
                                   <td>{indexOfFirstPolicy + index + 1}</td>
@@ -306,17 +346,16 @@ function Reports() {
                                   <td>{policy.policyStartDate}</td>
                                   <td>{policy.policyEndDate}</td>
                                   <td>1 YR(s)</td>
-                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</td>}
-                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].trainingLevy)}</td>}
-                                  <td>6,000</td>
-                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].vat)}</td>}
-                                  <td>35,000</td>
-                                  <td>2,191</td>
+                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].totalPremium)} {typeof policy.currency === "string" ? policy.currency : ''}</td>}
+                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].trainingLevy)} {typeof policy.currency === "string" ? policy.currency : ''}</td>}
+                                  <td>6,000 {typeof policy.currency === "string" ? policy.currency : ''}</td>
+                                  {policy.stickersDetails && <td>{currencyFormatter(policy.stickersDetails[0].vat)} {typeof policy.currency === "string" ? policy.currency : ''}</td>}
+                                  <td>35,000 {typeof policy.currency === "string" ? policy.currency : ''}</td>
+                                  <td>2,191 {typeof policy.currency === "string" ? policy.currency : ''}</td>
                                   <td>branch location</td>
                                   <td>{policy.added_by_name}</td>
-                                  <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
+                                  {/* <td>{typeof policy.currency === "string" ? policy.currency : ''}</td> */}
                                 </tr>
-                              </>
                             )
 
                             
@@ -327,7 +366,7 @@ function Reports() {
                 <tr>
                   <th>Grand Total</th>
                   <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
-                  <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevy)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th><th>UGX</th>
+                  <th>{currencyFormatter(basicTotal)}</th><th>{currencyFormatter(trainingLevy)}</th><th>{currencyFormatter(stickerFeeTotal)}</th><th>{currencyFormatter(vatTotal)}</th><th>{currencyFormatter(stumpDutyTotal)}</th><th>{currencyFormatter(commissionTotal)}</th><th></th><th></th>
                 </tr>
               </tfoot>
                 
@@ -335,7 +374,7 @@ function Reports() {
                 <tr>
                   <td>Subtotal Total</td>
                   <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                  <td>{currencyFormatter(basicCurrentTotal)}</td><td>{currencyFormatter(trainingCurrentLevy)}</td><td>{currencyFormatter(stickerFeeCurrentTotal)}</td><td>{currencyFormatter(vatCurrentTotal)}</td><td>{currencyFormatter(stumpDutyCurrentTotal)}</td><td>{currencyFormatter(commissionCurrentTotal)}</td><td></td><td></td><td>UGX</td>
+                  <td>{currencyFormatter(basicCurrentTotal)}</td><td>{currencyFormatter(trainingCurrentLevy)}</td><td>{currencyFormatter(stickerFeeCurrentTotal)}</td><td>{currencyFormatter(vatCurrentTotal)}</td><td>{currencyFormatter(stumpDutyCurrentTotal)}</td><td>{currencyFormatter(commissionCurrentTotal)}</td><td></td><td></td>
                 </tr>
               </tfoot>
             </Table>

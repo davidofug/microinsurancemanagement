@@ -13,6 +13,7 @@ import { authentication } from '../helpers/firebase'
 import moment from 'moment'
 import { ImFilesEmpty } from 'react-icons/im'
 import { getAgentClients } from '../helpers/smallFunctions'
+import { Link } from 'react-router-dom'
 
 import Chat from '../components/messenger/Chat'
 
@@ -272,8 +273,8 @@ function Dashboard() {
                                     agents && agents.length > 0 
                                     ? <>
                                     <h5 className="heading">Latest Agents</h5>
-                                    <table>
-                                        <thead><th>Name</th><th>Email Address</th></thead>
+                                    <table className='table table-responsive'>
+                                        <thead><tr><th>Name</th><th>Email Address</th></tr></thead>
                                         <tbody>
                                             {agents.map(agent => (
                                                 <tr key={agent.uid}>
@@ -283,6 +284,7 @@ function Dashboard() {
                                             ))}
                                         </tbody>
                                     </table>
+                                    <p className="heading">Total Number of Agents: {agents.length} <Link to={'/supervisor/agents'}>view all</Link></p>
                                     </>
                                     : 
                                     agents === null
@@ -298,21 +300,22 @@ function Dashboard() {
                                     
                                 {authClaims.agent && (
                                     clients && clients.length > 0
-                                    ? <>
-                                    <h5 className="heading">Latest Clients</h5>
-                                    <table>
-                                        <thead><th>Name</th><th>Email Address</th></thead>
-                                        <tbody>
-                                            {clients.map(client => (
-                                                <tr key={client.uid}>
-                                                    <td>{client.name}</td>
-                                                    <td>{client.email}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                    <h6 className="heading">Total Number of Clients: {clients.length}</h6>
-                                    </>
+                                    ?
+                                    <div>
+                                        <h5 className="heading">Latest Clients</h5>
+                                        <table className='table table-responsive'>
+                                            <thead><tr><th>Name</th><th>Email Address</th></tr></thead>
+                                            <tbody>
+                                                {clients.map(client => (
+                                                    <tr key={client.uid}>
+                                                        <td>{client.name}</td>
+                                                        <td>{client.email}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                        <p className="heading">Total Number of Clients: {clients.length} <Link to={'/agent/clients'}>view all</Link></p>
+                                    </div>
                                     :
                                     clients === null
                                     ?

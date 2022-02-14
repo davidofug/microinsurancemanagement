@@ -85,20 +85,7 @@ export default function MobileNav ({role, user, displayName }) {
                                 </ul>
                             </Nav>
                         </Offcanvas.Body>
-                        {/* <footer>
-                            <ul>
-                                <li><Link to="/admin/settings">My Profile</Link></li>
-                                <li><Link to="/logout"><MdLogout /> Logout</Link></li>
-                            </ul>
-                            <Link to={'/admin/settings'}>
-                                <DefaultAvatar />
-                                <div>
-                                    <p>{displayName}</p>
-                                    <p style={{"color": "#646464"}}>{user}</p>
-                                </div>
-                                <div id="eclipse"><div></div><div></div><div></div></div>
-                            </Link>
-                        </footer> */}
+
                         <footer>
                             <div className="footerContext" onClick={(event) => { show ? handleClose() : handleShow(); event.stopPropagation()}}>
                                 {authentication?.currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8"
@@ -121,6 +108,7 @@ export default function MobileNav ({role, user, displayName }) {
                                 <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
                             </ul>
                         </footer>
+                        
                     </Navbar.Offcanvas>
                 </Container>
             </Navbar>

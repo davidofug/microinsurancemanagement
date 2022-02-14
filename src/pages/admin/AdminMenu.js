@@ -82,7 +82,7 @@ export default function AdminMenu({ setLargeContentClass }) {
                 {/* </Link> */}
                 <ul className={show ? "footerContextShow" : ""} id="contextUl">
                     <li><Link to="/admin/settings"><ImProfile /> My Profile</Link></li>
-                    <li onClick={handleLogout}><Link><MdLogout /> Logout</Link></li>
+                    <li onClick={handleLogout}><Link to=""><MdLogout /> Logout</Link></li>
                 </ul>
             </footer>
         </nav>
@@ -111,7 +111,7 @@ export default function AdminMenu({ setLargeContentClass }) {
                     {/* </Link> */}
                     <ul className={show ? "footerContextShow" : ""} id="contextUl">
                         <li><Link to="/admin/settings"><ImProfile /></Link></li>
-                        <li onClick={handleLogout}><Link><MdLogout /></Link></li>
+                        <li onClick={handleLogout}><Link to=""><MdLogout /></Link></li>
                     </ul>
                 </footer>
             </nav>
