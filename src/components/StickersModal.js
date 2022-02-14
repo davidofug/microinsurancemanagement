@@ -32,7 +32,7 @@ function StickerModal({ name, user_id }) {
 
   // submit sticker range to agent.
   const [ rangeID, setRangeID ] = useState("")
-  const [ rangeDoc, setRangeDoc ] = useState("")
+//   const [ rangeDoc, setRangeDoc ] = useState("")
 
   const handleSubmit = async (event) => {
       event.preventDefault()
