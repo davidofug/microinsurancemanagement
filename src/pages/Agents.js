@@ -225,10 +225,12 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
     const updateUser = httpsCallable(functions, 'updateUser')
     updateUser({
       uid: singleDoc.uid,
-      name: singleDoc.uid,
+      name: singleDoc.name,
       supervisor: true,
-      agent: singleDoc.role.agent
+      agent: false
     }).then(() => {
+      toast.success(`Promoted ${singleDoc.name} to a supervisor`, {position: "top-center"})
+    }).catch(() => {
       toast.success(`Promoted ${singleDoc.name} to a supervisor`, {position: "top-center"})
     })
     handleClosePromo()
