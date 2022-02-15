@@ -104,10 +104,10 @@ function Settings() {
                     }
                     document.passwordForm.reset();
                 }).catch((error) => {
-                    console.log("password failed", error)
+                    // console.log("password failed", error)
                 });
         } catch(error){
-            console.log('re-auth failed',error)
+            // console.log('re-auth failed',error)
         }
 
     }
