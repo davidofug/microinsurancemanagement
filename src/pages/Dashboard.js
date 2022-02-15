@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import useAuth from '../contexts/Auth'
-import { Card, Container, Row, Col} from 'react-bootstrap'
+import { Card, Row, Col} from 'react-bootstrap'
 // import BarChart from '../figures/BarChart'
 import '../styles/dashboard.css'
 import BarChart from '../figures/BarChart'
@@ -10,7 +10,6 @@ import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import Loader from '../components/Loader'
 import { authentication } from '../helpers/firebase'
-import moment from 'moment'
 import { ImFilesEmpty } from 'react-icons/im'
 import { getAgentClients } from '../helpers/smallFunctions'
 import { Link } from 'react-router-dom'
@@ -22,8 +21,6 @@ function Dashboard() {
     const [claims, setClaims] = useState([])
     const [claimsSettled, setClaimsSettled] = useState([])
     const [stickers, setStickers] = useState(0)
-    // const [policies, setPolicies] = useState(2)
-    const [claimNotifications, setClaimNotifications] = useState(0)
     const { authClaims } = useAuth()
     const claimsCollectionRef = collection(db, "claims");
 

@@ -16,7 +16,6 @@ import '../../components/modal/ConfirmBox.css'
 import Loader from "../../components/Loader";
 import { ImFilesEmpty } from 'react-icons/im'
 import useDialog from "../../hooks/useDialog";
-// import { MdCancel } from 'react-icons/md'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -38,7 +37,6 @@ export default function StickerMgt() {
       
     }
 
-
     // Confirm Box
     const [ openToggle, setOpenToggle ] = useState(false)
     window.onclick = (event) => {
@@ -50,7 +48,6 @@ export default function StickerMgt() {
     }
 
     const [ show, handleShow, handleClose ] = useDialog()
-
 
     // actions context
     const [showContext, setShowContext] = useState(false)
@@ -69,7 +66,6 @@ export default function StickerMgt() {
     // pagination
     const [ currentPage, setCurrentPage ] = useState(1)
     const [rangesPerPage] = useState(10)
-
     const indexOfLastRange = currentPage * rangesPerPage
     const indexOfFirstRange = indexOfLastRange - rangesPerPage
     const currentStickers = !stickerRange || searchByName(stickerRange).slice(indexOfFirstRange, indexOfLastRange)
@@ -95,7 +91,6 @@ export default function StickerMgt() {
       
     }
 
-
     const returnedSticker = async (event) => {
       event.preventDefault()
 
@@ -112,9 +107,6 @@ export default function StickerMgt() {
       handleClose()
 
     }
-
-    
-
 
     const [ returned, setReturned ] = useState([])
 

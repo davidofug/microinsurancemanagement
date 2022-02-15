@@ -10,7 +10,6 @@ import OrganisationModal from "../../components/OrganisationModel";
 import { Modal } from 'react-bootstrap'
 import { authentication } from "../../helpers/firebase";
 import { MdEdit, MdDelete } from 'react-icons/md'
-import { AiFillCloseCircle } from 'react-icons/ai'
 import '../../components/modal/ConfirmBox.css'
 import Loader from '../../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
@@ -24,18 +23,11 @@ import Chat from '../../components/messenger/Chat'
 export default function Organisations() {
   const [organisations, setOrganisations] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
-
-  // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
-  useEffect(() => {
-    document.title = "Britam - Organisations";
-      getOrganisations()
-  }, []);
+  useEffect(() => {document.title = "Britam - Organisations";getOrganisations()}, []);
 
-
-
-  // TODO: working on the Organisation on delete Confirm box
+  // clickoutside
   const [ openToggle, setOpenToggle ] = useState(false)
   window.onclick = (event) => {
     if(openToggle === true) {
@@ -44,9 +36,6 @@ export default function Organisations() {
     }
     }
   }
-  
-
-
 
   const getOrganisations = async () => {
     const data = await getDocs(organisationsCollectionRef)
@@ -56,38 +45,36 @@ export default function Organisations() {
     } else {
       setOrganisations(organisationArray)
     }
-    
   }
 
   const [ show, handleShow, handleClose ] = useDialog();
   const [ searchText, setSearchText ] = useState('')
-
   const [currentPage, setCurrentPage] = useState(1);
   const [organisationsPerPage] = useState(10);
 
-    const handleDelete = async (id) => {
-      const organisationDoc = doc(db, "organisations", id);
-      await deleteDoc(organisationDoc)
-        .then(() => toast.success('Successfully deleted', {position: "top-center"}))
-        .then(async () => {
-          await addDoc(logCollectionRef, {
-            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-            type: 'organisation deletion',
-            status: 'successful',
-            message: `Successfully deleted organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
-          })
+  const handleDelete = async (id) => {
+    const organisationDoc = doc(db, "organisations", id);
+    await deleteDoc(organisationDoc)
+      .then(() => toast.success('Successfully deleted', {position: "top-center"}))
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'organisation deletion',
+          status: 'successful',
+          message: `Successfully deleted organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
         })
-        .catch(async () => {
-          toast.error(`Failed to deleted organisation: ${singleDoc.name}`, {position: "top-center"});
-          await addDoc(logCollectionRef, {
-            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-            type: 'organisation deletion',
-            status: 'failed',
-            message: `Failed to delete ${singleDoc.name}'s claim by ${authentication.currentUser.displayName}`
-          })
+      })
+      .catch(async () => {
+        toast.error(`Failed to deleted organisation: ${singleDoc.name}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'organisation deletion',
+          status: 'failed',
+          message: `Failed to delete ${singleDoc.name}'s claim by ${authentication.currentUser.displayName}`
         })
-      
-    };
+      })
+    
+  };
 
     const [singleDoc, setSingleDoc] = useState({});
 
@@ -110,10 +97,7 @@ export default function Organisations() {
     const indexOfFirstOrganisation = indexOfLastOrganisation - organisationsPerPage;
     const currentOrganisations = !organisations || searchByName(organisations)
     const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
-
     const paginatedShownOrganisations = !organisations || currentOrganisations.slice(indexOfFirstOrganisation, indexOfLastOrganisation)
-
-    console.log(organisations)
 
   return (
     <div className="components">
@@ -178,19 +162,14 @@ export default function Organisations() {
         >
           <thead>
             <tr style={{borderTop: '1px solid transparent', borderLeft: '1px solid transparent', borderRight: '1px solid transparent'}}>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
+              <th></th><th></th>
+              <th></th><th></th>
               <th colSpan={4} style={{border: "1px solid #000", textAlign: "center"}}>Contact Person</th></tr>
             <tr style={{borderTop: "1px solid #000"}}>
-              <th className="text-center">Logo</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone No.</th>
+              <th className="text-center">Logo</th><th>Name</th>
+              <th>Email</th><th>Phone No.</th>
               <th style={{borderLeft: "1px solid #000"}}>Name</th>
-              <th>Role</th>
-              <th>Phone No.</th>
+              <th>Role</th><th>Phone No.</th>
               <th style={{borderRight: "1px solid #000"}}>Email</th>
               <th>Action</th>
             </tr>
@@ -207,28 +186,18 @@ export default function Organisations() {
                 <td>{organisation.role}</td>
                 <td>{organisation.contactPhoneNumber}</td>
                 <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
-                
                 <td className="started">
                     <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(organisation)}}>&#8942;</button>
 
                     <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                      
-                                  <li onClick={() => {
-                                            setOpenToggle(true)
-                                            setShowContext(false)
-                                          }}
-                                    >
-                                      <div className="actionDiv">
-                                        <i><MdDelete/></i> Delete
-                                      </div>
-                                </li>
-                                <li onClick={() => {
-                                        setShowContext(false)
-                                        handleShow();
-                                      }}
-                                    >
+                                <li onClick={() => {setShowContext(false); handleShow();}}>
                                       <div className="actionDiv">
                                         <i><MdEdit/></i> Edit
+                                      </div>
+                                </li>
+                                <li onClick={() => {setOpenToggle(true);setShowContext(false)}}>
+                                      <div className="actionDiv">
+                                        <i><MdDelete/></i> Delete
                                       </div>
                                 </li>
                     </ul>
