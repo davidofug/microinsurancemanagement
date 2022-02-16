@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../../helpers/firebase'
-import { Table, Form } from 'react-bootstrap'
+import { Table, Form, Row } from 'react-bootstrap'
 import Pagination from "../../helpers/Pagination";
 import Loader from "../../components/Loader";
 import { ImFilesEmpty } from 'react-icons/im'
 
 import Chat from '../../components/messenger/Chat'
+
+import '../../styles/ctas.css'
 
 
 function SystemLogs() {
@@ -67,8 +69,8 @@ function SystemLogs() {
       ?
                         <>
         <div className="componentsData  shadow-sm table-card my-5">
-            <div id="search">
-                <Form.Group className=" categories" style={{marginRight: "5px"}} width="180px">
+            <div /*id="search"*/ className="search">
+                <Form.Group className="categories" style={{marginRight: "5px"}} width="180px">
                     <Form.Label htmlFor='category'>Status</Form.Label>
                     <Form.Select id='category' onChange={({target: {value}}) => setSwitchStatus(value)}>
                         <option value="">Select Log Status</option>
@@ -158,7 +160,7 @@ function SystemLogs() {
           <Loader />
       }
       
-      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
         <Chat />
       </div>
 
