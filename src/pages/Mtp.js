@@ -387,22 +387,22 @@ export default function Mtp() {
          ?
          <Table striped hover responsive>
          <thead>
-             <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-             {!authClaims.agent && <th>Agent</th>}
+             <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Client</th><th>Category</th>
+             {!authClaims.agent && <th>Agent</th>}<th>Amount</th>
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </thead>
          <tbody>
              {paginatedShownPolicies.map((policy, index) => (
                <tr key={policy.id}>
-                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, policy]) : 
-                   setDeleteArray(deleteArray.filter(element => element.id !== policy.id))
-                 }/></td>
+                  <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, policy]) : 
+                      setDeleteArray(deleteArray.filter(element => element.id !== policy.id))
+                    }/></td>
                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
-                 <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
-                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                  {!authClaims.agent && <td>{policy.added_by_name}</td>}
-                 <td>
+                 <td className="text-end"><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b> {typeof policy.currency == "string" ? policy.currency : ''}</td>
+                 
+                 <td className="text-center">
                    {policy.stickersDetails[0].status === 'new'  && 
                       <span
                         style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
@@ -503,8 +503,8 @@ export default function Mtp() {
          </tfoot>
 
          <tfoot>
-             <tr><td></td><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-             {!authClaims.agent && <th>Agent</th>}
+             <tr><td></td><th>Client</th><th>Category</th><th>Agent</th>
+             {!authClaims.agent && <th>Amount</th>}
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </tfoot>
        </Table>
