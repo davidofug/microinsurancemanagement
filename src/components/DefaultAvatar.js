@@ -5,19 +5,21 @@ import { authentication } from "../helpers/firebase";
 function DefaultAvatar() {
   const { currentUser } = useAuth;
   //   console.log(authentication.currentUser.displayName)
-  let displayName, lastName, firstNameInitial, lastNameInitial;
+  let displayName, lastNameInitial, fullNameInitials;
   if (currentUser !== null) {
     displayName = authentication?.currentUser?.displayName || "No User";
-    lastName = displayName.split(" ")[1];
-    lastNameInitial = lastName.split("")[0];
-    firstNameInitial = displayName.split("")[0];
+    if(displayName.split(" ")?.length > 1) {
+      const [firstName, lastName] = displayName.split(" ")
+      fullNameInitials = firstName[0].concat(lastName[0])
+    } else {
+      fullNameInitials = displayName.split("")[0]
+    }
   }
 
   return (
     <div className="avatarBG">
       <span>
-        {firstNameInitial}
-        {lastNameInitial}
+        {fullNameInitials}
       </span>
     </div>
   );

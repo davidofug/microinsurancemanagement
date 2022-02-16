@@ -180,6 +180,14 @@ function Reports() {
 
   const isMobile = useMediaQuery("(max-width: 760px)")
 
+  // console.log(isMobile)
+  
+
+  /* const sortByBasicPremium = () => {
+      setShownPolicies2(shownPolicies.sort((a, b) => b.stickersDetails[0].totalPremium - a.stickersDetails[0].totalPremium))
+  } */
+
+  // console.log(shownPolicies2)
 
 
   return (
@@ -201,7 +209,7 @@ function Reports() {
               
           </div>
 
-            <div style={{display: "flex", alignItems: "center"}}>  
+            <div style={{display: "flex", alignItems: "center"}} id="group-1-reports">  
                   <Form.Group className="categories" width="180px">
                       <Form.Label htmlFor='category'>Policy Category</Form.Label>
                       <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
