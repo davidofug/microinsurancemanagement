@@ -10,10 +10,13 @@ import { Badge } from 'react-bootstrap'
 import { authentication } from "../../helpers/firebase";
 import useAuth from '../../contexts/Auth'
 import useDialog from '../../hooks/useDialog'
+import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs'
+// import './mobilenav.css'
 
 export default function MobileNav ({role, user, displayName }) {
     const [ selected, setSelected ] = useState({ activeObject: null, role })
     const [ show, handleShow, handleClose ] = useDialog();
+    const [ subMenu, setSubMenu ] = useState(false)
 
     if(show){
         window.onclick = (event) => !event.target.matches('.footerContext') ? handleClose() : null 
@@ -62,25 +65,38 @@ export default function MobileNav ({role, user, displayName }) {
                             <Nav className="justify-content-end flex-grow-1 pe-3">
                                 <ul className="nav flex-column" >
                                     { selected.role !== null && selected.role.map((menuItem, index) => (
-                                        <li className='nav-item' key={menuItem.number}>
-                                            <Link to={menuItem.link} className={toggleActiveClassStyle(index)} onClick={() => {
-                                                toggleActive(index)
-                                                document.getElementById('offcanvasNavbar').style.display='none'
-                                                document.getElementsByClassName('show')[0].style.display='none'
-                                                }} >
-                                                <span>{menuItem.icon}</span>{menuItem.name}
-                                                {menuItem?.subMenu && (
-                                                    <NavDropdown style={{"color": "#fff"}} id="offcanvasNavbarDropdown">
-                                                        {menuItem.subMenu.map((sub, index) => (
-                                                            <Link to={sub.link} key={index}>
-                                                                <NavDropdown.Item href="#action3">{sub.name}</NavDropdown.Item>
-                                                            </Link>
+                                        <ul className='nav-item' key={menuItem.number}> 
+                                            <li to={menuItem.link} className={toggleActiveClassStyle(index)} onClick={() => {
+                                                toggleActive(index)   
+                                                setSubMenu(!subMenu)                                       
+                                                }}>
+                                                    
 
-                                                        ))}
-                                                    </NavDropdown>
-                                                )}
-                                            </Link>
-                                        </li>
+                                                <div>
+                                                    <span>{menuItem.icon}</span>{menuItem.name}
+                                                            
+                                                    {menuItem?.subMenu &&
+                                                    <>
+                                                        <span>{subMenu === false ? <BsFillCaretDownFill style={{fontSize:"10px"}}/> : <BsFillCaretUpFill style={{fontSize:"10px"}}/>}</span>
+                                                        {
+                                                            subMenu === true && 
+                                                            <div className="nav flex-column" style={{paddingTop:"5px", paddingLeft:"130px"}}>
+                                                                {/* {console.log(menuItem.subMenu)} */}
+                                                                {menuItem.subMenu.map((sub, index) => (
+                                                                    <Link to={sub.link} key={index} style={{backgroundColor:"#1475cf", textDecoration:"none", color:"#ffffff", fontSize:"13px"}} onClick={() => {
+                                                                        document.getElementById('offcanvasNavbar').style.display='none'
+                                                                        document.getElementsByClassName('show')[0].style.display='none'
+                                                                        setSubMenu(false)
+                                                                    }}>
+                                                                    {sub.name}
+                                                                    </Link>
+                                                                ))}
+                                                            </div>    
+                                                        }
+                                                    </>}      
+                                                </div>       
+                                            </li>
+                                        </ul>
                                     ))}                                       
                                 </ul>
                             </Nav>

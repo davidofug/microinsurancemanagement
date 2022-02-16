@@ -458,6 +458,9 @@ footer ul li a:hover{
     z-index: 1001;
 }
 
+a {
+    text-decoration: none;
+}
 
 @media (max-width: 768px) {
     .mobile-sidebar{
