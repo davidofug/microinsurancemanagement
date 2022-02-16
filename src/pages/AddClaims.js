@@ -15,6 +15,8 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../components/messenger/Chat'
 
+import '../styles/ctas.css'
+
 function AddClaims() {
 
     useEffect(() => document.title = 'Britam - Add Claims', [])
@@ -156,37 +158,36 @@ function AddClaims() {
                     <Form name="form1" onSubmit={createClaim}>
                         <Row className="mb-3">
                         <h5>Claim Details</h5>
-                        <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                                <Form.Label htmlFor='stickerNumber'>Reference Number</Form.Label>
-                                <Form.Control type="text" name="" id="refNumber" placeholder="Enter Ref Number" onChange={handleFieldChange} required/>
+                        <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}} md="4">
+                            <Form.Label htmlFor='stickerNumber'>Reference Number</Form.Label>
+                            <Form.Control type="text" name="" id="refNumber" placeholder="Enter Ref Number" onChange={handleFieldChange} required/>
+                        </Form.Group>
+                            {/* <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                             </Form.Group>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                             </Form.Group>
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                            </Form.Group>
-                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
-                            </Form.Group>
-                            
+                            </Form.Group> */}  
                         </Row>
-                        <Row className="mb-3">
+                        <div id="group-2-add-claims" className="mb-3">
                         {/* <h5>Claim Details</h5> */}
-                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}} md="7"> 
                                 <Form.Label htmlFor='dateReported'>Date Reported</Form.Label>
                                 <Form.Control type="date" id="dateReported" onChange={handleFieldChange} max={today} required/>
                             </Form.Group>
                             {authClaims.agent
                             ?
-                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}} md="7">
                             <Form.Label htmlFor='policyType'>Policy</Form.Label>
-                            <Form.Select aria-label="User role" id="policyType" onChange={handleFieldChange} required>
-                                <option value="hide">--Select Category--</option>
-                                {authClaims.mtp && <option value="mtp">MTP</option>}
-                                {authClaims.comprehensive && <option value="comprehensive">Comprehensive</option>}
-                                {authClaims.windscreen && <option value="windscreen">Windscreen</option>}
-                                {authClaims.newImport && <option value="newImport">New Import</option>}
-                                {authClaims.transit && <option value="transit">Transit</option>}
-                            </Form.Select>
-                        </Form.Group>
+                                <Form.Select aria-label="User role" id="policyType" onChange={handleFieldChange} required>
+                                    <option value="hide">--Select Category--</option>
+                                    {authClaims.mtp && <option value="mtp">MTP</option>}
+                                    {authClaims.comprehensive && <option value="comprehensive">Comprehensive</option>}
+                                    {authClaims.windscreen && <option value="windscreen">Windscreen</option>}
+                                    {authClaims.newImport && <option value="newImport">New Import</option>}
+                                    {authClaims.transit && <option value="transit">Transit</option>}
+                                </Form.Select>
+                            </Form.Group>
                             :
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='policyType'>Policy</Form.Label>
@@ -201,18 +202,17 @@ function AddClaims() {
                             </Form.Group>
                             }
                             
-
-                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}} md="7">
                                 <Form.Label htmlFor='numberPlate'>Plate No.</Form.Label>
                                 <Form.Control type="text" name="" id="numberPlate" placeholder="Enter plate No." onChange={handleFieldChange}/>
                             </Form.Group>
-                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                            <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}} md="7">
                                 <Form.Label htmlFor='stickerNumber'>Sticker No.</Form.Label>
                                 <Form.Control type="text" name="" id="stickerNumber" placeholder="Enter Sticker Number" onChange={handleFieldChange} required/>
                             </Form.Group>
-                        </Row>
+                        </div>
                         <h5>Claimant Details</h5>
-                        <Row className="mb-3">
+                        <div id="group-1-add-claims" className="mb-3">
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='claimantName'>Name</Form.Label>
                                 <Form.Control type="text" name="" id="claimantName" placeholder="Enter Claimant's name" onChange={handleFieldChange} required/>
@@ -229,7 +229,7 @@ function AddClaims() {
                                 <Form.Label htmlFor='dateOfIncident'>Date of Incident</Form.Label>
                                 <Form.Control type="date" name="" id="dateOfIncident" onChange={handleFieldChange} max={today} />
                             </Form.Group>
-                        </Row>
+                        </div>
                         <Row className="mb-3">
                             <Form.Group as={Col} style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
                                 <Form.Label htmlFor='estimate'>Claim Estimate</Form.Label>
@@ -251,7 +251,7 @@ function AddClaims() {
                     </Form>
                     </div>
             </div>
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
               <Chat />
             </div> 
         </div>

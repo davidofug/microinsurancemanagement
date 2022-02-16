@@ -1,5 +1,5 @@
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
-import { getAuth  } from "firebase/auth";
+// import { getAuth  } from "firebase/auth";
 import { doc, updateDoc } from 'firebase/firestore'
 import { addDoc, collection } from 'firebase/firestore';
 import { functions, authentication, db } from '../helpers/firebase';
@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers}) {
 
-  const auth = getAuth();
+  // const auth = getAuth();
 
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");

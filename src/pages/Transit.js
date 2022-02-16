@@ -465,7 +465,7 @@ export default function Mtp() {
         :
           <Loader />
       }
-      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
         <Chat />
       </div> 
                 
