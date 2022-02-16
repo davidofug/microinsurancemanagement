@@ -305,7 +305,7 @@ export default function Mtp() {
         <div id="search">
           <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
           <div></div>
-          <Form.Group className="m-3 categories" width="200px">
+          <Form.Group className="categories mt-1" width="200px">
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
                 <option value="new">New</option>
@@ -322,8 +322,8 @@ export default function Mtp() {
          ?
          <Table striped hover responsive>
          <thead>
-             <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-             {!authClaims.agent && <th>Agent</th>}
+             <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Client</th><th>Category</th>
+             {!authClaims.agent && <th>Agent</th>}<th>Amount</th>
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </thead>
          <tbody>
@@ -334,9 +334,8 @@ export default function Mtp() {
                  }/></td>
                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
-                 <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
-                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                  {!authClaims.agent && <td>{policy.added_by_name}</td>}
+                 <td className="text-end"><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b> {typeof policy.currency == "string" ? policy.currency : ''}</td>
                  <td>
                    {policy.stickersDetails[0].status === 'new'  && 
                       <span
@@ -431,8 +430,8 @@ export default function Mtp() {
          </tfoot>
 
          <tfoot>
-             <tr><td></td><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-             {!authClaims.agent && <th>Agent</th>}
+             <tr><td></td><th>Client</th><th>Category</th>
+             {!authClaims.agent && <th>Agent</th>}<th>Amount</th>
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </tfoot>
        </Table>
