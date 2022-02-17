@@ -19,6 +19,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import StickerModal from '../components/StickersModal';
 import { FaUserPlus } from 'react-icons/fa'
 import { IoMdAlert } from 'react-icons/io'
+import { handleAllCheck } from '../helpers/smallFunctions'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -156,22 +157,10 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
     getAgents()
   };
 
-  const handleAllCheck = () => {
-    if(document.getElementById("firstAgentCheckbox").checked === true){
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
-      setDeleteArray([])
-    } else{
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(agents.map(agent => [agent.uid, agent.name]))
-    }
-    
-    
-  }
 
   // delete multiple agents
   const [ bulkDelete, setBulkDelete ] = useState(null)
   const [ deleteArray, setDeleteArray ] = useState([])
-  const [ deleteAllArray, setDeleteAllArray ] = useState([])
   const handleBulkDelete = async () => {
     if(bulkDelete){
       deleteArray.map(agent => handleMultpleDelete(agent))
@@ -193,32 +182,16 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
   }
   }
 
-  
 
   // get a single doc
   const [singleDoc, setSingleDoc] = useState({});
-    
-
-  
-
-
   const [clickedIndex, setClickedIndex] = useState(null)
 
   // filter
   const [ switchCategory, setSwitchCategory ] = useState(null)
   const shownAgents = !agents || currentAgents.filter(agent => !switchCategory || agent.role[switchCategory])
-
   const paginatedShownAgent = !agents || shownAgents.slice(indexOfFirstAgent, indexOfLastAgent)
 
-
-  /* // handling user promotion
-  const [ agentPromo, setAgentPromo ] = useState(false)
-  const handleAgentPromotion = () => {
-    setAgentPromo(true)
-  }
-  const handleAgentPromotionDecline = () => {
-    setAgentPromo(false)
-  } */
 
   const handleAgentPromotionSubmit =(event) => {
     event.preventDefault()
@@ -238,7 +211,7 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
 
 
 
-
+  console.log(deleteArray)
 
     return (
       <>
@@ -289,8 +262,6 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
                       <Modal.Body>
                       <Form.Group className='addFormGroups'>
                         <Form.Label htmlFor='licenseNo'><p style={{display: "flex", alignItems: "center"}}><IoMdAlert />   Promote <b> {singleDoc.name}</b> To a supervisor</p></Form.Label>
-                        {/* { !agentPromo && <button type='button' className='btn btn-primary cta' onClick={handleAgentPromotion}>Promote to supervisor</button> } 
-                        { agentPromo && <button type='button' className='btn btn-primary cta bg-danger border border-danger' onClick={handleAgentPromotionDecline}>Decline Promotion</button> } */} 
                         <Button variant="primary" type="submit">Approve</Button>
                       </Form.Group>
                       </Modal.Body>
@@ -323,14 +294,23 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
                     <>
                       <Table hover striped responsive>
                         <thead>
-                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Created At</th><th>Action</th></tr>
+                            <tr><th><input type="checkbox" id='onlyagent' onChange={() => handleAllCheck(agents, setDeleteArray)}/></th><th>Name</th><th>Email</th><th>Category</th><th>Gender</th><th>Contact</th><th>Address</th>{authClaims.admin && <th>Added by</th>}<th>Created At</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {paginatedShownAgent.map((agent, index) => (
                               <tr key={agent.uid}>
-                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [agent.uid, agent.name]]) : 
-                              setDeleteArray(deleteArray.filter(element => element[0] !== agent.uid))
-                            }/></td>
+                              <td>
+
+                              <input 
+                                    type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' 
+                                    onChange={({target}) => {
+                                          document.getElementById('onlyagent').checked = false
+                                          return target.checked ? 
+                                            setDeleteArray([ ...deleteArray, [agent.uid, agent.name]]) : 
+                                            setDeleteArray(deleteArray.filter(element => element[0] !== agent.uid))
+                                    }}
+                              />
+                              </td>
                               <td>{agent.name}</td>
                               <td>{agent.email}</td>
                               <td>

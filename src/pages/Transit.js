@@ -13,6 +13,7 @@ import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import '../components/modal/ConfirmBox.css'
 import { httpsCallable } from 'firebase/functions';
+import { handleAllCheckStickers } from "../helpers/smallFunctions";
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -230,7 +231,7 @@ export default function Mtp() {
         return result.data().clientDetails.name
       })
       .catch(error => {
-        console.log(error)
+        // console.log(error)
       })
   }
 
@@ -248,7 +249,6 @@ export default function Mtp() {
   const shownPolicies = !policies || currentPolicies.filter(policy => !switchCategory || policy.stickersDetails[0].status === switchCategory)
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
-
 
   return (
     <div className="components">
@@ -326,16 +326,24 @@ export default function Mtp() {
          ?
          <Table striped hover responsive>
          <thead>
-             <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Client</th><th>Category</th>
+             <tr><th><input type="checkbox" id="onlyagent" onChange={() => handleAllCheck(policies, setDeleteArray)}/></th><th>Client</th><th>Category</th>
              {!authClaims.agent && <th>Agent</th>}<th>Amount</th>
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </thead>
          <tbody>
              {paginatedShownPolicies.map((policy, index) => (
                <tr key={policy.id}>
-                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [policy.id, policy.clientDetails.name]]) : 
-                   setDeleteArray(deleteArray.filter(element => element[0] !== policy.id))
-                 }/></td>
+                 <td>
+                    <input 
+                        type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' 
+                        onChange={({target}) => {
+                              document.getElementById('onlyagent').checked = false
+                              return target.checked ? 
+                                setDeleteArray([ ...deleteArray, [policy.id, policy.clientDetails.name]]) : 
+                                setDeleteArray(deleteArray.filter(element => element[0] !== policy.id))
+                        }}
+                    />
+                 </td>
                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
                  {!authClaims.agent && <td>{policy.added_by_name}</td>}
@@ -370,7 +378,7 @@ export default function Mtp() {
                  <td>{policy.policyStartDate}</td>
 
                  <td className="started">
-                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy); console.log(getPolicy(policy.id))}}>&#8942;</button>
+                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy);}}>&#8942;</button>
 
                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                    <Link to={`/admin/policy-details/${policy.id}`}>

@@ -13,6 +13,7 @@ import Loader from '../../components/Loader';
 import useAuth from '../../contexts/Auth';
 import { addDoc, collection } from 'firebase/firestore';
 import useDialog from '../../hooks/useDialog';
+import { handleAllCheck } from '../../helpers/smallFunctions';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -132,16 +133,6 @@ function Supervisors() {
   }
 
 
-  const handleAllCheck = () => {
-    if(document.getElementById("firstAgentCheckbox").checked === true){
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
-      setDeleteArray([])
-    } else{
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(supervisors.map(supervisor => [supervisor.uid, supervisor.name]))
-    }
-  }
-
   // delete multiple agents
   const [ bulkDelete, setBulkDelete ] = useState(null)
   const [ deleteArray, setDeleteArray ] = useState([])
@@ -167,7 +158,7 @@ function Supervisors() {
   }
   const [clickedIndex, setClickedIndex] = useState(null)
 
-
+console.log(deleteArray)
 
     return (
         <div className='components'>
@@ -216,14 +207,22 @@ function Supervisors() {
                   <>
                     <Table hover striped responsive className='mt-5'>
                         <thead>
-                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Created At</th><th>Action</th></tr>
+                            <tr><th><input type="checkbox" id='onlyagent' onChange={() => handleAllCheck(supervisors, setDeleteArray)}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Created At</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {currentSupervisors.map((supervisor, index) => (
                               <tr key={supervisor.uid}>
-                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [supervisor.uid, supervisor.name]]) : 
-                              setDeleteArray(deleteArray.filter(element => element[0] !== supervisor.uid))
-                            }/></td>
+                              <td>
+                                <input 
+                                      type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' 
+                                      onChange={({target}) => {
+                                            document.getElementById('onlyagent').checked = false
+                                            return target.checked ? 
+                                              setDeleteArray([ ...deleteArray, [supervisor.uid, supervisor.name]]) : 
+                                              setDeleteArray(deleteArray.filter(element => element[0] !== supervisor.uid))
+                                      }}
+                                />
+                              </td>
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
                               <td>{supervisor.meta.gender}</td>
