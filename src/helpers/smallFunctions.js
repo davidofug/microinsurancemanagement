@@ -28,3 +28,26 @@ export const getAgentClients = async () => {
         return "failed"
     })
 }
+
+
+// multiple select users
+export const handleAllCheck = (users, setDeleteArray) => {
+    if(document.getElementById("onlyagent").checked === true){
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
+      setDeleteArray(users.map(supervisor => [supervisor.uid, supervisor.name]))
+    } else{
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
+      setDeleteArray([])
+    }
+  }
+
+// multiple select stickers
+export const handleAllCheckStickers = (stickers, setDeleteArray) => {
+    if(document.getElementById("onlyagent").checked === true){
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
+      setDeleteArray(stickers.map(sticker => [sticker.id, sticker.clientDetails.name]))
+    } else{
+      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
+      setDeleteArray([])
+    }
+  }

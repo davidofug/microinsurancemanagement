@@ -167,8 +167,6 @@ function Reports() {
   if(sortBasicDes){
     shownPolicies = shownPolicies.sort((a, b) => a.stickersDetails[0].totalPremium - b.stickersDetails[0].totalPremium)
   }
-
-  const [ shownPolicies2, setShownPolicies2 ] = useState('')
   
   
   let paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
@@ -187,7 +185,7 @@ function Reports() {
       setShownPolicies2(shownPolicies.sort((a, b) => b.stickersDetails[0].totalPremium - a.stickersDetails[0].totalPremium))
   } */
 
-  // console.log(shownPolicies2)
+  // console.log(shownPolicies)
 
 
   return (
