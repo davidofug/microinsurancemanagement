@@ -115,6 +115,14 @@
         grid-template-columns: 1fr 1fr;
         gap: 10px;
     }
+
+    .expanded-menu-chat-container {
+        padding-right: 280px;
+    }
+
+    .chat-container { 
+        padding-left:20px;
+    }
 }
 
 @media (max-width:1200px) and (min-width:821px) {

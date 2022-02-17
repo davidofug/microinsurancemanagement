@@ -23,80 +23,80 @@ import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
 import PolicyRenew from '../pages/PolicyDetails/PolicyRenew'
 
 
-function AdminRoutes() {
+function AdminRoutes({largeContentClass}) {
     return (
         <>
             <PrivateRoute path="/admin/dashboard" >
-                <Dashboard />
+                <Dashboard parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/organisations" >
-                <Organisations />
+                <Organisations parent_contianer={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/add-organisations" >
-                <AddOrganisation />
+                <AddOrganisation parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/view-log-trail" >
-                <Logs />
+                <Logs parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/supervisor" >
-                <Supervisors />
+                <Supervisors parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/agents" >
-                <Agents />
+                <Agents parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/clients" >
-                <Clients />
+                <Clients parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/sticker-management" >
-                <StickerMgt />
+                <StickerMgt parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/sticker-number" >
-                <AddStickerRange />
+                <AddStickerRange parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/user-management" >
-                <Supervisors />
+                <Supervisors parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/policies" >
-                <Policies />
+                <Policies parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/claims" >
-                <Claims />
+                <Claims parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/reports" >
-                <Reports />
+                <Reports parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/settings" >
-                <Settings />
+                <Settings parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path={`/admin/policy-details/:id`} >
-                <PolicyDetails />
+                <PolicyDetails parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path={`/admin/policy-renew/:id`} >
-                <PolicyRenew />
+                <PolicyRenew parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/motor-third-party" >
-                <Mtp />
+                <Mtp parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/windscreen" >
-                <Windscreen />
+                <Windscreen parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/comprehensive" >
-                <Comprehensive />
+                <Comprehensive parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/new-import" >
-                <NewImport />
+                <NewImport parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/transit" >
-                <Transit />
+                <Transit parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/add-claim" >
-                <AddClaims />
+                <AddClaims parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/add-agent" >
-                <AddUsers role="agent" />
+                <AddUsers role="agent" parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/add-supervisor" >
-                <AddUsers role="supervisor" />
+                <AddUsers role="supervisor" parent_container={largeContentClass}/>
             </PrivateRoute>
         </>
         

@@ -424,9 +424,9 @@
 
 }
 @media (min-width: 1201px) {
-    .chat-container {
+    /* .chat-container {
         padding-right:280px;
-    }
+    } */
 
     .graph-space {
         height:50vh;

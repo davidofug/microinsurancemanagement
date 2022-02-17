@@ -13,7 +13,7 @@ import Chat from '../../components/messenger/Chat'
 import '../../styles/ctas.css'
 
 
-function SystemLogs() {
+function SystemLogs({parent_container}) {
   useEffect(() => {document.title = "Britam - System Logs"; getLogs()}, []);
 
   
@@ -160,7 +160,7 @@ function SystemLogs() {
           <Loader />
       }
       
-      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ?  "chat-container" : "expanded-menu-chat-container"}>
         <Chat />
       </div>
 

@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../components/messenger/Chat'
 import '../styles/ctas.css'
 
-export default function Mtp() {
+export default function Mtp({parent_container}) {
   useEffect(() => { document.title = "Britam - Windscreen"; getMTP()}, []);
 
   
@@ -461,7 +461,7 @@ export default function Mtp() {
         :
           <Loader />
       }
-      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
         <Chat />
       </div>     
     </div>

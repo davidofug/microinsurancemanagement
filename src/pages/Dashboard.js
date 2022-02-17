@@ -16,8 +16,9 @@ import { getAgentClients } from '../helpers/smallFunctions'
 import { Link } from 'react-router-dom'
 
 import Chat from '../components/messenger/Chat'
+import '../styles/ctas.css'
 
-function Dashboard() {
+function Dashboard({parent_container}) {
     const [clients, setClients] = useState([]);
     const [claims, setClaims] = useState([])
     const [claimsSettled, setClaimsSettled] = useState([])
@@ -346,7 +347,8 @@ function Dashboard() {
                         </Row>
                     </div>
                 </div>  
-                <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
+                {console.log(parent_container)}
+                <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container": "expanded-menu-chat-container"}>
                     <Chat />
                 </div> 
             </div>
