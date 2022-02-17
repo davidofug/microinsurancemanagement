@@ -187,7 +187,7 @@ function Dashboard({parent_container}) {
                 <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" className="heading"/>
 
                 <div className="componentsData">
-                    <div id="first-row" className='mb-5 first-row' style={{display:"flex", width: "100%", justifyContent: "space-between"}}>
+                    <div id="first-row" className={`mb-5 first-row ${parent_container ? 'dashboard-cards' : 'expanded-menu-dashboard-cards'}`}  style={{display:"flex", width: "100%", justifyContent: "space-between"}}>
                         <div id="bin" className="shadow-sm bg-body rounded first-container">
                             <div /* className="row-container" */ className="card-row-container">
                                     <div className="col">
@@ -227,7 +227,7 @@ function Dashboard({parent_container}) {
                             </div>
                         </div>
 
-                        <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex"}}>
+                        <div id="first-container" className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex"}}>
                             <div id="short_stats">
                                 {authClaims.superadmin && (
                                     admins.length > 0
@@ -338,7 +338,7 @@ function Dashboard({parent_container}) {
                             <div style={{"width": "20px", "height": "20px", backgroundColor: "#E0E7EC"}}></div>
                         </span>Monthly Stickers Issued</h5>
                         <Row style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
-                            <Col className="graph-space" >
+                            <Col id="graph-space" className="graph-space" >
                                     <BarChart />
                             </Col>
                         </Row>
