@@ -44,6 +44,7 @@ function MyRouter() {
                 <Route path="/login" exact component={Login} />
             </Switch>
             <div className={largeContentClass ? 'top-container-large': `top-container` }>
+                {/* {console.log(largeContentClass)} */}
                 {currentUser?.loggedIn && 
                 <div className='MenuSide'>
                     {authClaims?.admin && <AdminMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
@@ -66,11 +67,11 @@ function MyRouter() {
                     {authClaims?.agent && authClaims?.mtp && authClaims?.comprehensive && authClaims?.windscreen &&  <AgentMtpCompWindMenu setLargeContentClass={setLargeContentClass} largeContentClass={largeContentClass} />}
                 </div>
                 }
-                <div className='displayLeft'>
-                    <AdminRoutes />
-                    <SupervisorRoutes />
-                    <AgentsRoutes />
-                    <SuperAdminRoutes />
+                <div /*className='displayLeft'*/>
+                    <AdminRoutes largeContentClass={largeContentClass}/>
+                    <SupervisorRoutes largeContentClass={largeContentClass}/>
+                    <AgentsRoutes largeContentClass={largeContentClass} />
+                    <SuperAdminRoutes largeContentClass={largeContentClass}/>
                 </div>
  
             </div>

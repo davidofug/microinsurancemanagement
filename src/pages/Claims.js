@@ -24,7 +24,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../components/messenger/Chat'
 import '../styles/ctas.css'
 
-export default function Claims() {
+export default function Claims({parent_container}) {
   const [claims, setClaims] = useState([]);
   const claimsCollectionRef = collection(db, "claims");
   const [ show, handleShow, handleClose ] = useDialog()
@@ -402,7 +402,7 @@ export default function Claims() {
         :
           <Loader />
       }
-      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
         <Chat />
       </div> 
     </div>

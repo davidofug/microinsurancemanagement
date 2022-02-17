@@ -20,7 +20,7 @@ import { FaSortDown, FaSortUp } from 'react-icons/fa'
 
 import '../../styles/ctas.css'
 
-function Reports() {
+function Reports({parent_container}) {
   useEffect(() => { 
     document.title = "Britam - Reports"; 
     getPolicies()
@@ -411,7 +411,7 @@ function Reports() {
         
         
           }
-          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
+          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
             <Chat />
           </div> 
 

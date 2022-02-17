@@ -21,8 +21,12 @@ import useDialog from "../../hooks/useDialog";
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import Chat from '../../components/messenger/Chat'
 
-export default function StickerMgt() {
+import '../../styles/ctas.css'
+
+
+export default function StickerMgt({parent_container}) {
     useEffect(() => {document.title = 'Britam - Stickers Management'; getStickerRange()}, [])
 
     const [stickerRange, setStickerRange] = useState([]);
@@ -330,7 +334,9 @@ export default function StickerMgt() {
                     }
                     
             </div>
-            
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
+              <Chat />
+            </div>      
         </div>
     )
 }
