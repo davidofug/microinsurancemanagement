@@ -252,13 +252,6 @@ export default function StickerMgt() {
                                     <i><MdInfo /></i> Details
                                   </div>
                                 </li>
-                                <li onClick={() => {
-                                              setShowContext(false)
-                                            }}>
-                                  <div className="actionDiv">
-                                    <i><MdCancel /></i> Cancel
-                                  </div>
-                                </li>
                                 <li 
                                       onClick={() => {
                                               setOpenToggle(true)
@@ -269,6 +262,13 @@ export default function StickerMgt() {
                                         <i><MdDelete/></i> Delete
                                       </div>
                                 </li>
+                                {/* <li onClick={() => {
+                                              setShowContext(false)
+                                            }}>
+                                  <div className="actionDiv">
+                                    <i><MdCancel /></i> Cancel
+                                  </div>
+                                </li> */}
                               </ul>
                             </td>
 
@@ -300,13 +300,7 @@ export default function StickerMgt() {
                         <h4>No match</h4>
                         <p>You have not added any Stickers Ranges</p>
                       </div>
-                      }
-
-                      
-
-                                
-
-                      
+                      } 
                     </div>
                       </>
                     :
