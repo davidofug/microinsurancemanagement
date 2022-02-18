@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Header from "../../components/header/Header";
-import Pagination from "../../helpers/Pagination";
-import SearchBar from "../../components/searchBar/SearchBar";
-import { Table } from "react-bootstrap";
-import { db } from '../../helpers/firebase'
-import { addDoc, collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
-import OrganisationModal from "../../components/OrganisationModel";
-import { Modal } from 'react-bootstrap'
-import { authentication } from "../../helpers/firebase";
+import { Table, Modal } from "react-bootstrap";
 import { MdEdit, MdDelete } from 'react-icons/md'
+import Pagination from "../../helpers/Pagination";
+import Header from "../../components/header/Header";
+import { authentication, db } from '../../helpers/firebase'
+import SearchBar from "../../components/searchBar/SearchBar";
+import OrganisationModal from "../../components/OrganisationModel";
+import { addDoc, collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import '../../components/modal/ConfirmBox.css'
 import Loader from '../../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
@@ -22,36 +20,31 @@ import Chat from '../../components/messenger/Chat'
 import '../../styles/ctas.css'
 
 export default function Organisations({parent_container}) {
-  const [organisations, setOrganisations] = useState([]);
+  const [ organisations, setOrganisations ] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
   const logCollectionRef = collection(db, "logs");
-
+  const [ openToggle, setOpenToggle ] = useState(false)
+  const [ show, handleShow, handleClose ] = useDialog();
+  const [ searchText, setSearchText ] = useState('')
+  const [ currentPage, setCurrentPage ] = useState(1);
+  const [ organisationsPerPage ] = useState(10);
+  const [ clickedIndex, setClickedIndex ] = useState(null)
+  const [ singleDoc, setSingleDoc ] = useState({});
   useEffect(() => {document.title = "Britam - Organisations";getOrganisations()}, []);
 
   // clickoutside
-  const [ openToggle, setOpenToggle ] = useState(false)
   window.onclick = (event) => {
     if(openToggle === true) {
       if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
         setOpenToggle(false)
-    }
-    }
+    }}
   }
 
   const getOrganisations = async () => {
     const data = await getDocs(organisationsCollectionRef)
     const organisationArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    if(organisationArray.length === 0){
-      setOrganisations(null)
-    } else {
-      setOrganisations(organisationArray)
-    }
+    organisationArray.length === 0 ? setOrganisations(null) : setOrganisations(organisationArray)
   }
-
-  const [ show, handleShow, handleClose ] = useDialog();
-  const [ searchText, setSearchText ] = useState('')
-  const [currentPage, setCurrentPage] = useState(1);
-  const [organisationsPerPage] = useState(10);
 
   const handleDelete = async (id) => {
     const organisationDoc = doc(db, "organisations", id);
@@ -60,8 +53,7 @@ export default function Organisations({parent_container}) {
       .then(async () => {
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-          type: 'organisation deletion',
-          status: 'successful',
+          type: 'organisation deletion', status: 'successful',
           message: `Successfully deleted organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
         })
       })
@@ -69,36 +61,32 @@ export default function Organisations({parent_container}) {
         toast.error(`Failed to deleted organisation: ${singleDoc.name}`, {position: "top-center"});
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-          type: 'organisation deletion',
-          status: 'failed',
+          type: 'organisation deletion', status: 'failed',
           message: `Failed to delete ${singleDoc.name}'s claim by ${authentication.currentUser.displayName}`
         })
       })
     
   };
 
-    const [singleDoc, setSingleDoc] = useState({});
-
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => !data || data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
-    // actions context
-    const [showContext, setShowContext] = useState(false)
-    if(showContext === true){
-      window.onclick = function(event) {
-          if (!event.target.matches('.sharebtn')) {
-              setShowContext(false)
-          }
-      }
+  // actions context
+  const [showContext, setShowContext] = useState(false)
+  if(showContext === true){
+    window.onclick = function(event) {
+        if (!event.target.matches('.sharebtn')) {
+            setShowContext(false)
+        }
     }
-    const [clickedIndex, setClickedIndex] = useState(null)
+  }
 
-    //pagination
-    const indexOfLastOrganisation = currentPage * organisationsPerPage;
-    const indexOfFirstOrganisation = indexOfLastOrganisation - organisationsPerPage;
-    const currentOrganisations = !organisations || searchByName(organisations)
-    const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
-    const paginatedShownOrganisations = !organisations || currentOrganisations.slice(indexOfFirstOrganisation, indexOfLastOrganisation)
+  //pagination
+  const indexOfLastOrganisation = currentPage * organisationsPerPage;
+  const indexOfFirstOrganisation = indexOfLastOrganisation - organisationsPerPage;
+  const currentOrganisations = !organisations || searchByName(organisations)
+  const totalPagesNum = !organisations || Math.ceil(organisations.length / organisationsPerPage);
+  const paginatedShownOrganisations = !organisations || currentOrganisations.slice(indexOfFirstOrganisation, indexOfLastOrganisation)
 
   return (
     <div className="components">
@@ -144,8 +132,7 @@ export default function Organisations({parent_container}) {
         :
           <Loader />
       :
-      <div className="componentsData">
-      <div className="table-card">
+      <div className="table-card componentsData">
         <div id="search">
           <SearchBar
             placeholder={"Search Organisation by name"}
@@ -154,18 +141,12 @@ export default function Organisations({parent_container}) {
           />
         </div>
 
-        <Table
-          bordered
-          hover
-          striped
-          responsive
-          className="mt-5"
-        >
+        <Table bordered hover striped responsive className="mt-5">
           <thead>
             <tr style={{borderTop: '1px solid transparent', borderLeft: '1px solid transparent', borderRight: '1px solid transparent'}}>
-              <th></th><th></th>
-              <th></th><th></th>
-              <th colSpan={4} style={{border: "1px solid #000", textAlign: "center"}}>Contact Person</th></tr>
+              <th></th><th></th> <th></th><th></th>
+              <th colSpan={4} style={{border: "1px solid #000", textAlign: "center"}}>Contact Person</th>
+            </tr>
             <tr style={{borderTop: "1px solid #000"}}>
               <th className="text-center">Logo</th><th>Name</th>
               <th>Email</th><th>Phone No.</th>
@@ -188,21 +169,23 @@ export default function Organisations({parent_container}) {
                 <td>{organisation.contactPhoneNumber}</td>
                 <td style={{borderRight: "1px solid #000"}}>{organisation.contact_email}</td>
                 <td className="started">
-                    <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(organisation)}}>&#8942;</button>
+                    <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(organisation)}}>
+                      &#8942;
+                    </button>
 
                     <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                                <li onClick={() => {setShowContext(false); handleShow();}}>
-                                      <div className="actionDiv">
-                                        <i><MdEdit/></i> Edit
-                                      </div>
-                                </li>
-                                <li onClick={() => {setOpenToggle(true);setShowContext(false)}}>
-                                      <div className="actionDiv">
-                                        <i><MdDelete/></i> Delete
-                                      </div>
-                                </li>
+                        <li onClick={() => {setShowContext(false); handleShow();}}>
+                              <div className="actionDiv">
+                                <i><MdEdit/></i> Edit
+                              </div>
+                        </li>
+                        <li onClick={() => {setOpenToggle(true);setShowContext(false)}}>
+                              <div className="actionDiv">
+                                <i><MdDelete/></i> Delete
+                              </div>
+                        </li>
                     </ul>
-                  </td>
+                </td>
 
               </tr>
             ))}
@@ -211,13 +194,13 @@ export default function Organisations({parent_container}) {
           <tfoot>
            <tr style={{border: "1px solid white", borderTop: "1px solid #000"}}>
              <td colSpan={7}>
-             <Pagination
-                pages={totalPagesNum}
-                setCurrentPage={setCurrentPage}
-                currentClients={paginatedShownOrganisations}
-                sortedEmployees={organisations}
-                entries={"Organisations"}
-              />
+              <Pagination
+                  pages={totalPagesNum}
+                  setCurrentPage={setCurrentPage}
+                  currentClients={paginatedShownOrganisations}
+                  sortedEmployees={organisations}
+                  entries={"Organisations"}
+                />
              </td>
            </tr>
          </tfoot>  
@@ -225,21 +208,15 @@ export default function Organisations({parent_container}) {
           <tfoot>
             <tr>
               <th className="text-center">Logo</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone No.</th>
-              <th style={{borderLeft: "1px solid #000"}}>Name</th>
-              <th>Role</th>
-              <th>Phone No.</th>
-              <th style={{borderRight: "1px solid #000"}}>Email</th>
-              <th>Action</th>
+              <th>Name</th><th>Email</th><th>Phone No.</th>
+              <th style={{borderLeft: "1px solid #000"}}>Name</th><th>Role</th><th>Phone No.</th>
+              <th>Email</th><th style={{borderLeft: "1px solid #000"}}>Action</th>
             </tr>
           </tfoot>
         </Table>
 
         
       </div>
-    </div>
         }
       <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
         <Chat />
