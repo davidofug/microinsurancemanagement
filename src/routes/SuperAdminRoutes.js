@@ -11,41 +11,41 @@ import Admins from '../pages/superAdmin/Admins'
 import Comprehensive from '../pages/Comprehensive'
 import SystemLogs from '../pages/superAdmin/SystemLogs'
 
-function SuperAdminRoutes() {
+function SuperAdminRoutes({largeContentClass}) {
     return (
         <>
             <PrivateRoute path="/superadmin/dashboard" >
-                <Dashboard />
+                <Dashboard parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/admins" >
-                <Admins />
+                <Admins parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/add-admin" >
-                <AddUsers role="admin" />
+                <AddUsers role="admin" parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/claims" >
-                <Claims />
+                <Claims parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/settings" >
-                <Settings />
+                <Settings parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/system-logs" >
-                <SystemLogs />
+                <SystemLogs parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/motor-third-party" >
-                <Mtp />
+                <Mtp parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/windscreen" >
-                <Windscreen />
+                <Windscreen parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/comprehensive" >
-                <Comprehensive />
+                <Comprehensive parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/new-import" >
-                <NewImport />
+                <NewImport parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/transit" >
-                <Transit />
+                <Transit parent_container={largeContentClass}/>
             </PrivateRoute>
         </>
         

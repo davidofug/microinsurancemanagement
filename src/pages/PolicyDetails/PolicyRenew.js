@@ -9,7 +9,9 @@ import './PolicyDetails.css'
 import Header from "../../components/header/Header";
 import { currencyFormatter } from '../../helpers/currency.format'
 
-function PolicyRenew() {
+import Chat from '../../components/messenger/Chat'
+
+function PolicyRenew({parent_container}) {
     useEffect(() => {
         document.title = "Britam - Sticker Details";
         getMTP()
@@ -133,6 +135,9 @@ function PolicyRenew() {
                 <input type="submit" className='btn btn-success' value="Renew Policy" />
             </div>
             </form>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
+              <Chat />
+            </div> 
         </div>
     )
 }

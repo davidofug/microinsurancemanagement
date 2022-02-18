@@ -17,9 +17,10 @@ import 'react-toastify/dist/ReactToastify.css'
 
 
 import Chat from '../components/messenger/Chat'
+import '../styles/ctas.css'
 
 
-function Settings() {
+function Settings({parent_container}) {
 
     useEffect(() => { document.title = 'Britam - User Profile'; getUserMeta();}, [])
     const [ show, handleShow, handleClose ] = useDialog()
@@ -193,7 +194,7 @@ function Settings() {
                     <input type="submit" value="Update Password" className="btn btn-primary cta" />                              
                     </form>
             </div>
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
               <Chat />
             </div> 
         </div>
