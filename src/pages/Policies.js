@@ -21,7 +21,7 @@ import Chat from '../components/messenger/Chat'
 // import AddClient from '../parts/AddClient'
 // enlarging the size of + and -
 
-function Policies({cat, btn_txt, pol}) {
+function Policies({cat, btn_txt, pol, parent_container}) {
 
     const listUsers = httpsCallable(functions,'listUsers')
     const addUser = httpsCallable(functions, 'addUser')
@@ -836,7 +836,7 @@ function Policies({cat, btn_txt, pol}) {
                     </div> 
                 </Form>
             </div>
-            <div className="chat-container" style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}}>
+            <div className={parent_container ? "chat-container" : "expanded-menu-chat-container"} style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}}>
               <Chat />
             </div> 
         </div>

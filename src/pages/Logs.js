@@ -10,7 +10,7 @@ import { convertStringToDate, timeConvert } from '../helpers/smallFunctions'
 import "../styles/ctas.css"
 
 
-function Logs() {
+function Logs({parent_container}) {
 
     useEffect(() => {document.title = 'Britam - Logtrails'; getLogs()}, [])
 
@@ -134,7 +134,7 @@ function Logs() {
                 :
                 <Loader />
             }
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container?"chat-container":"expanded-menu-chat-container"}>
               <Chat />
             </div> 
         </div>
