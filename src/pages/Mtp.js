@@ -7,7 +7,7 @@ import { Table, Form } from 'react-bootstrap'
 import { addDoc, getDoc, getDocs, collection, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { authentication, db, functions } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
-import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
+import { MdInfo, MdAutorenew, MdDelete } from 'react-icons/md'
 import useAuth from '../contexts/Auth'
 import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
