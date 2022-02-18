@@ -1,6 +1,7 @@
 import { authentication } from '../helpers/firebase'
 import { functions, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
+import { collection, getDocs } from 'firebase/firestore'
 
 // convert a string date to a date.
 export const convertStringToDate = (stringDate) => {
@@ -50,4 +51,21 @@ export const handleAllCheckStickers = (stickers, setDeleteArray) => {
       Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
       setDeleteArray([])
     }
-  }
+}
+
+
+export const getStickers = async (category, usersUnder) => {
+  const policyCollectionRef = collection(db, "policies")
+  const data = await getDocs(policyCollectionRef);
+  const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  const mtpPolicies = policiesArray.filter(policy => policy.category === category).filter(policy => usersUnder.includes(policy.added_by_uid)).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  return mtpPolicies
+}
+
+export const getSuperAdminStickers = async (category) => {
+  const policyCollectionRef = collection(db, "policies")
+  const data = await getDocs(policyCollectionRef);
+  const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  const mtpPolicies = policiesArray.filter(policy => policy.category === category).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  return mtpPolicies
+}

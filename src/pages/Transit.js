@@ -326,7 +326,7 @@ export default function Mtp({parent_container}) {
          ?
          <Table striped hover responsive>
          <thead>
-             <tr><th><input type="checkbox" id="onlyagent" onChange={() => handleAllCheck(policies, setDeleteArray)}/></th><th>Client</th><th>Category</th>
+             <tr><th><input type="checkbox" id="onlyagent" onChange={() => handleAllCheckStickers(policies, setDeleteArray)}/></th><th>Client</th><th>Category</th>
              {!authClaims.agent && <th>Agent</th>}<th>Amount</th>
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </thead>
