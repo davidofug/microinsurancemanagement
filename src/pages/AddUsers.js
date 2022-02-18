@@ -20,7 +20,7 @@ import { storage } from '../helpers/firebase'
 
 import Chat from '../components/messenger/Chat'
 
-function AddUsers({role}) {
+function AddUsers({role, parent_container}) {
     const { authClaims } = useAuth()
     const addUser = httpsCallable(functions, 'addUser')
     useEffect(() => { document.title = 'Britam - Add Users' }, [])
@@ -408,7 +408,7 @@ function AddUsers({role}) {
                         
                     </Form>
             </div>
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
               <Chat />
             </div> 
         </div>

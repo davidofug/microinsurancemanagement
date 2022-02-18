@@ -20,11 +20,10 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../components/messenger/Chat'
 import '../styles/clients.css'
-
 import '../styles/ctas.css'
 
 
-export default function Clients() {
+export default function Clients({parent_container}) {
 
   useEffect(() => {
     document.title = 'Britam - Clients';
@@ -256,9 +255,9 @@ const getClients = () => {
             :
               <Loader />
           }
-          <div id="chat-container" style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
-            <Chat />
-          </div> 
+          <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
+              <Chat />
+          </div>
         </div>
     )
 }

@@ -17,77 +17,77 @@ import NewImport from '../pages/NewImport'
 import Transit from '../pages/Transit'
 
 
-function SupervisorRoutes() {
+function SupervisorRoutes({largeContentClass}) {
     return (
         <>
             <PrivateRoute path="/supervisor/dashboard" >
-                <Dashboard />
+                <Dashboard parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/view-log-trail" >
-                <Logs />
+                <Logs parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/agents" >
-                <Agents />
+                <Agents parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/clients" >
-                <Clients />
+                <Clients parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/user-management" >
-                <Agents />
+                <Agents parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/policies" >
-                <Policies />
+                <Policies parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/claims" >
-                <Claims />
+                <Claims parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-claim" >
-                <AddClaims />
+                <AddClaims parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/reports" >
-                <Reports />
+                <Reports parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/policy-details" >
-                <PolicyDetails />
+                <PolicyDetails parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/settings" >
-                <Settings />
+                <Settings parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-comprehensive" >
-                <Policies cat="comprehensive" btn_txt="Process Comprehensive" pol="comprehensive"/>
+                <Policies parent_container={largeContentClass} cat="comprehensive" btn_txt="Process Comprehensive" pol="comprehensive"/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-windscreen" >
-                <Policies cat="windscreen" btn_txt="Process Windscreen" pol="windscreen"/>
+                <Policies parent_container={largeContentClass} cat="windscreen" btn_txt="Process Windscreen" pol="windscreen"/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-mtp" >
-                <Policies cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
+                <Policies parent_container={largeContentClass} cat="mtp" btn_txt="Process 3rd Party" pol="motor third party"/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-new-import" >
-                <Policies cat="newImport" btn_txt="Process New import" pol="new import"/>
+                <Policies parent_container={largeContentClass} cat="newImport" btn_txt="Process New import" pol="new import"/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-transit" >
-                <Policies cat="transit" btn_txt="Process Transit" pol="transit"/>
+                <Policies parent_container={largeContentClass} cat="transit" btn_txt="Process Transit" pol="transit"/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/motor-third-party" >
-                <Mtp />
+                <Mtp parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/windscreen" >
-                <Windscreen />
+                <Windscreen parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/comprehensive" >
-                <Comprehensive />
+                <Comprehensive parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/new-import" >
-                <NewImport />
+                <NewImport parent_container={largeContentClass} />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/transit" >
-                <Transit />
+                <Transit parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-clients" >
-                <AddUsers role="client" />
+                <AddUsers parent_container={largeContentClass} role="client" />
             </PrivateRoute>
             <PrivateRoute path="/supervisor/add-agents" >
-                <AddUsers role="agent" />
+                <AddUsers parent_container={largeContentClass} role="agent" />
             </PrivateRoute>
         </>
         

@@ -19,8 +19,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../../components/messenger/Chat' 
 import SupervisorDetails from '../../components/SupervisorDetails';
 
+import '../../styles/ctas.css'
 
-function Supervisors() {
+
+function Supervisors({parent_container}) {
 
     useEffect(() => { document.title = 'Britam - Supervisors'; getSupervisors() }, [])
 
@@ -325,11 +327,9 @@ function Supervisors() {
               <Loader />
  
             }
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
               <Chat />
             </div> 
-
-            
         </div>
     )
 }

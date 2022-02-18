@@ -16,8 +16,9 @@ import { getAgentClients } from '../helpers/smallFunctions'
 import { Link } from 'react-router-dom'
 
 import Chat from '../components/messenger/Chat'
+import '../styles/ctas.css'
 
-function Dashboard() {
+function Dashboard({parent_container}) {
     const [clients, setClients] = useState([]);
     const [claims, setClaims] = useState([])
     const [claimsSettled, setClaimsSettled] = useState([])
@@ -186,7 +187,7 @@ function Dashboard() {
                 <Header title="Welcome to Britam" subtitle="WITH YOU EVERY STEP OF THE WAY" className="heading"/>
 
                 <div className="componentsData">
-                    <div id="first-row" className='mb-5 first-row' style={{display:"flex", width: "100%", justifyContent: "space-between"}}>
+                    <div id="first-row" className={`mb-5 first-row ${parent_container ? 'dashboard-cards' : 'expanded-menu-dashboard-cards'}`}  style={{display:"flex", width: "100%", justifyContent: "space-between"}}>
                         <div id="bin" className="shadow-sm bg-body rounded first-container">
                             <div /* className="row-container" */ className="card-row-container">
                                     <div className="col">
@@ -226,7 +227,7 @@ function Dashboard() {
                             </div>
                         </div>
 
-                        <div className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex"}}>
+                        <div id="first-container" className="shadow-sm bg-body rounded first-container" style={{padding: "5px", display: "flex"}}>
                             <div id="short_stats">
                                 {authClaims.superadmin && (
                                     admins.length > 0
@@ -337,7 +338,7 @@ function Dashboard() {
                             <div style={{"width": "20px", "height": "20px", backgroundColor: "#E0E7EC"}}></div>
                         </span>Monthly Stickers Issued</h5>
                         <Row style={{paddingTop:"3vh", paddingBottom:"2vh", paddingRight:"3vh"}}>
-                            <Col className="graph-space" >
+                            <Col id="graph-space" className="graph-space" >
                                     <BarChart />
                             </Col>
                         </Row>
@@ -346,7 +347,8 @@ function Dashboard() {
                         </Row>
                     </div>
                 </div>  
-                <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className="chat-container">
+                {console.log(parent_container)}
+                <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container": "expanded-menu-chat-container"}>
                     <Chat />
                 </div> 
             </div>
