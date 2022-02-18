@@ -29,7 +29,7 @@ import Chat from '../components/messenger/Chat'
 import '../styles/ctas.css'
 
 
-function Agents({role}) {
+function Agents({role, parent_container}) {
 
   useEffect(() => {document.title = 'Britam - Agents';getAgents()}, [])
   
@@ -419,7 +419,7 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
               :
                 <Loader />
             }
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
               <Chat />
             </div>
         </div>

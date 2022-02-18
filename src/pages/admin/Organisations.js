@@ -19,8 +19,9 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Chat from '../../components/messenger/Chat'
+import '../../styles/ctas.css'
 
-export default function Organisations() {
+export default function Organisations({parent_container}) {
   const [organisations, setOrganisations] = useState([]);
   const organisationsCollectionRef = collection(db, "organisations");
   const logCollectionRef = collection(db, "logs");
@@ -240,7 +241,7 @@ export default function Organisations() {
       </div>
     </div>
         }
-      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+      <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
         <Chat />
       </div> 
     </div>

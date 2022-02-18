@@ -10,7 +10,9 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../../components/messenger/Chat'
 
-function AddStickerRange() {
+import '../../styles/ctas.css'
+
+function AddStickerRange({parent_container}) {
 
     useEffect(() => {document.title = 'Britam - Add Sticker Range'; getSupervisors()}, [])
 
@@ -113,7 +115,7 @@ function AddStickerRange() {
                     <input type="submit" className='btn btn-primary cta' value="Submit" />
                 </form>
             </div>
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
               <Chat />
             </div>    
         </div>

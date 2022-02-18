@@ -16,8 +16,9 @@ import Chat from '../../components/messenger/Chat'
 // firebase storage..
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../helpers/firebase'
+import '../../styles/ctas.css'
 
-export default function AddOrganisation() {
+export default function AddOrganisation({parent_container}) {
 
     useEffect(() => { document.title = 'Britam - Add Organisations'}, [])
 
@@ -226,7 +227,7 @@ export default function AddOrganisation() {
                         </Form>
                 </div>
             </div>
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}}>
+            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
               <Chat />
             </div> 
         </div>
