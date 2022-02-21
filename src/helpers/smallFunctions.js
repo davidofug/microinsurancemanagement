@@ -61,10 +61,26 @@ export const getStickers = async (category, usersUnder) => {
   return mtpPolicies
 }
 
+export const getAllStickers = async (usersUnder) => {
+  const policyCollectionRef = collection(db, "policies")
+  const data = await getDocs(policyCollectionRef);
+  const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  const mtpPolicies = policiesArray.filter(policy => usersUnder.includes(policy.added_by_uid)).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  return mtpPolicies
+}
+
 export const getSuperAdminStickers = async (category) => {
   const policyCollectionRef = collection(db, "policies")
   const data = await getDocs(policyCollectionRef);
   const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
   const mtpPolicies = policiesArray.filter(policy => policy.category === category).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  return mtpPolicies
+}
+
+export const getAllSuperAdminStickers = async () => {
+  const policyCollectionRef = collection(db, "policies")
+  const data = await getDocs(policyCollectionRef);
+  const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  const mtpPolicies = policiesArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
   return mtpPolicies
 }

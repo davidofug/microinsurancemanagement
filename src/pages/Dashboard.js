@@ -9,6 +9,7 @@ import { getUsers } from '../helpers/smallFunctions'
 import FirstContainer from '../components/FirstContainer'
 import UsersContainer from '../components/UsersContainer'
 import GraphContainer from '../components/GraphContainer'
+import { getAllStickers, getAllSuperAdminStickers } from '../helpers/smallFunctions'
 
 import Chat from '../components/messenger/Chat'
 import '../styles/ctas.css'
@@ -16,6 +17,7 @@ import '../styles/ctas.css'
 function Dashboard({parent_container}) {
     const { authClaims } = useAuth()
     const [ users, setUsers ] = useState([])
+    const [policies, setPolicies] = useState([])
 
     const [claims, setClaims] = useState([])
     const [claimsSettled, setClaimsSettled] = useState([])
@@ -25,46 +27,16 @@ function Dashboard({parent_container}) {
         document.title = 'Britam - Dashboard'
         if(authClaims.agent){
             getUsers('Customer').then(result => setUsers(result))
+            getAllStickers([authentication.currentUser.uid]).then(result => setPolicies(result))
         } else if(authClaims.supervisor){
             getUsers('agent').then(result => setUsers(result))
-        } else if(authClaims.admin){
-            getUsers('supervisor').then(result => setUsers(result))
-        } else if(authClaims.superadmin){
-            getUsers('admin').then(result => setUsers(result))
-        }
-        getPolicies()
-    }, [])
-    
-
-    // policies
-    const [policies, setPolicies] = useState([])
-    const policyCollectionRef = collection(db, "policies");
-
-    
-    const getPolicies = async () => {
-        const data = await getDocs(policyCollectionRef);
-        const allPolicies = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-
-        if(authClaims.agent){// agent's policies
-            setPolicies(allPolicies.filter(claim => claim.added_by_uid === authentication.currentUser.uid)) 
-            return (allPolicies.filter(policy => policy.added_by_uid === authentication.currentUser.uid))
-        }
-
-        if(authClaims.supervisor){ // supervisor's policies
             const listUsers = httpsCallable(functions, 'listUsers')
             listUsers().then(({data}) => {
               const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
-
-              
-              const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid]
-      
-              const supervisorPolicies = allPolicies.filter(claim => usersUnderSupervisor.includes(claim.added_by_uid))
-              setPolicies(supervisorPolicies)
-              return(supervisorPolicies)
+              getAllStickers([ ...myAgents, authentication.currentUser.uid]).then(result => setPolicies(result))
             })
-          }
-        
-        if(authClaims.admin){ // admin's policies
+        } else if(authClaims.admin){
+            getUsers('supervisor').then(result => setUsers(result))
             const listUsers = httpsCallable(functions, 'listUsers')
             listUsers().then(({data}) => {
               const myAgents = data.filter(user => user.role.agent).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
@@ -73,19 +45,13 @@ function Dashboard({parent_container}) {
       
               const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
               
-              const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
-      
-              const adminPolicies = allPolicies.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
-              setPolicies(adminPolicies)
-              return(adminPolicies)
+              getAllStickers([ ...myAgents, ...mySupervisors, ...agentsUnderMySupervisors, authentication.currentUser.uid]).then(result => setPolicies(result))
             })
+        } else if(authClaims.superadmin){
+            getUsers('admin').then(result => setUsers(result))
+            getAllSuperAdminStickers().then(result => setPolicies(result))
         }
-
-        if(authClaims.superadmin){// superadmin's policies
-            setPolicies(allPolicies)
-            return(allPolicies)
-        } 
-    }
+    }, [])
 
     // claims
     const getClaims = async () => {
@@ -127,9 +93,7 @@ function Dashboard({parent_container}) {
             })
         }
 
-        authClaims.superadmin && setClaims(allClaims) && setClaimsSettled(allClaims.filter(claim => claim.status === "settled")) // superadmin's claims
-          
-          
+        authClaims.superadmin && setClaims(allClaims) && setClaimsSettled(allClaims.filter(claim => claim.status === "settled")) // superadmin's claims      
     }
 
     return (
