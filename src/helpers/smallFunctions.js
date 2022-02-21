@@ -17,14 +17,13 @@ export const timeConvert = (num) => {
 }
 
 
-// clients
-
-export const getAgentClients = async () => {
+// getting users.
+export const getUsers = async (userType) => {
     const listUsers = httpsCallable(functions, 'listUsers')
     return await listUsers().then((results) => {
-        const myUsers = results.data.filter(user => user.role.Customer)
-        const myClients = myUsers.filter(client => client.meta.added_by_uid === authentication.currentUser.uid).slice(0, 5)
-        return myClients.length === 0 ? null : myClients
+        const users = results.data.filter(user => user.role[userType])
+        const myUsers = users.filter(client => client.meta.added_by_uid === authentication.currentUser.uid).slice(0, 5)
+        return myUsers.length === 0 ? null : myUsers
     }).catch((err) => {
         return "failed"
     })
