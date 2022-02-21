@@ -15,7 +15,7 @@ import { generateReport } from '../helpers/generateReport'
 import useAuth from "../contexts/Auth";
 import Chat from '../components/messenger/Chat'
 import useMediaQuery from "../hooks/useMediaQuery";
-import { convertStringToDate } from "../helpers/smallFunctions";
+import { convertStringToDate } from "../helpers/helpfulUtilities";
 import { FaSortDown, FaSortUp } from 'react-icons/fa'
 
 import '../styles/ctas.css'

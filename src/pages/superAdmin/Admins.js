@@ -14,7 +14,7 @@ import useDialog from '../../hooks/useDialog'
 import ClientModal from '../../components/ClientModal';
 import { useForm } from "../../hooks/useForm";
 import { collection, addDoc } from 'firebase/firestore'
-import { handleAllCheck } from '../../helpers/smallFunctions';
+import { handleAllCheck } from '../../helpers/helpfulUtilities';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'

@@ -4,11 +4,11 @@ import '../styles/dashboard.css'
 import Header from '../components/header/Header'
 import { authentication, functions } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
-import { getUsers } from '../helpers/smallFunctions'
+import { getUsers } from '../helpers/helpfulUtilities'
 import FirstContainer from '../components/FirstContainer'
 import UsersContainer from '../components/UsersContainer'
 import GraphContainer from '../components/GraphContainer'
-import { getAllStickers, getAllSuperAdminStickers, getAllClaims, getAllSuperAdminClaims } from '../helpers/smallFunctions'
+import { getAllStickers, getAllSuperAdminStickers, getAllClaims, getAllSuperAdminClaims } from '../helpers/helpfulUtilities'
 
 import Chat from '../components/messenger/Chat'
 import '../styles/ctas.css'

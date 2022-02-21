@@ -19,7 +19,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import StickerModal from '../components/StickersModal';
 import { FaUserPlus } from 'react-icons/fa'
 import { IoMdAlert } from 'react-icons/io'
-import { handleAllCheck } from '../helpers/smallFunctions'
+import { handleAllCheck } from '../helpers/helpfulUtilities'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'

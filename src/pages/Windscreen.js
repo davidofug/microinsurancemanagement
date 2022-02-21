@@ -13,9 +13,7 @@ import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import '../components/modal/ConfirmBox.css'
 import { httpsCallable } from 'firebase/functions';
-import { handleAllCheckStickers } from "../helpers/smallFunctions";
-import { getStickers } from "../helpers/smallFunctions";
-import { getSuperAdminStickers } from "../helpers/smallFunctions";
+import { handleAllCheckStickers, getSuperAdminStickers, getStickers } from "../helpers/helpfulUtilities";
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'

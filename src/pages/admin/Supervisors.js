@@ -13,7 +13,7 @@ import Loader from '../../components/Loader';
 import useAuth from '../../contexts/Auth';
 import { addDoc, collection } from 'firebase/firestore';
 import useDialog from '../../hooks/useDialog';
-import { handleAllCheck } from '../../helpers/smallFunctions';
+import { handleAllCheck } from '../../helpers/helpfulUtilities';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
