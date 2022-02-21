@@ -17,7 +17,6 @@ function OrganisationModal({ singleDoc, handleClose, getOrganisations }) {
     // initialising the logs doc.
     const logCollectionRef = collection(db, "logs");
 
-    console.log(logo)
 
     let logoUrl = ""
   
@@ -31,51 +30,47 @@ function OrganisationModal({ singleDoc, handleClose, getOrganisations }) {
             const uploadTask = uploadBytesResumable(storageRef, logo)
 
             uploadTask.on(
-                    "state_changed",
-                    (snapshot) => {},
-                    (error) => console.log(error), async () => {
-                                    await getDownloadURL(uploadTask.snapshot.ref)
-                                            .then((downloadUrl) => {
-                                                logoUrl = downloadUrl
-                                    })
-                                            .then(async () => {
-                                                await updateDoc(organisationRef, {
-                                                    uid: authentication.currentUser.uid,
-                                                    category: event.target.category.value,
-                                                    name: event.target.name.value,
-                                                    org_email: event.target.org_email.value,
-                                                    tel: event.target.tel.value,
-                                                    address: event.target.address.value,
-                                                    logo: logoUrl,
-                                                    role: event.target.role.value,
-                                                    title: event.target.title.value,
-                                                    contactName: event.target.contactName.value,
-                                                    contactPhoneNumber: event.target.contactPhoneNumber.value,
-                                                    contact_email: event.target.contact_email.value
-                                                })
-                                                    .then(() => {
-                                                            toast.success(`successfully updated organisation`, {position: "top-center"})
-                                                    })
-                                                    .then(async () => {
-                                                            await addDoc(logCollectionRef, {
-                                                                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                                                                    type: 'organisation creation',
-                                                                    status: 'successful',
-                                                                    message: `Successfully updated organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
-                                                            })
-                                                    })
-                                                    .catch(async () => {
-                                                            toast.error(`Failed: couldn't update organisation`, {position: "top-center"});
-
-                                                            await addDoc(logCollectionRef, {
-                                                                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                                                                    type: 'organisation creation',
-                                                                    status: 'failed',
-                                                                    message: `Failed to update organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
-                                                            })
-                                                    })
-                                            })
-                    }
+                "state_changed",
+                (snapshot) => {},
+                (error) => console.log(error), 
+                async () => {
+                    await getDownloadURL(uploadTask.snapshot.ref)
+                        .then((downloadUrl) => logoUrl = downloadUrl)
+                        .then(async () => {
+                            await updateDoc(organisationRef, {
+                                uid: authentication.currentUser.uid,
+                                category: event.target.category.value,
+                                name: event.target.name.value,
+                                org_email: event.target.org_email.value,
+                                tel: event.target.tel.value,
+                                address: event.target.address.value,
+                                logo: logoUrl,
+                                role: event.target.role.value,
+                                title: event.target.title.value,
+                                contactName: event.target.contactName.value,
+                                contactPhoneNumber: event.target.contactPhoneNumber.value,
+                                contact_email: event.target.contact_email.value
+                            })
+                        .then(() => toast.success(`successfully updated organisation`, {position: "top-center"}))
+                        .then(async () => {
+                                await addDoc(logCollectionRef, {
+                                        timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                        type: 'organisation creation',
+                                        status: 'successful',
+                                        message: `Successfully updated organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
+                                })
+                        })
+                        .catch(async () => {
+                                toast.error(`Failed: couldn't update organisation`, {position: "top-center"});
+                                await addDoc(logCollectionRef, {
+                                        timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                                        type: 'organisation creation',
+                                        status: 'failed',
+                                        message: `Failed to update organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
+                                })
+                        })
+                    })
+                }
             )
     } else{
         await updateDoc(organisationRef, {
@@ -91,26 +86,19 @@ function OrganisationModal({ singleDoc, handleClose, getOrganisations }) {
             contactPhoneNumber: event.target.contactPhoneNumber.value,
             contact_email: event.target.contact_email.value
         })
-            .then(() => {
-                    toast.success(`successfully updated organisation`, {position: "top-center"})
+        .then(() => toast.success(`successfully updated organisation`, {position: "top-center"}))
+        .then(async () => {
+            await addDoc(logCollectionRef, {
+                    timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+                    type: 'organisation creation',
+                    status: 'successful',
+                    message: `Successfully updated organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
             })
-            .then(async () => {
-                    await addDoc(logCollectionRef, {
-                            timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-                            type: 'organisation creation',
-                            status: 'successful',
-                            message: `Successfully updated organisation: ${singleDoc.name} by ${authentication.currentUser.displayName}`
-                    })
-            })
+        })
     }       
-    handleClose()  
-    getOrganisations()
-    
+        handleClose()  
+        getOrganisations()
     }
-    
-
-
-
 
     return (
         <>
@@ -158,10 +146,10 @@ function OrganisationModal({ singleDoc, handleClose, getOrganisations }) {
                 <p style={{color: "#76859a"}}>Contact's Details</p>
                 <Form.Group as={Col} style={{ display: "flex", "flex-direction": "column", "align-items": "start"}}>
                     <Form.Label htmlFor="contactName">Name</Form.Label>
-                        <Row>
-                            <Col><Form.Control type="text" id="title" className='col-4' defaultValue={singleDoc.title} /></Col>
-                            <Col xs={10}><Form.Control type="text" id="contactName" className='col-8' defaultValue={singleDoc.contactName} /></Col>
-                        </Row>
+                    <Row>
+                        <Col><Form.Control type="text" id="title" className='col-4' defaultValue={singleDoc.title} /></Col>
+                        <Col xs={10}><Form.Control type="text" id="contactName" className='col-8' defaultValue={singleDoc.contactName} /></Col>
+                    </Row>
                 </Form.Group>
 
                 <Row>
@@ -185,9 +173,6 @@ function OrganisationModal({ singleDoc, handleClose, getOrganisations }) {
                     <input type="file" onChange={(event) => setLogo(event.target.files[0])} />
                     <img src={singleDoc.logo} width={150} alt='logo' />
                 </Form.Group>
-               
-
-                
 
                 </Modal.Body>
                 <Modal.Footer>

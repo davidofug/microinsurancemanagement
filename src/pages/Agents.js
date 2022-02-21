@@ -8,10 +8,8 @@ import { httpsCallable } from 'firebase/functions';
 import { Table, Modal, Form, Button } from 'react-bootstrap'
 import useAuth from '../contexts/Auth';
 import { MdEdit, MdDelete } from 'react-icons/md'
-import { AiFillCloseCircle } from 'react-icons/ai'
 import Loader from '../components/Loader';
 import ClientModal from '../components/ClientModal';
-import { useForm } from '../hooks/useForm';
 import useDialog from '../hooks/useDialog'
 import { ImFilesEmpty } from 'react-icons/im'
 import { MdStickyNote2 } from 'react-icons/md'
@@ -20,6 +18,7 @@ import StickerModal from '../components/StickersModal';
 import { FaUserPlus } from 'react-icons/fa'
 import { IoMdAlert } from 'react-icons/io'
 import { handleAllCheck } from '../helpers/helpfulUtilities'
+import { getUsers } from '../helpers/helpfulUtilities';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -29,9 +28,12 @@ import Chat from '../components/messenger/Chat'
 import '../styles/ctas.css'
 
 
-function Agents({role, parent_container}) {
+function Agents({parent_container}) {
 
-  useEffect(() => {document.title = 'Britam - Agents';getAgents()}, [])
+  useEffect(() => {
+    document.title = 'Britam - Agents';
+    getAgents()
+  }, [])
   
   const { authClaims } = useAuth()
 
@@ -208,10 +210,6 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
     })
     handleClosePromo()
   }
-
-
-
-  console.log(deleteArray)
 
     return (
       <>

@@ -12,6 +12,7 @@ import '../../components/modal/ConfirmBox.css'
 import Loader from '../../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import useDialog from "../../hooks/useDialog";
+import DeleteConfirm from '../../components/DeleteConfirm'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -34,10 +35,20 @@ export default function Organisations({parent_container}) {
 
   // clickoutside
   window.onclick = (event) => {
-    if(openToggle === true) {
+    if(openToggle) {
       if (!event.target.matches('.wack') && !event.target.matches('#myb')) { 
         setOpenToggle(false)
     }}
+  }
+
+  // actions context
+  const [showContext, setShowContext] = useState(false)
+  if(showContext){
+    window.onclick = (event) => {
+        if (!event.target.matches('.sharebtn')) {
+            setShowContext(false)
+        }
+    }
   }
 
   const getOrganisations = async () => {
@@ -71,15 +82,7 @@ export default function Organisations({parent_container}) {
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => !data || data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
-  // actions context
-  const [showContext, setShowContext] = useState(false)
-  if(showContext === true){
-    window.onclick = function(event) {
-        if (!event.target.matches('.sharebtn')) {
-            setShowContext(false)
-        }
-    }
-  }
+  
 
   //pagination
   const indexOfLastOrganisation = currentPage * organisationsPerPage;
@@ -99,22 +102,7 @@ export default function Organisations({parent_container}) {
         </Link>
       </div>
 
-      <div className={openToggle ? 'myModal is-active': 'myModal'}>
-        <div className="modal__content wack">
-          <h1 className='wack'>Confirm</h1>
-          <p className='wack'>Are you sure you want to delete this <b>{singleDoc.name}</b></p>
-          <div className="buttonContainer wack" >
-            <button id="yesButton" onClick={() => {
-              setOpenToggle(false)
-              handleDelete(singleDoc.id)
-              getOrganisations()
-              }} className='wack'>Yes</button>
-            <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
-          </div>
-        </div>
-      </div>
-
-
+      <DeleteConfirm openToggle={openToggle} singleDoc={singleDoc} setOpenToggle={setOpenToggle} handleDelete={handleDelete} getOrganisations={getOrganisations} />
 
       <Modal show={show} onHide={handleClose}>
             <OrganisationModal singleDoc={singleDoc} handleClose={handleClose} getOrganisations={getOrganisations} />
@@ -214,8 +202,6 @@ export default function Organisations({parent_container}) {
             </tr>
           </tfoot>
         </Table>
-
-        
       </div>
         }
       <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
