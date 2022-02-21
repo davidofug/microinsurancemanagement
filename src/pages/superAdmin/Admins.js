@@ -12,7 +12,6 @@ import Loader from '../../components/Loader';
 import { ImFilesEmpty } from 'react-icons/im'
 import useDialog from '../../hooks/useDialog'
 import ClientModal from '../../components/ClientModal';
-import { useForm } from "../../hooks/useForm";
 import { collection, addDoc } from 'firebase/firestore'
 import { handleAllCheck } from '../../helpers/helpfulUtilities';
 
