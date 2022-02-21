@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react'
 import useAuth from '../contexts/Auth'
 import '../styles/dashboard.css'
 import Header from '../components/header/Header'
-import { getDocs, collection } from 'firebase/firestore'
-import { authentication, db, functions } from '../helpers/firebase';
+import { authentication, functions } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 import { getUsers } from '../helpers/smallFunctions'
 import FirstContainer from '../components/FirstContainer'
 import UsersContainer from '../components/UsersContainer'
 import GraphContainer from '../components/GraphContainer'
-import { getAllStickers, getAllSuperAdminStickers } from '../helpers/smallFunctions'
+import { getAllStickers, getAllSuperAdminStickers, getAllClaims, getAllSuperAdminClaims } from '../helpers/smallFunctions'
 
 import Chat from '../components/messenger/Chat'
 import '../styles/ctas.css'
@@ -21,23 +20,37 @@ function Dashboard({parent_container}) {
 
     const [claims, setClaims] = useState([])
     const [claimsSettled, setClaimsSettled] = useState([])
-    const claimsCollectionRef = collection(db, "claims");
 
-    useEffect(async () => {
+    useEffect(() => {
         document.title = 'Britam - Dashboard'
+
+        const listUsers = httpsCallable(functions, 'listUsers')
+
         if(authClaims.agent){
             getUsers('Customer').then(result => setUsers(result))
-            getAllStickers([authentication.currentUser.uid]).then(result => setPolicies(result))
+            getAllStickers([authentication.currentUser.uid] ).then(result => setPolicies(result))
+
+            getAllClaims([ authentication.currentUser.uid] ).then(result => {
+                const settledClaims = result.filter(claim => claim.status === "settled")
+                setClaims(result)
+                setClaimsSettled(settledClaims)
+            })
         } else if(authClaims.supervisor){
             getUsers('agent').then(result => setUsers(result))
-            const listUsers = httpsCallable(functions, 'listUsers')
-            listUsers().then(({data}) => {
-              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
-              getAllStickers([ ...myAgents, authentication.currentUser.uid]).then(result => setPolicies(result))
+            
+
+            listUsers().then(async ({data}) => {
+                const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
+                getAllStickers([ ...myAgents, authentication.currentUser.uid]).then(result => setPolicies(result))
+
+                getAllClaims([ ...myAgents, authentication.currentUser.uid]).then(result => {
+                    const settledClaims = result.filter(claim => claim.status === "settled")
+                    setClaims(result)
+                    setClaimsSettled(settledClaims)
+                })
             })
         } else if(authClaims.admin){
             getUsers('supervisor').then(result => setUsers(result))
-            const listUsers = httpsCallable(functions, 'listUsers')
             listUsers().then(({data}) => {
               const myAgents = data.filter(user => user.role.agent).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
       
@@ -46,55 +59,24 @@ function Dashboard({parent_container}) {
               const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
               
               getAllStickers([ ...myAgents, ...mySupervisors, ...agentsUnderMySupervisors, authentication.currentUser.uid]).then(result => setPolicies(result))
+
+              getAllClaims([ ...myAgents, ...mySupervisors, ...agentsUnderMySupervisors, authentication.currentUser.uid]).then(result => {
+                const settledClaims = result.filter(claim => claim.status === "settled")
+                setClaims(result)
+                setClaimsSettled(settledClaims)
+            })
             })
         } else if(authClaims.superadmin){
             getUsers('admin').then(result => setUsers(result))
             getAllSuperAdminStickers().then(result => setPolicies(result))
+
+            getAllSuperAdminClaims().then(result => {
+                const settledClaims = result.filter(claim => claim.status === "settled")
+                setClaims(result)
+                setClaimsSettled(settledClaims)
+            })
         }
     }, [])
-
-    // claims
-    const getClaims = async () => {
-        const data = await getDocs(claimsCollectionRef);
-        const allClaims = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        const allSettledClaims = allClaims.filter(claim => claim.status === 'settled')
-        if(authClaims.agent){ // agent's claims
-            setClaims(allClaims.filter(claim => claim.uid === authentication.currentUser.uid)) 
-            setClaimsSettled(allSettledClaims.filter(claim => claim.uid === authentication.currentUser.uid))
-        } 
-
-        if(authClaims.supervisor){ // supervisor's claims
-            const listUsers = httpsCallable(functions, 'listUsers')
-            listUsers().then(({data}) => {
-              const myAgents = data.filter(user => user.role.agent === true).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
-              
-              const usersUnderSupervisor = [ ...myAgents, authentication.currentUser.uid]
-      
-              const supervisorClaims = allClaims.filter(claim => usersUnderSupervisor.includes(claim.added_by_uid))
-              setClaims(supervisorClaims)
-              setClaimsSettled(supervisorClaims.filter(claim => claim.status === 'settled'))
-            })
-          }
-        
-        if(authClaims.admin){ // admin's claims
-            const listUsers = httpsCallable(functions, 'listUsers')
-            listUsers().then(({data}) => {
-              const myAgents = data.filter(user => user.role.agent).filter(agent => agent.meta.added_by_uid === authentication.currentUser.uid).map(agentuid => agentuid.uid)
-      
-              const mySupervisors = data.filter(user => user.role.supervisor).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid).map(supervisoruid => supervisoruid.uid)
-      
-              const agentsUnderMySupervisors = data.filter(user => user.role.agent).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
-              
-              const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
-              const adminClaims = allClaims.filter(claim => usersUnderAdmin.includes(claim.uid))
-              const settledClaims = adminClaims.filter(claim => claim.status === "settled")
-              setClaimsSettled(settledClaims)
-              setClaims(adminClaims)
-            })
-        }
-
-        authClaims.superadmin && setClaims(allClaims) && setClaimsSettled(allClaims.filter(claim => claim.status === "settled")) // superadmin's claims      
-    }
 
     return (
             <div className='components'>
