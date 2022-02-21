@@ -178,7 +178,7 @@ const getClients = () => {
                   <>
                     <Table hover striped responsive className='mt-5' id='myTable'>
                       <thead>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}{!authClaims.admin && <th>Action</th>}</tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Phone No.</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}{!authClaims.admin && <th>Action</th>}</tr>
                       </thead>
                       <tbody>
                         {currentClients.map((client, index) => (
@@ -231,7 +231,7 @@ const getClients = () => {
                       </tfoot>
 
                       <tfoot>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}{!authClaims.admin && <th>Action</th>}</tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Gender</th><th>Phone No.</th><th>Address</th>{!authClaims.agent && <th>Added by</th>}{!authClaims.admin && <th>Action</th>}</tr>
                       </tfoot>
                   </Table>
             

@@ -13,6 +13,7 @@ import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import '../components/modal/ConfirmBox.css'
 import { httpsCallable } from 'firebase/functions';
+import { handleAllCheckStickers } from "../helpers/helpfulUtilities";
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -69,9 +70,6 @@ export default function Mtp({parent_container}) {
         const agentsUnderMySupervisors = data.filter(user => user.role.agent === true).filter(agent => mySupervisors.includes(agent.meta.added_by_uid)).map(agentuid => agentuid.uid)
         
         const usersUnderAdmin = [ ...myAgents, ...agentsUnderMySupervisors, ...mySupervisors, authentication.currentUser.uid]
-
-        console.log(usersUnderAdmin)
-
         const AdminMtpPolicies = mtpPolicies.filter(policy => usersUnderAdmin.includes(policy.added_by_uid))
         AdminMtpPolicies.length === 0 ? setPolicies(null) : setPolicies(AdminMtpPolicies)
       })
@@ -188,15 +186,6 @@ export default function Mtp({parent_container}) {
     toast.success('Successfully Cancelled', {position: "top-center"});
   }
 
-  const handleAllCheck = () => {
-    if(document.getElementById("firstAgentCheckbox").checked === true){
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
-      setDeleteArray([])
-    } else{
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(policies.map(policy => [policy.id, policy.clientDetails.name]))
-    }
-  }
 
   // delete multiple agents
   const [ bulkDelete, setBulkDelete ] = useState(null)
@@ -244,8 +233,6 @@ export default function Mtp({parent_container}) {
   const shownPolicies = !policies || currentPolicies.filter(policy => !switchCategory || policy.stickersDetails[0].status === switchCategory)
 
   const paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
-
-  console.log(deleteArray)
 
 
   return (
@@ -307,7 +294,7 @@ export default function Mtp({parent_container}) {
         <div id="search">
           <SearchBar placeholder={"Search Policy by name"} value={searchText} handleSearch={handleSearch}/>
           <div></div>
-          <Form.Group className="m-3 categories" width="200px">
+          <Form.Group className="categories mt-1" width="200px">
             <Form.Select aria-label="User role" id='category' onChange={({target: {value}}) => setSwitchCategory(value)}>
                 <option value={""}>Filter by status</option>
                 <option value="new">New</option>
@@ -324,21 +311,28 @@ export default function Mtp({parent_container}) {
          ?
          <Table striped hover responsive>
          <thead>
-             <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-             {!authClaims.agent && <th>Agent</th>}
+             <tr><th><input type="checkbox" id="onlyagent" onChange={() => handleAllCheckStickers(policies, setDeleteArray)}/></th><th>Client</th><th>Category</th>
+             {!authClaims.agent && <th>Agent</th>}<th>Amount</th>
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </thead>
          <tbody>
              {paginatedShownPolicies.map((policy, index) => (
                <tr key={policy.id}>
-                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [policy.id, policy.clientDetails.name]]) : 
-                   setDeleteArray(deleteArray.filter(element => element[0] !== policy.id))
-                 }/></td>
+                 <td>
+                    <input 
+                        type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' 
+                        onChange={({target}) => {
+                              document.getElementById('onlyagent').checked = false
+                              return target.checked ? 
+                                setDeleteArray([ ...deleteArray, [policy.id, policy.clientDetails.name]]) : 
+                                setDeleteArray(deleteArray.filter(element => element[0] !== policy.id))
+                        }}
+                    />
+                 </td>
                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
-                 <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
-                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                  {!authClaims.agent && <td>{policy.added_by_name}</td>}
+                 <td className="text-end"><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                  <td>
                    {policy.stickersDetails[0].status === 'new'  && 
                       <span
@@ -369,7 +363,7 @@ export default function Mtp({parent_container}) {
                  <td>{policy.policyStartDate}</td>
 
                  <td className="started">
-                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy); console.log(getPolicy(policy.id))}}>&#8942;</button>
+                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy); }}>&#8942;</button>
 
                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                    <Link to={`/admin/policy-details/${policy.id}`}>
@@ -433,8 +427,8 @@ export default function Mtp({parent_container}) {
          </tfoot>
 
          <tfoot>
-             <tr><td></td><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-             {!authClaims.agent && <th>Agent</th>}
+             <tr><td></td><th>Client</th><th>Category</th>
+             {!authClaims.agent && <th>Agent</th>}<th>Amount</th>
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </tfoot>
        </Table>

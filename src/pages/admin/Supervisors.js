@@ -10,10 +10,10 @@ import ClientModal from '../../components/ClientModal';
 import { MdEdit, MdDelete, MdStickyNote2 } from 'react-icons/md'
 import { ImFilesEmpty } from 'react-icons/im'
 import Loader from '../../components/Loader';
-import useAuth from '../../contexts/Auth';
 import { addDoc, collection } from 'firebase/firestore';
 import useDialog from '../../hooks/useDialog';
-
+import { handleAllCheck } from '../../helpers/helpfulUtilities';
+import { getUsers } from '../../helpers/helpfulUtilities';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../../components/messenger/Chat' 
@@ -24,54 +24,36 @@ import '../../styles/ctas.css'
 
 function Supervisors({parent_container}) {
 
-    useEffect(() => { document.title = 'Britam - Supervisors'; getSupervisors() }, [])
-
-    const { authClaims } = useAuth()
-
-    // initialising the logs collection.
+  useEffect(() => { document.title = 'Britam - Supervisors'; getSupervisors() }, [])
+  // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
+  // get Supervisors
+  const [supervisors, setSuperviors] = useState([]);
+  const getSupervisors = () => {
+    getUsers('supervisor').then(result => {
+      result.length === 0 ? setSuperviors(null) : setSuperviors(result)
+    })
+  }
 
-
-    // get Supervisors
-    const [supervisors, setSuperviors] = useState([]);
-    const getSupervisors = () => {
-      const listUsers = httpsCallable(functions, 'listUsers')
-      if(authClaims.admin){
-        listUsers().then(({data}) => {
-          const mySupervisors = data.filter(user => user.role.supervisor === true).filter(supervisor => supervisor.meta.added_by_uid === authentication.currentUser.uid)
-          mySupervisors.length === 0 ? setSuperviors(null) : setSuperviors(mySupervisors)
-        }).catch()
-      }
-    }
-
-  
   const [singleDoc, setSingleDoc] = useState({});
-
-
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [clickedIndex, setClickedIndex] = useState(null)
   const [ currentPage, setCurrentPage ] = useState(1)
   const [supervisorsPerPage] = useState(10)
-
-
   const [ openSticker, handleOpenSticker, handleCloseSticker ] = useDialog()
-
 
   // search by name
   const [searchText, setSearchText] = useState('')
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) => data.filter(row => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
 
-
   const indexOfLastSupervisor = currentPage * supervisorsPerPage
   const indexOfFirstSupervisor = indexOfLastSupervisor - supervisorsPerPage
   const currentSupervisors = !supervisors || searchByName(supervisors.slice(indexOfFirstSupervisor, indexOfLastSupervisor))
   const totalPagesNum = !supervisors || Math.ceil(supervisors.length / supervisorsPerPage)
-
-
 
   const handleDelete = async () => {
     const deleteUser = httpsCallable(functions, 'deleteUser')
@@ -134,16 +116,6 @@ function Supervisors({parent_container}) {
   }
 
 
-  const handleAllCheck = () => {
-    if(document.getElementById("firstAgentCheckbox").checked === true){
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
-      setDeleteArray([])
-    } else{
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(supervisors.map(supervisor => [supervisor.uid, supervisor.name]))
-    }
-  }
-
   // delete multiple agents
   const [ bulkDelete, setBulkDelete ] = useState(null)
   const [ deleteArray, setDeleteArray ] = useState([])
@@ -154,10 +126,6 @@ function Supervisors({parent_container}) {
     }
   }
 
-
-
-    
-
   // actions context
   const [showContext, setShowContext] = useState(false)
   if(showContext === true){
@@ -167,9 +135,6 @@ function Supervisors({parent_container}) {
         }
     }
   }
-  const [clickedIndex, setClickedIndex] = useState(null)
-
-
 
     return (
         <div className='components'>
@@ -218,14 +183,22 @@ function Supervisors({parent_container}) {
                   <>
                     <Table hover striped responsive className='mt-5'>
                         <thead>
-                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Created At</th><th>Action</th></tr>
+                            <tr><th><input type="checkbox" id='onlyagent' onChange={() => handleAllCheck(supervisors, setDeleteArray)}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Created At</th><th>Action</th></tr>
                         </thead>
                         <tbody>
                           {currentSupervisors.map((supervisor, index) => (
                               <tr key={supervisor.uid}>
-                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [supervisor.uid, supervisor.name]]) : 
-                              setDeleteArray(deleteArray.filter(element => element[0] !== supervisor.uid))
-                            }/></td>
+                              <td>
+                                <input 
+                                      type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' 
+                                      onChange={({target}) => {
+                                            document.getElementById('onlyagent').checked = false
+                                            return target.checked ? 
+                                              setDeleteArray([ ...deleteArray, [supervisor.uid, supervisor.name]]) : 
+                                              setDeleteArray(deleteArray.filter(element => element[0] !== supervisor.uid))
+                                      }}
+                                />
+                              </td>
                               <td>{supervisor.name}</td>
                               <td>{supervisor.email}</td>
                               <td>{supervisor.meta.gender}</td>
@@ -237,33 +210,21 @@ function Supervisors({parent_container}) {
                                 <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(supervisor)}}>&#8942;</button>
 
                                 <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
-                                            <li onClick={() => {
-                                                    setShowContext(false)
-                                                    handleOpenSticker(); 
-                                                  }}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><MdStickyNote2/></i> Issued Stickers
-                                                  </div>
-                                            </li>
-                                            <li onClick={() => {
-                                                    setShowContext(false)
-                                                    handleShow();
-                                                  }}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><MdEdit/></i> Edit
-                                                  </div>
-                                            </li>
-                                            <li onClick={() => {
-                                            setOpenToggle(true)
-                                            setShowContext(false)
-                                          }}
-                                                >
-                                                  <div className="actionDiv">
-                                                    <i><MdDelete/></i> Delete
-                                                  </div>
-                                            </li>
+                                    <li onClick={() => {setShowContext(false);handleOpenSticker();}}>
+                                      <div className="actionDiv">
+                                        <i><MdStickyNote2/></i> Issued Stickers
+                                      </div>
+                                    </li>
+                                    <li onClick={() => {setShowContext(false);handleShow();}}>
+                                      <div className="actionDiv">
+                                        <i><MdEdit/></i> Edit
+                                      </div>
+                                    </li>
+                                    <li onClick={() => {setOpenToggle(true);setShowContext(false)}}>
+                                      <div className="actionDiv">
+                                        <i><MdDelete/></i> Delete
+                                      </div>
+                                    </li>
                                 </ul>
                               </td>
                           </tr>
@@ -299,20 +260,16 @@ function Supervisors({parent_container}) {
                             <tr><th></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th>Created At</th><th>Action</th></tr>
                         </tfoot>
                     </Table>
-
-                  
+          
                   </>
                 :
                 <div className="no-table-data">
                   <i><ImFilesEmpty /></i>
                   <h4>No match</h4>
-                  <p>There is not current match for client's name</p>
+                  <p>There is not current match for supervisor's name</p>
                 </div>
                 }
-
-                    
-
-               
+  
             </div>
               </>
             :
@@ -325,7 +282,6 @@ function Supervisors({parent_container}) {
               </div>
               :
               <Loader />
- 
             }
             <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end", paddingRight:"140px"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
               <Chat />

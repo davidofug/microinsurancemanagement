@@ -6,7 +6,7 @@ import { authentication, db } from '../helpers/firebase'
 import Loader from '../components/Loader'
 import { RiCalendarTodoFill } from 'react-icons/ri'
 import Chat from '../components/messenger/Chat'
-import { convertStringToDate, timeConvert } from '../helpers/smallFunctions'
+import { convertStringToDate, timeConvert } from '../helpers/helpfulUtilities'
 import "../styles/ctas.css"
 
 

@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { MdDownload } from "react-icons/md";
-import SearchBar from "../../components/searchBar/SearchBar";
-import Header from "../../components/header/Header";
+import SearchBar from "../components/searchBar/SearchBar";
+import Header from "../components/header/Header";
 import { getDocs, collection } from 'firebase/firestore'
-import { db } from '../../helpers/firebase'
+import { db } from '../helpers/firebase'
 import { Table, Form } from 'react-bootstrap'
-import Pagination from '../../helpers/Pagination'
-import { currencyFormatter } from "../../helpers/currency.format";
-import Loader from '../../components/Loader'
+import Pagination from '../helpers/Pagination'
+import { currencyFormatter } from "../helpers/currency.format";
+import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import { httpsCallable } from 'firebase/functions';
-import { authentication, functions } from '../../helpers/firebase'
-import { generateReport } from '../../helpers/generateReport'
-import useAuth from "../../contexts/Auth";
-import Chat from '../../components/messenger/Chat'
-import useMediaQuery from "../../hooks/useMediaQuery";
-import { convertStringToDate } from "../../helpers/smallFunctions";
+import { authentication, functions } from '../helpers/firebase'
+import { generateReport } from '../helpers/generateReport'
+import useAuth from "../contexts/Auth";
+import Chat from '../components/messenger/Chat'
+import useMediaQuery from "../hooks/useMediaQuery";
+import { convertStringToDate } from "../helpers/helpfulUtilities";
 import { FaSortDown, FaSortUp } from 'react-icons/fa'
 
-import '../../styles/ctas.css'
+import '../styles/ctas.css'
 
 function Reports({parent_container}) {
   useEffect(() => { 
@@ -167,8 +167,6 @@ function Reports({parent_container}) {
   if(sortBasicDes){
     shownPolicies = shownPolicies.sort((a, b) => a.stickersDetails[0].totalPremium - b.stickersDetails[0].totalPremium)
   }
-
-  const [ shownPolicies2, setShownPolicies2 ] = useState('')
   
   
   let paginatedShownPolicies = !policies || shownPolicies.slice(indexOfFirstPolicy, indexOfLastPolicy)
@@ -187,7 +185,7 @@ function Reports({parent_container}) {
       setShownPolicies2(shownPolicies.sort((a, b) => b.stickersDetails[0].totalPremium - a.stickersDetails[0].totalPremium))
   } */
 
-  // console.log(shownPolicies2)
+  // console.log(shownPolicies)
 
 
   return (
