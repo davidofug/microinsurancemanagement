@@ -16,7 +16,6 @@ import '../../components/modal/ConfirmBox.css'
 import Loader from "../../components/Loader";
 import { ImFilesEmpty } from 'react-icons/im'
 import useDialog from "../../hooks/useDialog";
-// import { MdCancel } from 'react-icons/md'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -42,7 +41,6 @@ export default function StickerMgt({parent_container}) {
       
     }
 
-
     // Confirm Box
     const [ openToggle, setOpenToggle ] = useState(false)
     window.onclick = (event) => {
@@ -54,7 +52,6 @@ export default function StickerMgt({parent_container}) {
     }
 
     const [ show, handleShow, handleClose ] = useDialog()
-
 
     // actions context
     const [showContext, setShowContext] = useState(false)
@@ -73,7 +70,6 @@ export default function StickerMgt({parent_container}) {
     // pagination
     const [ currentPage, setCurrentPage ] = useState(1)
     const [rangesPerPage] = useState(10)
-
     const indexOfLastRange = currentPage * rangesPerPage
     const indexOfFirstRange = indexOfLastRange - rangesPerPage
     const currentStickers = !stickerRange || searchByName(stickerRange).slice(indexOfFirstRange, indexOfLastRange)
@@ -99,7 +95,6 @@ export default function StickerMgt({parent_container}) {
       
     }
 
-
     const returnedSticker = async (event) => {
       event.preventDefault()
 
@@ -116,9 +111,6 @@ export default function StickerMgt({parent_container}) {
       handleClose()
 
     }
-
-    
-
 
     const [ returned, setReturned ] = useState([])
 
@@ -264,13 +256,6 @@ export default function StickerMgt({parent_container}) {
                                     <i><MdInfo /></i> Details
                                   </div>
                                 </li>
-                                <li onClick={() => {
-                                              setShowContext(false)
-                                            }}>
-                                  <div className="actionDiv">
-                                    <i><MdCancel /></i> Cancel
-                                  </div>
-                                </li>
                                 <li 
                                       onClick={() => {
                                               setOpenToggle(true)
@@ -281,6 +266,13 @@ export default function StickerMgt({parent_container}) {
                                         <i><MdDelete/></i> Delete
                                       </div>
                                 </li>
+                                {/* <li onClick={() => {
+                                              setShowContext(false)
+                                            }}>
+                                  <div className="actionDiv">
+                                    <i><MdCancel /></i> Cancel
+                                  </div>
+                                </li> */}
                               </ul>
                             </td>
 
@@ -312,13 +304,7 @@ export default function StickerMgt({parent_container}) {
                         <h4>No match</h4>
                         <p>You have not added any Stickers Ranges</p>
                       </div>
-                      }
-
-                      
-
-                                
-
-                      
+                      } 
                     </div>
                       </>
                     :

@@ -3,10 +3,8 @@ import { db } from '../helpers/firebase'
 import { authentication } from '../helpers/firebase'
 import { getDocs, collection } from 'firebase/firestore'
 import { Bar } from 'react-chartjs-2'
-import moment from 'moment'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../helpers/firebase'
-// import '../styles/barchart.css'
 
 import {
     Chart as ChartJS,

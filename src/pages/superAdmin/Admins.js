@@ -12,8 +12,8 @@ import Loader from '../../components/Loader';
 import { ImFilesEmpty } from 'react-icons/im'
 import useDialog from '../../hooks/useDialog'
 import ClientModal from '../../components/ClientModal';
-import { useForm } from "../../hooks/useForm";
 import { collection, addDoc } from 'firebase/firestore'
+import { handleAllCheck } from '../../helpers/helpfulUtilities';
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -108,16 +108,7 @@ function Admins({parent_container}) {
     getAdmins()
     
   };
-
-    const handleAllCheck = () => {
-      if(document.getElementById("firstAgentCheckbox").checked === true){
-        Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
-        setDeleteArray([])
-      } else{
-        Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-        setDeleteArray(admins.map(admin => [admin.uid, admin.name]))
-      }
-    }
+    
 
     // delete multiple agents
   const [ bulkDelete, setBulkDelete ] = useState(null)
@@ -144,9 +135,6 @@ function Admins({parent_container}) {
     }
     
   }
-
-  console.log(deleteArray)
-
   const [clickedIndex, setClickedIndex] = useState(null)
 
 
@@ -199,14 +187,26 @@ function Admins({parent_container}) {
                   <>
                     <Table hover striped responsive>
                         <thead>
-                            <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th className='text-center'>Action</th></tr>
+                            <tr>
+                              <th>
+                                <input type="checkbox" id='onlyagent' onChange={() => handleAllCheck(admins, setDeleteArray)}/>
+                              </th>
+                              <th>Name</th><th>Email</th><th>Gender</th><th>Contact</th><th>Address</th><th className='text-center'>Action</th></tr>
                         </thead>
                         <tbody>
                           {currentAdmins.map((admin, index) => (
                               <tr key={admin.uid}>
-                              <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, [admin.uid, admin.name]]) : 
-                              setDeleteArray(deleteArray.filter(element => element[0] !== admin.uid))
-                            }/></td>
+                              <td>
+                                  <input 
+                                    type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' 
+                                    onChange={({target}) => {
+                                          document.getElementById('onlyagent').checked = false
+                                          return target.checked ? 
+                                            setDeleteArray([ ...deleteArray, [admin.uid, admin.name]]) : 
+                                            setDeleteArray(deleteArray.filter(element => element[0] !== admin.uid))
+                                    }}
+                                  />
+                              </td>
                               <td>{admin.name}</td>
                               <td>{admin.email}</td>
                               <td>{admin.meta.gender}</td>

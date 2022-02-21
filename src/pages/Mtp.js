@@ -7,12 +7,13 @@ import { Table, Form } from 'react-bootstrap'
 import { addDoc, getDoc, getDocs, collection, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { authentication, db, functions } from '../helpers/firebase'
 import { currencyFormatter } from "../helpers/currency.format";
-import { MdInfo, MdAutorenew, MdCancel, MdDelete } from 'react-icons/md'
+import { MdInfo, MdAutorenew, MdDelete } from 'react-icons/md'
 import useAuth from '../contexts/Auth'
 import Loader from '../components/Loader'
 import { ImFilesEmpty } from 'react-icons/im'
 import '../components/modal/ConfirmBox.css'
 import { httpsCallable } from 'firebase/functions';
+import { handleAllCheckStickers } from "../helpers/helpfulUtilities";
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -254,16 +255,6 @@ export default function Mtp({parent_container}) {
     toast.success('Successfully Cancelled', {position: "top-center"});
   }
 
-  const handleAllCheck = () => {
-    if(document.getElementById("firstAgentCheckbox").checked === true){
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = false)
-      setDeleteArray([])
-    } else{
-      Object.values(document.getElementsByClassName("agentCheckbox")).map(checkbox => checkbox.checked = true)
-      setDeleteArray(policies.map(policy => [policy.id, policy.clientDetails.name]))
-    }
-  }
-
   // delete multiple sticker
   const [ bulkDelete, setBulkDelete ] = useState(null)
   const [ deleteArray, setDeleteArray ] = useState([])
@@ -387,22 +378,30 @@ export default function Mtp({parent_container}) {
          ?
          <Table striped hover responsive>
          <thead>
-             <tr><th><input type="checkbox" onChange={handleAllCheck}/></th><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-             {!authClaims.agent && <th>Agent</th>}
+             <tr><th><input type="checkbox" id="onlyagent" onChange={() => handleAllCheckStickers(policies, setDeleteArray)}/></th><th>Client</th><th>Category</th>
+             {!authClaims.agent && <th>Agent</th>}<th>Amount</th>
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </thead>
          <tbody>
              {paginatedShownPolicies.map((policy, index) => (
                <tr key={policy.id}>
-                 <td><input type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' onChange={({target}) => target.checked ? setDeleteArray([ ...deleteArray, policy]) : 
-                   setDeleteArray(deleteArray.filter(element => element.id !== policy.id))
-                 }/></td>
+                  <td>
+                    <input 
+                          type="checkbox" id='firstAgentCheckbox' className='agentCheckbox' 
+                          onChange={({target}) => {
+                                document.getElementById('onlyagent').checked = false
+                                return target.checked ? 
+                                  setDeleteArray([ ...deleteArray, [policy.id, policy.clientDetails.name]]) : 
+                                  setDeleteArray(deleteArray.filter(element => element[0] !== policy.id))
+                          }}
+                      />
+                    </td>
                  {policy.clientDetails && <td>{policy.clientDetails.name}</td>}
                  {policy.stickersDetails && <td>{policy.stickersDetails[0].category}</td>}
-                 <td><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b></td>
-                 <td>{typeof policy.currency == "string" ? policy.currency : ''}</td>
                  {!authClaims.agent && <td>{policy.added_by_name}</td>}
-                 <td>
+                 <td className="text-end"><b>{currencyFormatter(policy.stickersDetails[0].totalPremium)}</b> {typeof policy.currency == "string" ? policy.currency : ''}</td>
+                 
+                 <td className="text-center">
                    {policy.stickersDetails[0].status === 'new'  && 
                       <span
                         style={{backgroundColor: "#337ab7", padding: ".4em .6em", borderRadius: ".25em", color: "#fff", fontSize: "85%"}}
@@ -503,8 +502,8 @@ export default function Mtp({parent_container}) {
          </tfoot>
 
          <tfoot>
-             <tr><td></td><th>Client</th><th>Category</th><th>Amount</th><th>Currency</th>
-             {!authClaims.agent && <th>Agent</th>}
+             <tr><td></td><th>Client</th><th>Category</th><th>Agent</th>
+             {!authClaims.agent && <th>Amount</th>}
              <th>Status</th><th>CreatedAt</th><th>Action</th></tr>
          </tfoot>
        </Table>
