@@ -69,6 +69,14 @@ export const getAllStickers = async (usersUnder) => {
   return mtpPolicies
 }
 
+export const getAllClaims = async (usersUnder) => {
+  const claimsCollectionRef = collection(db, "claims");
+  const data = await getDocs(claimsCollectionRef);
+  const claimsArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  const userClaims = claimsArray.filter(claim => usersUnder.includes(claim.uid)).sort((a, b) => new Date(b.dateReported) - new Date(a.dateReported))
+  return userClaims
+}
+
 export const getSuperAdminStickers = async (category) => {
   const policyCollectionRef = collection(db, "policies")
   const data = await getDocs(policyCollectionRef);
@@ -77,10 +85,19 @@ export const getSuperAdminStickers = async (category) => {
   return mtpPolicies
 }
 
+// fetching superadmin claims
 export const getAllSuperAdminStickers = async () => {
   const policyCollectionRef = collection(db, "policies")
   const data = await getDocs(policyCollectionRef);
   const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
   const mtpPolicies = policiesArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
   return mtpPolicies
+}
+
+export const getAllSuperAdminClaims = async () => {
+  const claimsCollectionRef = collection(db, "claims");
+  const data = await getDocs(claimsCollectionRef);
+  const claimsArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  const userClaims = claimsArray.sort((a, b) => new Date(b.dateReported) - new Date(a.dateReported))
+  return userClaims
 }
