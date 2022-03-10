@@ -647,7 +647,6 @@ left: auto;
   .copy__btn {
     position: absolute;
     background: #1475cf;
-    /* background-image: linear-gradient(to bottom right, #f1bf64 0%, #f71d36 100%) !important; */
     color: #fff;
     border: none;
     height: 42px;
