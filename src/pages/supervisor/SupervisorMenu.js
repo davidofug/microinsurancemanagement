@@ -17,7 +17,7 @@ import useAuth from '../../contexts/Auth'
 function SupervisorMenu({ setLargeContentClass }) {
 
     const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
-    const { SuperVisor } = menuData
+    const { Supervisor } = menuData
     const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
     const [show, handleShow, handleClose] = useDialog()
 
@@ -38,7 +38,7 @@ function SupervisorMenu({ setLargeContentClass }) {
 
     return (
         <div className="menuSide">
-            <MobileNav role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
+            <MobileNav role={Supervisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
             {toggleMenu 
             ?
                 <nav className="sidebar">
@@ -55,7 +55,7 @@ function SupervisorMenu({ setLargeContentClass }) {
                                 
                         </div>
                     </section>
-                    <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
+                    <SideBar role={Supervisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
 
                     <footer>
                         <div className="footerContext" onClick={(event) => { 
@@ -95,15 +95,15 @@ function SupervisorMenu({ setLargeContentClass }) {
                         
                 </div>
                 </section>
-                <MinimisedSideBar role={SuperVisor} displayName={authentication?.currentUser?.displayName}/>
+                <MinimisedSideBar role={Supervisor} displayName={authentication?.currentUser?.displayName}/>
                 <footer>
-                    <div className="footerContext" onClick={(event) => {
-                      show ? handleClose() : handleShow();
-                      event.stopPropagation();
-                    }}>
+                    <div className="footerContext" 
+                        onClick={(event) => {
+                            show ? handleClose() : handleShow();
+                            event.stopPropagation();
+                        }}>
                         <DefaultAvatar />
                     </div>
-                    {/* </Link> */}
                     <ul className={show ? "footerContextShow" : ""} id="contextUl">
                         <li><Link to="/supervisor/settings"><ImProfile /></Link></li>
                         <li onClick={handleLogout}><Link><MdLogout /></Link></li>

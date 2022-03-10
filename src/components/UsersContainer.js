@@ -29,9 +29,9 @@ function UsersContainer({authClaims, users}) {
                 </table>
                 <p className="heading">Total Number of users: {users.length} 
                     {authClaims.superadmin && <Link to={'/superadmin/admins'}>view all</Link>}
-                    {authClaims.admin && <Link to={'/supervisor/supervisors'}>view all</Link>}
+                    {authClaims.admin && <Link to={'/admin/supervisors'}>view all</Link>}
                     {authClaims.supervisor && <Link to={'/supervisor/agents'}>view all</Link>}
-                    {authClaims.agent && <Link to={'/supervisor/clients'}>view all</Link>}
+                    {authClaims.agent && <Link to={'/agent/clients'}>view all</Link>}
                 </p>
                 </>
                 : 

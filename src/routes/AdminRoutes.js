@@ -38,7 +38,7 @@ function AdminRoutes({largeContentClass}) {
             <PrivateRoute path="/admin/view-log-trail" >
                 <Logs parent_container={largeContentClass}/>
             </PrivateRoute>
-            <PrivateRoute path="/admin/supervisor" >
+            <PrivateRoute path="/admin/supervisors" >
                 <Supervisors parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/agents" >
