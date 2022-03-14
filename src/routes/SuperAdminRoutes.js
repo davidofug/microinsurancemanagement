@@ -1,15 +1,7 @@
-import Mtp from '../pages/Mtp'
-import Claims from '../pages/Claims'
-import Transit from '../pages/Transit'
-import Settings from '../pages/Settings'
-import AddUsers from '../pages/AddUsers'
-import Dashboard from '../pages/Dashboard'
-import NewImport from '../pages/NewImport'
 import PrivateRoute  from './PrivateRoute'
-import Windscreen from '../pages/Windscreen'
 import Admins from '../pages/superAdmin/Admins'
-import Comprehensive from '../pages/Comprehensive'
 import SystemLogs from '../pages/superAdmin/SystemLogs'
+import { Mtp, AddUsers, Claims, Dashboard, Settings } from '../pages'
 
 function SuperAdminRoutes({largeContentClass}) {
     return (
@@ -33,19 +25,19 @@ function SuperAdminRoutes({largeContentClass}) {
                 <SystemLogs parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/motor-third-party" >
-                <Mtp parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="mtp"/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/windscreen" >
-                <Windscreen parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="windscreen"/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/comprehensive" >
-                <Comprehensive parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="comprehensive"/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/new-import" >
-                <NewImport parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="newImport"/>
             </PrivateRoute>
             <PrivateRoute path="/superadmin/transit" >
-                <Transit parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="transit"/>
             </PrivateRoute>
         </>
         

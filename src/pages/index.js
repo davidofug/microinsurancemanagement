@@ -15,12 +15,8 @@ import Logs from "./Logs";
 
 // Policies
 import Mtp from "./Mtp";
-import Windscreen from './Windscreen'
-import Comprehensive from './Comprehensive'
-import Transit from './Transit'
-import Policies from "./Policies";
-import NewImport from './NewImport'
 import PolicyDetails from "./PolicyDetails/PolicyDetails";
+import Policies from './Policies'
 
 export {
     Login,
@@ -33,13 +29,9 @@ export {
     Claims,
     Agents,
     Mtp,
-    Windscreen,
-    Comprehensive,
-    Transit,
-    NewImport,
-    Policies,
     Dashboard,
     Settings,
     Logs,
-    PolicyDetails
+    PolicyDetails,
+    Policies
 }
