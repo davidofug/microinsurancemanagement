@@ -1,20 +1,5 @@
-import Mtp from '../pages/Mtp'
-import Claims from '../pages/Claims'
-import Reports from '../pages/Reports'
-import Clients from '../pages/Clients'
-import Policies from '../pages/Policies'
-import Settings from '../pages/Settings'
 import PrivateRoute  from './PrivateRoute'
-import Dashboard from '../pages/Dashboard'
-import Windscreen from '../pages/Windscreen'
-import Comprehensive from '../pages/Comprehensive'
-import Logs from '../pages/Logs.js'
-import Agents from '../pages/Agents'
-import AddClaims from '../pages/AddClaims'
-import AddUsers from '../pages/AddUsers'
-import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
-import NewImport from '../pages/NewImport'
-import Transit from '../pages/Transit'
+import { Mtp, Windscreen, NewImport, Comprehensive, Policies, Transit, AddClaims, AddUsers, Agents, Clients, Claims, Reports, Dashboard, Settings, Logs, PolicyDetails } from '../pages'
 
 
 function SupervisorRoutes({largeContentClass}) {
