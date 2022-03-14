@@ -4,7 +4,6 @@ import { Mtp, Policies, AddClaims, AddUsers, Clients, Claims, Reports, Dashboard
 function AgentsRoutes({largeContentClass}) {
     return (
         <>
-            {console.log(largeContentClass)}
             <PrivateRoute path="/agent/dashboard" >
                 <Dashboard parent_container={largeContentClass}/>
             </PrivateRoute>
