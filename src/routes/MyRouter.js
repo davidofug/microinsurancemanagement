@@ -5,13 +5,8 @@ import { Login, Logout, ForgotPassword } from '../pages'
 
 import { SuperAdminRoutes, AdminRoutes, SupervisorRoutes, AgentsRoutes } from '.'
 
-import AdminMenu from '../pages/admin/AdminMenu'
-import AgentMtpMenu from '../pages/agent/AgentMtpMenu'
-import AgentCompMenu from '../pages/agent/AgentCompMenu'
-import AgentMtpCompMenu from '../pages/agent/AgentMtpCompMenu'
-import SuperAdminMenu from '../pages/superAdmin/SuperAdminMenu'
-import SupervisorMenu from '../pages/supervisor/SupervisorMenu'
-import AgentMtpCompWindMenu from '../pages/agent/AgentMtpCompWindMenu'
+// menus
+import { AdminMenu, AgentMtpMenu, SuperAdminMenu, SupervisorMenu, AgentCompMenu, AgentMtpCompMenu, AgentMtpCompWindMenu } from '../pages'
 
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
