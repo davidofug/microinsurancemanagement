@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import Login from '../pages/Login'
-import Logout from '../pages/Logout'
 import useAuth from '../contexts/Auth'
-import ForgotPassword from '../pages/ForgotPassword'
+
+import { Login, Logout, ForgotPassword } from '../pages'
 
 import { SuperAdminRoutes, AdminRoutes, SupervisorRoutes, AgentsRoutes } from '.'
 
