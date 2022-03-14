@@ -13,25 +13,25 @@ import Dashboard from "./Dashboard";
 import Settings from "./Settings";
 import Logs from "./Logs";
 
+//menus
+import AdminMenu from './admin/AdminMenu'
+import AgentMtpMenu from "./agent/AgentMtpMenu";
+import AgentCompMenu from './agent/AgentCompMenu'
+import AgentMtpCompMenu from './agent/AgentMtpCompMenu'
+import AgentMtpCompWindMenu from './agent/AgentMtpCompWindMenu'
+import SupervisorMenu from './supervisor/SupervisorMenu'
+import SuperAdminMenu from './superAdmin/SuperAdminMenu'
+
 // Policies
 import Mtp from "./Mtp";
 import PolicyDetails from "./PolicyDetails/PolicyDetails";
 import Policies from './Policies'
 
 export {
-    Login,
-    Logout,
-    ForgotPassword,
-    Reports,
-    AddClaims,
-    AddUsers,
-    Clients,
-    Claims,
-    Agents,
-    Mtp,
-    Dashboard,
-    Settings,
-    Logs,
-    PolicyDetails,
-    Policies
+    AdminMenu, AgentMtpMenu, SuperAdminMenu, SupervisorMenu,
+    AgentCompMenu, AgentMtpCompMenu, AgentMtpCompWindMenu,
+    Login, Logout, ForgotPassword, Reports,
+    AddClaims, AddUsers, Clients, Claims,
+    Agents, Mtp, Dashboard, Settings,
+    Logs, PolicyDetails, Policies
 }
