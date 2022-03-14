@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import useAuth from '../contexts/Auth'
-
 import { Login, Logout, ForgotPassword } from '../pages'
-
+// Routes
 import { SuperAdminRoutes, AdminRoutes, SupervisorRoutes, AgentsRoutes } from '.'
-
 // menus
 import { AdminMenu, AgentMtpMenu, SuperAdminMenu, SupervisorMenu, AgentCompMenu, AgentMtpCompMenu, AgentMtpCompWindMenu } from '../pages'
-
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 function MyRouter() {
@@ -17,11 +14,11 @@ function MyRouter() {
     return (
         <Router>
             <Switch >
-                <Route path="/forgot-password" component={ForgotPassword} />
-                <Route path="/logout" component={Logout} />
-                <Route path="/" exact component={Login} />     
+                {/* <Route path="/forgot-password" component={ForgotPassword} /> */}
+                {/* <Route path="/logout" component={Logout} /> */}
                 <Route path="/login" exact component={Login} />
-            </Switch>
+                {/* <Route path="/" exact component={Login} />      */}
+            
             <div className={largeContentClass ? 'top-container-large': `top-container` }>
                 {currentUser?.loggedIn && 
                 <div className='MenuSide'>
@@ -48,6 +45,7 @@ function MyRouter() {
                     <SuperAdminRoutes largeContentClass={largeContentClass}/>
                 </div>
             </div>  
+            </Switch>
         </Router>
     )
 }
