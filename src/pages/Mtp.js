@@ -385,12 +385,40 @@ export default function Mtp({parent_container, policyCategory}) {
       }
 
       {authClaims.agent &&
-        <div id="add_client_group">
-          <div></div>
+
+      <div id="add_client_group" >
+        <div></div>
+        {policyCategory === 'mtp'
+        ?
           <Link to="/agent/add-mtp" className="classic">
-            <button className="btn btn-primary cta m-2 btn-cta">Add MTP</button>
+            <button className="btn btn-primary cta m-2">Add MTP</button>
           </Link>
-        </div>
+        :
+        policyCategory === 'comprehensive' 
+        ?
+          <Link to="/agent/add-comprehensive" className="classic">
+            <button className="btn btn-primary cta m-2">Add Comprehensive</button>
+          </Link>
+        : 
+        policyCategory === 'windscreen' 
+        ?
+          <Link to="/agent/add-windscreen" className="classic">
+            <button className="btn btn-primary cta m-2">Add Windscreen</button>
+          </Link>
+        :
+        policyCategory === 'newImport' 
+        ?
+          <Link to="/agent/add-newImport" className="classic">
+            <button className="btn btn-primary cta m-2">Add New Import</button>
+          </Link>
+        :
+        policyCategory === 'transit' 
+        &&
+          <Link to="/agent/add-transit" className="classic">
+            <button className="btn btn-primary cta m-2">Add Transit</button>
+          </Link>
+        }
+      </div>
       }
 
       <div className={openToggle ? 'myModal is-active': 'myModal'}>

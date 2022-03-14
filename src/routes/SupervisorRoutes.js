@@ -1,5 +1,5 @@
 import PrivateRoute  from './PrivateRoute'
-import { Mtp, Windscreen, NewImport, Comprehensive, Policies, Transit, AddClaims, AddUsers, Agents, Clients, Claims, Reports, Dashboard, Settings, Logs, PolicyDetails } from '../pages'
+import { Mtp, Policies, AddClaims, AddUsers, Agents, Clients, Claims, Reports, Dashboard, Settings, Logs, PolicyDetails } from '../pages'
 
 
 function SupervisorRoutes({largeContentClass}) {
