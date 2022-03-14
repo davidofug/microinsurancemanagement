@@ -21,9 +21,25 @@ import 'react-toastify/dist/ReactToastify.css'
 import Chat from '../components/messenger/Chat'
 import '../styles/ctas.css'
 
-export default function Mtp({parent_container}) {
-  useEffect(() => { 
-    document.title = "Britam - Motor Third Party"; 
+export default function Mtp({parent_container, policyCategory}) {
+  useEffect(() => {
+    
+    if(policyCategory === 'mtp'){
+      document.title = "Britam - Motor Third Party"; 
+    }
+    else if(policyCategory === 'comprehensive'){
+      document.title = "Britam - Comprehensive"; 
+    }
+    else if(policyCategory === 'windscreen'){
+      document.title = 'Britam - Windscreen'
+    }
+    else if(policyCategory === 'newImport'){
+      document.title = "Britam - New Import"; 
+    }
+    else if(policyCategory === 'transit'){
+      document.title = 'Britam - Transit'
+    }
+
     getMTP()
     updateExpiredStickers()
 
@@ -48,7 +64,7 @@ export default function Mtp({parent_container}) {
   const getMTP = async () => {
     const data = await getDocs(policyCollectionRef);
     const policiesArray = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    const mtpPolicies = policiesArray.filter(policy => policy.category === 'mtp').sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    const mtpPolicies = policiesArray.filter(policy => policy.category === policyCategory).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     
     // agent mtp policies
     if(authClaims.agent){
@@ -304,14 +320,67 @@ export default function Mtp({parent_container}) {
 
   return (
     <div className="components">
-      <Header title="Motor Third Party" subtitle="MANAGING THIRD PARTY POLICIES" />
+      <Header 
+        title={
+            policyCategory === 'mtp' ? 'Motor Third Party' 
+            :
+            policyCategory === 'comprehensive' ? 'Comprehensive'
+            :
+            policyCategory === 'windscreen' ? 'Windscreen'
+            :
+            policyCategory === 'newImport' ? 'New Import'
+            :
+            policyCategory === 'transit' ? 'Transit'
+            : ''
+          } 
+        subtitle={
+          policyCategory === 'mtp' ? 'MANAGING THIRD PARTY POLICIES' 
+          :
+          policyCategory === 'comprehensive' ? 'MANAGING COMPREHENSIVE POLICIES'
+          :
+          policyCategory === 'windscreen' ? 'MANAGING WINDSCREEN POLICIES'
+          :
+          policyCategory === 'newImport' ? 'MANAGING NEW IMPORT POLICIES'
+          :
+          policyCategory === 'transit' ? 'MANAGING TRANSIT POLICIES'
+          : ''
+        }  
+      />
       <ToastContainer/>
       {authClaims.supervisor &&
+
         <div id="add_client_group" >
           <div></div>
-          <Link to="/supervisor/add-mtp" className="classic">
-            <button className="btn btn-primary cta m-2">Add MTP</button>
-          </Link>
+          {policyCategory === 'mtp'
+          ?
+            <Link to="/supervisor/add-mtp" className="classic">
+              <button className="btn btn-primary cta m-2">Add MTP</button>
+            </Link>
+          :
+          policyCategory === 'comprehensive' 
+          ?
+            <Link to="/supervisor/add-comprehensive" className="classic">
+              <button className="btn btn-primary cta m-2">Add Comprehensive</button>
+            </Link>
+          : 
+          policyCategory === 'windscreen' 
+          ?
+            <Link to="/supervisor/add-windscreen" className="classic">
+              <button className="btn btn-primary cta m-2">Add Windscreen</button>
+            </Link>
+          :
+          policyCategory === 'newImport' 
+          ?
+            <Link to="/supervisor/add-newImport" className="classic">
+              <button className="btn btn-primary cta m-2">Add New Import</button>
+            </Link>
+          :
+          policyCategory === 'transit' 
+          &&
+            <Link to="/supervisor/add-transit" className="classic">
+              <button className="btn btn-primary cta m-2">Add Transit</button>
+            </Link>
+          }
         </div>
       }
 
@@ -435,10 +504,11 @@ export default function Mtp({parent_container}) {
                  </td>
                  <td>{policy.timeCreated}</td>
 
+                 {policy.stickersDetails[0].status !== 'deleted' ?
                  <td className="started">
                  <button className="sharebtn" onClick={() => {setClickedIndex(index); setShowContext(!showContext); setSingleDoc(policy)}}>&#8942;</button>
 
-                 {policy.stickersDetails[0].status !== 'deleted' &&
+                 
                  <ul  id="mySharedown" className={(showContext && index === clickedIndex) ? 'mydropdown-menu show': 'mydropdown-menu'} onClick={(event) => event.stopPropagation()}>
                    <Link to={`/admin/policy-details/${policy.id}`}>
                      <div className="actionDiv">
@@ -469,8 +539,10 @@ export default function Mtp({parent_container}) {
                          </div>
                    </li>
                  </ul>
-                 }
                  </td>
+                 :
+                 <td></td>
+                 }
          
                </tr>
              ))}
@@ -496,7 +568,19 @@ export default function Mtp({parent_container}) {
                setCurrentPage={setCurrentPage}
                currentClients={paginatedShownPolicies}
                sortedEmployees={policies}
-               entries={'Motor Third Party'} />
+               entries={
+                policyCategory === 'mtp' ? 'Motor Third Party' 
+                :
+                policyCategory === 'comprehensive' ? 'Comprehensive'
+                :
+                policyCategory === 'windscreen' ? 'Windscreen'
+                :
+                policyCategory === 'newImport' ? 'New Import'
+                :
+                policyCategory === 'transit' ? 'Transit'
+                : ''
+              }
+               />
              </td>
            </tr>
          </tfoot>
@@ -511,7 +595,7 @@ export default function Mtp({parent_container}) {
           <div className="no-table-data">
               <i><ImFilesEmpty /></i>
               <h4>No match</h4>
-              <p>There is no current match for MTP sticker</p>
+              <p>There is no current match for sticker</p>
           </div>
         }
 
@@ -527,7 +611,7 @@ export default function Mtp({parent_container}) {
           <div className="no-table-data">
             <i><ImFilesEmpty /></i>
             <h4>No data yet</h4>
-            <p>You have not created any Motor Third Party Stickers Yet</p>
+            <p>You have not created any Stickers Yet</p>
           </div>
         :
           <Loader />
