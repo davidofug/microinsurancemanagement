@@ -1,11 +1,9 @@
 import useAuth from '../contexts/Auth'
 import { useToggleMenu } from '../hooks'
-
 import { Login, Logout, ForgotPassword } from '../pages'
-// Routes
 import { SuperAdminRoutes, AdminRoutes, SupervisorRoutes, AgentsRoutes } from '.'
-// menus
-import { AdminMenu, AgentMtpMenu, SuperAdminMenu, SupervisorMenu, AgentCompMenu, AgentMtpCompMenu, AgentMtpCompWindMenu } from '../pages'
+import { AdminMenu, AgentMtpMenu, SuperAdminMenu, SupervisorMenu, 
+    AgentCompMenu, AgentMtpCompMenu, AgentMtpCompWindMenu } from '../pages'
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 function MyRouter() {

@@ -23,7 +23,6 @@ function Login() {
   const { currentUser, setCurrentUser, authClaims, setAuthClaims } = useAuth();
   const [ error, setError ] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const history = useHistory();
   const location = useLocation();
   const from = location?.pathname || "/admin/dashboard";
 
@@ -146,7 +145,6 @@ function Login() {
           <input
             type="submit"
             className="btn btn-primary cta"
-            value="Sign in"
             value="Login"
           />
           <Link to="/forgot-password">
