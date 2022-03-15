@@ -12,6 +12,7 @@ import Clients from "./Clients";
 import Dashboard from "./Dashboard";
 import Settings from "./Settings";
 import Logs from "./Logs";
+import NotFound from './NotFound'
 
 //menus
 import AdminMenu from './admin/AdminMenu'
@@ -33,5 +34,5 @@ export {
     Login, Logout, ForgotPassword, Reports,
     AddClaims, AddUsers, Clients, Claims,
     Agents, Mtp, Dashboard, Settings,
-    Logs, PolicyDetails, Policies
+    Logs, PolicyDetails, Policies, NotFound
 }

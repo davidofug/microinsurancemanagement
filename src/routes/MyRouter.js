@@ -1,23 +1,16 @@
 import useAuth from '../contexts/Auth'
 import { useToggleMenu } from '../hooks'
-import { Login, Logout, ForgotPassword } from '../pages'
 import { SuperAdminRoutes, AdminRoutes, SupervisorRoutes, AgentsRoutes } from '.'
 import { AdminMenu, AgentMtpMenu, SuperAdminMenu, SupervisorMenu, 
     AgentCompMenu, AgentMtpCompMenu, AgentMtpCompWindMenu } from '../pages'
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+
 
 function MyRouter() {
     const { currentUser, authClaims } = useAuth()
     const [ largeContentClass, minimiseMenu, maximiseMenu ] = useToggleMenu()
 
     return (
-        <Router>
-            <Switch >
-                <Route path="/forgot-password" component={ForgotPassword} />
-                <Route path="/logout" component={Logout} />
-                <Route path="/login" exact component={Login} />
-                <Route path="/" exact component={Login} />     
-            
+              <>
                 <div className={largeContentClass ? 'top-container-large': `top-container` }>
                     {currentUser?.loggedIn && 
                     <div className='MenuSide'>
@@ -44,8 +37,9 @@ function MyRouter() {
                         <SuperAdminRoutes largeContentClass={largeContentClass}/>
                     </div>
                 </div>  
-            </Switch>
-        </Router>
+              </>
+            
+            
     )
 }
 
