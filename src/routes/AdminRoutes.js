@@ -1,26 +1,11 @@
-import Mtp from '../pages/Mtp'
-import Claims from '../pages/Claims'
-import Reports from '../pages/Reports'
-import Clients from '../pages/Clients'
-import Policies from '../pages/Policies'
-import Settings from '../pages/Settings'
 import PrivateRoute  from './PrivateRoute'
-import Dashboard from '../pages/Dashboard'
-import Windscreen from '../pages/Windscreen'
-import Comprehensive from '../pages/Comprehensive'
 import Organisations from '../pages/admin/Organisations'
-import Logs from '../pages/Logs.js'
 import Supervisors from '../pages/admin/Supervisors'
-import Agents from '../pages/Agents'
-import AddClaims from '../pages/AddClaims'
 import AddOrganisation from '../pages/admin/AddOrganisation'
 import StickerMgt from '../pages/admin/StickerMgt'
-import AddUsers from '../pages/AddUsers'
-import NewImport from '../pages/NewImport'
-import Transit from '../pages/Transit'
 import AddStickerRange from '../pages/admin/AddStickerRange'
-import PolicyDetails from '../pages/PolicyDetails/PolicyDetails'
 import PolicyRenew from '../pages/PolicyDetails/PolicyRenew'
+import { Mtp, Policies, AddClaims, AddUsers, Agents, Clients, Claims, Reports, Dashboard, Settings, Logs, PolicyDetails } from '../pages'
 
 
 function AdminRoutes({largeContentClass}) {
@@ -38,7 +23,7 @@ function AdminRoutes({largeContentClass}) {
             <PrivateRoute path="/admin/view-log-trail" >
                 <Logs parent_container={largeContentClass}/>
             </PrivateRoute>
-            <PrivateRoute path="/admin/supervisor" >
+            <PrivateRoute path="/admin/supervisors" >
                 <Supervisors parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/agents" >
@@ -75,19 +60,19 @@ function AdminRoutes({largeContentClass}) {
                 <PolicyRenew parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/motor-third-party" >
-                <Mtp parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="mtp"/>
             </PrivateRoute>
             <PrivateRoute path="/admin/windscreen" >
-                <Windscreen parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="windscreen"/>
             </PrivateRoute>
             <PrivateRoute path="/admin/comprehensive" >
-                <Comprehensive parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="comprehensive"/>
             </PrivateRoute>
             <PrivateRoute path="/admin/new-import" >
-                <NewImport parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="newImport"/>
             </PrivateRoute>
             <PrivateRoute path="/admin/transit" >
-                <Transit parent_container={largeContentClass}/>
+                <Mtp parent_container={largeContentClass} policyCategory="transit"/>
             </PrivateRoute>
             <PrivateRoute path="/add-claim" >
                 <AddClaims parent_container={largeContentClass}/>

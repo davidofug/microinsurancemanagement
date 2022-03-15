@@ -15,7 +15,7 @@ import useDialog from "../../hooks/useDialog";
 import useAuth from '../../contexts/Auth'
 
 
-export default function AdminMenu({ setLargeContentClass }) {
+export default function AdminMenu({ minimiseMenu, maximiseMenu }) {
 
   const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
   const { Admin } = menuData;
@@ -49,8 +49,7 @@ export default function AdminMenu({ setLargeContentClass }) {
                 <img width={150} src={logo} alt="Britam" />
                 <div id="arrowCircle" onClick={() => {
                         hideToggleMenu()
-                        setLargeContentClass(true)
-                        localStorage.setItem('preferredToggleMenu', false)
+                        minimiseMenu()
                         }}>
                         
                         <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -91,8 +90,7 @@ export default function AdminMenu({ setLargeContentClass }) {
                 <section id='brand_m'>
                     <div id="arrowOutCircle" onClick={() => {
                         showToggleMenu()
-                        setLargeContentClass(false)
-                        localStorage.setItem('preferredToggleMenu', true)
+                        maximiseMenu()
                         }}>
                         
                             <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>

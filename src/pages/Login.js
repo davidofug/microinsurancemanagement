@@ -1,31 +1,22 @@
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
-import { useHistory, Redirect, Link, useLocation } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import logo from "../assets/imgs/britam-logo2.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
-import {
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { Alert } from "react-bootstrap";
-
 import "../assets/styles/login.css";
 import Loader from "../components/Loader";
 
 function Login() {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  const [user, setUser] = useState({ email: "", password: "" });
   const [password, setPassword] = useState("password");
   const [isVisible, setIsVisible] = useState(false);
 
   const { currentUser, setCurrentUser, authClaims, setAuthClaims } = useAuth();
   const [ error, setError ] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const history = useHistory();
-  const location = useLocation();
-  const from = location?.pathname || "/admin/dashboard";
 
   const pageOnRefreshSuperAdmin = localStorage.getItem('onRefresh') || "/superadmin/dashboard"
   const pageOnRefreshAdmin = localStorage.getItem('onRefresh') || "/admin/dashboard"
@@ -48,20 +39,16 @@ function Login() {
     setLoading(true);
     try {
       const result = await signInWithEmailAndPassword(
-        authentication,
-        email,
-        password
+        authentication, email, password
       );
       if (result) {
         setLoading(false);
         onAuthStateChange(setCurrentUser, setAuthClaims);
-        // history.push(from); // had removed claim from the route.
       }
     } catch(err) {
-      // console.log(err.code)
       setLoading(false)
       const errors = {
-        "auth/user-not-found": "User with email is not found",
+        "auth/user-not-found": `User with ${email} is not found`,
         "auth/wrong-password": "Password does not match the email",
         "auth/network-request-failed": "something is wrong, check your network connection"
       }
@@ -85,7 +72,6 @@ function Login() {
     if(authClaims.superadmin){
       return <Redirect to={{ pathname: pageOnRefreshSuperAdmin }} />;
     }
-    return <Redirect to={{ pathname: from }} />;
   }
 
   return (
@@ -146,7 +132,6 @@ function Login() {
           <input
             type="submit"
             className="btn btn-primary cta"
-            value="Sign in"
             value="Login"
           />
           <Link to="/forgot-password">

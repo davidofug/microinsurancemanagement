@@ -94,7 +94,7 @@ const menuData = {
                 },
                 {
                     name: "Supervisor",
-                    link: "/admin/supervisor"
+                    link: "/admin/supervisors"
                 },
                 {
                     name: "Log Trail",
@@ -143,7 +143,7 @@ const menuData = {
             link: "/admin/reports"
         }
     ],
-    SuperVisor: [
+    Supervisor: [
         {
             number: 1,
             name: "Dashboard",

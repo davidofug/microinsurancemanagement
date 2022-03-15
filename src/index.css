@@ -13,14 +13,10 @@ body, html{
     box-sizing: border-box;
     scroll-behavior: smooth;
     overscroll-behavior: none;
-    /* overflow: scroll; */
     overflow-x: hidden;
     font-family: Roboto;
-}
-
-body{
     background-color: #fafafa;
-    font-size: .875rem;
+    font-size: .95rem;
 }
 
 .form-select {
@@ -53,10 +49,6 @@ body{
     left: 59px;
     background-color: #fff;
 }
-
-/* tbody > tr:hover {
-} */
-
 
 
 
@@ -111,8 +103,6 @@ body{
     margin: 0 20px;
 }
 
-
-/* // client actions */
 
 .working-here{
     position: relative;
@@ -647,7 +637,6 @@ left: auto;
   .copy__btn {
     position: absolute;
     background: #1475cf;
-    /* background-image: linear-gradient(to bottom right, #f1bf64 0%, #f71d36 100%) !important; */
     color: #fff;
     border: none;
     height: 42px;
