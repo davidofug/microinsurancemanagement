@@ -18,7 +18,7 @@ import { useHistory } from 'react-router-dom'
 import useAuth from '../../contexts/Auth'
 
 
-function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
+function AgentMtpMenu({minimiseMenu, maximiseMenu}) {
 
     const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
     const { Agent_mtp_comprehensive } = menuData
@@ -51,9 +51,8 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
                         <div id='brand'>
                             <img src={logo} width={150} alt="Britam" />
                             <div id="arrowCircle" onClick={() => {
-                                    hideToggleMenu()
-                                    setLargeContentClass(true)
-                                    localStorage.setItem('preferredToggleMenu', false)
+                                        hideToggleMenu()
+                                        minimiseMenu()
                                     }}>
                                     
                                         <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -91,9 +90,8 @@ function AgentMtpMenu({setLargeContentClass, largeContentClass}) {
             <nav className='sidebar-m'>
                 <section id='brand_m'>
                     <div id="arrowOutCircle" onClick={() => {
-                        showToggleMenu()
-                        setLargeContentClass(!largeContentClass)
-                        localStorage.setItem('preferredToggleMenu', true)
+                            showToggleMenu()
+                            maximiseMenu()
                         }}>
                         
                             <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>

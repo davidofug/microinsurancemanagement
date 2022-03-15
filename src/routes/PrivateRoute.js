@@ -2,27 +2,11 @@ import {
     Route,
     Redirect
 } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 
 import useAuth from '../contexts/Auth'
-import { authentication } from '../helpers/firebase'
-import { onAuthStateChanged } from 'firebase/auth'
-import Loader from '../components/Loader'
 
 function PrivateRoute({ children, ...rest }) {
-    const [user, setUser] = useState(null)
-    const [isLoading, setLoading] = useState(true)
     const { currentUser } = useAuth()
-    /* useEffect(() => {
-       const unsubscribe = onAuthStateChanged(authentication, user => {
-           setUser(user)
-           setLoading(false)
-       })
-
-        return () => unsubscribe()
-    }, []); */
-
-    // return currentUser && <Route {...rest}>{children}</Route>
 
     return currentUser ? <Route {...rest} render={
         props => {

@@ -14,10 +14,10 @@ import { ImProfile } from 'react-icons/im'
 import useDialog from '../../hooks/useDialog'
 import useAuth from '../../contexts/Auth'
 
-function SupervisorMenu({ setLargeContentClass }) {
+function SupervisorMenu({ minimiseMenu, maximiseMenu }) {
 
     const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
-    const { SuperVisor } = menuData
+    const { Supervisor } = menuData
     const [ toggleMenu, showToggleMenu, hideToggleMenu ] = useDialog(JSON.parse(preferredToggleMenu));
     const [show, handleShow, handleClose] = useDialog()
 
@@ -38,7 +38,7 @@ function SupervisorMenu({ setLargeContentClass }) {
 
     return (
         <div className="menuSide">
-            <MobileNav role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
+            <MobileNav role={Supervisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
             {toggleMenu 
             ?
                 <nav className="sidebar">
@@ -46,8 +46,7 @@ function SupervisorMenu({ setLargeContentClass }) {
                         <img src={logo} width={150} alt="Britam" />
                         <div id="arrowCircle" onClick={() => {
                                 hideToggleMenu()
-                                setLargeContentClass(true)
-                                localStorage.setItem('preferredToggleMenu', false)
+                                minimiseMenu()
                                 }}>
                                 
                                     <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -55,7 +54,7 @@ function SupervisorMenu({ setLargeContentClass }) {
                                 
                         </div>
                     </section>
-                    <SideBar role={SuperVisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
+                    <SideBar role={Supervisor} user="supervisor" displayName={authentication?.currentUser?.displayName} />
 
                     <footer>
                         <div className="footerContext" onClick={(event) => { 
@@ -86,8 +85,7 @@ function SupervisorMenu({ setLargeContentClass }) {
                 <section id='brand_m'>
                     <div id="arrowOutCircle" onClick={() => {
                         showToggleMenu()
-                        setLargeContentClass(false)
-                        localStorage.setItem('preferredToggleMenu', true)
+                        maximiseMenu()
                         }}>
                         
                             <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -95,15 +93,15 @@ function SupervisorMenu({ setLargeContentClass }) {
                         
                 </div>
                 </section>
-                <MinimisedSideBar role={SuperVisor} displayName={authentication?.currentUser?.displayName}/>
+                <MinimisedSideBar role={Supervisor} displayName={authentication?.currentUser?.displayName}/>
                 <footer>
-                    <div className="footerContext" onClick={(event) => {
-                      show ? handleClose() : handleShow();
-                      event.stopPropagation();
-                    }}>
+                    <div className="footerContext" 
+                        onClick={(event) => {
+                            show ? handleClose() : handleShow();
+                            event.stopPropagation();
+                        }}>
                         <DefaultAvatar />
                     </div>
-                    {/* </Link> */}
                     <ul className={show ? "footerContextShow" : ""} id="contextUl">
                         <li><Link to="/supervisor/settings"><ImProfile /></Link></li>
                         <li onClick={handleLogout}><Link><MdLogout /></Link></li>

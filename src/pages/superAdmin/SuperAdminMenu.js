@@ -14,7 +14,7 @@ import useDialog from '../../hooks/useDialog'
 import { ImProfile } from 'react-icons/im'
 import useAuth from '../../contexts/Auth'
 
-function SuperAdminMenu({ setLargeContentClass }) {
+function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
 
     const preferredToggleMenu = localStorage.getItem('preferredToggleMenu') || true;
     const { SuperAdmin } = menuData;
@@ -48,8 +48,7 @@ function SuperAdminMenu({ setLargeContentClass }) {
                         <img src={logo} width={150} alt="Britam" />
                         <div id="arrowCircle" onClick={() => {
                                 hideToggleMenu()
-                                setLargeContentClass(true)
-                                localStorage.setItem('preferredToggleMenu', false)
+                                minimiseMenu()
                                 }}>
                                 
                                     <HiOutlineChevronLeft style={{color: "#c6c7c8", fontSize: "15px"}}/>
@@ -89,8 +88,7 @@ function SuperAdminMenu({ setLargeContentClass }) {
             <section id='brand_m'>
                 <div id="arrowOutCircle" onClick={() => {
                     showToggleMenu()
-                    setLargeContentClass(false)
-                    localStorage.setItem('preferredToggleMenu', true)
+                    maximiseMenu()
                     }}>
                     
                         <HiOutlineChevronRight style={{color: "#c6c7c8", fontSize: "15px"}}/>
