@@ -31,7 +31,7 @@ import '../styles/ctas.css'
 function Agents({parent_container}) {
 
   useEffect(() => {
-    document.title = 'Britam - Agents';
+    document.title = 'Agents - Micro Insurance Management';
     getAgents()
   }, [])
   

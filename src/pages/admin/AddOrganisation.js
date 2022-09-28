@@ -20,7 +20,7 @@ import '../../styles/ctas.css'
 
 export default function AddOrganisation({parent_container}) {
 
-    useEffect(() => { document.title = 'Britam - Add Organisations'}, [])
+    useEffect(() => { document.title = 'Add Organisations - Micro Insurance Management'}, [])
 
     const [ isLoading, setIsLoading ] = useState(false)
     const [ password, setPassword ] = useState('')

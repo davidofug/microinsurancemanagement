@@ -27,7 +27,7 @@ function Login() {
 
   useEffect(() => {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
-    document.title = "Britam - With you every step of the way";
+    document.title = "Micro Insurance Management - With you every step of the way";
     onAuthStateChange(setCurrentUser, setAuthClaims, setLoading);
     // return () => { unsubscribe() }
     // currentUser?.loggedIn && history.push(from);

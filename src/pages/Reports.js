@@ -22,7 +22,7 @@ import '../styles/ctas.css'
 
 function Reports({parent_container}) {
   useEffect(() => { 
-    document.title = "Britam - Reports"; 
+    document.title = "Reports - Micro Insurance Management"; 
     getPolicies()
 
     return () => getPolicies()

@@ -56,7 +56,7 @@ export default function Claims({parent_container}) {
 
 
   useEffect(() => {
-    document.title = "Britam - Claims";
+    document.title = "Claims - Micro Insurance Management";
     getClaims();
 
     return() => getClaims()

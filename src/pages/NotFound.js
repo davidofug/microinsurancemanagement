@@ -4,7 +4,7 @@ import '../styles/loader.css'
 function NotFound() {
 
     useEffect(() => {
-        document.title = 'Britam - With you every step of the way'
+        document.title = 'Micro Insurance Management'
     }, [])
 
     return (
