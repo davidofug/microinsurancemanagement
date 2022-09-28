@@ -46,7 +46,8 @@ export default function AdminMenu({ minimiseMenu, maximiseMenu }) {
       {toggleMenu ? (
         <nav className="sidebar">
             <div id='brand'>
-                <img width={150} src={logo} alt="Britam" />
+                {/* <img width={150} src={logo} alt="Britam" /> */}
+                <h1>Your Logo</h1>
                 <div id="arrowCircle" onClick={() => {
                         hideToggleMenu()
                         minimiseMenu()

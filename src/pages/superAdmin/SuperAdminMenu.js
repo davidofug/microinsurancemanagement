@@ -45,7 +45,8 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
             ?
                 <nav className="sidebar">
                     <div id='brand'>
-                        <img src={logo} width={150} alt="Britam" />
+                        {/* <img src={logo} width={150} alt="Britam" /> */}
+                        <h1 className='h1 logo-text' >Your Logo</h1>
                         <div id="arrowCircle" onClick={() => {
                                 hideToggleMenu()
                                 minimiseMenu()
