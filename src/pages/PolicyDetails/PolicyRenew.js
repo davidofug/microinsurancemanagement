@@ -13,7 +13,7 @@ import Chat from '../../components/messenger/Chat'
 
 function PolicyRenew({parent_container}) {
     useEffect(() => {
-        document.title = "Britam - Sticker Details";
+        document.title = "Sticker Details - Micro Insurance Management";
         getMTP()
       }, []);
 
@@ -82,11 +82,11 @@ function PolicyRenew({parent_container}) {
             <div style={{margin: "30px"}}>
                 <div className='fromTo'>
                     <div id='from'>
-                        <b>Britam Insurance Co. (U) Ltd</b>
-                        <p>Plot 24A Akii-Bua Rd.</p>
-                        <p>Nakasero P.O.Box 36583 Kampala</p>
+                        <b>Micro Insurance Management</b>
+                        <p>Plot .</p>
+                        <p>Nak P.O.Box 36583 Kampala</p>
                         <p>Uganda</p>
-                        <p>C: britamug@britam.com 0312305600</p>
+                        <p>C: info@microinsurancemanagement.com</p>
                     </div>
                     {policy.clientDetails != undefined &&
                         <div id="to">

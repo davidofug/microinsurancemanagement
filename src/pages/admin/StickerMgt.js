@@ -26,7 +26,7 @@ import '../../styles/ctas.css'
 
 
 export default function StickerMgt({parent_container}) {
-    useEffect(() => {document.title = 'Britam - Stickers Management'; getStickerRange()}, [])
+    useEffect(() => {document.title = 'Stickers Management - Micro Insurance Management'; getStickerRange()}, [])
 
     const [stickerRange, setStickerRange] = useState([]);
     const rangesCollectionRef = collection(db, "ranges");

@@ -25,19 +25,19 @@ export default function Mtp({parent_container, policyCategory}) {
   useEffect(() => {
     
     if(policyCategory === 'mtp'){
-      document.title = "Britam - Motor Third Party"; 
+      document.title = "Motor Third Party - Micro Insurance Management"; 
     }
     else if(policyCategory === 'comprehensive'){
-      document.title = "Britam - Comprehensive"; 
+      document.title = "Comprehensive - Micro Insurance Management"; 
     }
     else if(policyCategory === 'windscreen'){
-      document.title = 'Britam - Windscreen'
+      document.title = 'Windscreen - Micro Insurance Management'
     }
     else if(policyCategory === 'newImport'){
-      document.title = "Britam - New Import"; 
+      document.title = "New Import - Micro Insurance Management"; 
     }
     else if(policyCategory === 'transit'){
-      document.title = 'Britam - Transit'
+      document.title = 'Transit - Micro Insurance Management'
     }
 
     getMTP()

@@ -22,7 +22,7 @@ import '../styles/ctas.css'
 
 function Settings({parent_container}) {
 
-    useEffect(() => { document.title = 'Britam - User Profile'; getUserMeta();}, [])
+    useEffect(() => { document.title = 'User Profile - Micro Insurance Management'; getUserMeta();}, [])
     const [ show, handleShow, handleClose ] = useDialog()
     const [ meta, setMeta ] = useState([])
     const { currentUser } = getAuth()

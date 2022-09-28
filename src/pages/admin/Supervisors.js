@@ -24,7 +24,7 @@ import '../../styles/ctas.css'
 
 function Supervisors({parent_container}) {
 
-  useEffect(() => { document.title = 'Britam - Supervisors'; getSupervisors() }, [])
+  useEffect(() => { document.title = 'Supervisors - Micro Insurance Management'; getSupervisors() }, [])
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 

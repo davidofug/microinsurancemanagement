@@ -27,7 +27,7 @@ function Login() {
 
   useEffect(() => {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
-    document.title = "Britam - With you every step of the way";
+    document.title = "Micro Insurance Management - With you every step of the way";
     onAuthStateChange(setCurrentUser, setAuthClaims, setLoading);
     // return () => { unsubscribe() }
     // currentUser?.loggedIn && history.push(from);
@@ -76,7 +76,8 @@ function Login() {
 
   return (
     <div className="auth-wrapper">
-      <img src={logo} width={150} alt="Britam" />
+      {/* <img src={logo} width={150} alt="Britam" /> */}
+      <h1 className='h1 logo-text mb-5'>Your Logo</h1>
       <form action="" onSubmit={handleSignIn}>
         <p>Enter Email and Password to sign in</p>
         {error && <Alert variant="danger">{error}</Alert>}
