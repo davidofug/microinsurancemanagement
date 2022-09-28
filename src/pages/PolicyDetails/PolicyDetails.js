@@ -18,7 +18,7 @@ import Chat from '../../components/messenger/Chat'
 import '../../styles/ctas.css'
 
 function PolicyDetails({parent_container}) {
-    useEffect(() => { document.title = "Britam - Sticker Details"; getMTP(); getStickerRange(); }, []);
+    useEffect(() => { document.title = "Sticker Details - Micro Insurance Management"; getMTP(); getStickerRange(); }, []);
 
     const [ show, handleShow, handleClose ] = useDialog()
 
@@ -119,7 +119,8 @@ function PolicyDetails({parent_container}) {
             <ToastContainer />
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <div>
-                    <img src={logo} width={150} height="auto" alt="britam" className='mb-3' />
+                    {/* <img src={logo} width={150} height="auto" alt="britam" className='mb-3' /> */}
+                    <h1 className='h1 logo-text mb-5'>Your Logo</h1>
                 </div>
                 <div id="policyDetails">
                     <p>Receipt # 12801</p>
@@ -190,7 +191,7 @@ function PolicyDetails({parent_container}) {
                             </div>
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                                 <div></div>
-                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>Britam Insurance Co. (U) Ltd.</p>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>Micro Insurance Management (U) Ltd.</p>
                             </div>
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                                 <div></div>
@@ -251,11 +252,11 @@ function PolicyDetails({parent_container}) {
 
             <div className='fromTo'>
                 <div id='from'>
-                    <b>Britam Insurance Co. (U) Ltd</b>
-                    <p>Plot 24A Akii-Bua Rd.</p>
+                    <b>Micro Insurance Management</b>
+                    <p>Plot Rd.</p>
                     <p>Nakasero P.O.Box 36583 Kampala</p>
                     <p>Uganda</p>
-                    <p>C: britamug@britam.com 0312305600</p>
+                    <p>C: info@microinsurancemanagement.componentsData</p>
                 </div>
                 {policy.clientDetails != undefined &&
                     <div id="to">

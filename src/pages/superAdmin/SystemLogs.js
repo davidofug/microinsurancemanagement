@@ -14,7 +14,7 @@ import '../../styles/ctas.css'
 
 
 function SystemLogs({parent_container}) {
-  useEffect(() => {document.title = "Britam - System Logs"; getLogs()}, []);
+  useEffect(() => {document.title = "System Logs - Micro Insurance Management"; getLogs()}, []);
 
   
   const logCollectionRef = collection(db, "logs");

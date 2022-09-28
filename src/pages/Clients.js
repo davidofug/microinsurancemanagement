@@ -26,7 +26,7 @@ import '../styles/ctas.css'
 export default function Clients({parent_container}) {
 
   useEffect(() => {
-    document.title = 'Britam - Clients';
+    document.title = 'Clients - Micro Insurance Management';
     getClients()
 
     return () => getClients()

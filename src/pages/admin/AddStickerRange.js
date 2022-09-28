@@ -14,7 +14,7 @@ import '../../styles/ctas.css'
 
 function AddStickerRange({parent_container}) {
 
-    useEffect(() => {document.title = 'Britam - Add Sticker Range'; getSupervisors()}, [])
+    useEffect(() => {document.title = 'Add Sticker Range - Micro Insurance Management'; getSupervisors()}, [])
 
     const [ isLoading, setIsLoading ] = useState(false)
 

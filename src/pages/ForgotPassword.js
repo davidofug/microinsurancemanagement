@@ -22,7 +22,7 @@ function ForgotPassword() {
       setCurrentUser(loggedIn);
       setLogin(loggedIn);
     }
-    document.title = "Britam - With you every step of the way";
+    document.title = "Micro Insurance Management";
   });
 
   const handleResetPassword = (event) => {
