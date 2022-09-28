@@ -76,7 +76,8 @@ function Login() {
 
   return (
     <div className="auth-wrapper">
-      <img src={logo} width={150} alt="Britam" />
+      {/* <img src={logo} width={150} alt="Britam" /> */}
+      <h1 className='h1 logo-text mb-5'>Your Logo</h1>
       <form action="" onSubmit={handleSignIn}>
         <p>Enter Email and Password to sign in</p>
         {error && <Alert variant="danger">{error}</Alert>}

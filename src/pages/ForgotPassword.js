@@ -36,12 +36,13 @@ function ForgotPassword() {
       })
   }
 
-  if (isLogin) return <Redirect to={{ pathname: "/supervisor-dashboard" }} />;
+  // if (isLogin) return <Redirect to={{ pathname: "/supervisor-dashboard" }} />;
 
   return (
     <div className="auth-wrapper">
       <ToastContainer />
-      <img src={logo} alt="Britam" />
+      {/* <img src={logo} alt="Britam" /> */}
+      <h1 className='h1 logo-text mb-5'>Your Logo</h1>
       <form onSubmit={handleResetPassword}>
         <p>Forgot Password?</p>
         <p id="enter">Enter your e-mail address to reset your password</p>
