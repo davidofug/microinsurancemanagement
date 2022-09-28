@@ -3,7 +3,7 @@ import {useEffect} from 'react'
 function NotAuthorized() {
 
     useEffect(() => {
-        document.title = 'Britam - With you every step of the way'
+        document.title = 'Micro Insurance Management'
     }, [])
 
     return (
