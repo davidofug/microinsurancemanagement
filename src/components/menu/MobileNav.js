@@ -49,16 +49,18 @@ export default function MobileNav ({role, user, displayName }) {
         <div className="mobile-sidebar">
             <Navbar expand={false} className='hideThis' >
                 <Container fluid>
-                    <div>
+                    <div className='d-flex align-items-center'>
                         <Navbar.Toggle className='m-3' aria-controls="offcanvasNavbar" />
                         <Navbar.Brand >
-                            <img src={logo} width={150} alt="Britam" />
+                            <h1 className='h1 logo-text'>Your Logo</h1>
+                            {/* <img src={logo} width={150} alt="Britam" /> */}
                         </Navbar.Brand>
                     </div>
                     <Navbar.Offcanvas id="offcanvasNavbar" className="mobileSidebar" aria-labelledby="offcanvasNavbarLabel" placement="start" style={{display: "flex"}}>
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title id="offcanvasNavbarLabel">
-                                    <img src={logo} width={150} alt="Britam" />
+                                    {/* <img src={logo} width={150} alt="Britam" /> */}
+                                    <h1 className='h1 logo-text'>Your Logo</h1>
                             </Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
