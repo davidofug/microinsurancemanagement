@@ -64,13 +64,15 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
             </div>
           </div>
           <SideBar role={SuperAdmin} user="superadmin" />
-          <footer>
+          <footer
+            onClick={(event) => {
+              show ? handleClose() : handleShow();
+              event.stopPropagation();
+            }}
+          >
             <div
               className="footerContext"
-              onClick={(event) => {
-                show ? handleClose() : handleShow();
-                event.stopPropagation();
-              }}
+              
             >
               {authentication?.currentUser.photoURL !==
                 "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" &&
@@ -133,13 +135,13 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
             </div>
           </section>
           <MinimisedSideBar role={SuperAdmin} />
-          <footer>
-            <div
-              className="footerContext"
-              onClick={(event) => {
+          <footer onClick={(event) => {
                 show ? handleClose() : handleShow();
                 event.stopPropagation();
-              }}
+              }}>
+            <div
+              className="footerContext"
+              
             >
               <DefaultAvatar />
             </div>

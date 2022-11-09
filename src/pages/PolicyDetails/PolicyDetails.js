@@ -191,7 +191,7 @@ function PolicyDetails({parent_container}) {
                             </div>
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                                 <div></div>
-                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>Micro Insurance Management (U) Ltd.</p>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>SWICO</p>
                             </div>
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                                 <div></div>
@@ -201,7 +201,7 @@ function PolicyDetails({parent_container}) {
                     </Modal.Body>
                 }
                 <Modal.Footer className="hideOnPrint">
-                    <button className='btn btn-primary cta hideOnPrint' onClick={() => {
+                    <button className='btn cta hideOnPrint' onClick={() => {
                         window.print()
                         submitStickerNo()
                     }} >Print</button>
@@ -297,15 +297,15 @@ function PolicyDetails({parent_container}) {
                             <td>
                                 {policy.stickersDetails[0].status === 'paid' &&
                                     <tr>
-                                        <span className='btn btn-warning mb-2 mt-2' onClick={handleShow}>Print Sticker</span>
+                                        <div className='btn-warning mb-2 mt-2' onClick={handleShow}>Print Sticker</div>
                                     </tr>
                                 }
                                     <tr>
-                                        <span className='btn btn-danger mb-2 mt-2' 
+                                        <div className='btn-danger mb-2 mt-2' 
                                         onClick={(event) => {
                                             setOpenToggleCancel(true)
                                             event.stopPropagation()
-                                        }}>Cancel Sticker</span>
+                                        }}>Cancel Sticker</div>
                                     </tr>
                             </td>
                         </tr>
@@ -319,7 +319,7 @@ function PolicyDetails({parent_container}) {
             }
 
             <p><span className='prepared'>Prepared by:  </span><b>{policy.added_by_name}</b></p>
-            {policy.stickersDetails && policy.stickersDetails[0].status !== 'paid' && <button className='btn btn-success mb-3' onClick={handleShowPayment}>$ Proceed with Payments</button>}
+            {policy.stickersDetails && policy.stickersDetails[0].status !== 'paid' && <button className='btn-success mb-3' onClick={handleShowPayment}>$ Proceed with Payments</button>}
             <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
               <Chat />
             </div> 

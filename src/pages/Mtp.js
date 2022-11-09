@@ -31,7 +31,7 @@ export default function Mtp({parent_container, policyCategory}) {
       document.title = "Comprehensive - SWICO"; 
     }
     else if(policyCategory === 'windscreen'){
-      document.title = 'Windscreen - SWICO'
+      document.title = 'Fire - SWICO'
     }
     else if(policyCategory === 'newImport'){
       document.title = "New Import - SWICO"; 
@@ -326,7 +326,7 @@ export default function Mtp({parent_container, policyCategory}) {
             :
             policyCategory === 'comprehensive' ? 'Comprehensive'
             :
-            policyCategory === 'windscreen' ? 'Windscreen'
+            policyCategory === 'windscreen' ? 'Fire'
             :
             policyCategory === 'newImport' ? 'New Import'
             :
@@ -338,7 +338,7 @@ export default function Mtp({parent_container, policyCategory}) {
           :
           policyCategory === 'comprehensive' ? 'MANAGING COMPREHENSIVE POLICIES'
           :
-          policyCategory === 'windscreen' ? 'MANAGING WINDSCREEN POLICIES'
+          policyCategory === 'windscreen' ? 'MANAGING FIRE POLICIES'
           :
           policyCategory === 'newImport' ? 'MANAGING NEW IMPORT POLICIES'
           :
@@ -423,15 +423,15 @@ export default function Mtp({parent_container, policyCategory}) {
 
       <div className={openToggle ? 'myModal is-active': 'myModal'}>
         <div className="modal__content wack">
-          <h1 className='wack'>Confirm</h1>
-          <p className='wack'>Are you sure you want to delete <b>{!singleDoc || singleDoc.clientDetails.name}</b></p>
+          <h5 className='wack'>Delete {!singleDoc || singleDoc.clientDetails.name}&apos;s sticker?</h5>
+          <p className='wack'>Are you sure you want to delete {!singleDoc || singleDoc.clientDetails.name}&apos;s sticker</p>
           <div className="buttonContainer wack" >
+          <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No, Cancel</button>
             <button id="yesButton" onClick={() => {
               setOpenToggle(false)
               handleDelete(singleDoc.id)
               getMTP()
-              }} className='wack'>Yes</button>
-            <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+              }} className='wack'>Yes, Delete</button>
           </div>
         </div>
       </div>

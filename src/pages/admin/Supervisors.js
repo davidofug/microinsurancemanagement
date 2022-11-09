@@ -144,20 +144,20 @@ function Supervisors({parent_container}) {
             <div id="add_client_group">
                 <div></div>
                 <Link to="/admin/add-supervisor">
-                    <button className="btn btn-primary cta m-3">Add supervisor</button>
+                    <button className="btn cta m-3">Add supervisor</button>
                 </Link>               
             </div>
 
             <div className={openToggle ? 'myModal is-active': 'myModal'}>
               <div className="modal__content wack">
-                <h1 className='wack'>Confirm</h1>
-                <p className='wack'>Are you sure you want to delete <b>{singleDoc.name}</b></p>
+                <h5 className='wack'>Delete {singleDoc.name}</h5>
+                <p className='wack'>Are you sure you want to delete {singleDoc.name}. This action cannot be undone</p>
                 <div className="buttonContainer wack" >
+                <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No, Cancel</button>
                   <button id="yesButton" onClick={() => {
                     setOpenToggle(false)
                     handleDelete()
-                    }} className='wack'>Yes</button>
-                  <button id="noButton" onClick={() => setOpenToggle(false)} className='wack'>No</button>
+                    }} className='wack'>Yes, Delete</button>
                 </div>
               </div>
             </div>
@@ -241,7 +241,7 @@ function Supervisors({parent_container}) {
                                     <option value="">Bulk Action</option>
                                     <option value="delete">Delete</option>
                                 </Form.Select>
-                                <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
+                                <button className='btn cta mx-2' onClick={handleBulkDelete}>Apply</button>
                               </div>
                             </td>
                             <td colSpan={4}>

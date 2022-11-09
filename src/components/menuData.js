@@ -31,8 +31,24 @@ const menuData = {
                     link: "/superadmin/comprehensive"
                 },
                 {
-                    name: "Windscreen",
+                    name: "Fire",
                     link: "/superadmin/windscreen"
+                },
+                {
+                    name: "Travel",
+                    link: "/admin/new-import"
+                },
+                {
+                    name: "Agriculture",
+                    link: "/admin/transit"
+                },
+                {
+                    name: "Fidelity guarantee",
+                    link: "/admin/transit"
+                },
+                {
+                    name: "Public liability",
+                    link: "/admin/transit"
                 },
                 {
                     name: "New imports",
@@ -199,7 +215,19 @@ const menuData = {
                     link: "/supervisor/comprehensive"
                 },
                 {
-                    name: "Windscreen",
+                    name: "Fire",
+                    link: "/supervisor/windscreen"
+                },
+                {
+                    name: "Travel",
+                    link: "/supervisor/windscreen"
+                },
+                {
+                    name: "Personal accident",
+                    link: "/supervisor/windscreen"
+                },
+                {
+                    name: "GPA",
                     link: "/supervisor/windscreen"
                 },
                 {
