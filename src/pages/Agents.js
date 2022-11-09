@@ -222,12 +222,12 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
                 <div></div>
                 {authClaims.supervisor && 
                   <Link to="/supervisor/add-agents" className="classic">
-                      <button className="btn btn-primary cta m-2">Add Agent</button>
+                      <button className="btn cta m-2">Add Agent</button>
                   </Link>
                 }
                 {authClaims.admin && 
                   <Link to="/admin/add-agent" className="classic">
-                      <button className="btn btn-primary cta m-2">Add Agent</button>
+                      <button className="btn cta m-2">Add Agent</button>
                   </Link>
                 }
             </div>
@@ -378,7 +378,7 @@ const [ openPromo, handleOpenPromo, handleClosePromo ] = useDialog()
                                     <option value="">Bulk Action</option>
                                     <option value="delete">Delete</option>
                                 </Form.Select>
-                                <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
+                                <button className='btn cta mx-2' onClick={handleBulkDelete}>Apply</button>
                               </div>
                             </td>
                             <td colSpan={4}>

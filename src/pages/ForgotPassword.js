@@ -59,7 +59,7 @@ function ForgotPassword() {
         <input
           type="submit"
           id="forgotSubmit"
-          className="btn btn-primary cta"
+          className="btn cta"
           value="Submit"
         />
 

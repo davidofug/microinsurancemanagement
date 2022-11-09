@@ -202,7 +202,7 @@ function Reports({parent_container}) {
                 placeholder={"Search for Report"} value={searchText} handleSearch={handleSearch}
               />
               <div style={{display: "flex", justifyContent: "flex-end"}}>
-                <button onClick={() => generateReport("myTable")} className="btn btn-primary cta">Export <MdDownload /></button> 
+                <button onClick={() => generateReport("myTable")} className="btn cta">Export <MdDownload /></button> 
               </div>
               
           </div>

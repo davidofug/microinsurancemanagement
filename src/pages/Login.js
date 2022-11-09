@@ -131,7 +131,7 @@ function Login() {
         <div id="submit_login">
           <input
             type="submit"
-            className="btn btn-primary cta"
+            className="btn cta"
             value="Login"
           />
           <Link to="/forgot-password">

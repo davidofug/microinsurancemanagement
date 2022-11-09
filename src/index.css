@@ -259,10 +259,21 @@ th{
 .cta{
     /* height: 40px; */
     /* width: 120px; */
-    background-color: #1475CF;
+    background-color: #000;
+    color: #fff;
     margin: 0;
 }
 
+.btn{
+    background-color: #000 !important;
+    color: #fff;
+    margin: 0;
+}
+
+.btn:hover{
+    color: white !important;
+    background-color: #0d0a01 !important;
+}
 
 #add_client_group {
     display: flex;
