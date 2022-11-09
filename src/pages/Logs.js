@@ -79,7 +79,7 @@ function Logs({parent_container}) {
                         <button onClick={() => {
                             submitLogout()
                             
-                        }} className='btn btn-primary cta mb-2'>check out</button>
+                        }} className='btn cta mb-2'>check out</button>
     
                         :
                             <div style={{backgroundColor: "#fff", width: "95%", margin: "10px 0", padding: "10px", border: "1px solid #dedee0", borderLeft: "5px solid #00a32a", borderRight: "1px solid #dedee0"}}>
@@ -88,7 +88,7 @@ function Logs({parent_container}) {
                 :
                     <button onClick={() => {
                         submitLogin()
-                    }} className='btn btn-primary cta'>check in</button>
+                    }} className='btn cta'>check in</button>
                 }
                 <div></div>
             </div>
