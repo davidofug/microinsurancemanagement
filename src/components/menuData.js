@@ -110,7 +110,7 @@ const menuData = {
             subMenu: [
                 {
                     name: "Add Policy",
-                    link: "/admin/motor-third-party"
+                    link: "/admin/add-policy"
                 },
                 {
                     name: "MTP",
@@ -121,17 +121,25 @@ const menuData = {
                     link: "/admin/comprehensive"
                 },
                 {
-                    name: "Windscreen",
+                    name: "Fire",
                     link: "/admin/windscreen"
                 },
                 {
-                    name: "New imports",
+                    name: "Travel",
                     link: "/admin/new-import"
                 },
                 {
-                    name: "Transit",
+                    name: "Agriculture",
                     link: "/admin/transit"
-                }
+                },
+                {
+                    name: "Fidelity guarantee",
+                    link: "/admin/transit"
+                },
+                {
+                    name: "Public liability",
+                    link: "/admin/transit"
+                },
             ]
         },
         {

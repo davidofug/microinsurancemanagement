@@ -2,6 +2,7 @@ import PrivateRoute  from './PrivateRoute'
 import Organisations from '../pages/admin/Organisations'
 import Supervisors from '../pages/admin/Supervisors'
 import AddOrganisation from '../pages/admin/AddOrganisation'
+import AddPolicy from '../pages/admin/AddPolicy'
 import StickerMgt from '../pages/admin/StickerMgt'
 import AddStickerRange from '../pages/admin/AddStickerRange'
 import PolicyRenew from '../pages/PolicyDetails/PolicyRenew'
@@ -19,6 +20,9 @@ function AdminRoutes({largeContentClass}) {
             </PrivateRoute>
             <PrivateRoute path="/admin/add-organisations" >
                 <AddOrganisation parent_container={largeContentClass}/>
+            </PrivateRoute>
+            <PrivateRoute path="/admin/add-policy" >
+                <AddPolicy parent_container={largeContentClass}/>
             </PrivateRoute>
             <PrivateRoute path="/admin/view-log-trail" >
                 <Logs parent_container={largeContentClass}/>

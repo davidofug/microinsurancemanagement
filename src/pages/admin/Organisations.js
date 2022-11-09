@@ -31,7 +31,7 @@ export default function Organisations({parent_container}) {
   const [ organisationsPerPage ] = useState(10);
   const [ clickedIndex, setClickedIndex ] = useState(null)
   const [ singleDoc, setSingleDoc ] = useState({});
-  useEffect(() => {document.title = "Organisations - Micro Insurance Management";getOrganisations()}, []);
+  useEffect(() => {document.title = "Organisations - SWICO";getOrganisations()}, []);
 
   // clickoutside
   window.onclick = (event) => {
