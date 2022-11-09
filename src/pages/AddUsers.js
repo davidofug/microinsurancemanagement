@@ -416,9 +416,9 @@ function AddUsers({role, parent_container}) {
                         }
                         {fields.name !== "" & fields.email !== ""
                         ?
-                            <div id='submit' ><input type="submit" value="Submit" className='btn cta submitcta' /></div>
+                            <div id='submit' ><input type="submit" value="Submit" className='btn btn-dark cta submitcta' /></div>
                         :
-                            <div id='submit' ><input type="button" value="Submit" className='btn cta submitcta' style={{background: "rgba(20, 117, 207, 0.4)", border: "1px solid #a1c8ec"}}/></div>
+                            <div id='submit' ><input type="button" value="Submit" className='btn btn-dark cta submitcta' style={{background: "rgba(20, 117, 207, 0.4)", border: "1px solid #a1c8ec"}}/></div>
                         }
 
 

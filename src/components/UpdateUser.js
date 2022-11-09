@@ -37,7 +37,7 @@ function UpdateUser({currentUser, handleEditFormSubmit, meta}) {
                 </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-          <Button variant="primary" type="submit" id="submit"><div style={{justifyContent: "center", alignItems: "center"}}><MdSave /> Save</div></Button>
+          <Button variant="dark" type="submit" id="submit"><div style={{justifyContent: "center", alignItems: "center"}}><MdSave /> Save</div></Button>
           </Modal.Footer>
         </form>
       </>
