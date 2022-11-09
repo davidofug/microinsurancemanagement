@@ -265,14 +265,14 @@ th{
 }
 
 .btn{
-    background-color: #000 !important;
+    background-color: #1f1f1f !important;
     color: #fff;
     margin: 0;
 }
 
 .btn:hover{
     color: white !important;
-    background-color: #0d0a01 !important;
+    background-color: #353935 !important;
 }
 
 #add_client_group {
@@ -649,7 +649,7 @@ left: auto;
 
   .copy__btn {
     position: absolute;
-    background: #1475cf;
+    background: #1f1f1f;
     color: #fff;
     border: none;
     height: 42px;

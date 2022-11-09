@@ -1,9 +1,6 @@
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { MdLogout  } from 'react-icons/md'
-import DefaultAvatar from '../DefaultAvatar'
-import { Badge } from 'react-bootstrap'
 
 export default function SideBar({role, user, displayName}){
 

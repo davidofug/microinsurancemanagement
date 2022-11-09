@@ -95,11 +95,13 @@
 
 .selected{
     color: #fff;
-    background-color: #1475cf;
+    /* background-color: #1475cf; */
+    background-color: #1f1f1f;
 }
 .selected:hover{
     color: #fff;
-    background-color: #1475cf;
+    /* background-color: #1475cf; */
+    background-color: #1f1f1f;
 }
 
 
