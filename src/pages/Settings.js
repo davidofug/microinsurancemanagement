@@ -172,7 +172,7 @@ function Settings({ parent_container }) {
                 <p>{currentUser.email}</p>
               </div>
             </div>
-            <button className="btn btn-primary cta" onClick={handleShow}>
+            <button className="btn cta" onClick={handleShow}>
               <AiOutlineEdit />
             </button>
           </div>
@@ -314,7 +314,7 @@ function Settings({ parent_container }) {
           <input
             type="submit"
             value="Update Password"
-            className="btn btn-primary cta"
+            className="btn cta"
           />
         </form>
       </div>

@@ -140,7 +140,7 @@ const getClients = () => {
                 <div></div>
                 {!authClaims.admin && !authClaims.superadmin &&
                   <Link to={authClaims.supervisor && "/supervisor/add-clients" || authClaims.agent && "/agent/add-clients"} className="classic">
-                      <button className='btn btn-primary cta m-2'>Add Client</button>
+                      <button className='btn cta m-2'>Add Client</button>
                   </Link>
                 }
             </div>

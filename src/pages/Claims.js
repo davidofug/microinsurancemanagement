@@ -226,7 +226,7 @@ export default function Claims({parent_container}) {
         <div id="add_client_group">
           <div></div>
           <Link to="/agent/add-claim" className="classic">
-            <button className="btn btn-primary cta m-2">Add Claim</button>
+            <button className="btn cta m-2">Add Claim</button>
           </Link>
         </div>
       }
@@ -235,7 +235,7 @@ export default function Claims({parent_container}) {
         <div id="add_client_group">
           <div></div>
           <Link to="/supervisor/add-claim" className="classic">
-            <button className="btn btn-primary cta">Add Claim</button>
+            <button className="btn cta">Add Claim</button>
           </Link>
         </div>
       }

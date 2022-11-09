@@ -72,7 +72,7 @@ function Logs({parent_container}) {
                     ?
                         <button onClick={() => {
                             submitLogin()
-                        }} className='btn btn-primary cta mb-2'>check in</button>
+                        }} className='btn cta mb-2'>check in</button>
                         
                     :
                     (new Date().toISOString().slice(0, 10)) !== todayAttendence?.checkout.slice(0, 10) ?

@@ -247,7 +247,7 @@ function AddClaims({parent_container}) {
                             <UploadFile setAttachedDocs={setAttachedDocs} attachedDocs={attachedDocs} />
                         </Form.Group>
                         
-                        <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
+                        <div id='submit' ><input type="submit" value="Submit" className='btn cta' /></div>
                     </Form>
                     </div>
             </div>
