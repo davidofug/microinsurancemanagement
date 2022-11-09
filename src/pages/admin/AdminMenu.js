@@ -1,6 +1,7 @@
 import menuData from "../../components/menuData";
 import "../../assets/styles/menu.css";
 import logo from '../../assets/imgs/SWICO-LOGO.png'
+import logoSm from "../../assets/imgs/SWICO-LOGO-sm.png";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import MobileNav from "../../components/menu/MobileNav";
 import SideBar from "../../components/menu/SideBar";
@@ -47,7 +48,6 @@ export default function AdminMenu({ minimiseMenu, maximiseMenu }) {
         <nav className="sidebar">
             <div id='brand'>
                 <img width={150} src={logo} alt="SWICO" />
-                {/* <h1>Your Logo</h1> */}
                 <div id="arrowCircle" onClick={() => {
                         hideToggleMenu()
                         minimiseMenu()
@@ -89,6 +89,7 @@ export default function AdminMenu({ minimiseMenu, maximiseMenu }) {
       ) : (
         <nav className='sidebar-m'>
                 <section id='brand_m'>
+                <img width={35} src={logoSm} alt="SWICO" />
                     <div id="arrowOutCircle" onClick={() => {
                         showToggleMenu()
                         maximiseMenu()

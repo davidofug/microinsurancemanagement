@@ -12,7 +12,7 @@ import "../styles/ctas.css"
 
 function Logs({parent_container}) {
 
-    useEffect(() => {document.title = 'Logtrails - Micro Insurance Management'; getLogs()}, [])
+    useEffect(() => {document.title = 'Logtrails - SWICO'; getLogs()}, [])
 
     const [ logID, setLogID ] = useState(null)
     const [ attendence, setAttendence] = useState([])

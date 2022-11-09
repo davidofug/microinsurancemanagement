@@ -120,7 +120,7 @@ function Policies({cat, btn_txt, pol, parent_container}) {
     const { currencies, make, categories } = dynamicFields
 
     useEffect(() => {
-        document.title = 'Policies - Micro Insurance Management'
+        document.title = 'Policies - SWICO'
 
         listUsers().then(({data}) => {
             setExistingClients(data.filter(user => user?.role?.Customer))
