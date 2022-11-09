@@ -52,7 +52,7 @@ const menuData = {
         },
         {
             number: 5,
-            name: "Sytem Logs",
+            name: "System Logs",
             icon: <GrSettingsOption />,
             link: "/superadmin/system-logs"
         }
@@ -109,6 +109,10 @@ const menuData = {
             link: "/admin/motor-third-party",
             subMenu: [
                 {
+                    name: "Add Policy",
+                    link: "/admin/add-policy"
+                },
+                {
                     name: "MTP",
                     link: "/admin/motor-third-party"
                 },
@@ -117,17 +121,25 @@ const menuData = {
                     link: "/admin/comprehensive"
                 },
                 {
-                    name: "Windscreen",
+                    name: "Fire",
                     link: "/admin/windscreen"
                 },
                 {
-                    name: "New imports",
+                    name: "Travel",
                     link: "/admin/new-import"
                 },
                 {
-                    name: "Transit",
+                    name: "Agriculture",
                     link: "/admin/transit"
-                }
+                },
+                {
+                    name: "Fidelity guarantee",
+                    link: "/admin/transit"
+                },
+                {
+                    name: "Public liability",
+                    link: "/admin/transit"
+                },
             ]
         },
         {

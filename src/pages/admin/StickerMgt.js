@@ -26,7 +26,7 @@ import '../../styles/ctas.css'
 
 
 export default function StickerMgt({parent_container}) {
-    useEffect(() => {document.title = 'Stickers Management - Micro Insurance Management'; getStickerRange()}, [])
+    useEffect(() => {document.title = 'Stickers Management - SWICO'; getStickerRange()}, [])
 
     const [stickerRange, setStickerRange] = useState([]);
     const rangesCollectionRef = collection(db, "ranges");
@@ -180,7 +180,7 @@ export default function StickerMgt({parent_container}) {
                             <br></br>
                             {/* <Form.Control type="text" placeholder="Enter sticker Number" id="returned"/> */}
                             <input type='text' placeholder='Enter sticker Number' id='returnedArray' />
-                            <button type="button" className="btn btn-primary cta" onClick={() => {
+                            <button type="button" className="btn cta" onClick={() => {
                               // console.log(document.getElementById('returnedArray').value)
 
                               if(document.getElementById('returnedArray').value !== '' && !returned.includes(document.getElementById('returnedArray').value)){
@@ -201,7 +201,7 @@ export default function StickerMgt({parent_container}) {
                             )}
 
                         </Form.Group>
-                        <input type="submit" className='btn btn-primary cta' value="Submit" />
+                        <input type="submit" className='btn cta' value="Submit" />
                       </form>
                       
                   
@@ -220,7 +220,7 @@ export default function StickerMgt({parent_container}) {
                     <div id="add_client_group" className="mt-3">
                       <div></div>
                       <Link to="/admin/sticker-number">
-                        <button className="btn btn-primary cta">Add Sticker Range</button>
+                        <button className="btn cta">Add Sticker Range</button>
                       </Link>
                     </div>
 

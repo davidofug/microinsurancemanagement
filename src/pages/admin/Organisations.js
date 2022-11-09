@@ -31,7 +31,7 @@ export default function Organisations({parent_container}) {
   const [ organisationsPerPage ] = useState(10);
   const [ clickedIndex, setClickedIndex ] = useState(null)
   const [ singleDoc, setSingleDoc ] = useState({});
-  useEffect(() => {document.title = "Organisations - Micro Insurance Management";getOrganisations()}, []);
+  useEffect(() => {document.title = "Organisations - SWICO";getOrganisations()}, []);
 
   // clickoutside
   window.onclick = (event) => {
@@ -98,7 +98,7 @@ export default function Organisations({parent_container}) {
       <div id="add_client_group">
         <div></div>
         <Link to="/admin/add-organisations">
-          <button className="btn btn-primary cta m-3">Add Organisation</button>
+          <button className="btn cta m-3">Add Organisation</button>
         </Link>
       </div>
 

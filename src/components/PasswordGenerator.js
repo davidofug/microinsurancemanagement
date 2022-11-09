@@ -46,7 +46,7 @@ function PasswordGenerator({ password, setPassword}) {
 
   return (
     <Form.Group className="mb-3" style={{display: "flex", flexDirection: "column"}}>
-    <button type='button' className='btn btn-primary cta mb-3' onClick={handleGeneratePassword}>Generate Password</button>
+    <button type='button' className='btn cta mb-3' onClick={handleGeneratePassword}>Generate Password</button>
     <div className='generator__password'>
         <h3 className='password-h3'>{password}</h3>
         <button type='button' className='copy__btn' onClick={handleCopyPassword}>
