@@ -9,7 +9,7 @@
     /* visibility: hidden; */
     display: none;
     opacity: 0;
-    background: rgba(97, 147, 240, 0.4);
+    background: rgba(0, 0, 0, 0.3);
     /* background: rgba(50, 80, 80, 0.8); */
     transition: opacity 300ms ease, visibility 300ms ease;
     will-change: opacity, visibility;
@@ -47,24 +47,12 @@
   .myModal.is-active .modal__content {
     transform: translateY(0);
   }
-  
-  /* Styling */
-  /* * {
-    font-family: Arial, sans-serif;
-    color: #232527;
-  }
-  *:focus {
-    outline: none;
-  }
-  
-  body {
-    padding: 50px 0;
-  } */
+
   
   .wack button {
     display: table;
-    line-height: 30px;
-    padding: 0 50px;
+    /* line-height: 30px; */
+    padding: 10px 15px;
     border: none;
     margin: 0 auto;
     border-radius: 3px;
@@ -98,9 +86,18 @@
   }
   
   #noButton{
-    background-color: crimson;
+    background-color: white;
+    color: #121212;
+    border: 1px solid #121212;
   }
   
   #yesButton{
-    background-color: darkcyan;
+    background-color: #1f1f1f;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  #yesButton:hover{
+    background-color: rgb(206, 16, 54);
   }

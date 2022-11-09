@@ -144,7 +144,7 @@ export function ClaimModelNotification({ singleDoc, handleClose, changeClaimStat
 
           {authClaims.admin &&
             <Modal.Footer>
-              <Button variant="primary" type="submit" onClick={handleClose}id="submit">
+              <Button variant="dark" type="submit" onClick={handleClose}id="submit">
                 Submit claim settlement
               </Button>
             </Modal.Footer>
@@ -365,6 +365,7 @@ export function ClaimModel({singleDoc, handleClose, handleFieldChange, modalSubm
           </Modal.Body>
           <Modal.Footer>
           <Button
+              variant="dark"
               type="submit"
               onClick={handleClose}
               id="submit"
