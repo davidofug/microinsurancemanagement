@@ -11,7 +11,7 @@ function UsersContainer({authClaims, users}) {
                 ? <>
                 <h5 className="heading">
                     {authClaims.superadmin && <>Admins</>}
-                    {authClaims.admin && <>Suupervisor</>}
+                    {authClaims.admin && <>Supervisor</>}
                     {authClaims.supervisor && <>Agents</>}
                     {authClaims.agent && <>Clients</>}
                 </h5>

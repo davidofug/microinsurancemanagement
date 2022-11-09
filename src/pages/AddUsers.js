@@ -225,7 +225,12 @@ function AddUsers({role, parent_container}) {
                                         <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
                                     </Form.Group>
                                     <Row className="mb-3">
-                                        <Form.Group className='addFormGroups'>
+                                        <Form.Group className='addFormGroups'
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems: "start",
+                                          }} >
                                             <Form.Label htmlFor='email'>Email Address</Form.Label>
                                             <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
                                         </Form.Group>
@@ -282,7 +287,11 @@ function AddUsers({role, parent_container}) {
                                         <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
                                     </Form.Group>
                                     <Row>
-                                        <Form.Group className='addFormGroups'>
+                                        <Form.Group className='addFormGroups' style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}>
                                             <Form.Label htmlFor='email'>Email Address</Form.Label>
                                             <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
                                         </Form.Group>
@@ -316,11 +325,19 @@ function AddUsers({role, parent_container}) {
                                     <Form.Control id="name" placeholder="Name" onChange={handleFieldChange} required/>
                                 </Form.Group>
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} className='addFormGroups'>
+                                    <Form.Group as={Col} className='addFormGroups' style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}>
                                         <Form.Label htmlFor='email'>Email Address</Form.Label>
                                         <Form.Control type="email" id="email" placeholder="Enter email" onChange={handleFieldChange} />
                                     </Form.Group>
-                                    <Form.Group as={Col} className='addFormGroups'>
+                                    <Form.Group as={Col} className='addFormGroups' style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}>
                                         <Form.Label htmlFor='gender'>Gender <span className='required'>*</span></Form.Label>
                                         <div className='gender-options'>
                                             <div>
@@ -399,9 +416,9 @@ function AddUsers({role, parent_container}) {
                         }
                         {fields.name !== "" & fields.email !== ""
                         ?
-                            <div id='submit' ><input type="submit" value="Submit" className='btn cta submitcta' /></div>
+                            <div id='submit' ><input type="submit" value="Submit" className='btn btn-dark cta submitcta' /></div>
                         :
-                            <div id='submit' ><input type="button" value="Submit" className='btn cta submitcta' style={{background: "rgba(20, 117, 207, 0.4)", border: "1px solid #a1c8ec"}}/></div>
+                            <div id='submit' ><input type="button" value="Submit" className='btn btn-dark cta submitcta' style={{background: "rgba(20, 117, 207, 0.4)", border: "1px solid #a1c8ec"}}/></div>
                         }
 
 

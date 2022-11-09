@@ -2,6 +2,8 @@ import menuData from '../../components/menuData'
 import '../../assets/styles/menu.css'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import logo from '../../assets/imgs/SWICO-LOGO.png'
+import logoSm from "../../assets/imgs/SWICO-LOGO-sm.png";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi'
 import MobileNav from '../../components/menu/MobileNav'
 import SideBar from '../../components/menu/SideBar'
@@ -48,8 +50,7 @@ function AgentMtpMenu({minimiseMenu, maximiseMenu}) {
             ?
                     <nav className="sidebar">
                         <div id='brand'>
-                            {/* <img src={logo} width={150} alt="Britam" /> */}
-                            <h1 className='h1 logo-text mb-5'>Your Logo</h1>
+                        <img width={150} src={logo} alt="SWICO" />
                             <div id="arrowCircle" onClick={() => {
                                     hideToggleMenu()
                                     minimiseMenu()
@@ -89,6 +90,7 @@ function AgentMtpMenu({minimiseMenu, maximiseMenu}) {
             : 
             <nav className='sidebar-m'>
                 <section id='brand_m'>
+                <img width={35} src={logoSm} alt="SWICO" />
                     <div id="arrowOutCircle" onClick={() => {
                         showToggleMenu()
                         maximiseMenu()
