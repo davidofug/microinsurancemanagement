@@ -178,7 +178,7 @@ export default function AddPolicy({ parent_container }) {
           </div>
         )}
 
-        <div id="addForm">
+        <div id="addPolicyForm">
           <Form name="form2" onSubmit={createOrganisation}>
             <div className="organisation-columns">
               <div
@@ -201,7 +201,7 @@ export default function AddPolicy({ parent_container }) {
                 <Form.Group className="mb-3">
                   <Form.Label htmlFor="address">Description</Form.Label>
                   <Form.Control
-                    type="textarea"
+                    as={"textarea"}
                     id="address"
                     placeholder="Enter description"
                     onChange={handleFieldChange}
@@ -210,7 +210,7 @@ export default function AddPolicy({ parent_container }) {
               </div>
             </div>
             <div id="submit">
-              <input type="submit" value="Submit" className="btn cta" />
+              <input type="submit" value="Add Policy" className="btn cta" />
             </div>
           </Form>
         </div>
