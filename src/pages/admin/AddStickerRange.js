@@ -112,7 +112,7 @@ function AddStickerRange({parent_container}) {
                             </datalist> 
                         </Form.Group>
                     </Row>
-                    <input type="submit" className='btn btn-primary cta' value="Submit" />
+                    <input type="submit" className='btn cta' value="Submit" />
                 </form>
             </div>
             <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>

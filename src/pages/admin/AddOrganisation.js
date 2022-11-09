@@ -223,7 +223,7 @@ export default function AddOrganisation({parent_container}) {
                                     <PasswordGenerator password={password} setPassword={setPassword} />
                                 </div>
                             </div>
-                            <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
+                            <div id='submit' ><input type="submit" value="Submit" className='btn cta' /></div>
                         </Form>
                 </div>
             </div>

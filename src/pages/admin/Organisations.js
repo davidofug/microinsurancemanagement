@@ -98,7 +98,7 @@ export default function Organisations({parent_container}) {
       <div id="add_client_group">
         <div></div>
         <Link to="/admin/add-organisations">
-          <button className="btn btn-primary cta m-3">Add Organisation</button>
+          <button className="btn cta m-3">Add Organisation</button>
         </Link>
       </div>
 

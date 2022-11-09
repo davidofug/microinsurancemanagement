@@ -109,6 +109,10 @@ const menuData = {
             link: "/admin/motor-third-party",
             subMenu: [
                 {
+                    name: "Add Policy",
+                    link: "/admin/motor-third-party"
+                },
+                {
                     name: "MTP",
                     link: "/admin/motor-third-party"
                 },
