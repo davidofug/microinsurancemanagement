@@ -659,3 +659,9 @@ addFormGroups {
   flex-direction: column;
   align-items: start;
 }
+
+/* addPolicyForm */
+#addPolicyForm{
+  padding: 10px;
+  width: 100%;
+}
