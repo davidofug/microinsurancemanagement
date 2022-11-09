@@ -1,4 +1,3 @@
-import logo from '../../assets/imgs/britam-logo2.png'
 import { Form } from 'react-bootstrap'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom';

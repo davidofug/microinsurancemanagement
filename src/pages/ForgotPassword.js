@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
-import logo from "../assets/imgs/britam-logo.png";
+import logo from "../assets/imgs/SWICO-LOGO.png";
 import { Link, Redirect } from "react-router-dom";
 import { sendPasswordResetEmail, getAuth } from 'firebase/auth'
 
@@ -22,7 +22,7 @@ function ForgotPassword() {
       setCurrentUser(loggedIn);
       setLogin(loggedIn);
     }
-    document.title = "Micro Insurance Management";
+    document.title = "Welcome to Statewide Insurance";
   });
 
   const handleResetPassword = (event) => {
@@ -41,8 +41,7 @@ function ForgotPassword() {
   return (
     <div className="auth-wrapper">
       <ToastContainer />
-      {/* <img src={logo} alt="Britam" /> */}
-      <h1 className='h1 logo-text mb-5'>Your Logo</h1>
+      <img src={logo} width={150} alt="SWICO" />
       <form onSubmit={handleResetPassword}>
         <p>Forgot Password?</p>
         <p id="enter">Enter your e-mail address to reset your password</p>

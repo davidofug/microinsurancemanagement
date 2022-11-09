@@ -1,4 +1,4 @@
-import logo from '../../assets/imgs/britam-logo2.png'
+// import logo from '../../assets/imgs/britam-logo2.png'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';

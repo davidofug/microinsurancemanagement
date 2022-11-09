@@ -22,7 +22,7 @@ function Dashboard({parent_container}) {
     const [claimsSettled, setClaimsSettled] = useState([])
 
     useEffect(() => {
-        document.title = 'Micro Insurance Management - Dashboard'
+        document.title = 'Dashboard - Statewide Insurance'
 
         const listUsers = httpsCallable(functions, 'listUsers')
 
@@ -80,7 +80,7 @@ function Dashboard({parent_container}) {
 
     return (
             <div className='components'>
-                <Header title="Welcome to Micro Insurance Management" subtitle="WITH YOU EVERY STEP OF THE WAY" className="heading"/>
+                <Header title="Welcome to Statewide Insurance." subtitle="WITH YOU EVERY STEP OF THE WAY" className="heading"/>
 
                 <div className="componentsData">
                     <div id="first-row" className={`mb-5 first-row ${parent_container ? 'dashboard-cards' : 'expanded-menu-dashboard-cards'}`}  style={{display:"flex", width: "100%", justifyContent: "space-between"}}>

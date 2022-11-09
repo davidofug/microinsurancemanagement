@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
 import { Redirect, Link } from "react-router-dom";
-import logo from "../assets/imgs/britam-logo2.png";
+import logo from "../assets/imgs/SWICO-LOGO.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -27,7 +27,7 @@ function Login() {
 
   useEffect(() => {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
-    document.title = "Micro Insurance Management - With you every step of the way";
+    document.title = "Welcome to Statewide Insurance";
     onAuthStateChange(setCurrentUser, setAuthClaims, setLoading);
     // return () => { unsubscribe() }
     // currentUser?.loggedIn && history.push(from);
@@ -76,8 +76,7 @@ function Login() {
 
   return (
     <div className="auth-wrapper">
-      {/* <img src={logo} width={150} alt="Britam" /> */}
-      <h1 className='h1 logo-text mb-5'>Your Logo</h1>
+      <img src={logo} width={150} alt="SWICO" />
       <form action="" onSubmit={handleSignIn}>
         <p>Enter Email and Password to sign in</p>
         {error && <Alert variant="danger">{error}</Alert>}
