@@ -365,7 +365,6 @@ export function ClaimModel({singleDoc, handleClose, handleFieldChange, modalSubm
           </Modal.Body>
           <Modal.Footer>
           <Button
-              variant="primary"
               type="submit"
               onClick={handleClose}
               id="submit"

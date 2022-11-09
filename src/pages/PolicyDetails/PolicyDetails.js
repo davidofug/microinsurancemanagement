@@ -201,7 +201,7 @@ function PolicyDetails({parent_container}) {
                     </Modal.Body>
                 }
                 <Modal.Footer className="hideOnPrint">
-                    <button className='btn btn-primary cta hideOnPrint' onClick={() => {
+                    <button className='btn cta hideOnPrint' onClick={() => {
                         window.print()
                         submitStickerNo()
                     }} >Print</button>
@@ -297,15 +297,15 @@ function PolicyDetails({parent_container}) {
                             <td>
                                 {policy.stickersDetails[0].status === 'paid' &&
                                     <tr>
-                                        <span className='btn btn-warning mb-2 mt-2' onClick={handleShow}>Print Sticker</span>
+                                        <div className='btn-warning mb-2 mt-2' onClick={handleShow}>Print Sticker</div>
                                     </tr>
                                 }
                                     <tr>
-                                        <span className='btn btn-danger mb-2 mt-2' 
+                                        <div className='btn-danger mb-2 mt-2' 
                                         onClick={(event) => {
                                             setOpenToggleCancel(true)
                                             event.stopPropagation()
-                                        }}>Cancel Sticker</span>
+                                        }}>Cancel Sticker</div>
                                     </tr>
                             </td>
                         </tr>
