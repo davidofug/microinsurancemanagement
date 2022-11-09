@@ -19,7 +19,7 @@ import '../styles/ctas.css'
 
 function AddClaims({parent_container}) {
 
-    useEffect(() => document.title = 'Micro Insurance Management - Add Claims', [])
+    useEffect(() => document.title = 'Add Claims - SWICO', [])
 
     const [ isLoading, setIsLoading ] = useState(false)
     // initialising the logs doc.

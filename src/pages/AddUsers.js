@@ -23,7 +23,7 @@ import Chat from '../components/messenger/Chat'
 function AddUsers({role, parent_container}) {
     const { authClaims } = useAuth()
     const addUser = httpsCallable(functions, 'addUser')
-    useEffect(() => { document.title = 'Micro Insurance Management - Add Users' }, [])
+    useEffect(() => { document.title = 'Add Users - SWICO' }, [])
 
     const [ comprehensive, setComprehensive ] = useState(false)
     const [ windscreen, setWindscreen ] = useState(false)

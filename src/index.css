@@ -35,6 +35,7 @@ body, html{
     position: absolute;
     left: 238px;
     background-color: #fff;
+    cursor: pointer;
 }
 
 #arrowOutCircle{
@@ -48,6 +49,7 @@ body, html{
     position: absolute;
     left: 59px;
     background-color: #fff;
+    cursor: pointer;
 }
 
 

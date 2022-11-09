@@ -25,19 +25,19 @@ export default function Mtp({parent_container, policyCategory}) {
   useEffect(() => {
     
     if(policyCategory === 'mtp'){
-      document.title = "Motor Third Party - Micro Insurance Management"; 
+      document.title = "Motor Third Party - SWICO"; 
     }
     else if(policyCategory === 'comprehensive'){
-      document.title = "Comprehensive - Micro Insurance Management"; 
+      document.title = "Comprehensive - SWICO"; 
     }
     else if(policyCategory === 'windscreen'){
-      document.title = 'Windscreen - Micro Insurance Management'
+      document.title = 'Windscreen - SWICO'
     }
     else if(policyCategory === 'newImport'){
-      document.title = "New Import - Micro Insurance Management"; 
+      document.title = "New Import - SWICO"; 
     }
     else if(policyCategory === 'transit'){
-      document.title = 'Transit - Micro Insurance Management'
+      document.title = 'Transit - SWICO'
     }
 
     getMTP()

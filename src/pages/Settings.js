@@ -29,7 +29,7 @@ function Settings({ parent_container }) {
   console.log("hello world");
 
   useEffect(() => {
-    document.title = "User Profile - Micro Insurance Management";
+    document.title = "User Profile - SWICO";
     getUserMeta();
   }, []);
   const [show, handleShow, handleClose] = useDialog();

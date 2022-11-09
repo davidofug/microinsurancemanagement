@@ -22,7 +22,7 @@ function Dashboard({parent_container}) {
     const [claimsSettled, setClaimsSettled] = useState([])
 
     useEffect(() => {
-        document.title = 'Dashboard - Statewide Insurance'
+        document.title = 'Dashboard - SWICO'
 
         const listUsers = httpsCallable(functions, 'listUsers')
 
