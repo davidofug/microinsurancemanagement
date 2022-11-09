@@ -144,7 +144,7 @@ function Supervisors({parent_container}) {
             <div id="add_client_group">
                 <div></div>
                 <Link to="/admin/add-supervisor">
-                    <button className="btn btn-primary cta m-3">Add supervisor</button>
+                    <button className="btn cta m-3">Add supervisor</button>
                 </Link>               
             </div>
 
@@ -241,7 +241,7 @@ function Supervisors({parent_container}) {
                                     <option value="">Bulk Action</option>
                                     <option value="delete">Delete</option>
                                 </Form.Select>
-                                <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
+                                <button className='btn cta mx-2' onClick={handleBulkDelete}>Apply</button>
                               </div>
                             </td>
                             <td colSpan={4}>
