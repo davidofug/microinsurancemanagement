@@ -23,7 +23,7 @@ import Chat from '../components/messenger/Chat'
 function AddUsers({role, parent_container}) {
     const { authClaims } = useAuth()
     const addUser = httpsCallable(functions, 'addUser')
-    useEffect(() => { document.title = 'Micro Insurance Management - Add Users' }, [])
+    useEffect(() => { document.title = 'Add Users - SWICO' }, [])
 
     const [ comprehensive, setComprehensive ] = useState(false)
     const [ windscreen, setWindscreen ] = useState(false)
@@ -399,9 +399,9 @@ function AddUsers({role, parent_container}) {
                         }
                         {fields.name !== "" & fields.email !== ""
                         ?
-                            <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta submitcta' /></div>
+                            <div id='submit' ><input type="submit" value="Submit" className='btn cta submitcta' /></div>
                         :
-                            <div id='submit' ><input type="button" value="Submit" className='btn btn-primary cta submitcta' style={{background: "rgba(20, 117, 207, 0.4)", border: "1px solid #a1c8ec"}}/></div>
+                            <div id='submit' ><input type="button" value="Submit" className='btn cta submitcta' style={{background: "rgba(20, 117, 207, 0.4)", border: "1px solid #a1c8ec"}}/></div>
                         }
 
 

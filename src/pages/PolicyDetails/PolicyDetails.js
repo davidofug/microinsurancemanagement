@@ -1,4 +1,4 @@
-import logo from '../../assets/imgs/britam-logo2.png'
+// import logo from '../../assets/imgs/britam-logo2.png'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ import { Modal, Form, Col } from 'react-bootstrap'
 import useDialog from '../../hooks/useDialog'
 import useMediaQuery from '../../hooks/useMediaQuery'
 import useAuth from '../../contexts/Auth'
+import logo from '../../assets/imgs/SWICO-LOGO.png'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -18,7 +19,7 @@ import Chat from '../../components/messenger/Chat'
 import '../../styles/ctas.css'
 
 function PolicyDetails({parent_container}) {
-    useEffect(() => { document.title = "Sticker Details - Micro Insurance Management"; getMTP(); getStickerRange(); }, []);
+    useEffect(() => { document.title = "Sticker Details - SWICO"; getMTP(); getStickerRange(); }, []);
 
     const [ show, handleShow, handleClose ] = useDialog()
 
@@ -119,8 +120,7 @@ function PolicyDetails({parent_container}) {
             <ToastContainer />
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <div>
-                    {/* <img src={logo} width={150} height="auto" alt="britam" className='mb-3' /> */}
-                    <h1 className='h1 logo-text mb-5'>Your Logo</h1>
+                    <img src={logo} width={150} height="auto" alt="SWICO" className='mb-3' />
                 </div>
                 <div id="policyDetails">
                     <p>Receipt # 12801</p>
@@ -252,11 +252,10 @@ function PolicyDetails({parent_container}) {
 
             <div className='fromTo'>
                 <div id='from'>
-                    <b>Micro Insurance Management</b>
-                    <p>Plot Rd.</p>
-                    <p>Nakasero P.O.Box 36583 Kampala</p>
-                    <p>Uganda</p>
-                    <p>C: info@microinsurancemanagement.componentsData</p>
+                    <b>Statewide Insurance</b>
+                    <p>Plot 1, Bombo Road</p>
+                    <p>Kampala, Uganda</p>
+                    <p>C: swico@swico.co.ug</p>
                 </div>
                 {policy.clientDetails != undefined &&
                     <div id="to">

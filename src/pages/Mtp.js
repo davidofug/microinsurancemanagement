@@ -25,19 +25,19 @@ export default function Mtp({parent_container, policyCategory}) {
   useEffect(() => {
     
     if(policyCategory === 'mtp'){
-      document.title = "Motor Third Party - Micro Insurance Management"; 
+      document.title = "Motor Third Party - SWICO"; 
     }
     else if(policyCategory === 'comprehensive'){
-      document.title = "Comprehensive - Micro Insurance Management"; 
+      document.title = "Comprehensive - SWICO"; 
     }
     else if(policyCategory === 'windscreen'){
-      document.title = 'Windscreen - Micro Insurance Management'
+      document.title = 'Windscreen - SWICO'
     }
     else if(policyCategory === 'newImport'){
-      document.title = "New Import - Micro Insurance Management"; 
+      document.title = "New Import - SWICO"; 
     }
     else if(policyCategory === 'transit'){
-      document.title = 'Transit - Micro Insurance Management'
+      document.title = 'Transit - SWICO'
     }
 
     getMTP()
@@ -354,31 +354,31 @@ export default function Mtp({parent_container, policyCategory}) {
           {policyCategory === 'mtp'
           ?
             <Link to="/supervisor/add-mtp" className="classic">
-              <button className="btn btn-primary cta m-2">Add MTP</button>
+              <button className="btn cta m-2">Add MTP</button>
             </Link>
           :
           policyCategory === 'comprehensive' 
           ?
             <Link to="/supervisor/add-comprehensive" className="classic">
-              <button className="btn btn-primary cta m-2">Add Comprehensive</button>
+              <button className="btn cta m-2">Add Comprehensive</button>
             </Link>
           : 
           policyCategory === 'windscreen' 
           ?
             <Link to="/supervisor/add-windscreen" className="classic">
-              <button className="btn btn-primary cta m-2">Add Windscreen</button>
+              <button className="btn cta m-2">Add Windscreen</button>
             </Link>
           :
           policyCategory === 'newImport' 
           ?
             <Link to="/supervisor/add-newImport" className="classic">
-              <button className="btn btn-primary cta m-2">Add New Import</button>
+              <button className="btn cta m-2">Add New Import</button>
             </Link>
           :
           policyCategory === 'transit' 
           &&
             <Link to="/supervisor/add-transit" className="classic">
-              <button className="btn btn-primary cta m-2">Add Transit</button>
+              <button className="btn cta m-2">Add Transit</button>
             </Link>
           }
         </div>
@@ -391,31 +391,31 @@ export default function Mtp({parent_container, policyCategory}) {
         {policyCategory === 'mtp'
         ?
           <Link to="/agent/add-mtp" className="classic">
-            <button className="btn btn-primary cta m-2">Add MTP</button>
+            <button className="btn cta m-2">Add MTP</button>
           </Link>
         :
         policyCategory === 'comprehensive' 
         ?
           <Link to="/agent/add-comprehensive" className="classic">
-            <button className="btn btn-primary cta m-2">Add Comprehensive</button>
+            <button className="btn cta m-2">Add Comprehensive</button>
           </Link>
         : 
         policyCategory === 'windscreen' 
         ?
           <Link to="/agent/add-windscreen" className="classic">
-            <button className="btn btn-primary cta m-2">Add Windscreen</button>
+            <button className="btn cta m-2">Add Windscreen</button>
           </Link>
         :
         policyCategory === 'newImport' 
         ?
           <Link to="/agent/add-newImport" className="classic">
-            <button className="btn btn-primary cta m-2">Add New Import</button>
+            <button className="btn cta m-2">Add New Import</button>
           </Link>
         :
         policyCategory === 'transit' 
         &&
           <Link to="/agent/add-transit" className="classic">
-            <button className="btn btn-primary cta m-2">Add Transit</button>
+            <button className="btn cta m-2">Add Transit</button>
           </Link>
         }
       </div>
@@ -585,7 +585,7 @@ export default function Mtp({parent_container, policyCategory}) {
                    <option value="">Bulk Action</option>
                    <option value="delete">Delete</option>
                </Form.Select>
-               <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
+               <button className='btn cta mx-2' onClick={handleBulkDelete}>Apply</button>
              </div>
            </td>
 

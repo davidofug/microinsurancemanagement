@@ -23,7 +23,7 @@ import "../../styles/ctas.css"
 
 function Admins({parent_container}) {
 
-  useEffect(() => {document.title = 'Admins - Micro Insurance Management'; getAdmins()}, [])
+  useEffect(() => {document.title = 'Admins - SWICO'; getAdmins()}, [])
   
   // get Admins
   const [admins, setAdmins] = useState([]);

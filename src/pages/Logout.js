@@ -31,7 +31,7 @@ function Logout() {
                 You've logged out
             </h1>
             <Link to="/login">
-                <button className='btn btn-primary cta'>Login</button>
+                <button className='btn cta'>Login</button>
             </Link>
         </div>
     )

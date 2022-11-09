@@ -12,7 +12,7 @@ import "../styles/ctas.css"
 
 function Logs({parent_container}) {
 
-    useEffect(() => {document.title = 'Logtrails - Micro Insurance Management'; getLogs()}, [])
+    useEffect(() => {document.title = 'Logtrails - SWICO'; getLogs()}, [])
 
     const [ logID, setLogID ] = useState(null)
     const [ attendence, setAttendence] = useState([])
@@ -72,14 +72,14 @@ function Logs({parent_container}) {
                     ?
                         <button onClick={() => {
                             submitLogin()
-                        }} className='btn btn-primary cta mb-2'>check in</button>
+                        }} className='btn cta mb-2'>check in</button>
                         
                     :
                     (new Date().toISOString().slice(0, 10)) !== todayAttendence?.checkout.slice(0, 10) ?
                         <button onClick={() => {
                             submitLogout()
                             
-                        }} className='btn btn-primary cta mb-2'>check out</button>
+                        }} className='btn cta mb-2'>check out</button>
     
                         :
                             <div style={{backgroundColor: "#fff", width: "95%", margin: "10px 0", padding: "10px", border: "1px solid #dedee0", borderLeft: "5px solid #00a32a", borderRight: "1px solid #dedee0"}}>
@@ -88,7 +88,7 @@ function Logs({parent_container}) {
                 :
                     <button onClick={() => {
                         submitLogin()
-                    }} className='btn btn-primary cta'>check in</button>
+                    }} className='btn cta'>check in</button>
                 }
                 <div></div>
             </div>
