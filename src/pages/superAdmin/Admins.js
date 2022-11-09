@@ -147,7 +147,7 @@ function Admins({parent_container}) {
             <div id="add_client_group">
                 <div></div>
                 <Link to="/superadmin/add-admin" className="classic">
-                    <button className="btn btn-primary cta m-2">Add admin</button>
+                    <button className="btn cta m-2">Add admin</button>
                 </Link>
                 
             </div>
@@ -177,9 +177,9 @@ function Admins({parent_container}) {
                 <div id="search">
                       <SearchBar placeholder={"Search for Admins"} value={searchText} handleSearch={handleSearch} />
                       <div></div>
-                      <Form.Group className="m-3 categories" width="200px">
+                      {/* <Form.Group className="m-3 categories" width="200px">
                         <button className='btn btn-primary cta mb-3'>Export <MdDownload /></button>
-                      </Form.Group>
+                      </Form.Group> */}
                 </div>
 
                 {currentAdmins.length > 0
@@ -251,7 +251,7 @@ function Admins({parent_container}) {
                                     <option value="">Bulk Action</option>
                                     <option value="delete">Delete</option>
                                 </Form.Select>
-                                <button className='btn btn-primary cta mx-2' onClick={handleBulkDelete}>Apply</button>
+                                <button className='btn cta mx-2' onClick={handleBulkDelete}>Apply</button>
                               </div>
                             </td>
                             <td colSpan={4}>

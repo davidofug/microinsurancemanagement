@@ -31,7 +31,7 @@ export default function Mtp({parent_container, policyCategory}) {
       document.title = "Comprehensive - SWICO"; 
     }
     else if(policyCategory === 'windscreen'){
-      document.title = 'Windscreen - SWICO'
+      document.title = 'Fire - SWICO'
     }
     else if(policyCategory === 'newImport'){
       document.title = "New Import - SWICO"; 
@@ -326,7 +326,7 @@ export default function Mtp({parent_container, policyCategory}) {
             :
             policyCategory === 'comprehensive' ? 'Comprehensive'
             :
-            policyCategory === 'windscreen' ? 'Windscreen'
+            policyCategory === 'windscreen' ? 'Fire'
             :
             policyCategory === 'newImport' ? 'New Import'
             :
@@ -338,7 +338,7 @@ export default function Mtp({parent_container, policyCategory}) {
           :
           policyCategory === 'comprehensive' ? 'MANAGING COMPREHENSIVE POLICIES'
           :
-          policyCategory === 'windscreen' ? 'MANAGING WINDSCREEN POLICIES'
+          policyCategory === 'windscreen' ? 'MANAGING FIRE POLICIES'
           :
           policyCategory === 'newImport' ? 'MANAGING NEW IMPORT POLICIES'
           :

@@ -31,8 +31,24 @@ const menuData = {
                     link: "/superadmin/comprehensive"
                 },
                 {
-                    name: "Windscreen",
+                    name: "Fire",
                     link: "/superadmin/windscreen"
+                },
+                {
+                    name: "Travel",
+                    link: "/admin/new-import"
+                },
+                {
+                    name: "Agriculture",
+                    link: "/admin/transit"
+                },
+                {
+                    name: "Fidelity guarantee",
+                    link: "/admin/transit"
+                },
+                {
+                    name: "Public liability",
+                    link: "/admin/transit"
                 },
                 {
                     name: "New imports",
