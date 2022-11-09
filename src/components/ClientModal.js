@@ -85,7 +85,11 @@ const handleAgentPromotionDecline = () => {
                   defaultValue={singleDoc.meta.date_of_birth}
                 />
               </Form.Group>
-              <Form.Group as={Col} className='addFormGroups'>
+              <Form.Group as={Col} className='addFormGroups' style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}>
                                 <Form.Label htmlFor='gender' checked="male">Gender <span className='required'>*</span></Form.Label>
                                 <div className='gender-options'>
                                     {singleDoc.meta.gender === "male" ? 
@@ -114,22 +118,38 @@ const handleAgentPromotionDecline = () => {
                 </Form.Group>
               </Row>
 
-              <Form.Group as={Col} className='addFormGroups'>
+              <Form.Group as={Col} className='addFormGroups' style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}>
                   <Form.Label htmlFor='NIN'>NIN</Form.Label>
                   <Form.Control type="text" id="NIN" placeholder="Enter email" defaultValue={singleDoc.meta.NIN}/>
               </Form.Group>
 
-              <Form.Group as={Col} className='addFormGroups'>
+              <Form.Group as={Col} className='addFormGroups' style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}>
                   <Form.Label htmlFor='name'>Name</Form.Label>
                   <Form.Control type="text" id="name" defaultValue={singleDoc.name} />
               </Form.Group>
 
               <Row>
-                <Form.Group as={Col} className='addFormGroups'>
+                <Form.Group as={Col} className='addFormGroups' style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}>
                     <Form.Label htmlFor='phone'>Phone Number</Form.Label>
                     <Form.Control type="tel" id="phone" defaultValue={singleDoc.meta.phone} />
                 </Form.Group>
-                <Form.Group as={Col} className='addFormGroups'>
+                <Form.Group as={Col} className='addFormGroups' style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}>
                     <Form.Label htmlFor='licenseNo'>LicenseNo</Form.Label>
                     <Form.Control type="text" id="licenseNo" defaultValue={singleDoc.meta.licenseNo} />
                 </Form.Group>
@@ -149,7 +169,7 @@ const handleAgentPromotionDecline = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button
-                variant="primary"
+                variant="dark"
                 type="submit"
                 onClick={() => {
                   handleClose();
