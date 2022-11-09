@@ -19,6 +19,8 @@ function UpdateUser({currentUser, handleEditFormSubmit, meta}) {
                     <Form.Label htmlFor='newPassword'>Change Email</Form.Label>
                     <Form.Control type="email" id='email' placeholder="Enter new address" defaultValue={currentUser.email}/>
                 </Form.Group>
+                {meta &&
+                <>
                 <Form.Group className="mb-3">
                     <Form.Label htmlFor='newPassword'>Change Phone Number</Form.Label>
                     <Form.Control type="tel" id='phone' placeholder="Enter new phone number" defaultValue={meta.phone} />
@@ -27,6 +29,8 @@ function UpdateUser({currentUser, handleEditFormSubmit, meta}) {
                     <Form.Label htmlFor='newPassword'>Change Address</Form.Label>
                     <Form.Control type="text" id='address' placeholder="Enter new address" defaultValue={meta.address}/>
                 </Form.Group>
+                </>
+                }
                 <Form.Group className="mb-3">
                     <Form.Label htmlFor='submitPassword'>Enter Password to confirm</Form.Label>
                     <Form.Control type="password" id='submitPassword' placeholder="Enter password" required/>

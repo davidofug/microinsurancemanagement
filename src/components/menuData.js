@@ -52,7 +52,7 @@ const menuData = {
         },
         {
             number: 5,
-            name: "Sytem Logs",
+            name: "System Logs",
             icon: <GrSettingsOption />,
             link: "/superadmin/system-logs"
         }
