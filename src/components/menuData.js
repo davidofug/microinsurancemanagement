@@ -215,7 +215,19 @@ const menuData = {
                     link: "/supervisor/comprehensive"
                 },
                 {
-                    name: "Windscreen",
+                    name: "Fire",
+                    link: "/supervisor/windscreen"
+                },
+                {
+                    name: "Travel",
+                    link: "/supervisor/windscreen"
+                },
+                {
+                    name: "Personal accident",
+                    link: "/supervisor/windscreen"
+                },
+                {
+                    name: "GPA",
                     link: "/supervisor/windscreen"
                 },
                 {

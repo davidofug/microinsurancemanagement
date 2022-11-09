@@ -191,7 +191,7 @@ function PolicyDetails({parent_container}) {
                             </div>
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                                 <div></div>
-                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>Micro Insurance Management (U) Ltd.</p>
+                                <p style={{marginBottom: "0", fontSize: "0.8rem"}}>SWICO</p>
                             </div>
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                                 <div></div>
@@ -319,7 +319,7 @@ function PolicyDetails({parent_container}) {
             }
 
             <p><span className='prepared'>Prepared by:  </span><b>{policy.added_by_name}</b></p>
-            {policy.stickersDetails && policy.stickersDetails[0].status !== 'paid' && <button className='btn btn-success mb-3' onClick={handleShowPayment}>$ Proceed with Payments</button>}
+            {policy.stickersDetails && policy.stickersDetails[0].status !== 'paid' && <button className='btn-success mb-3' onClick={handleShowPayment}>$ Proceed with Payments</button>}
             <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container ? "chat-container" : "expanded-menu-chat-container"}>
               <Chat />
             </div> 

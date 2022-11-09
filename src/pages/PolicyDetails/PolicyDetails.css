@@ -29,6 +29,25 @@
     cursor: pointer;
 }
 
+.btn-danger:hover{
+    background-color: rgb(208, 15, 54) !important;
+}
+
+.btn-success{
+    background-color: rgb(53, 167, 53) !important;
+    color: white;
+    padding: 5px 15px;
+    margin-top: 1px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-success:hover{
+    background-color: rgb(45, 153, 45) !important;
+}
+
 #from{
     padding: 20px;
     background-color: #f5f5f5;
