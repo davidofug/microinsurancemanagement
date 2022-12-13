@@ -85,6 +85,19 @@
   color: black;
 }
 
+.subMenu-links {
+  text-decoration: none;
+  color: #000;
+  font-size: 13px;
+  margin-bottom: 5px;
+  padding: 10px 10px;
+}
+
+.subMenu-links:hover {
+  color: #000;
+  background-color: #f4f4f4;
+}
+
 .nav-linked span {
   margin: 0 20px;
 }

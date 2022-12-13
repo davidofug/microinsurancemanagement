@@ -2,13 +2,7 @@ import "../../assets/styles/menu.css";
 import { Link } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import { useState, useEffect } from "react";
-import {
-  Navbar,
-  Offcanvas,
-  Container,
-  Nav,
-  NavDropdown,
-} from "react-bootstrap";
+import { Navbar, Offcanvas, Container, Nav } from "react-bootstrap";
 import DefaultAvatar from "../DefaultAvatar";
 import { ImProfile } from "react-icons/im";
 import { Badge } from "react-bootstrap";
@@ -17,18 +11,21 @@ import useAuth from "../../contexts/Auth";
 import useDialog from "../../hooks/useDialog";
 import { BsFillCaretDownFill, BsFillCaretUpFill } from "react-icons/bs";
 import logo from "../../assets/imgs/SWICO-LOGO.png";
-import logoSm from "../../assets/imgs/SWICO-LOGO-sm.png";
 // import './mobilenav.css'
 
 export default function MobileNav({ role, user, displayName }) {
   const [selected, setSelected] = useState({ activeObject: null, role });
   const [show, handleShow, handleClose] = useDialog();
   const [subMenu, setSubMenu] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   if (show) {
     window.onclick = (event) =>
       !event.target.matches(".footerContext") ? handleClose() : null;
   }
+
+  //   console.log("subMenu is ", subMenu);
+  console.log(selectedIndex);
 
   useEffect(() => {
     sessionStorage.getItem("session1")
@@ -66,10 +63,10 @@ export default function MobileNav({ role, user, displayName }) {
             <Navbar.Toggle
               className="m-3 buttonIcon"
               aria-controls="offcanvasNavbar"
+              id="menuButton"
             />
             <Navbar.Brand>
               <img width={120} src={logo} alt="SWICO" />
-              {/* <img src={logo} width={150} alt="Britam" /> */}
             </Navbar.Brand>
           </div>
           <Navbar.Offcanvas
@@ -90,12 +87,26 @@ export default function MobileNav({ role, user, displayName }) {
                   {selected.role !== null &&
                     selected.role.map((menuItem, index) => (
                       <ul className="nav-item" key={menuItem.number}>
-                        <li
+                        <Link
                           to={menuItem.link}
                           className={toggleActiveClassStyle(index)}
                           onClick={() => {
                             toggleActive(index);
-                            setSubMenu(!subMenu);
+                            setSelectedIndex(index);
+                            if (menuItem.subMenu) {
+                              setSubMenu(!subMenu);
+                            } else {
+                              document.getElementById(
+                                "offcanvasNavbar"
+                              ).style.display = "none";
+                              document.getElementsByClassName(
+                                "show"
+                              )[0].style.display = "none";
+                              document
+                                .getElementById("menuButton")
+                                .classList.add("collapsed");
+                              setSubMenu(false);
+                            }
                           }}
                         >
                           <div>
@@ -103,56 +114,52 @@ export default function MobileNav({ role, user, displayName }) {
                             {menuItem.name}
 
                             {menuItem?.subMenu && (
-                              <>
-                                <span>
-                                  {subMenu === false ? (
-                                    <BsFillCaretDownFill
-                                      style={{ fontSize: "10px" }}
-                                    />
-                                  ) : (
-                                    <BsFillCaretUpFill
-                                      style={{ fontSize: "10px" }}
-                                    />
-                                  )}
-                                </span>
-                                {subMenu === true && (
-                                  <div
-                                    className="nav flex-column"
-                                    style={{
-                                      paddingTop: "5px",
-                                      paddingLeft: "130px",
-                                    }}
-                                  >
-                                    {/* {console.log(menuItem.subMenu)} */}
-                                    {menuItem.subMenu.map((sub, index) => (
-                                      <Link
-                                        to={sub.link}
-                                        key={index}
-                                        style={{
-                                          backgroundColor: "#1475cf",
-                                          textDecoration: "none",
-                                          color: "#ffffff",
-                                          fontSize: "13px",
-                                        }}
-                                        onClick={() => {
-                                          document.getElementById(
-                                            "offcanvasNavbar"
-                                          ).style.display = "none";
-                                          document.getElementsByClassName(
-                                            "show"
-                                          )[0].style.display = "none";
-                                          setSubMenu(false);
-                                        }}
-                                      >
-                                        {sub.name}
-                                      </Link>
-                                    ))}
-                                  </div>
+                              <span>
+                                {subMenu === true && selectedIndex === index ? (
+                                  <BsFillCaretUpFill
+                                    style={{ fontSize: "10px" }}
+                                  />
+                                ) : (
+                                  <BsFillCaretDownFill
+                                    style={{ fontSize: "10px" }}
+                                  />
                                 )}
-                              </>
+                              </span>
                             )}
                           </div>
-                        </li>
+                        </Link>
+                        {subMenu === true && selectedIndex === index && (
+                          <div
+                            className="nav flex-column"
+                            style={{
+                              padding: "10px",
+                              backgroundColor: "#f9fafb",
+                              display: `${subMenu ? "hidden" : ""}`,
+                              margin: "10px",
+                              marginLeft: "20px",
+                              borderRadius: "8px",
+                            }}
+                          >
+                            {menuItem.subMenu.map((sub, index) => (
+                              <Link
+                                to={sub.link}
+                                key={index}
+                                className="subMenu-links"
+                                onClick={() => {
+                                  document.getElementById(
+                                    "offcanvasNavbar"
+                                  ).style.display = "none";
+                                  document.getElementsByClassName(
+                                    "show"
+                                  )[0].style.display = "none";
+                                  setSubMenu(false);
+                                }}
+                              >
+                                {sub.name}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
                       </ul>
                     ))}
                 </ul>
