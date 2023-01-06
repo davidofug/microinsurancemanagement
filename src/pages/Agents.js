@@ -344,8 +344,8 @@ function Agents({ parent_container }) {
               <Form.Group className="addFormGroups">
                 <Form.Label htmlFor="licenseNo">
                   <p style={{ display: "flex", alignItems: "center" }}>
-                    <IoMdAlert /> Promote <b className="mx-1">{singleDoc.name}</b> To a
-                    supervisor
+                    <IoMdAlert /> Promote{" "}
+                    <b className="mx-1">{singleDoc.name}</b> To a supervisor
                   </p>
                 </Form.Label>
                 <Button variant="dark" type="submit">
@@ -405,7 +405,7 @@ function Agents({ parent_container }) {
                         <th>Contact</th>
                         <th>Address</th>
                         {authClaims.admin && <th>Added by</th>}
-                        <th>Created At</th>
+                        <th>Created By</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -581,7 +581,7 @@ function Agents({ parent_container }) {
                         <th>Contact</th>
                         <th>Address</th>
                         {authClaims.admin && <th>Added by</th>}
-                        <th>Created At</th>
+                        <th>Created By</th>
                         <th>Action</th>
                       </tr>
                     </tfoot>

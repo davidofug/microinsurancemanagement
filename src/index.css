@@ -661,7 +661,11 @@ addFormGroups {
 }
 
 /* addPolicyForm */
-#addPolicyForm{
+#addPolicyForm {
   padding: 10px;
   width: 100%;
+}
+
+.navbar-toggler-icon {
+  color: red !important;
 }
