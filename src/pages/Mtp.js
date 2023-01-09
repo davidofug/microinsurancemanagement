@@ -58,6 +58,8 @@ export default function Mtp({ parent_container, policyCategory }) {
   const [policies, setPolicies] = useState([]);
   const policyCollectionRef = collection(db, "policies");
 
+  console.log(policies);
+
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
