@@ -90,7 +90,7 @@ function Settings({ parent_container }) {
       <ToastContainer />
 
       <Modal show={show} onHide={handleClose}>
-        <UpdateUser currentUser={currentUser} meta={meta} />
+        <UpdateUser currentUser={currentUser} meta={meta} handleClose={handleClose} getUserMeta={getUserMeta} />
       </Modal>
 
       <div
