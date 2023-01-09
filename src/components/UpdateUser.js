@@ -12,57 +12,53 @@ import {
 } from "firebase/auth";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../helpers/firebase";
+import { toast } from "react-toastify";
 
-function UpdateUser({ currentUser, meta }) {
+function UpdateUser({ currentUser, meta, handleClose, getUserMeta }) {
   const handleEditFormSubmit = async (event, values) => {
     event.preventDefault();
     const docRef = doc(db, "usermeta", currentUser.uid);
 
-    console.log(docRef);
+    const credential = EmailAuthProvider.credential(
+      currentUser.email,
+      values.password
+    );
 
-    // const credential = EmailAuthProvider.credential(
-    //   currentUser.email,
-    //   event.target.submitPassword.value
-    // );
-
-    // try {
-    //   await reauthenticateWithCredential(currentUser, credential)
-    //     .then(async () => {
-    //       // update display name
-    //       updateProfile(currentUser, {
-    //         displayName: event.target.name.value,
-    //       }).catch((error) => {
-    //         console.log("name error:", error.message);
-    //       });
-
-    //       // update email
-    //       updateEmail(currentUser, event.target.email.value)
-    //         .then()
-    //         .catch((error) => {
-    //           console.log("email error: ", error);
-    //         });
-
-    //       // update phone number and adddress
-    //       await updateDoc(docRef, {
-    //         phone: event.target.phone.value,
-    //         address: event.target.address.value,
-    //       });
-
-    //       toast.success("Successfully updated", { position: "top-center" });
-    //       getUserMeta();
-    //     })
-    //     .catch((error) => {
-    //       console.log("error 1: ", error.message);
-    //       toast.error(`Failed to update ${error.code}`, {
-    //         position: "top-center",
-    //       });
-    //     });
-
-    //   handleClose();
-    // } catch (error) {
-    //   console.log("error 2: ", error.message);
-    //   toast.error(`Failed to update ${error.code}`, { position: "top-center" });
-    // }
+    try {
+      await reauthenticateWithCredential(currentUser, credential)
+        .then(async () => {
+          // update display name
+          updateProfile(currentUser, {
+            displayName: values.name,
+          }).catch((error) => {
+            console.log("name error:", error.message);
+          });
+          // update email
+          //   updateEmail(currentUser, event.target.email.value)
+          //     .then()
+          //     .catch((error) => {
+          //       console.log("email error: ", error);
+          //     });
+          // update phone number and adddress
+          if (meta) {
+            await updateDoc(docRef, {
+              phone: values.phone,
+              address: values.address,
+            });
+          }
+          toast.success("Successfully updated", { position: "top-center" });
+        })
+        .catch((error) => {
+          toast.error(`${error.message}`, {
+            position: "top-center",
+          });
+        });
+      getUserMeta();
+      handleClose();
+    } catch (error) {
+      toast.error(`Failed to update ${error.code}`, { position: "top-center" });
+    }
+    getUserMeta()
   };
   return (
     <>
