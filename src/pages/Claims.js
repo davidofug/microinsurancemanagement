@@ -19,7 +19,6 @@ import { useForm } from "../hooks/useForm";
 import { authentication, functions } from "../helpers/firebase";
 import Loader from "../components/Loader";
 import { MdEdit, MdDelete, MdNotifications } from "react-icons/md";
-import { AiFillCloseCircle } from "react-icons/ai";
 import useAuth from "../contexts/Auth";
 import { ImFilesEmpty } from "react-icons/im";
 import { httpsCallable } from "firebase/functions";
@@ -38,6 +37,8 @@ export default function Claims({ parent_container }) {
   const [show, handleShow, handleClose] = useDialog();
   const [showNotification, handleShowNotification, handleCloseNotification] =
     useDialog();
+
+  console.log(claims)
 
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
