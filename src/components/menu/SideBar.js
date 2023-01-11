@@ -1,5 +1,5 @@
 import "../../assets/styles/menu.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function SideBar({ role, user, displayName }) {
@@ -28,28 +28,34 @@ export default function SideBar({ role, user, displayName }) {
   return (
     <>
       <section className="position-sticky pt-3" id="menu_section">
-        <ul className="nav flex-column">
+        <ul className="nav flex-column tw-relative">
           {selected.role.map((menuItem, index) => (
             <li className="nav-item" key={index}>
-              <Link
+              <NavLink
                 to={menuItem.link}
-                className={toggleActiveClassStyle(index)}
-                onClick={() => toggleActive(index)}
+                className={({ isActive }) =>
+                  isActive
+                    ? "tw-flex tw-cursor-pointer tw-px-3 tw-py-2 tw-gap-2 tw-items-center tw-bg-[#1f1f1f] tw-rounded mx-3 tw-text-white hover:tw-text-white"
+                    : "tw-flex tw-cursor-pointer tw-gap-2 tw-items-center tw-px-3 tw-py-2 tw-rounded mx-3 hover:tw-text-gray-800 hover:tw-bg-gray-100"
+                }
               >
                 <span>{menuItem.icon}</span>
                 {menuItem.name}
                 {menuItem?.subMenu && (
-                  <ul>
+                  <ul className="tw-absolute tw-left-[220px] tw-text-gray-800 hover:tw-text-gray-800">
                     {menuItem.subMenu.map((sub, index) => (
                       <li key={index}>
-                        <Link to={sub.link} style={{ color: "black" }}>
+                        <Link
+                          to={sub.link}
+                          className="hover:tw-text-gray-800 tw-cursor-pointer"
+                        >
                           {sub.name}
                         </Link>
                       </li>
                     ))}
                   </ul>
                 )}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>
