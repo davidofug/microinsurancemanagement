@@ -26,8 +26,6 @@ import Chat from "../components/messenger/Chat";
 import "../styles/ctas.css";
 
 function Settings({ parent_container }) {
-  console.log("hello world");
-
   useEffect(() => {
     document.title = "User Profile - SWICO";
     getUserMeta();
@@ -40,55 +38,7 @@ function Settings({ parent_container }) {
   const getUserMeta = async () => {
     const docRef = doc(db, "usermeta", currentUser.uid);
     const docSnap = await getDoc(docRef);
-    console.log("doc data is ", docSnap.data());
     setMeta(docSnap.data());
-  };
-
-  const handleEditFormSubmit = async (event) => {
-    event.preventDefault();
-    const docRef = doc(db, "usermeta", currentUser.uid);
-
-    const credential = EmailAuthProvider.credential(
-      currentUser.email,
-      event.target.submitPassword.value
-    );
-
-    try {
-      await reauthenticateWithCredential(currentUser, credential)
-        .then(async () => {
-          // update display name
-          updateProfile(currentUser, {
-            displayName: event.target.name.value,
-          }).catch((error) => {
-            console.log(error);
-          });
-
-          // update email
-          updateEmail(currentUser, event.target.email.value)
-            .then()
-            .catch((error) => {
-              console.log(error);
-            });
-
-          // update phone number and adddress
-          await updateDoc(docRef, {
-            phone: event.target.phone.value,
-            address: event.target.address.value,
-          });
-
-          toast.success("Successfully updated", { position: "top-center" });
-          getUserMeta();
-        })
-        .catch((error) => {
-          toast.error(`Failed to update ${error.code}`, {
-            position: "top-center",
-          });
-        });
-
-      handleClose();
-    } catch (error) {
-      toast.error(`Failed to update ${error.code}`, { position: "top-center" });
-    }
   };
 
   const handlePasswordChange = async (event) => {
@@ -140,11 +90,7 @@ function Settings({ parent_container }) {
       <ToastContainer />
 
       <Modal show={show} onHide={handleClose}>
-        <UpdateUser
-          currentUser={currentUser}
-          handleEditFormSubmit={handleEditFormSubmit}
-          meta={meta}
-        />
+        <UpdateUser currentUser={currentUser} meta={meta} handleClose={handleClose} getUserMeta={getUserMeta} />
       </Modal>
 
       <div
@@ -156,7 +102,10 @@ function Settings({ parent_container }) {
           <p>User Detail</p>
           <div className="profileSection">
             <div className="avatarSection">
-              {authentication?.currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" && authentication?.currentUser.photoURL !== "https://example.com/jane-doe/photo.jpg" ? (
+              {authentication?.currentUser.photoURL !==
+                "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" &&
+              authentication?.currentUser.photoURL !==
+                "https://example.com/jane-doe/photo.jpg" ? (
                 <img
                   src={authentication?.currentUser.photoURL}
                   alt="profile"
@@ -311,11 +260,7 @@ function Settings({ parent_container }) {
               required
             />
           </Form.Group>
-          <input
-            type="submit"
-            value="Update Password"
-            className="btn cta"
-          />
+          <input type="submit" value="Update Password" className="btn cta" />
         </form>
       </div>
       <div

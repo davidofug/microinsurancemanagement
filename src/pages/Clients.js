@@ -36,6 +36,8 @@ export default function Clients({ parent_container }) {
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
+  console.log(authClaims)
+
   // edit client
   const [singleDoc, setSingleDoc] = useState();
 
@@ -158,7 +160,8 @@ export default function Clients({ parent_container }) {
           }`,
         });
       })
-      .catch(async () => {
+      .catch(async (error) => {
+        console.log(error)
         toast.error(`Failed to deleted ${singleDoc.name}`, {
           position: "top-center",
         });
