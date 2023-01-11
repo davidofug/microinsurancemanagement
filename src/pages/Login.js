@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
-import { Redirect, Link } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import logo from "../assets/imgs/SWICO-LOGO.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
@@ -15,15 +15,17 @@ function Login() {
   const [isVisible, setIsVisible] = useState(false);
 
   const { currentUser, setCurrentUser, authClaims, setAuthClaims } = useAuth();
-  const [ error, setError ] = useState('');
+  const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
 
-  const pageOnRefreshSuperAdmin = localStorage.getItem('onRefresh') || "/superadmin/dashboard"
-  const pageOnRefreshAdmin = localStorage.getItem('onRefresh') || "/admin/dashboard"
-  const pageOnRefreshSupervisor = localStorage.getItem('onRefresh') || "/supervisor/dashboard"
-  const pageOnRefreshAgent = localStorage.getItem('onRefresh') || "/agent/dashboard"
-
-
+  const pageOnRefreshSuperAdmin =
+    localStorage.getItem("onRefresh") || "/superadmin/dashboard";
+  const pageOnRefreshAdmin =
+    localStorage.getItem("onRefresh") || "/admin/dashboard";
+  const pageOnRefreshSupervisor =
+    localStorage.getItem("onRefresh") || "/supervisor/dashboard";
+  const pageOnRefreshAgent =
+    localStorage.getItem("onRefresh") || "/agent/dashboard";
 
   useEffect(() => {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
@@ -39,38 +41,40 @@ function Login() {
     setLoading(true);
     try {
       const result = await signInWithEmailAndPassword(
-        authentication, email, password
+        authentication,
+        email,
+        password
       );
       if (result) {
         setLoading(false);
         onAuthStateChange(setCurrentUser, setAuthClaims);
       }
-    } catch(err) {
-      setLoading(false)
+    } catch (err) {
+      setLoading(false);
       const errors = {
         "auth/user-not-found": `User with ${email} is not found`,
         "auth/wrong-password": "Password does not match the email",
-        "auth/network-request-failed": "something is wrong, check your network connection"
-      }
-      setError(errors[err.code])
+        "auth/network-request-failed":
+          "something is wrong, check your network connection",
+      };
+      setError(errors[err.code]);
+    }
   };
-}
 
   if (isLoading) return <Loader />;
 
-
-  if (currentUser?.loggedIn){
-    if(authClaims.admin){
-      return <Redirect to={{ pathname: pageOnRefreshAdmin }} />;
+  if (currentUser?.loggedIn) {
+    if (authClaims.admin) {
+      return <Navigate to={{ pathname: pageOnRefreshAdmin }} />;
     }
-    if(authClaims.agent){
-      return <Redirect to={{ pathname: pageOnRefreshAgent }} />;
+    if (authClaims.agent) {
+      return <Navigate to={{ pathname: pageOnRefreshAgent }} />;
     }
-    if(authClaims.supervisor){
-      return <Redirect to={{ pathname: pageOnRefreshSupervisor }} />;
+    if (authClaims.supervisor) {
+      return <Navigate to={{ pathname: pageOnRefreshSupervisor }} />;
     }
-    if(authClaims.superadmin){
-      return <Redirect to={{ pathname: pageOnRefreshSuperAdmin }} />;
+    if (authClaims.superadmin) {
+      return <Navigate to={{ pathname: pageOnRefreshSuperAdmin }} />;
     }
   }
 
@@ -82,11 +86,16 @@ function Login() {
         {error && <Alert variant="danger">{error}</Alert>}
         <div className="login-inputs">
           <label htmlFor="email">Email</label>
-          <input type="email" placeholder="Enter email" name="email" id="email"
+          <input
+            type="email"
+            placeholder="Enter email"
+            name="email"
+            id="email"
             onChange={(event) =>
               setUser({ ...user, email: event.target.value })
             }
-            required />
+            required
+          />
         </div>
 
         <div className="login-inputs">
@@ -129,11 +138,7 @@ function Login() {
           <label htmlFor="signedIn">Keep me signed in</label>
         </div>
         <div id="submit_login">
-          <input
-            type="submit"
-            className="btn cta"
-            value="Login"
-          />
+          <input type="submit" className="btn cta" value="Login" />
           <Link to="/forgot-password">
             <p>Forgot Password?</p>
           </Link>
@@ -143,4 +148,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;

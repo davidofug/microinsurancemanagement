@@ -13,9 +13,20 @@ import {
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../helpers/firebase";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
+import useAuth from "../contexts/Auth";
 
-function UpdateUser({ currentUser, meta, handleClose, getUserMeta }) {
+function UpdateUser({
+  currentUser,
+  meta,
+  handleClose,
+  getUserMeta,
+  // setCurrentUser,
+}) {
+  const { loading, setLoading, setUser, user } = useAuth();
   const handleEditFormSubmit = async (event, values) => {
+    console.log(user);
+    setLoading(true);
     event.preventDefault();
     const docRef = doc(db, "usermeta", currentUser.uid);
 
@@ -28,17 +39,22 @@ function UpdateUser({ currentUser, meta, handleClose, getUserMeta }) {
       await reauthenticateWithCredential(currentUser, credential)
         .then(async () => {
           // update display name
-          updateProfile(currentUser, {
-            displayName: values.name,
-          }).catch((error) => {
-            console.log("name error:", error.message);
-          });
-          // update email
-          //   updateEmail(currentUser, event.target.email.value)
-          //     .then()
-          //     .catch((error) => {
-          //       console.log("email error: ", error);
-          //     });
+          if (values.name !== "") {
+            updateProfile(currentUser, {
+              displayName: values.name,
+            }).catch((error) => {
+              console.log("name error:", error.message);
+            });
+          }
+
+          if (values.email !== "") {
+            // update email
+            updateEmail(currentUser, values.email)
+              .then()
+              .catch((error) => {
+                console.log("email error: ", error);
+              });
+          }
           // update phone number and adddress
           if (meta) {
             await updateDoc(docRef, {
@@ -53,12 +69,15 @@ function UpdateUser({ currentUser, meta, handleClose, getUserMeta }) {
             position: "top-center",
           });
         });
+
+      // setCurrentUser(currentUser);
       getUserMeta();
       handleClose();
     } catch (error) {
       toast.error(`Failed to update ${error.code}`, { position: "top-center" });
     }
-    getUserMeta()
+    getUserMeta();
+    setLoading(false);
   };
   return (
     <>
