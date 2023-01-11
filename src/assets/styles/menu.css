@@ -200,8 +200,8 @@
 #menu_section li a:hover > ul {
   display: block;
   position: absolute;
-  top: -50px;
-  left: 50px;
+  /* top: -50px;
+  left: 50px; */
 }
 
 #menu_section li a ul li {
@@ -224,12 +224,8 @@
 /* footer account */
 
 footer {
-  display: flex;
   position: relative;
   /* bottom: 0; */
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 10px;
 }
 
 footer p {
@@ -237,11 +233,11 @@ footer p {
 }
 
 footer {
-  position: relative;
+  /* position: relative; */
   /* bottom: 0; */
-  padding: 10px 5px;
+  /* padding: 10px 5px;
   width: inherit;
-  color: #000;
+  color: #000; */
 }
 
 footer a {
@@ -365,14 +361,6 @@ footer a img {
 }
 
 .footerContext {
-  text-decoration: none;
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  /* grid-template-columns: 1fr 3fr 1fr;  */
-  gap: 5px;
-  cursor: pointer;
-  width: 100%;
 }
 
 .footerContextShow {

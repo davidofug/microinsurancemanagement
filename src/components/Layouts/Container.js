@@ -1,6 +1,7 @@
 import useAuth from "contexts/Auth";
 import { useToggleMenu } from "hooks";
 import { SuperAdminMenu } from "pages";
+import { SupervisorMenu } from "pages";
 
 function Container({ children }) {
   const { currentUser, authClaims } = useAuth();
@@ -12,6 +13,13 @@ function Container({ children }) {
       <div className="MenuSide">
         {authClaims?.superadmin && (
           <SuperAdminMenu
+            largeContentClass={largeContentClass}
+            minimiseMenu={minimiseMenu}
+            maximiseMenu={maximiseMenu}
+          />
+        )}
+        {authClaims?.supervisor && (
+          <SupervisorMenu
             largeContentClass={largeContentClass}
             minimiseMenu={minimiseMenu}
             maximiseMenu={maximiseMenu}

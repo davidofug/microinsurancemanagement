@@ -8,6 +8,7 @@ import {
   MdPerson,
   MdStickyNote2,
 } from "react-icons/md";
+import { ImDatabase } from "react-icons/im";
 import { RiCalendarTodoFill } from "react-icons/ri";
 import { GrSettingsOption } from "react-icons/gr";
 
@@ -16,7 +17,7 @@ const menuData = {
     {
       number: 1,
       name: "Dashboard",
-      icon: <MdAccountBalance />,
+      icon: <MdAccountBalance size={15} />,
       link: "/superadmin/dashboard",
     },
     {
@@ -84,7 +85,7 @@ const menuData = {
     {
       number: 5,
       name: "System Logs",
-      icon: <GrSettingsOption />,
+      icon: <ImDatabase />,
       link: "/superadmin/system-logs",
     },
   ],
