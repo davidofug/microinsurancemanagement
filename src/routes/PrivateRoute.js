@@ -1,20 +1,15 @@
-import {
-    Route,
-    Redirect
-} from 'react-router-dom'
+import { Navigate } from "react-router-dom";
+import useAuth from "../contexts/Auth";
+import Container from "components/Layouts/Container";
 
-import useAuth from '../contexts/Auth'
+function PrivateRoute({ children }) {
+  const { currentUser } = useAuth();
 
-function PrivateRoute({ children, ...rest }) {
-    const { currentUser } = useAuth()
-
-    return currentUser ? <Route {...rest} render={
-        props => {
-            localStorage.setItem('onRefresh', props.location.pathname, { path: '/' }) 
-            return children
-        }
-    } /> : <Redirect to='/login' />
+  return currentUser ? (
+    <Container>{children}</Container>
+  ) : (
+    <Navigate to="/login" />
+  );
 }
-
 
 export default PrivateRoute;

@@ -26,19 +26,24 @@ import Chat from "../components/messenger/Chat";
 import "../styles/ctas.css";
 
 function Settings({ parent_container }) {
+  const [show, handleShow, handleClose] = useDialog();
   useEffect(() => {
     document.title = "User Profile - SWICO";
     getUserMeta();
+    console.log("something happened here");
   }, []);
-  const [show, handleShow, handleClose] = useDialog();
   const [meta, setMeta] = useState({});
-  const { currentUser } = getAuth();
+  const { currentUser, setCurrentUser } = getAuth();
   const { authClaims } = useAuth();
+
+  console.log(show);
 
   const getUserMeta = async () => {
     const docRef = doc(db, "usermeta", currentUser.uid);
     const docSnap = await getDoc(docRef);
     setMeta(docSnap.data());
+    console.log("something new in meta");
+    console.log(currentUser.displayName);
   };
 
   const handlePasswordChange = async (event) => {
@@ -90,7 +95,13 @@ function Settings({ parent_container }) {
       <ToastContainer />
 
       <Modal show={show} onHide={handleClose}>
-        <UpdateUser currentUser={currentUser} meta={meta} handleClose={handleClose} getUserMeta={getUserMeta} />
+        <UpdateUser
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          meta={meta}
+          handleClose={handleClose}
+          getUserMeta={getUserMeta}
+        />
       </Modal>
 
       <div

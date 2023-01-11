@@ -70,10 +70,7 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
               event.stopPropagation();
             }}
           >
-            <div
-              className="footerContext"
-              
-            >
+            <div className="footerContext">
               {authentication?.currentUser.photoURL !==
                 "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" &&
               authentication?.currentUser.photoURL !==
@@ -111,9 +108,7 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
                 </Link>
               </li>
               <li onClick={handleLogout}>
-                <Link>
-                  <MdLogout /> Logout
-                </Link>
+                <MdLogout /> Logout
               </li>
             </ul>
           </footer>
@@ -135,14 +130,13 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
             </div>
           </section>
           <MinimisedSideBar role={SuperAdmin} />
-          <footer onClick={(event) => {
-                show ? handleClose() : handleShow();
-                event.stopPropagation();
-              }}>
-            <div
-              className="footerContext"
-              
-            >
+          <footer
+            onClick={(event) => {
+              show ? handleClose() : handleShow();
+              event.stopPropagation();
+            }}
+          >
+            <div className="footerContext">
               <DefaultAvatar />
             </div>
             <ul className={show ? "footerContextShow" : ""} id="contextUl">
@@ -152,9 +146,7 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
                 </Link>
               </li>
               <li onClick={handleLogout}>
-                <Link>
                   <MdLogout />
-                </Link>
               </li>
             </ul>
           </footer>

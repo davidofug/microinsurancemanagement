@@ -115,7 +115,7 @@ function SupervisorMenu({ minimiseMenu, maximiseMenu }) {
       ) : (
         <nav className="sidebar-m">
           <section id="brand_m">
-          <img width={35} src={logoSm} alt="SWICO" />
+            <img width={35} src={logoSm} alt="SWICO" />
             <div
               id="arrowOutCircle"
               onClick={() => {
