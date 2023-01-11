@@ -1,6 +1,5 @@
 import { Modal, Form, Row, Col, Button } from 'react-bootstrap'
-import { doc, updateDoc } from 'firebase/firestore'
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { functions, authentication, db } from '../helpers/firebase';
 import { httpsCallable } from 'firebase/functions';
 
@@ -9,10 +8,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useState } from 'react';
 import { useForm } from '../hooks/useForm';
 
-function ClientModal({ singleDoc: {uid, ...singleDoc}, handleClose, handleFieldChange, getUsers}) {
+function ClientModal({ singleDoc , handleClose, handleFieldChange, getUsers}) {
   const [ formData, setFormData ] = useState(singleDoc)
   console.log("Form Data: ", singleDoc)
-
  
 
   // const auth = getAuth();
@@ -20,55 +18,36 @@ function ClientModal({ singleDoc: {uid, ...singleDoc}, handleClose, handleFieldC
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
-  const updateUserDetails = async ( id ) => {
-    const userDoc =  doc(db, "user_meta", id)
-    const response = await updateDoc(userDoc, formData)
-    return response
-    
-    
-  }
-
   const handleEditFormSubmit = (event) => {
     event.preventDefault()
     console.log("New form information: ", formData)
 
-    updateUserDetails(uid)
-      .then(response => console.log(response))
-      .catch(error => console.log(error))
+    const updateUser = httpsCallable(functions, 'updateUser')
+    updateUser({
+      ...formData
+    })
+      .then(async () => {
+        console.log(event.target.name.value)
+        console.log(event.target.user_role.value)
+      })
+      .then(async () => {
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: 'user update',
+          status: 'successful',
+          message: `Successfully updated agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+      })
+      .catch( async () => {
+        toast.error(`Failed to update ${singleDoc.name}`, {position: "top-center"});
+        await addDoc(logCollectionRef, {
+          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
+          type: ' user update',
+          status: 'failed',
+          message: `Failed to update agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
+        })
+    })
 
-
-    // const updateUser = httpsCallable(functions, 'updateUser')
-    // updateUser({
-    //   uid: singleDoc.uid,
-    //   name: event.target.name.value,
-    //   // user_role: event.target.user_role.value
-    //   supervisor: agentPromo,
-    //   agent: !!singleDoc.role.agent
-    // })
-    //   .then(async () => {
-    //     console.log(event.target.name.value)
-    //     console.log(event.target.user_role.value)
-    //   })
-    //   .then(async () => {
-    //     await addDoc(logCollectionRef, {
-    //       timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-    //       type: 'user update',
-    //       status: 'successful',
-    //       message: `Successfully updated agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
-    //     })
-    //   })
-    //   .catch( async () => {
-    //     toast.error(`Failed to update ${singleDoc.name}`, {position: "top-center"});
-    //     await addDoc(logCollectionRef, {
-    //       timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-    //       type: ' user update',
-    //       status: 'failed',
-    //       message: `Failed to update agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
-    //     })
-    // })
-
-
-    // getUsers()
     toast.success('Successfully updated', {position: "top-center"});
 }
 
