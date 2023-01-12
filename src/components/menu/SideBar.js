@@ -42,20 +42,6 @@ export default function SideBar({ role, user, displayName }) {
               >
                 <span>{menuItem.icon}</span>
                 {menuItem.name}
-                {/* {menuItem?.subMenu && (
-                  <ul className="tw-absolute tw-left-[220px] tw-text-gray-800 hover:tw-text-gray-800 tw-z-90">
-                    {menuItem.subMenu.map((sub, index) => (
-                      <li key={index}>
-                        <Link
-                          to={sub.link}
-                          className="hover:tw-text-gray-800 tw-cursor-pointer"
-                        >
-                          {sub.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )} */}
               </NavLink>
               {menuItem?.subMenu && (
                 <ul className="tw-absolute tw-left-[230px] tw-top-0 tw-text-gray-800 hover:tw-text-gray-800 tw-z-90 tw-bg-white md:tw-w-[200px]">
@@ -64,6 +50,9 @@ export default function SideBar({ role, user, displayName }) {
                       <Link
                         to={sub.link}
                         className="hover:tw-text-gray-800 tw-cursor-pointer px-3 py-3"
+                        onClick={() =>
+                          localStorage.setItem("onRefresh", sub.link)
+                        }
                       >
                         {sub.name}
                       </Link>
