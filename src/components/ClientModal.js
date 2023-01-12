@@ -6,10 +6,8 @@ import { httpsCallable } from "firebase/functions";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
-import { useForm } from "../hooks/useForm";
 
-function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
-  // const auth = getAuth();
+function ClientModal({ singleDoc, handleClose, getUsers }) {
   const [formData, setFormData] = useState(singleDoc);
   console.log("Form Data: ", singleDoc);
 
@@ -18,16 +16,9 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
 
   const handleEditFormSubmit = (event) => {
     event.preventDefault();
-    console.log("New form information: ", formData);
 
     const updateUser = httpsCallable(functions, "updateUser");
-    updateUser({
-      ...formData,
-    })
-      .then(async () => {
-        console.log(event.target.name.value);
-        console.log(event.target.user_role.value);
-      })
+    updateUser(formData)
       .then(async () => {
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date()
@@ -43,10 +34,12 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
           }`,
         });
       })
-      .catch(async () => {
+      .then(getUsers)
+      .catch(async (error) => {
         toast.error(`Failed to update ${singleDoc.name}`, {
           position: "top-center",
         });
+        console.log(error);
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date()
             .toISOString()
@@ -62,18 +55,10 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
         });
       });
 
-    // getUsers()
     toast.success("Successfully updated", { position: "top-center" });
   };
 
   // handling user promotion
-  const [agentPromo, setAgentPromo] = useState(false);
-  const handleAgentPromotion = () => {
-    setAgentPromo(true);
-  };
-  const handleAgentPromotionDecline = () => {
-    setAgentPromo(false);
-  };
 
   return (
     <>
@@ -158,6 +143,7 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
               </div>
             </Form.Group>
           </Row>
+
           <Form.Group
             as={Col}
             className="addFormGroups"
@@ -181,6 +167,7 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
               }
             />
           </Form.Group>
+
           <Form.Group
             as={Col}
             className="addFormGroups"
@@ -203,6 +190,7 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
               }
             />
           </Form.Group>
+
           <Row>
             <Form.Group
               as={Col}
@@ -266,9 +254,9 @@ function ClientModal({ singleDoc, handleClose, handleFieldChange, getUsers }) {
           </Form.Group>
 
           {/* <Form.Group className="mb-3" >
-            <Form.Label htmlFor='user_role'>Role</Form.Label>
-            <Form.Control id="user_role" placeholder="Enter user role" defaultValue={singleDoc.role.agent && 'agent'}/>
-          </Form.Group> */}
+                <Form.Label htmlFor='user_role'>Role</Form.Label>
+                <Form.Control id="user_role" placeholder="Enter user role" defaultValue={singleDoc.role.agent && 'agent'}/>
+              </Form.Group> */}
         </Modal.Body>
         <Modal.Footer>
           <Button

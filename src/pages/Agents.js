@@ -13,7 +13,7 @@ import ClientModal from "../components/ClientModal";
 import useDialog from "../hooks/useDialog";
 import { ImFilesEmpty } from "react-icons/im";
 import { MdStickyNote2 } from "react-icons/md";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import StickerModal from "../components/StickersModal";
 import { FaUserPlus } from "react-icons/fa";
 import { IoMdAlert } from "react-icons/io";
@@ -43,6 +43,7 @@ function Agents({ parent_container }) {
   const getAgents = () => {
     const listUsers = httpsCallable(functions, "listUsers");
     if (authClaims.supervisor) {
+
       listUsers()
         .then(({ data }) => {
           const myAgents = data
@@ -55,6 +56,7 @@ function Agents({ parent_container }) {
         })
         .catch();
     } else if (authClaims.admin) {
+
       listUsers()
         .then(({ data }) => {
           const mySupervisors = data
@@ -328,7 +330,7 @@ function Agents({ parent_container }) {
         </div>
 
         <Modal show={open} onHide={handleClose}>
-          <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
+          <ClientModal singleDoc={singleDoc} handleClose={handleClose} getUsers={getAgents}/>
         </Modal>
 
         <Modal show={openSticker} onHide={handleCloseSticker}>

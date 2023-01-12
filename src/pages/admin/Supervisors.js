@@ -10,7 +10,7 @@ import ClientModal from "../../components/ClientModal";
 import { MdEdit, MdDelete, MdStickyNote2 } from "react-icons/md";
 import { ImFilesEmpty } from "react-icons/im";
 import Loader from "../../components/Loader";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import useDialog from "../../hooks/useDialog";
 import { handleAllCheck } from "../../helpers/helpfulUtilities";
 import { getUsers } from "../../helpers/helpfulUtilities";
@@ -32,12 +32,10 @@ function Supervisors({ parent_container }) {
   const logCollectionRef = collection(db, "logs");
 
   // get Supervisors
-  const [supervisors, setSuperviors] = useState([]);
+  const [supervisors, setSupervisors] = useState([]);
   const getSupervisors = () => {
     getUsers("supervisor", authClaims?.superadmin).then((result) => {
-      result && result.length === 0
-        ? setSuperviors(null)
-        : setSuperviors(result);
+      result.length === 0 ? setSupervisors(null) : setSupervisors(result);
     });
   };
 
