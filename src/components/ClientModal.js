@@ -23,13 +23,7 @@ function ClientModal({ singleDoc , handleClose, handleFieldChange, getUsers}) {
     console.log("New form information: ", formData)
 
     const updateUser = httpsCallable(functions, 'updateUser')
-    updateUser({
-      ...formData
-    })
-      .then(async () => {
-        console.log(event.target.name.value)
-        console.log(event.target.user_role.value)
-      })
+    updateUser(formData)
       .then(async () => {
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
@@ -38,8 +32,9 @@ function ClientModal({ singleDoc , handleClose, handleFieldChange, getUsers}) {
           message: `Successfully updated agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
         })
       })
-      .catch( async () => {
+      .catch( async (error) => {
         toast.error(`Failed to update ${singleDoc.name}`, {position: "top-center"});
+        console.log(error)
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
           type: ' user update',
@@ -73,7 +68,7 @@ const handleAgentPromotionDecline = () => {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "start",
-                }} >
+                }}>
                 <Form.Label htmlFor="dateReported">Date of birth</Form.Label>
                 <Form.Control
                   type="date"
