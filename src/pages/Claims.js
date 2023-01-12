@@ -24,6 +24,8 @@ import { ImFilesEmpty } from "react-icons/im";
 import { httpsCallable } from "firebase/functions";
 import useDialog from "../hooks/useDialog";
 import { ClaimModelNotification, ClaimModel } from "../components/ClaimModel";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { IoIosCloseCircle } from "react-icons/io";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,8 +39,6 @@ export default function Claims({ parent_container }) {
   const [show, handleShow, handleClose] = useDialog();
   const [showNotification, handleShowNotification, handleCloseNotification] =
     useDialog();
-
-  console.log(claims)
 
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
@@ -358,14 +358,43 @@ export default function Claims({ parent_container }) {
       {claims !== null && claims.length > 0 ? (
         <>
           <div className="table-card componentsData shadow-sm mb-3">
-            <div id="search">
+            <div
+              id="search "
+              className="tw-flex tw-flex-wrap tw-gap-2 tw-items-center"
+            >
               <SearchBar
                 placeholder={"Search for claimant's name"}
                 value={searchText}
                 handleSearch={handleSearch}
               />
-              <div></div>
-              <Form.Group className="categories mt-2" width="200px">
+              <div className="tw-outline tw-outline-1 tw-bg-transparent tw-rounded tw-outline-[#dee1e4] tw-cursor-pointer tw-appearance-none tw-flex tw-items-center tw-w-40 tw-relative">
+                <select
+                  className="tw-bg-transparent tw-w-full tw-cursor-pointer tw-appearance-none tw-px-3 tw-py-2"
+                  id="status"
+                  onChange={({ target: { value } }) => setSwitchCategory(value)}
+                >
+                  <option value={""}>Filter by status</option>
+                  <option value="pending">Pending</option>
+                  <option value="settled">Settled</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                {switchCategory ? (
+                  <IoIosCloseCircle
+                    size={20}
+                    className="tw-absolute tw-text-gray-400 tw-right-2"
+                    onClick={() => {
+                      setSwitchCategory("");
+                      document.getElementById("status").value = "";
+                    }}
+                  />
+                ) : (
+                  <MdKeyboardArrowDown
+                    size={20}
+                    className="tw-absolute tw-right-2 tw-pointer-events-none"
+                  />
+                )}
+              </div>
+              {/* <Form.Group className="categories" width="200px">
                 <Form.Select
                   aria-label="User role"
                   id="category"
@@ -376,7 +405,7 @@ export default function Claims({ parent_container }) {
                   <option value="settled">Settled</option>
                   <option value="cancelled">Cancelled</option>
                 </Form.Select>
-              </Form.Group>
+              </Form.Group> */}
             </div>
 
             {paginatedShownClaim.length > 0 ? (
@@ -396,7 +425,12 @@ export default function Claims({ parent_container }) {
                 </thead>
                 <tbody>
                   {paginatedShownClaim.map((claim, index) => (
-                    <tr key={claim.id}>
+                    <tr
+                      key={claim.id}
+                      className={`${
+                        index % 2 === 0 ? "tw-bg-neutral-100" : "tw-bg-white"
+                      } tw-cursor-pointer hover:tw-bg-neutral-200`}
+                    >
                       <td>{claim.refNumber}</td>
                       <td>
                         <b>{claim.claimantName}</b>
