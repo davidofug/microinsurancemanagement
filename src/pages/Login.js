@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
-import { Redirect, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate, redirect } from "react-router-dom";
 import logo from "../assets/imgs/SWICO-LOGO.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
@@ -14,16 +14,20 @@ function Login() {
   const [password, setPassword] = useState("password");
   const [isVisible, setIsVisible] = useState(false);
 
+  const navigate = useNavigate();
+
   const { currentUser, setCurrentUser, authClaims, setAuthClaims } = useAuth();
-  const [ error, setError ] = useState('');
+  const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
 
-  const pageOnRefreshSuperAdmin = localStorage.getItem('onRefresh') || "/superadmin/dashboard"
-  const pageOnRefreshAdmin = localStorage.getItem('onRefresh') || "/admin/dashboard"
-  const pageOnRefreshSupervisor = localStorage.getItem('onRefresh') || "/supervisor/dashboard"
-  const pageOnRefreshAgent = localStorage.getItem('onRefresh') || "/agent/dashboard"
-
-
+  const pageOnRefreshSuperAdmin =
+    localStorage.getItem("onRefresh") || "/superadmin/dashboard";
+  const pageOnRefreshAdmin =
+    localStorage.getItem("onRefresh") || "/admin/dashboard";
+  const pageOnRefreshSupervisor =
+    localStorage.getItem("onRefresh") || "/supervisor/dashboard";
+  const pageOnRefreshAgent =
+    localStorage.getItem("onRefresh") || "/agent/dashboard";
 
   useEffect(() => {
     // const unsubscribe = onAuthStateChange(setCurrentUser)
@@ -39,54 +43,75 @@ function Login() {
     setLoading(true);
     try {
       const result = await signInWithEmailAndPassword(
-        authentication, email, password
+        authentication,
+        email,
+        password
       );
+      console.log(result);
+      console.log("authclaims: ", authClaims);
       if (result) {
         setLoading(false);
         onAuthStateChange(setCurrentUser, setAuthClaims);
+        console.log(authClaims);
+        // return redirect("/supervisor");
+        // if (authClaims.superadmin) {
+        //   navigate("/superadmin/dashboard");
+        // } else if (authClaims.admin) {
+        //   navigate("/admin/dashboard");
+        // } else if (authClaims.supervisor) {
+        //   navigate("/supervisor");
+        // } else if (authClaims.agent) {
+        //   navigate("/agent/dashboard");
+        // }
       }
-    } catch(err) {
-      setLoading(false)
+    } catch (err) {
+      setLoading(false);
       const errors = {
         "auth/user-not-found": `User with ${email} is not found`,
         "auth/wrong-password": "Password does not match the email",
-        "auth/network-request-failed": "something is wrong, check your network connection"
-      }
-      setError(errors[err.code])
+        "auth/network-request-failed":
+          "something is wrong, check your network connection",
+      };
+      setError(errors[err.code]);
+    }
   };
-}
 
   if (isLoading) return <Loader />;
 
-
-  if (currentUser?.loggedIn){
-    if(authClaims.admin){
-      return <Redirect to={{ pathname: pageOnRefreshAdmin }} />;
+  if (currentUser?.loggedIn) {
+    if (authClaims.admin) {
+      return <Navigate to={{ pathname: pageOnRefreshAdmin }} />;
     }
-    if(authClaims.agent){
-      return <Redirect to={{ pathname: pageOnRefreshAgent }} />;
+    if (authClaims.agent) {
+      return <Navigate to={{ pathname: pageOnRefreshAgent }} />;
     }
-    if(authClaims.supervisor){
-      return <Redirect to={{ pathname: pageOnRefreshSupervisor }} />;
+    if (authClaims.supervisor) {
+      return <Navigate to={{ pathname: pageOnRefreshSupervisor }} />;
     }
-    if(authClaims.superadmin){
-      return <Redirect to={{ pathname: pageOnRefreshSuperAdmin }} />;
+    if (authClaims.superadmin) {
+      return <Navigate to={{ pathname: pageOnRefreshSuperAdmin }} />;
     }
   }
 
   return (
     <div className="auth-wrapper">
       <img src={logo} width={150} alt="SWICO" />
-      <form action="" onSubmit={handleSignIn}>
-        <p>Enter Email and Password to sign in</p>
+      <form onSubmit={handleSignIn} className="tw-text-gray-500">
+        <p className="mb-3">Enter Email and Password to sign in</p>
         {error && <Alert variant="danger">{error}</Alert>}
         <div className="login-inputs">
           <label htmlFor="email">Email</label>
-          <input type="email" placeholder="Enter email" name="email" id="email"
+          <input
+            type="email"
+            placeholder="Enter email"
+            name="email"
+            id="email"
+            className="px-2 py-2"
             onChange={(event) =>
               setUser({ ...user, email: event.target.value })
             }
-            required />
+            required
+          />
         </div>
 
         <div className="login-inputs">
@@ -98,6 +123,7 @@ function Login() {
               placeholder="Enter password"
               name=""
               id="password_input"
+              className="px-2 py-2"
               onChange={(event) =>
                 setUser({ ...user, password: event.target.value })
               }
@@ -125,17 +151,27 @@ function Login() {
           </div>
         </div>
         <div>
-          <input type="checkbox" name="signedIn" id="checkbox" />
-          <label htmlFor="signedIn">Keep me signed in</label>
+          <input
+            type="checkbox"
+            name="signedIn"
+            id="checkbox"
+            className="tw-accent-gray-800 tw-cursor-pointer"
+          />
+          <label htmlFor="checkbox">Keep me signed in</label>
         </div>
-        <div id="submit_login">
+        <div
+          id="submit_login"
+          className="tw-flex tw-justify-between tw-mt-5 tw-items-end"
+        >
           <input
             type="submit"
-            className="btn cta"
+            className="tw-px-3 md:tw-px-5 tw-py-2 tw-bg-gray-900 tw-text-white tw-rounded hover:tw-bg-gray-800"
             value="Login"
           />
           <Link to="/forgot-password">
-            <p>Forgot Password?</p>
+            <p className="tw-text-xs tw-font-light tw-text-black tw-underline">
+              Forgot Password?
+            </p>
           </Link>
         </div>
       </form>
@@ -143,4 +179,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;

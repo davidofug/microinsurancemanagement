@@ -26,19 +26,23 @@ import Chat from "../components/messenger/Chat";
 import "../styles/ctas.css";
 
 function Settings({ parent_container }) {
+  const [show, handleShow, handleClose] = useDialog();
   useEffect(() => {
     document.title = "User Profile - SWICO";
     getUserMeta();
   }, []);
-  const [show, handleShow, handleClose] = useDialog();
   const [meta, setMeta] = useState({});
-  const { currentUser } = getAuth();
+  const { currentUser, setCurrentUser } = getAuth();
   const { authClaims } = useAuth();
+
+  console.log(show);
 
   const getUserMeta = async () => {
     const docRef = doc(db, "usermeta", currentUser.uid);
     const docSnap = await getDoc(docRef);
     setMeta(docSnap.data());
+    console.log("something new in meta");
+    console.log(currentUser.displayName);
   };
 
   const handlePasswordChange = async (event) => {
@@ -90,7 +94,13 @@ function Settings({ parent_container }) {
       <ToastContainer />
 
       <Modal show={show} onHide={handleClose}>
-        <UpdateUser currentUser={currentUser} meta={meta} handleClose={handleClose} getUserMeta={getUserMeta} />
+        <UpdateUser
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          meta={meta}
+          handleClose={handleClose}
+          getUserMeta={getUserMeta}
+        />
       </Modal>
 
       <div
@@ -98,8 +108,7 @@ function Settings({ parent_container }) {
         className="componentsData myProfile shadow-sm mb-3 mt-3"
       >
         <div className="mt-3">
-          <h2>Profile</h2>
-          <p>User Detail</p>
+          <h2 className="tw-font-medium tw-text-lg tw-mb-5">Profile</h2>
           <div className="profileSection">
             <div className="avatarSection">
               {authentication?.currentUser.photoURL !==
@@ -108,26 +117,31 @@ function Settings({ parent_container }) {
                 "https://example.com/jane-doe/photo.jpg" ? (
                 <img
                   src={authentication?.currentUser.photoURL}
-                  alt="profile"
+                  alt={authentication?.currentUser.displayName}
                   width={50}
                   height={50}
-                  style={{ borderRadius: "50%" }}
+                  className="tw-rounded-full tw-overflow-hidden"
                 />
               ) : (
                 <DefaultAvatar />
               )}
               <div>
-                <h6 style={{ margin: "0" }}>{currentUser.displayName}</h6>
+                <h3 className="tw-text-lg tw-font-medium tw-mb-0">
+                  {currentUser.displayName}
+                </h3>
                 <p>{currentUser.email}</p>
               </div>
             </div>
-            <button className="btn cta" onClick={handleShow}>
+            <button
+              className="tw-bg-gray-800 tw-px-3 tw-py-2 tw-text-white tw-rounded"
+              onClick={handleShow}
+            >
               <AiOutlineEdit />
             </button>
           </div>
         </div>
 
-        <h6>General Information</h6>
+        <h3 className="tw-mt-5">General Information</h3>
         <table className="mb-3 mt-3">
           <tbody style={{ backgroundColor: "transparent" }}>
             <tr
@@ -219,10 +233,11 @@ function Settings({ parent_container }) {
         id="edit_profile"
         className="componentsData myProfile shadow-sm mb-3"
       >
-        <h2>Notification</h2>
+        <h2 className="tw-font-medium tw-text-lg tw-mb-5">Notification</h2>
         <Alert variant="success">
-          {" "}
-          <MdCheckCircle /> You don't have any notifications
+          <div className="tw-flex tw-items-center tw-gap-2">
+            <MdCheckCircle /> You don't have any notifications
+          </div>
         </Alert>
       </div>
 
@@ -231,8 +246,10 @@ function Settings({ parent_container }) {
         className="componentsData myProfile shadow-sm mb-3"
       >
         <form name="passwordForm" onSubmit={handlePasswordChange}>
-          <h2>Password and Security</h2>
-          <p>Change your password</p>
+          <h2 className="tw-font-medium tw-text-lg tw-mb-5">
+            Password and Security
+          </h2>
+          <p className="mb-2">Change your password</p>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="oldPassword">Old Password</Form.Label>
             <Form.Control

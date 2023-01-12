@@ -569,7 +569,12 @@ export default function Mtp({ parent_container, policyCategory }) {
                 </thead>
                 <tbody>
                   {paginatedShownPolicies.map((policy, index) => (
-                    <tr key={policy.id}>
+                    <tr
+                      key={policy.id}
+                      className={`${
+                        index % 2 === 0 ? "tw-bg-neutral-100" : "tw-bg-white"
+                      } tw-cursor-pointer hover:tw-bg-[#f6f7f7]`}
+                    >
                       <td>
                         {/* {policy.stickersDetails[0].status !== "deleted" && ( */}
                         <input

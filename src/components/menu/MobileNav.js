@@ -1,5 +1,5 @@
 import "../../assets/styles/menu.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import { useState, useEffect } from "react";
 import { Navbar, Offcanvas, Container, Nav } from "react-bootstrap";
@@ -45,8 +45,8 @@ export default function MobileNav({ role, user, displayName }) {
   
   const handleLogout = async () => {
     try {
-      window.location = "/";
       await logout();
+      window.location = "/";
     } catch (error) {
       console.log(error);
     }
@@ -87,10 +87,14 @@ export default function MobileNav({ role, user, displayName }) {
                 <ul className="nav flex-column">
                   {selected.role !== null &&
                     selected.role.map((menuItem, index) => (
-                      <ul className="nav-item" key={menuItem.number}>
-                        <Link
+                      <ul className="nav-item" key={index}>
+                        <NavLink
                           to={menuItem.link}
-                          className={toggleActiveClassStyle(index)}
+                          className={({ isActive }) =>
+                            isActive
+                              ? "tw-flex tw-cursor-pointer tw-px-3 tw-py-2 tw-gap-2 tw-items-center tw-bg-[#1f1f1f] tw-rounded mx-3 tw-text-white hover:tw-text-white"
+                              : "tw-flex tw-cursor-pointer tw-gap-2 tw-items-center tw-px-3 tw-py-3 tw-rounded mx-3 hover:tw-text-gray-800 hover:tw-bg-gray-100"
+                          }
                           onClick={() => {
                             toggleActive(index);
                             setSelectedIndex(index);
@@ -110,25 +114,25 @@ export default function MobileNav({ role, user, displayName }) {
                             }
                           }}
                         >
-                          <div>
-                            <span>{menuItem.icon}</span>
-                            {menuItem.name}
+                          {/* <div> */}
+                          <span>{menuItem.icon}</span>
+                          {menuItem.name}
 
-                            {menuItem?.subMenu && (
-                              <span>
-                                {subMenu === true && selectedIndex === index ? (
-                                  <BsFillCaretUpFill
-                                    style={{ fontSize: "10px" }}
-                                  />
-                                ) : (
-                                  <BsFillCaretDownFill
-                                    style={{ fontSize: "10px" }}
-                                  />
-                                )}
-                              </span>
-                            )}
-                          </div>
-                        </Link>
+                          {menuItem?.subMenu && (
+                            <span>
+                              {subMenu === true && selectedIndex === index ? (
+                                <BsFillCaretUpFill
+                                  style={{ fontSize: "10px" }}
+                                />
+                              ) : (
+                                <BsFillCaretDownFill
+                                  style={{ fontSize: "10px" }}
+                                />
+                              )}
+                            </span>
+                          )}
+                          {/* </div> */}
+                        </NavLink>
                         {subMenu === true && selectedIndex === index && (
                           <div
                             className="nav flex-column"
@@ -175,27 +179,30 @@ export default function MobileNav({ role, user, displayName }) {
                   event.stopPropagation();
                 }}
               >
-                {authentication?.currentUser.photoURL !==
-                "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" ? (
-                  <img
-                    src={authentication?.currentUser.photoURL}
-                    alt="profile"
-                    width={50}
-                    height={50}
-                    style={{ borderRadius: "50%" }}
-                  />
-                ) : (
-                  <DefaultAvatar />
-                )}
-                <div>
-                  <p style={{ fontWeight: "500", fontSize: "1.05rem" }}>
-                    {displayName}
-                  </p>
-                  <p style={{ color: "#646464" }}>
-                    <Badge color="black">{user}</Badge>
-                  </p>
+                <div className="footerContext tw-w-full tw-h-full tw-flex tw-px-3 tw-py-2 tw-gap-3 tw-items-center">
+                  {authentication?.currentUser.photoURL !==
+                    "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" &&
+                  authentication?.currentUser.photoURL !==
+                    "https://example.com/jane-doe/photo.jpg" ? (
+                    <img
+                      src={authentication?.currentUser.photoURL}
+                      alt={authentication?.currentUser.displayName}
+                      width={50}
+                      height={50}
+                      className="tw-rounded-full tw-overflow-hidden"
+                    />
+                  ) : (
+                    <DefaultAvatar />
+                  )}
+                  <div>
+                    <p style={{ fontWeight: "500", fontSize: "1.05rem" }}>
+                      {displayName}
+                    </p>
+                    <span className="tw-text-gray-400 tw-text-sm">
+                      Super Admin
+                    </span>
+                  </div>
                 </div>
-                <h3 style={{ color: "#000" }}>&hellip;</h3>
               </div>
               {/* context menu */}
               <ul className={show ? "footerContextShow" : ""} id="contextUl">
