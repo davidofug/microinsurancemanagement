@@ -44,17 +44,6 @@ function Agents({ parent_container }) {
     const listUsers = httpsCallable(functions, "listUsers");
     if (authClaims.supervisor) {
 
-      onSnapshot(collection(db, 'agents'), (snapshot) => {
-        const data = snapshot.docs.map(doc => ({...doc.data(), id:doc.id}))
-        const myAgents = data
-          .filter((user) => user.role.agent === true)
-          .filter(
-            (agent) =>
-              agent.meta.added_by_uid === authentication.currentUser.uid
-          );
-        myAgents.length === 0 ? setAgents(null) : setAgents(myAgents);
-      })
-
       listUsers()
         .then(({ data }) => {
           const myAgents = data
@@ -68,17 +57,6 @@ function Agents({ parent_container }) {
         .catch();
     } else if (authClaims.admin) {
 
-      onSnapshot(collection(db, 'agents'), (snapshot) => {
-        const data = snapshot.docs.map(doc => ({...doc.data(), id:doc.id}))
-        const myAgents = data
-          .filter((user) => user.role.agent === true)
-          .filter(
-            (agent) =>
-              agent.meta.added_by_uid === authentication.currentUser.uid
-          );
-        myAgents.length === 0 ? setAgents(null) : setAgents(myAgents);
-      })
-      
       listUsers()
         .then(({ data }) => {
           const mySupervisors = data
@@ -352,7 +330,7 @@ function Agents({ parent_container }) {
         </div>
 
         <Modal show={open} onHide={handleClose}>
-          <ClientModal singleDoc={singleDoc} handleClose={handleClose} />
+          <ClientModal singleDoc={singleDoc} handleClose={handleClose} getUsers={getAgents}/>
         </Modal>
 
         <Modal show={openSticker} onHide={handleCloseSticker}>

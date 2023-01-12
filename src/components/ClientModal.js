@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useState } from 'react';
 
-function ClientModal({ singleDoc , handleClose, handleFieldChange, getUsers}) {
+function ClientModal({ singleDoc , handleClose,  getUsers }) {
   const [ formData, setFormData ] = useState(singleDoc)
   console.log("Form Data: ", singleDoc)
  
@@ -38,6 +38,7 @@ function ClientModal({ singleDoc , handleClose, handleFieldChange, getUsers}) {
           }`,
         });
       })
+      .then(getUsers)
       .catch( async (error) => {
         toast.error(`Failed to update ${singleDoc.name}`, {position: "top-center"});
         console.log(error)
