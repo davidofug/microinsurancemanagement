@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate, redirect } from "react-router-dom";
 import logo from "../assets/imgs/SWICO-LOGO.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
@@ -13,6 +13,8 @@ function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
   const [password, setPassword] = useState("password");
   const [isVisible, setIsVisible] = useState(false);
+
+  const navigate = useNavigate();
 
   const { currentUser, setCurrentUser, authClaims, setAuthClaims } = useAuth();
   const [error, setError] = useState("");
@@ -45,9 +47,22 @@ function Login() {
         email,
         password
       );
+      console.log(result);
+      console.log("authclaims: ", authClaims);
       if (result) {
         setLoading(false);
         onAuthStateChange(setCurrentUser, setAuthClaims);
+        console.log(authClaims);
+        // return redirect("/supervisor");
+        // if (authClaims.superadmin) {
+        //   navigate("/superadmin/dashboard");
+        // } else if (authClaims.admin) {
+        //   navigate("/admin/dashboard");
+        // } else if (authClaims.supervisor) {
+        //   navigate("/supervisor");
+        // } else if (authClaims.agent) {
+        //   navigate("/agent/dashboard");
+        // }
       }
     } catch (err) {
       setLoading(false);
@@ -81,8 +96,8 @@ function Login() {
   return (
     <div className="auth-wrapper">
       <img src={logo} width={150} alt="SWICO" />
-      <form action="" onSubmit={handleSignIn}>
-        <p>Enter Email and Password to sign in</p>
+      <form onSubmit={handleSignIn} className="tw-text-gray-500">
+        <p className="mb-3">Enter Email and Password to sign in</p>
         {error && <Alert variant="danger">{error}</Alert>}
         <div className="login-inputs">
           <label htmlFor="email">Email</label>
@@ -91,6 +106,7 @@ function Login() {
             placeholder="Enter email"
             name="email"
             id="email"
+            className="px-2 py-2"
             onChange={(event) =>
               setUser({ ...user, email: event.target.value })
             }
@@ -107,6 +123,7 @@ function Login() {
               placeholder="Enter password"
               name=""
               id="password_input"
+              className="px-2 py-2"
               onChange={(event) =>
                 setUser({ ...user, password: event.target.value })
               }
@@ -134,13 +151,27 @@ function Login() {
           </div>
         </div>
         <div>
-          <input type="checkbox" name="signedIn" id="checkbox" />
-          <label htmlFor="signedIn">Keep me signed in</label>
+          <input
+            type="checkbox"
+            name="signedIn"
+            id="checkbox"
+            className="tw-accent-gray-800 tw-cursor-pointer"
+          />
+          <label htmlFor="checkbox">Keep me signed in</label>
         </div>
-        <div id="submit_login">
-          <input type="submit" className="btn cta" value="Login" />
+        <div
+          id="submit_login"
+          className="tw-flex tw-justify-between tw-mt-5 tw-items-end"
+        >
+          <input
+            type="submit"
+            className="tw-px-3 md:tw-px-5 tw-py-2 tw-bg-gray-900 tw-text-white tw-rounded hover:tw-bg-gray-800"
+            value="Login"
+          />
           <Link to="/forgot-password">
-            <p>Forgot Password?</p>
+            <p className="tw-text-xs tw-font-light tw-text-black tw-underline">
+              Forgot Password?
+            </p>
           </Link>
         </div>
       </form>

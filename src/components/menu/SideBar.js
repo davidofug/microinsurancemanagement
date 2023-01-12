@@ -38,6 +38,7 @@ export default function SideBar({ role, user, displayName }) {
                     ? "tw-flex tw-cursor-pointer tw-px-3 tw-py-2 tw-gap-2 tw-items-center tw-bg-[#1f1f1f] tw-rounded mx-3 tw-text-white hover:tw-text-white"
                     : "tw-flex tw-cursor-pointer tw-gap-2 tw-items-center tw-px-3 tw-py-2 tw-rounded mx-3 hover:tw-text-gray-800 hover:tw-bg-gray-100"
                 }
+                onClick={() => localStorage.setItem("onRefresh", menuItem.link)}
               >
                 <span>{menuItem.icon}</span>
                 {menuItem.name}
