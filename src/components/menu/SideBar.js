@@ -30,7 +30,7 @@ export default function SideBar({ role, user, displayName }) {
       <section className="position-sticky pt-3" id="menu_section">
         <ul className="nav flex-column tw-relative">
           {selected.role.map((menuItem, index) => (
-            <li className="nav-item" key={index}>
+            <li className="nav-item tw-relative" key={index}>
               <NavLink
                 to={menuItem.link}
                 className={({ isActive }) =>
@@ -42,8 +42,8 @@ export default function SideBar({ role, user, displayName }) {
               >
                 <span>{menuItem.icon}</span>
                 {menuItem.name}
-                {menuItem?.subMenu && (
-                  <ul className="tw-absolute tw-left-[220px] tw-text-gray-800 hover:tw-text-gray-800">
+                {/* {menuItem?.subMenu && (
+                  <ul className="tw-absolute tw-left-[220px] tw-text-gray-800 hover:tw-text-gray-800 tw-z-90">
                     {menuItem.subMenu.map((sub, index) => (
                       <li key={index}>
                         <Link
@@ -55,8 +55,22 @@ export default function SideBar({ role, user, displayName }) {
                       </li>
                     ))}
                   </ul>
-                )}
+                )} */}
               </NavLink>
+              {menuItem?.subMenu && (
+                <ul className="tw-absolute tw-left-[230px] tw-top-0 tw-text-gray-800 hover:tw-text-gray-800 tw-z-90 tw-bg-white md:tw-w-[200px]">
+                  {menuItem.subMenu.map((sub, index) => (
+                    <li key={index}>
+                      <Link
+                        to={sub.link}
+                        className="hover:tw-text-gray-800 tw-cursor-pointer px-3 py-3"
+                      >
+                        {sub.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>

@@ -21,8 +21,10 @@ import Windscreen from "components/forms/Windscreen";
 import Comprehensive from "components/forms/Comprehensive";
 import StickerMgt from "pages/admin/StickerMgt";
 import Supervisors from "pages/admin/Supervisors";
+import { useToggleMenu } from "hooks";
 
 export default function App() {
+  const [largeContentClass] = useToggleMenu();
   return (
     <Router>
       <Routes>
@@ -70,6 +72,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Admins />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="supervisors"
+            element={
+              <PrivateRoute>
+                <Supervisors />
               </PrivateRoute>
             }
           />
@@ -440,7 +450,7 @@ export default function App() {
             index
             element={
               <PrivateRoute>
-                <Dashboard />
+                <Dashboard largeContentClass={largeContentClass} />
               </PrivateRoute>
             }
           />

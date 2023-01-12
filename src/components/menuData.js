@@ -33,6 +33,12 @@ const menuData = {
       link: "/superadmin/admins",
     },
     {
+      number: 2,
+      name: "Supervisors",
+      icon: <MdPerson />,
+      link: "/superadmin/supervisors",
+    },
+    {
       number: 3,
       name: "Policies",
       icon: <MdDirectionsCarFilled />,

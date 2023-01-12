@@ -107,6 +107,9 @@ export default function AdminMenu({ minimiseMenu, maximiseMenu }) {
               <Link
                 to="/admin/settings"
                 className="tw-flex tw-hover:bg-gray-100 tw-gap-2 tw-cursor-pointer tw-items-center tw-py-3 tw-text-gray-500 hover:tw-text-gray-500 hover:tw-bg-gray-100 tw-px-5 tw-rounded"
+                onClick={() =>
+                  localStorage.setItem("onRefresh", "/admin/settings")
+                }
               >
                 <ImProfile /> My Profile
               </Link>
@@ -163,6 +166,9 @@ export default function AdminMenu({ minimiseMenu, maximiseMenu }) {
               <Link
                 to="/admin/settings"
                 className="tw-flex tw-hover:bg-gray-100 tw-gap-2 tw-cursor-pointer tw-items-center tw-py-3 tw-text-gray-500 hover:tw-text-gray-500 hover:tw-bg-gray-100 tw-px-5 tw-rounded"
+                onClick={() =>
+                  localStorage.setItem("onRefresh", "/admin/settings")
+                }
               >
                 <ImProfile /> My Profile
               </Link>
