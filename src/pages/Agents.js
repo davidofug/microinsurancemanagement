@@ -13,7 +13,7 @@ import ClientModal from "../components/ClientModal";
 import useDialog from "../hooks/useDialog";
 import { ImFilesEmpty } from "react-icons/im";
 import { MdStickyNote2 } from "react-icons/md";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import StickerModal from "../components/StickersModal";
 import { FaUserPlus } from "react-icons/fa";
 import { IoMdAlert } from "react-icons/io";
@@ -43,6 +43,18 @@ function Agents({ parent_container }) {
   const getAgents = () => {
     const listUsers = httpsCallable(functions, "listUsers");
     if (authClaims.supervisor) {
+
+      onSnapshot(collection(db, 'agents'), (snapshot) => {
+        const data = snapshot.docs.map(doc => ({...doc.data(), id:doc.id}))
+        const myAgents = data
+          .filter((user) => user.role.agent === true)
+          .filter(
+            (agent) =>
+              agent.meta.added_by_uid === authentication.currentUser.uid
+          );
+        myAgents.length === 0 ? setAgents(null) : setAgents(myAgents);
+      })
+
       listUsers()
         .then(({ data }) => {
           const myAgents = data
@@ -55,6 +67,18 @@ function Agents({ parent_container }) {
         })
         .catch();
     } else if (authClaims.admin) {
+
+      onSnapshot(collection(db, 'agents'), (snapshot) => {
+        const data = snapshot.docs.map(doc => ({...doc.data(), id:doc.id}))
+        const myAgents = data
+          .filter((user) => user.role.agent === true)
+          .filter(
+            (agent) =>
+              agent.meta.added_by_uid === authentication.currentUser.uid
+          );
+        myAgents.length === 0 ? setAgents(null) : setAgents(myAgents);
+      })
+      
       listUsers()
         .then(({ data }) => {
           const mySupervisors = data
