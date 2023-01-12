@@ -19,6 +19,8 @@ import { Mtp, AddUsers, Claims, Settings } from "./pages";
 import SystemLogs from "./pages/superAdmin/SystemLogs";
 import Windscreen from "components/forms/Windscreen";
 import Comprehensive from "components/forms/Comprehensive";
+import StickerMgt from "pages/admin/StickerMgt";
+import Supervisors from "pages/admin/Supervisors";
 
 export default function App() {
   return (
@@ -132,6 +134,153 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Mtp policyCategory="transit" />
+              </PrivateRoute>
+            }
+          />
+        </Route>
+        {/* Admin Routes */}
+        <Route path="/admin">
+          <Route
+            path="dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="organisations"
+            element={
+              <PrivateRoute>
+                <Organisations />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-organisations"
+            element={
+              <PrivateRoute>
+                <AddOrganisation />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="clients"
+            element={
+              <PrivateRoute>
+                <Clients />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="agents"
+            element={
+              <PrivateRoute>
+                <Agents />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-agent"
+            element={
+              <PrivateRoute>
+                <AddUsers role="agent" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-supervisor"
+            element={
+              <PrivateRoute>
+                <AddUsers role="supervisor" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="supervisors"
+            element={
+              <PrivateRoute>
+                <Supervisors />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="claims"
+            element={
+              <PrivateRoute>
+                <Claims />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="sticker-management"
+            element={
+              <PrivateRoute>
+                <StickerMgt />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="settings"
+            element={
+              <PrivateRoute>
+                <Settings />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="motor-third-party"
+            element={
+              <PrivateRoute>
+                <Mtp policyCategory="mtp" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="windscreen"
+            element={
+              <PrivateRoute>
+                <Windscreen policyCategory="windscreen" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="comprehensive"
+            element={
+              <PrivateRoute>
+                <Mtp policyCategory="comprehensive" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="new-import"
+            element={
+              <PrivateRoute>
+                <Mtp policyCategory="newImport" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="transit"
+            element={
+              <PrivateRoute>
+                <Mtp policyCategory="transit" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="view-log-trail"
+            element={
+              <PrivateRoute>
+                <Logs />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="reports"
+            element={
+              <PrivateRoute>
+                <Reports />
               </PrivateRoute>
             }
           />
