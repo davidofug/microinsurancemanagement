@@ -181,7 +181,7 @@ export default function Organisations({ parent_container }) {
             />
           </div>
 
-          <Table bordered hover striped responsive className="mt-5">
+          <Table bordered responsive className="mt-5">
             <thead>
               <tr
                 style={{
@@ -215,7 +215,12 @@ export default function Organisations({ parent_container }) {
 
             <tbody>
               {currentOrganisations.map((organisation, index) => (
-                <tr key={organisation.id}>
+                <tr
+                  key={organisation.id}
+                  className={`${
+                    index % 2 === 0 ? "tw-bg-neutral-100" : "tw-bg-white"
+                  } tw-cursor-pointer hover:tw-bg-neutral-200`}
+                >
                   <td className="text-center">
                     <img
                       src={organisation.logo}

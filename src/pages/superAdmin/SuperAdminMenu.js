@@ -110,6 +110,9 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
               <Link
                 to="/superadmin/settings"
                 className="tw-flex tw-hover:bg-gray-100 tw-gap-2 tw-cursor-pointer tw-items-center tw-py-3 tw-text-gray-500 hover:tw-text-gray-500 hover:tw-bg-gray-100 tw-px-5 tw-rounded"
+                onClick={() =>
+                  localStorage.setItem("onRefresh", "/agent/settings")
+                }
               >
                 <ImProfile /> My Profile
               </Link>
@@ -117,7 +120,7 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
                 <MdSettings /> Account Settings
               </div>
 
-              <hr class="tw-my-3 tw-border-gray-600" />
+              <hr className="tw-my-3 tw-border-gray-600" />
 
               <li
                 onClick={handleLogout}
@@ -166,6 +169,9 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
               <Link
                 to="/superadmin/settings"
                 className="tw-flex tw-hover:bg-gray-100 tw-gap-2 tw-cursor-pointer tw-items-center tw-py-3 tw-text-gray-500 hover:tw-text-gray-500 hover:tw-bg-gray-100 tw-px-5 tw-rounded"
+                onClick={() =>
+                  localStorage.setItem("onRefresh", "/agent/settings")
+                }
               >
                 <ImProfile /> My Profile
               </Link>
@@ -173,7 +179,7 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
                 <MdSettings /> Account Settings
               </div>
 
-              <hr class="tw-my-3 tw-border-gray-600" />
+              <hr className="tw-my-3 tw-border-gray-600" />
 
               <li
                 onClick={handleLogout}

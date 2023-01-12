@@ -17,8 +17,9 @@ import {
 
 import Chat from "../components/messenger/Chat";
 import "../styles/ctas.css";
+import { useToggleMenu } from "hooks";
 
-function Dashboard() {
+function Dashboard({ largeContentClass }) {
   const { authClaims } = useAuth();
   const [users, setUsers] = useState([]);
   const [policies, setPolicies] = useState([]);
@@ -132,20 +133,18 @@ function Dashboard() {
       <Header
         title="Welcome to Statewide Insurance."
         subtitle="WITH YOU EVERY STEP OF THE WAY"
-        className="heading"
       />
 
       <div className="componentsData">
         <div
           id="first-row"
-          className={`mb-5 first-row ${
-            true ? "dashboard-cards" : "expanded-menu-dashboard-cards"
-          }`}
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "space-between",
-          }}
+          className={`mb-5 my-2 first-row ${
+            !largeContentClass
+              ? "tw-overflow-y-hidden tw-overflow-x-hidden"
+              : ""
+          } ${
+            users?.length > 0 ? "" : ""
+          } tw-py-1 tw-px-1 tw-flex tw-flex-col lg:tw-flex-row tw-justify-between`}
         >
           <FirstContainer
             claimsSettled={claimsSettled}
@@ -155,7 +154,7 @@ function Dashboard() {
           <UsersContainer authClaims={authClaims} users={users} />
         </div>
 
-        {/* <GraphContainer /> */}
+        <GraphContainer policies={policies} />
       </div>
       <div
         style={{

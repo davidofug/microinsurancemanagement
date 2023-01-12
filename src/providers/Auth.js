@@ -19,7 +19,7 @@ function AuthProvider({ children }) {
 
   const auth = getAuth();
   const logout = () => {
-    // localStorage.removeItem("onRefresh");
+    localStorage.removeItem("onRefresh");
     signOut(auth);
   };
 
