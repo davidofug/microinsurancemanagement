@@ -3,6 +3,7 @@ import { useToggleMenu } from "hooks";
 import { SuperAdminMenu } from "pages";
 import { SupervisorMenu } from "pages";
 import { AdminMenu } from "pages";
+import AgentMenus from "./AgentMenus";
 
 function Container({ children }) {
   const { currentUser, authClaims } = useAuth();
@@ -33,6 +34,7 @@ function Container({ children }) {
             maximiseMenu={maximiseMenu}
           />
         )}
+        {authClaims?.agent && <AgentMenus />}
       </div>
       <main>{children}</main>
     </div>
