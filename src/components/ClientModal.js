@@ -8,9 +8,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useState } from 'react';
 
 function ClientModal({ singleDoc , handleClose,  getUsers }) {
-  const [ formData, setFormData ] = useState(singleDoc)
-  console.log("Form Data: ", singleDoc)
- 
+  const [ formData, setFormData ] = useState(singleDoc) 
 
   // const auth = getAuth();
 
@@ -19,7 +17,6 @@ function ClientModal({ singleDoc , handleClose,  getUsers }) {
 
   const handleEditFormSubmit = (event) => {
     event.preventDefault()
-    console.log("New form information: ", formData)
 
     const updateUser = httpsCallable(functions, 'updateUser')
     updateUser(formData)
