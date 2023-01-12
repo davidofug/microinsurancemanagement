@@ -6,7 +6,6 @@ import { httpsCallable } from 'firebase/functions';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useState } from 'react';
-import { useForm } from '../hooks/useForm';
 
 function ClientModal({ singleDoc , handleClose, handleFieldChange, getUsers}) {
   const [ formData, setFormData ] = useState(singleDoc)
@@ -26,11 +25,18 @@ function ClientModal({ singleDoc , handleClose, handleFieldChange, getUsers}) {
     updateUser(formData)
       .then(async () => {
         await addDoc(logCollectionRef, {
-          timeCreated: `${new Date().toISOString().slice(0, 10)} ${ new Date().getHours()}:${ new Date().getMinutes()}:${ new Date().getSeconds()}`,
-          type: 'user update',
-          status: 'successful',
-          message: `Successfully updated agent - ${singleDoc.name.toUpperCase()} by ${authentication.currentUser.displayName}`
-        })
+          timeCreated: `${new Date()
+            .toISOString()
+            .slice(
+              0,
+              10
+            )} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+          type: "user update",
+          status: "successful",
+          message: `Successfully updated agent - ${singleDoc.name.toUpperCase()} by ${
+            authentication.currentUser.displayName
+          }`,
+        });
       })
       .catch( async (error) => {
         toast.error(`Failed to update ${singleDoc.name}`, {position: "top-center"});
@@ -44,16 +50,9 @@ function ClientModal({ singleDoc , handleClose, handleFieldChange, getUsers}) {
     })
 
     toast.success('Successfully updated', {position: "top-center"});
-}
+  }
 
-// handling user promotion
-const [ agentPromo, setAgentPromo ] = useState(false)
-const handleAgentPromotion = () => {
-  setAgentPromo(true)
-}
-const handleAgentPromotionDecline = () => {
-  setAgentPromo(false)
-}
+  // handling user promotion
 
     return (
         <>
@@ -144,23 +143,22 @@ const handleAgentPromotionDecline = () => {
                 <Form.Label htmlFor='user_role'>Role</Form.Label>
                 <Form.Control id="user_role" placeholder="Enter user role" defaultValue={singleDoc.role.agent && 'agent'}/>
               </Form.Group> */}
-
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-                variant="dark"
-                type="submit"
-                onClick={() => {
-                  handleClose();
-                }}
-                id="submit"
-              >
-                Submit
-              </Button>
-          </Modal.Footer>
-        </Form>
-      </>
-    )
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="dark"
+            type="submit"
+            onClick={() => {
+              handleClose();
+            }}
+            id="submit"
+          >
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </>
+  );
 }
 
-export default ClientModal
+export default ClientModal;
