@@ -41,7 +41,8 @@ export default function MobileNav({ role, user, displayName }) {
     sessionStorage.setItem("session1", selected.role[index]["number"]);
   };
 
-  const { logout } = useAuth();
+  const {logout } = useAuth();
+  
   const handleLogout = async () => {
     try {
       await logout();
@@ -210,8 +211,10 @@ export default function MobileNav({ role, user, displayName }) {
                     <ImProfile /> My Profile
                   </Link>
                 </li>
-                <li onClick={handleLogout}>
-                  <MdLogout /> Logout
+                <li onClick={handleLogout} id="button1">
+                  <Link>
+                    <MdLogout /> Logout
+                  </Link>
                 </li>
               </ul>
             </footer>
