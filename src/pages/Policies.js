@@ -12,10 +12,7 @@ import Header from "../components/header/Header";
 import { collection, addDoc } from "firebase/firestore";
 import { authentication, db } from "../helpers/firebase";
 
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-import Chat from "../components/messenger/Chat";
+import { toast } from "react-toastify";
 
 // import { FaSolarPanel } from 'react-icons/fa'
 // import AddClient from '../parts/AddClient'
@@ -54,7 +51,6 @@ function Policies({ cat, btn_txt, pol, parent_container }) {
   const today = `${new Date().getDate()}/${
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`;
-  console.log(today);
 
   const [comprehensiveClient, setComprehensiveClient] = useState("");
   const [policyDisplayEndDate, setPolicyDisplayEndDate] = useState();
@@ -127,7 +123,6 @@ function Policies({ cat, btn_txt, pol, parent_container }) {
     listUsers()
       .then(({ data }) => {
         setExistingClients(data.filter((user) => user?.role?.Customer));
-        // console.log(data.filter(user => user?.role?.Customer))
       })
       .catch((err) => {
         console.log(err);
@@ -472,8 +467,6 @@ function Policies({ cat, btn_txt, pol, parent_container }) {
                         (category) => category.label === event.target.value
                       );
                       const [category] = result;
-                      // eslint-disable-next-line no-lone-blocks
-                      // console.log(date)
 
                       if (category?.classes?.length > 0) {
                         const [{ classes }] = result;
@@ -690,8 +683,6 @@ function Policies({ cat, btn_txt, pol, parent_container }) {
         subtitle={`MANAGING ${pol} POLICIES`.toUpperCase()}
       />
 
-      <ToastContainer />
-
       <div
         className="componentsData addComponentsData shadow-sm mb-5"
         style={{ paddingBottom: "10vh" }}
@@ -736,7 +727,6 @@ function Policies({ cat, btn_txt, pol, parent_container }) {
                             setComprehensiveClient("Existing");
                           }
                         }
-                        console.log(client);
                       }}
                     />
                     <datalist id="clientNames">
@@ -777,7 +767,6 @@ function Policies({ cat, btn_txt, pol, parent_container }) {
                             );
                           }
                         }
-                        console.log(client);
                       }}
                     />
                     <datalist id="clientNames">
@@ -900,7 +889,15 @@ function Policies({ cat, btn_txt, pol, parent_container }) {
                                   required
                                 />
                               </Form.Group>
-                              <Form.Group as={Col} className="addFormGroups" style={{"display": "flex", "flex-direction": "column", "align-items": "start"}}>
+                              <Form.Group
+                                as={Col}
+                                className="addFormGroups"
+                                style={{
+                                  display: "flex",
+                                  "flex-direction": "column",
+                                  "align-items": "start",
+                                }}
+                              >
                                 <Form.Label htmlFor="gender">
                                   Gender <span className="required">*</span>
                                 </Form.Label>
@@ -1419,20 +1416,6 @@ function Policies({ cat, btn_txt, pol, parent_container }) {
             </div>
           </div>
         </Form>
-      </div>
-      <div
-        className={
-          parent_container ? "chat-container" : "expanded-menu-chat-container"
-        }
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-        <Chat />
       </div>
     </div>
   );
