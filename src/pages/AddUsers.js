@@ -18,7 +18,7 @@ import { getUsers } from "../helpers/helpfulUtilities";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../helpers/firebase";
 
-function AddUsers({ role, parent_container }) {
+function AddUsers({ role }) {
   const { authClaims } = useAuth();
   const addUser = httpsCallable(functions, "addUser");
   useEffect(() => {
@@ -35,6 +35,7 @@ function AddUsers({ role, parent_container }) {
   const [mtp, setMTP] = useState(false);
   const [newImport, setNewImport] = useState(false);
   const [transit, setTransit] = useState(false);
+  const [supervisor, setSupervisor] = useState(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
@@ -63,7 +64,6 @@ function AddUsers({ role, parent_container }) {
       ...doc.data(),
       id: doc.id,
     }));
-    console.log("Organisations: ", organisationArray);
     organisationArray.length === 0
       ? setOrganisations(null)
       : setOrganisations(organisationArray);
@@ -111,7 +111,8 @@ function AddUsers({ role, parent_container }) {
         10
       )} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
     if (role === "agent" && authClaims.admin) {
-      fields["supervisor"] = event.target.supervisor.value;
+      fields["supervisor"] = supervisor;
+      console.log("reached here");
     }
 
     if (logo) {
@@ -134,6 +135,7 @@ function AddUsers({ role, parent_container }) {
             .then(async () => {
               addUser(fields)
                 .then(async (results) => {
+                  console.log(results);
                   toast.success(`Successfully added ${fields.name}`, {
                     position: "top-center",
                   });
@@ -181,6 +183,7 @@ function AddUsers({ role, parent_container }) {
         }
       );
     } else {
+      // console.log(fields)
       addUser(fields)
         .then(async (results) => {
           toast.success(`Successfully added ${fields.name}`, {
@@ -513,14 +516,16 @@ function AddUsers({ role, parent_container }) {
                   <Form.Select
                     aria-label="User role"
                     id="category"
-                    onChange={({ target: { value } }) => setPolicyType(value)}
+                    onChange={({ target: { value } }) => setSupervisor(value)}
                     required
                   >
-                    <option value={""}>Name</option>
+                    <option value="">Name</option>
                     {supervisors &&
                       supervisors?.length > 0 &&
                       supervisors.map((option, index) => (
-                        <option key={index}>{option.name}</option>
+                        <option key={index} value={option.uid}>
+                          {option.name}
+                        </option>
                       ))}
                   </Form.Select>
                 </Form.Group>

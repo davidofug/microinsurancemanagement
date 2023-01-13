@@ -14,25 +14,26 @@ import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import useDialog from "../../hooks/useDialog";
 import { handleAllCheck } from "../../helpers/helpfulUtilities";
 import { getUsers } from "../../helpers/helpfulUtilities";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import Chat from "../../components/messenger/Chat";
 import SupervisorDetails from "../../components/SupervisorDetails";
 import useAuth from "contexts/Auth";
-
 import "../../styles/ctas.css";
+import { useMemo } from "react";
 
 function Supervisors({ parent_container }) {
+  const [supervisors, setSupervisors] = useState([]);
+  const memoizedAgents = useMemo(() => supervisors, [supervisors]);
   useEffect(() => {
     document.title = "Supervisors - Statewide Insurance";
     getSupervisors();
-  }, []);
+    console.log("something");
+    return () => {};
+  }, [memoizedAgents]);
   const { authClaims } = useAuth();
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
-  // get Supervisors
-  const [supervisors, setSupervisors] = useState([]);
   const getSupervisors = () => {
     getUsers("supervisor", authClaims?.superadmin).then((result) => {
       result.length === 0 ? setSupervisors(null) : setSupervisors(result);
@@ -52,6 +53,7 @@ function Supervisors({ parent_container }) {
   const [searchText, setSearchText] = useState("");
   const handleSearch = ({ target }) => setSearchText(target.value);
   const searchByName = (data) =>
+    data ||
     data.filter(
       (row) => row.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1
     );
@@ -179,7 +181,6 @@ function Supervisors({ parent_container }) {
   return (
     <div className="components">
       <Header title="Supervisors" subtitle="MANAGING SUPERVISORS" />
-      <ToastContainer />
 
       <div id="add_client_group">
         <div></div>

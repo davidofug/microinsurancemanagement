@@ -5,7 +5,7 @@ import { httpsCallable } from "firebase/functions";
 import { toast } from "react-toastify";
 import { useState } from "react";
 
-function ClientModal({ singleDoc, handleClose }) {
+function ClientModal({ singleDoc, handleClose, setShouldUpdate }) {
   const [formData, setFormData] = useState(singleDoc);
 
   // initialising the logs collection.
@@ -16,6 +16,7 @@ function ClientModal({ singleDoc, handleClose }) {
 
     const updateUser = httpsCallable(functions, "updateUser");
     updateUser(formData)
+      .then(() => setShouldUpdate(true))
       .then(async () => {
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date()

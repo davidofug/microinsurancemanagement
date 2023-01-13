@@ -25,6 +25,7 @@ import StickerMgt from "pages/admin/StickerMgt";
 import Supervisors from "pages/admin/Supervisors";
 import { useToggleMenu } from "hooks";
 import PolicyRenew from "pages/PolicyDetails/PolicyRenew";
+import AddStickerRange from "pages/admin/AddStickerRange";
 
 export default function App() {
   const [largeContentClass] = useToggleMenu();
@@ -234,6 +235,14 @@ export default function App() {
             }
           />
           <Route
+            path="user-management"
+            element={
+              <PrivateRoute>
+                <Supervisors />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="claims"
             element={
               <PrivateRoute>
@@ -246,6 +255,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <StickerMgt />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="sticker-number"
+            element={
+              <PrivateRoute>
+                <AddStickerRange />
               </PrivateRoute>
             }
           />
