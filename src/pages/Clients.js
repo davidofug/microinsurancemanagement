@@ -14,30 +14,26 @@ import { ImFilesEmpty } from "react-icons/im";
 import useDialog from "../hooks/useDialog";
 import { addDoc, collection } from "firebase/firestore";
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import Chat from "../components/messenger/Chat";
 import "../styles/clients.css";
 import "../styles/ctas.css";
 
 export default function Clients({ parent_container }) {
+  const [singleDoc, setSingleDoc] = useState();
+  const [show, handleShow, handleClose] = useDialog();
+  const [clients, setClients] = useState([]);
   useEffect(() => {
     document.title = "Clients - SWICO";
     getClients();
 
-    return () => getClients();
-  }, []);
+    return () => {};
+  }, [clients]);
 
   const { authClaims } = useAuth();
-  const [clients, setClients] = useState([]);
-  const [show, handleShow, handleClose] = useDialog();
 
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
-
-  // edit client
-  const [singleDoc, setSingleDoc] = useState();
 
   // getting Clients under a particular user.
   const getClients = () => {
@@ -186,8 +182,6 @@ export default function Clients({ parent_container }) {
           }`,
         });
       });
-
-    getClients();
   };
 
   // search for client
@@ -213,7 +207,6 @@ export default function Clients({ parent_container }) {
   return (
     <div className="components">
       <Header title="Clients" subtitle="MANAGING CLIENTS" />
-      <ToastContainer />
 
       <div id="add_client_group" className="add_client_group">
         <div></div>
@@ -427,20 +420,6 @@ export default function Clients({ parent_container }) {
       ) : (
         <Loader />
       )}
-      {/* <div
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-        className={
-          parent_container ? "chat-container" : "expanded-menu-chat-container"
-        }
-      >
-        <Chat />
-      </div> */}
     </div>
   );
 }

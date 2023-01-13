@@ -2,14 +2,11 @@ import { Modal, Form, Row, Col, Button } from "react-bootstrap";
 import { addDoc, collection } from "firebase/firestore";
 import { functions, authentication, db } from "../helpers/firebase";
 import { httpsCallable } from "firebase/functions";
-
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useState } from "react";
 
-function ClientModal({ singleDoc, handleClose, getUsers }) {
+function ClientModal({ singleDoc, handleClose }) {
   const [formData, setFormData] = useState(singleDoc);
-  console.log("Form Data: ", singleDoc);
 
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
@@ -34,7 +31,6 @@ function ClientModal({ singleDoc, handleClose, getUsers }) {
           }`,
         });
       })
-      .then(getUsers)
       .catch(async (error) => {
         toast.error(`Failed to update ${singleDoc.name}`, {
           position: "top-center",
@@ -58,11 +54,8 @@ function ClientModal({ singleDoc, handleClose, getUsers }) {
     toast.success("Successfully updated", { position: "top-center" });
   };
 
-  // handling user promotion
-
   return (
     <>
-      <ToastContainer />
       <Modal.Header closeButton>
         <Modal.Title>Edit {formData.name}'s Details</Modal.Title>
       </Modal.Header>

@@ -1,20 +1,18 @@
-import { Form, Modal, Button } from "react-bootstrap";
+import { Form, Modal } from "react-bootstrap";
 import DefaultAvatar from "./DefaultAvatar";
 import { MdSave } from "react-icons/md";
 import { Formik } from "formik";
 import {
-  getAuth,
   updateProfile,
   updateEmail,
-  updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
 } from "firebase/auth";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../helpers/firebase";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 import useAuth from "../contexts/Auth";
+import { useState } from "react";
 
 function UpdateUser({
   currentUser,
@@ -23,9 +21,10 @@ function UpdateUser({
   getUserMeta,
   // setCurrentUser,
 }) {
-  const { loading, setLoading, setUser, user } = useAuth();
+  const { loading, setLoading, setUser, user, authClaims } = useAuth();
+  const [singleDoc, setSingleDoc] = useState();
+
   const handleEditFormSubmit = async (event, values) => {
-    console.log(user);
     setLoading(true);
     event.preventDefault();
     const docRef = doc(db, "usermeta", currentUser.uid);
@@ -42,18 +41,14 @@ function UpdateUser({
           if (values.name !== "") {
             updateProfile(currentUser, {
               displayName: values.name,
-            }).catch((error) => {
-              console.log("name error:", error.message);
-            });
+            }).catch((error) => {});
           }
 
           if (values.email !== "") {
             // update email
             updateEmail(currentUser, values.email)
               .then()
-              .catch((error) => {
-                console.log("email error: ", error);
-              });
+              .catch((error) => {});
           }
           // update phone number and adddress
           if (meta) {
@@ -70,13 +65,11 @@ function UpdateUser({
           });
         });
 
-      // setCurrentUser(currentUser);
       getUserMeta();
       handleClose();
     } catch (error) {
       toast.error(`Failed to update ${error.code}`, { position: "top-center" });
     }
-    getUserMeta();
     setLoading(false);
   };
   return (
@@ -88,8 +81,8 @@ function UpdateUser({
         initialValues={{
           name: currentUser.displayName,
           email: currentUser.email,
-          phone: "",
-          address: "",
+          phone: meta?.phone || "",
+          address: meta?.address || "",
           password: "",
         }}
       >
@@ -141,7 +134,7 @@ function UpdateUser({
                         type="tel"
                         id="phone"
                         placeholder="Enter new phone number"
-                        value={meta.phone}
+                        value={values.phone}
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
@@ -154,7 +147,7 @@ function UpdateUser({
                         type="text"
                         id="address"
                         placeholder="Enter new address"
-                        value={meta.address}
+                        value={values.address}
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
@@ -177,13 +170,13 @@ function UpdateUser({
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="dark" type="submit" id="submit">
-                  <div
-                    style={{ justifyContent: "center", alignItems: "center" }}
-                  >
-                    <MdSave /> Save
-                  </div>
-                </Button>
+                <button
+                  type="submit"
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                  className="tw-flex tw-bg-gray-900 tw-text-white tw-px-3 tw-py-2 tw-rounded tw-gap-2"
+                >
+                  <MdSave /> Save
+                </button>
               </Modal.Footer>
             </form>
           );

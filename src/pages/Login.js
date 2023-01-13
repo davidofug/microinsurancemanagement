@@ -42,7 +42,6 @@ function Login() {
     const { email, password } = user;
     setLoading(true);
     try {
-      setPersistence(authentication.Auth.Persistence.SESSION);
       const result = await signInWithEmailAndPassword(
         authentication,
         email,

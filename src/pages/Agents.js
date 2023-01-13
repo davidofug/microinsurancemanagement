@@ -20,10 +20,7 @@ import { IoMdAlert } from "react-icons/io";
 import { handleAllCheck } from "../helpers/helpfulUtilities";
 import { getUsers } from "../helpers/helpfulUtilities";
 
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-import Chat from "../components/messenger/Chat";
+import { toast } from "react-toastify";
 
 import "../styles/ctas.css";
 
@@ -283,7 +280,6 @@ function Agents({ parent_container }) {
     <>
       <div className="components">
         <Header title="Agents" subtitle="MANAGING AGENTS" />
-        <ToastContainer />
 
         <div id="add_client_group">
           <div></div>
@@ -614,20 +610,6 @@ function Agents({ parent_container }) {
         ) : (
           <Loader />
         )}
-        <div
-          style={{
-            width: "100%",
-            position: "fixed",
-            bottom: "0px",
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-          className={
-            parent_container ? "chat-container" : "expanded-menu-chat-container"
-          }
-        >
-          <Chat />
-        </div>
       </div>
     </>
   );

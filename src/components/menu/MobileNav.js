@@ -24,9 +24,6 @@ export default function MobileNav({ role, user, displayName }) {
       !event.target.matches(".footerContext") ? handleClose() : null;
   }
 
-  //   console.log("subMenu is ", subMenu);
-  console.log(selectedIndex);
-
   useEffect(() => {
     sessionStorage.getItem("session1")
       ? setSelected({
@@ -41,15 +38,13 @@ export default function MobileNav({ role, user, displayName }) {
     sessionStorage.setItem("session1", selected.role[index]["number"]);
   };
 
-  const {logout } = useAuth();
-  
+  const { logout } = useAuth();
+
   const handleLogout = async () => {
     try {
       await logout();
       window.location = "/";
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const toggleActiveClassStyle = (index) =>

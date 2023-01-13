@@ -27,10 +27,7 @@ import { ClaimModelNotification, ClaimModel } from "../components/ClaimModel";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoIosCloseCircle } from "react-icons/io";
 
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-import Chat from "../components/messenger/Chat";
+import { toast } from "react-toastify";
 import "../styles/ctas.css";
 
 export default function Claims({ parent_container }) {
@@ -287,7 +284,6 @@ export default function Claims({ parent_container }) {
   return (
     <div className="components">
       <Header title="Claims" subtitle="CLAIMS NOTIFICATION" />
-      <ToastContainer />
 
       {authClaims.agent && (
         <div id="add_client_group">
@@ -607,20 +603,6 @@ export default function Claims({ parent_container }) {
       ) : (
         <Loader />
       )}
-      <div
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-        className={
-          parent_container ? "chat-container" : "expanded-menu-chat-container"
-        }
-      >
-        <Chat />
-      </div>
     </div>
   );
 }
