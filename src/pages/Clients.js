@@ -36,10 +36,10 @@ export default function Clients({ parent_container }) {
   const logCollectionRef = collection(db, "logs");
 
   // getting Clients under a particular user.
-  const getClients = () => {
+  const getClients = async () => {
     const listUsers = httpsCallable(functions, "listUsers");
     if (authClaims.agent) {
-      listUsers()
+      await listUsers()
         .then(({ data }) => {
           const myUsers = data
             .filter(
@@ -54,34 +54,34 @@ export default function Clients({ parent_container }) {
         })
         .catch();
     } else if (authClaims.supervisor) {
-      listUsers()
-        .then(({ data }) => {
-          const myAgents = data
-            .filter((user) => user.role.agent === true)
-            .filter(
-              (agent) =>
-                agent.meta.added_by_uid === authentication.currentUser.uid
-            )
-            .map((agentuid) => agentuid.uid);
+      try {
+        const { data } = await listUsers();
+        const myAgents = data
+          .filter((user) => user.role.agent === true)
+          .filter(
+            (agent) =>
+              agent.meta.added_by_uid === authentication.currentUser.uid
+          )
+          .map((agentuid) => agentuid.uid);
 
-          const usersUnderSupervisor = [
-            ...myAgents,
-            authentication.currentUser.uid,
-          ];
+        const usersUnderSupervisor = [
+          ...myAgents,
+          authentication.currentUser.uid,
+        ];
 
-          const myUsers = data
-            .filter(
-              (user) =>
-                user.role.Customer === true || user.role.customer === true
-            )
-            .filter((client) =>
-              usersUnderSupervisor.includes(client.meta.added_by_uid)
-            );
-          myUsers.length === 0 ? setClients(null) : setClients(myUsers);
-        })
-        .catch();
+        const myUsers = data
+          .filter(
+            (user) => user.role.Customer === true || user.role.customer === true
+          )
+          .filter((client) =>
+            usersUnderSupervisor.includes(client.meta.added_by_uid)
+          );
+        myUsers.length === 0 ? setClients(null) : setClients(myUsers);
+      } catch (err) {
+        // console.log("Error: ", err.message);
+      }
     } else if (authClaims.admin) {
-      listUsers()
+      await listUsers()
         .then(({ data }) => {
           const myAgents = data
             .filter((user) => user.role.agent === true)

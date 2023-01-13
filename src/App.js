@@ -9,6 +9,8 @@ import {
   Agents,
   Logs,
   Reports,
+  Policies,
+  PolicyDetails,
 } from "./pages";
 import PrivateRoute from "./routes/PrivateRoute";
 import { SuperAdminRoutes } from "routes";
@@ -22,6 +24,7 @@ import Comprehensive from "components/forms/Comprehensive";
 import StickerMgt from "pages/admin/StickerMgt";
 import Supervisors from "pages/admin/Supervisors";
 import { useToggleMenu } from "hooks";
+import PolicyRenew from "pages/PolicyDetails/PolicyRenew";
 
 export default function App() {
   const [largeContentClass] = useToggleMenu();
@@ -407,6 +410,34 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Mtp policyCategory="mtp" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-mtp"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="mtp"
+                  btn_txt="Process 3rd Party"
+                  pol="motor third party"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="policy-details/:id"
+            element={
+              <PrivateRoute>
+                <PolicyDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="policy-renew/:id"
+            element={
+              <PrivateRoute>
+                <PolicyRenew />
               </PrivateRoute>
             }
           />
