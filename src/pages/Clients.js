@@ -36,8 +36,6 @@ export default function Clients({ parent_container }) {
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
-  console.log(authClaims)
-
   // edit client
   const [singleDoc, setSingleDoc] = useState();
 
@@ -48,7 +46,10 @@ export default function Clients({ parent_container }) {
       listUsers()
         .then(({ data }) => {
           const myUsers = data
-            .filter((user) => user.role.Customer === true)
+            .filter(
+              (user) =>
+                user.role.Customer === true || user.role.customer === true
+            )
             .filter(
               (client) =>
                 client.meta.added_by_uid === authentication.currentUser.uid
@@ -73,7 +74,10 @@ export default function Clients({ parent_container }) {
           ];
 
           const myUsers = data
-            .filter((user) => user.role.Customer === true)
+            .filter(
+              (user) =>
+                user.role.Customer === true || user.role.customer === true
+            )
             .filter((client) =>
               usersUnderSupervisor.includes(client.meta.added_by_uid)
             );
@@ -112,7 +116,10 @@ export default function Clients({ parent_container }) {
           ];
 
           const myUsers = data
-            .filter((user) => user.role.Customer === true)
+            .filter(
+              (user) =>
+                user.role.Customer === true || user.role.customer === true
+            )
             .filter((client) =>
               usersUnderAdmin.includes(client.meta.added_by_uid)
             );
@@ -161,7 +168,7 @@ export default function Clients({ parent_container }) {
         });
       })
       .catch(async (error) => {
-        console.log(error)
+        console.log(error);
         toast.error(`Failed to deleted ${singleDoc.name}`, {
           position: "top-center",
         });
@@ -217,6 +224,13 @@ export default function Clients({ parent_container }) {
               (authClaims.agent && "/agent/add-clients")
             }
             className="classic"
+            onClick={() => {
+              if (authClaims.supervisor) {
+                localStorage.setItem("onRefresh", "/supervisor/add-clients");
+              } else if (authClaims.agent) {
+                localStorage.setItem("onRefresh", "/agent/add-clients");
+              }
+            }}
           >
             <button className="btn cta m-2">Add Client</button>
           </Link>
@@ -413,7 +427,7 @@ export default function Clients({ parent_container }) {
       ) : (
         <Loader />
       )}
-      <div
+      {/* <div
         style={{
           width: "100%",
           position: "fixed",
@@ -426,7 +440,7 @@ export default function Clients({ parent_container }) {
         }
       >
         <Chat />
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -10,9 +10,7 @@ import useAuth from "../contexts/Auth";
 import Loader from "../components/Loader";
 import PasswordGenerator from "../components/PasswordGenerator";
 import { collection, addDoc } from "firebase/firestore";
-
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { getDocs } from "firebase/firestore";
 import { getUsers } from "../helpers/helpfulUtilities";
 
@@ -20,15 +18,15 @@ import { getUsers } from "../helpers/helpfulUtilities";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../helpers/firebase";
 
-import Chat from "../components/messenger/Chat";
-
 function AddUsers({ role, parent_container }) {
   const { authClaims } = useAuth();
   const addUser = httpsCallable(functions, "addUser");
   useEffect(() => {
     document.title = "Add Users - SWICO";
-    getOrganisations();
-    getSupervisors();
+    if (!authClaims.agent && role !== "Customer") {
+      getOrganisations();
+      getSupervisors();
+    }
   }, []);
   const organisationsCollectionRef = collection(db, "organisations");
 
@@ -78,7 +76,9 @@ function AddUsers({ role, parent_container }) {
   };
 
   const [fields, handleFieldChange] = useForm({
-    user_role: role === "client" ? "Customer" : role,
+    user_role: ["client", "customer", "Customer"].includes(role)
+      ? "Customer"
+      : role,
     organisation: "",
     email: "",
     name: "",
@@ -95,7 +95,6 @@ function AddUsers({ role, parent_container }) {
     setIsLoading(true);
     event.preventDefault();
 
-    console.log("Fields: ", fields);
     if (comprehensive) fields["comprehensive"] = true;
     if (mtp) fields["mtp"] = true;
     if (windscreen) fields["windscreen"] = true;
@@ -227,15 +226,12 @@ function AddUsers({ role, parent_container }) {
   const [progress, setProgress] = useState(0);
 
   return (
-    <div /* className='components' */ className="boom">
+    <div className="boom">
       <Header
-        title={`Add ${role}`}
+        title={`Add ${role[0].toUpperCase() + role.slice(1).toLowerCase()}`}
         subtitle={`Add a new ${role}`.toUpperCase()}
       />
-      <ToastContainer />
-      <div
-        className="addComponentsData shadow-sm mb-3" /* style={{position: "relative"}} */
-      >
+      <div className="addComponentsData shadow-sm mb-3">
         {isLoading && (
           <div className="loader-wrapper">
             <Loader />
@@ -742,20 +738,6 @@ function AddUsers({ role, parent_container }) {
             </div>
           )}
         </Form>
-      </div>
-      <div
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-        className={
-          parent_container ? "chat-container" : "expanded-menu-chat-container"
-        }
-      >
-        <Chat />
       </div>
     </div>
   );

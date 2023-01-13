@@ -342,7 +342,7 @@ export default function App() {
             path="add-clients"
             element={
               <PrivateRoute>
-                <AddUsers role="customer" />
+                <AddUsers role="Customer" />
               </PrivateRoute>
             }
           />
@@ -474,7 +474,7 @@ export default function App() {
             path="add-clients"
             element={
               <PrivateRoute>
-                <AddUsers role="customer" />
+                <AddUsers role="Customer" />
               </PrivateRoute>
             }
           />
