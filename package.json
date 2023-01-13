@@ -1,5 +1,5 @@
 {
-  "name": "britam",
+  "name": "microinsurancemanagement",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,10 +21,10 @@
     "yarn": "^1.22.17",
     "yup": "^0.32.11"
   },
-  "devDependences": {
+  "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
+    "@testing-library/user-event": "^12.1.10"
   },
   "scripts": {
     "start": "react-scripts start",
