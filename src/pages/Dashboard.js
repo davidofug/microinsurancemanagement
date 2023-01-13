@@ -156,7 +156,7 @@ function Dashboard({ largeContentClass }) {
 
         <GraphContainer policies={policies} />
       </div>
-      <div
+      {/* <div
         style={{
           width: "100%",
           position: "fixed",
@@ -167,7 +167,7 @@ function Dashboard({ largeContentClass }) {
         className={true ? "chat-container" : "expanded-menu-chat-container"}
       >
         <Chat />
-      </div>
+      </div> */}
     </div>
   );
 }
