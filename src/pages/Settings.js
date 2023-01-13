@@ -25,15 +25,17 @@ import "../styles/ctas.css";
 
 function Settings() {
   const [show, handleShow, handleClose] = useDialog();
-  useEffect(() => {
-    document.title = "User Profile - SWICO";
-    getUserMeta();
-
-    return () => {};
-  }, []);
   const [meta, setMeta] = useState({});
   const { currentUser, setCurrentUser } = getAuth();
   const { authClaims } = useAuth();
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+
+  useEffect(() => {
+    document.title = "User Profile - SWICO";
+    getUserMeta();
+    console.log("hellow")
+    return () => {};
+  }, [show]);
 
   const getUserMeta = async () => {
     const docRef = doc(db, "usermeta", currentUser.uid);

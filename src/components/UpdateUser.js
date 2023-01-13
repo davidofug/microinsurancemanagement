@@ -21,8 +21,7 @@ function UpdateUser({
   getUserMeta,
   // setCurrentUser,
 }) {
-  const { loading, setLoading, setUser, user, authClaims } = useAuth();
-  const [singleDoc, setSingleDoc] = useState();
+  const { loading, setLoading } = useAuth();
 
   const handleEditFormSubmit = async (event, values) => {
     setLoading(true);

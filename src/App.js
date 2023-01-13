@@ -26,6 +26,7 @@ import Supervisors from "pages/admin/Supervisors";
 import { useToggleMenu } from "hooks";
 import PolicyRenew from "pages/PolicyDetails/PolicyRenew";
 import AddStickerRange from "pages/admin/AddStickerRange";
+import AccountSettings from "pages/superAdmin/AccountSettings";
 
 export default function App() {
   const [largeContentClass] = useToggleMenu();
@@ -96,6 +97,14 @@ export default function App() {
             }
           />
           <Route
+            path="add-superadmin"
+            element={
+              <PrivateRoute>
+                <AddUsers role="superadmin" />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="claims"
             element={
               <PrivateRoute>
@@ -116,6 +125,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Settings />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="account-settings"
+            element={
+              <PrivateRoute>
+                <AccountSettings />
               </PrivateRoute>
             }
           />
