@@ -336,7 +336,7 @@ function Reports({ parent_container }) {
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <button
                   onClick={() => generateReport("myTable")}
-                  className="btn cta"
+                  className="tw-bg-gray-900 tw-text-white px-3 py-2 tw-rounded tw-flex tw-gap-2 tw-items-center"
                 >
                   Export <MdDownload />
                 </button>

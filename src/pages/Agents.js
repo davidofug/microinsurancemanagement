@@ -24,19 +24,27 @@ import { toast } from "react-toastify";
 
 import "../styles/ctas.css";
 
-function Agents({ parent_container }) {
+function Agents() {
+  const [agents, setAgents] = useState([]);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+
+  useEffect(() => {
+    // your code here
+    setShouldUpdate(true);
+  }, []);
+
   useEffect(() => {
     document.title = "Agents - SWICO";
     getAgents();
-  }, []);
+    setShouldUpdate(false);
+    return () => {};
+  }, [shouldUpdate]);
 
   const { authClaims } = useAuth();
 
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
-  // get agents
-  const [agents, setAgents] = useState([]);
   const getAgents = () => {
     const listUsers = httpsCallable(functions, "listUsers");
     if (authClaims.supervisor) {
@@ -46,12 +54,13 @@ function Agents({ parent_container }) {
             .filter((user) => user.role.agent === true)
             .filter(
               (agent) =>
-                agent.meta.added_by_uid === authentication.currentUser.uid
+                agent.meta.added_by_uid === authentication.currentUser.uid ||
+                (agent.meta?.supervisor &&
+                  agent.meta?.supervisor === authentication.currentUser.uid)
             );
-          console.log(myAgents);
           myAgents.length === 0 ? setAgents(null) : setAgents(myAgents);
         })
-        .catch();
+        .catch((err) => console.log(err));
     } else if (authClaims.admin) {
       listUsers()
         .then(({ data }) => {
@@ -76,7 +85,7 @@ function Agents({ parent_container }) {
 
           myAgents.length === 0 ? setAgents(null) : setAgents(myAgents);
         })
-        .catch();
+        .catch((err) => console.log(err));
     }
   };
 
@@ -136,6 +145,7 @@ function Agents({ parent_container }) {
           position: "top-center",
         })
       )
+      .then(() => setShouldUpdate(true))
       .then(async () => {
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date()
@@ -169,8 +179,6 @@ function Agents({ parent_container }) {
           }`,
         });
       });
-
-    getAgents();
   };
 
   const handleMultpleDelete = async (arr) => {
@@ -212,8 +220,6 @@ function Agents({ parent_container }) {
           }`,
         });
       });
-
-    getAgents();
   };
 
   // delete multiple agents
@@ -222,7 +228,6 @@ function Agents({ parent_container }) {
   const handleBulkDelete = async () => {
     if (bulkDelete) {
       deleteArray.map((agent) => handleMultpleDelete(agent));
-      getAgents();
     }
   };
 
@@ -329,6 +334,7 @@ function Agents({ parent_container }) {
             singleDoc={singleDoc}
             handleClose={handleClose}
             getUsers={getAgents}
+            setShouldUpdate={setShouldUpdate}
           />
         </Modal>
 
