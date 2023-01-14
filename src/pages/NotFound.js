@@ -4,7 +4,7 @@ import '../styles/loader.css'
 function NotFound() {
 
     useEffect(() => {
-        document.title = 'Micro Insurance Management'
+        document.title = 'Statewide Insurance'
     }, [])
 
     return (

@@ -20,7 +20,7 @@ import '../../styles/ctas.css'
 
 export default function AddOrganisation({parent_container}) {
 
-    useEffect(() => { document.title = 'Add Organisations - Micro Insurance Management'}, [])
+    useEffect(() => { document.title = 'Add Organisations - SWICO'}, [])
 
     const [ isLoading, setIsLoading ] = useState(false)
     const [ password, setPassword ] = useState('')
@@ -223,7 +223,7 @@ export default function AddOrganisation({parent_container}) {
                                     <PasswordGenerator password={password} setPassword={setPassword} />
                                 </div>
                             </div>
-                            <div id='submit' ><input type="submit" value="Submit" className='btn btn-primary cta' /></div>
+                            <div id='submit' ><input type="submit" value="Submit" className='btn cta' /></div>
                         </Form>
                 </div>
             </div>
