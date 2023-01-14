@@ -1,570 +1,630 @@
-import { MdAccountBalance, MdBusinessCenter, MdDirectionsCarFilled, MdAirlineSeatReclineExtra, MdAssessment, MdPeople, MdPerson, MdStickyNote2 } from 'react-icons/md'
-import { RiCalendarTodoFill } from 'react-icons/ri'
-import { GrSettingsOption } from 'react-icons/gr'
+import {
+  MdAccountBalance,
+  MdBusinessCenter,
+  MdDirectionsCarFilled,
+  MdAirlineSeatReclineExtra,
+  MdAssessment,
+  MdPeople,
+  MdPerson,
+  MdStickyNote2,
+} from "react-icons/md";
+import { ImDatabase } from "react-icons/im";
+import { RiCalendarTodoFill } from "react-icons/ri";
+import { GrSettingsOption } from "react-icons/gr";
 
 const menuData = {
-    SuperAdmin: [
+  SuperAdmin: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance size={15} />,
+      link: "/superadmin/dashboard",
+    },
+    {
+      number: 2,
+      name: "Organisations",
+      icon: <MdBusinessCenter />,
+      link: "/superadmin/organisations",
+    },
+    {
+      number: 2,
+      name: "Admins",
+      icon: <MdPerson />,
+      link: "/superadmin/admins",
+    },
+    {
+      number: 2,
+      name: "Supervisors",
+      icon: <MdPerson />,
+      link: "/superadmin/supervisors",
+    },
+    {
+      number: 3,
+      name: "Policies",
+      icon: <MdDirectionsCarFilled />,
+      link: "/superadmin/motor-third-party",
+      subMenu: [
         {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/superadmin/dashboard"
+          name: "MTP",
+          link: "/superadmin/motor-third-party",
         },
         {
-            number: 2,
-            name: "Admins",
-            icon: <MdPerson />,
-            link: "/superadmin/admins"
+          name: "Comprehensive",
+          link: "/superadmin/comprehensive",
         },
         {
-            number: 3,
-            name: "Policies",
-            icon: <MdDirectionsCarFilled />,
-            link: "/superadmin/motor-third-party",
-            subMenu: [
-                {
-                    name: "MTP",
-                    link: "/superadmin/motor-third-party"
-                },
-                {
-                    name: "Comprehensive",
-                    link: "/superadmin/comprehensive"
-                },
-                {
-                    name: "Windscreen",
-                    link: "/superadmin/windscreen"
-                },
-                {
-                    name: "New imports",
-                    link: "/superadmin/new-import"
-                },
-                {
-                    name: "Transit",
-                    link: "/superadmin/transit"
-                }
-            ]
+          name: "Fire",
+          link: "/superadmin/windscreen",
         },
         {
-            number: 4,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/superadmin/claims"
+          name: "Travel",
+          link: "/admin/new-import",
         },
         {
-            number: 5,
-            name: "Sytem Logs",
-            icon: <GrSettingsOption />,
-            link: "/superadmin/system-logs"
-        }
-    ],
-    Admin: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/admin/dashboard"
+          name: "Agriculture",
+          link: "/admin/transit",
         },
         {
-            number: 2,
-            name: "Organisations",
-            icon: <MdBusinessCenter />,
-            link: "/admin/organisations"
+          name: "Fidelity guarantee",
+          link: "/admin/transit",
         },
         {
-            number: 3,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/admin/clients"
+          name: "Public liability",
+          link: "/admin/transit",
         },
         {
-            number: 4,
-            name: "Sticker No.",
-            icon: <MdStickyNote2 />,
-            link: "/admin/sticker-management"
+          name: "New imports",
+          link: "/superadmin/new-import",
         },
         {
-            number: 5,
-            name: "Users",
-            icon: <MdPeople />,
-            link: "/admin/user-management",
-            subMenu: [
-                {
-                    name: "Agents",
-                    link: "/admin/agents"
-                },
-                {
-                    name: "Supervisor",
-                    link: "/admin/supervisors"
-                },
-                {
-                    name: "Log Trail",
-                    link: "/admin/view-log-trail"
-                }
-            ]
+          name: "Transit",
+          link: "/superadmin/transit",
+        },
+      ],
+    },
+    {
+      number: 4,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/superadmin/claims",
+    },
+    {
+      number: 5,
+      name: "System Logs",
+      icon: <ImDatabase />,
+      link: "/superadmin/system-logs",
+    },
+  ],
+  Admin: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/admin/dashboard",
+    },
+    {
+      number: 2,
+      name: "Organisations",
+      icon: <MdBusinessCenter />,
+      link: "/admin/organisations",
+    },
+    {
+      number: 3,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/admin/clients",
+    },
+    {
+      number: 4,
+      name: "Sticker No.",
+      icon: <MdStickyNote2 />,
+      link: "/admin/sticker-management",
+    },
+    {
+      number: 5,
+      name: "Users",
+      icon: <MdPeople />,
+      link: "/admin/user-management",
+      subMenu: [
+        {
+          name: "Agents",
+          link: "/admin/agents",
         },
         {
-            number: 6,
-            name: "Policies",
-            icon: <MdDirectionsCarFilled />,
-            link: "/admin/motor-third-party",
-            subMenu: [
-                {
-                    name: "MTP",
-                    link: "/admin/motor-third-party"
-                },
-                {
-                    name: "Comprehensive",
-                    link: "/admin/comprehensive"
-                },
-                {
-                    name: "Windscreen",
-                    link: "/admin/windscreen"
-                },
-                {
-                    name: "New imports",
-                    link: "/admin/new-import"
-                },
-                {
-                    name: "Transit",
-                    link: "/admin/transit"
-                }
-            ]
+          name: "Supervisor",
+          link: "/admin/supervisors",
         },
         {
-            number: 7,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/admin/claims"
+          name: "Log Trail",
+          link: "/admin/view-log-trail",
+        },
+      ],
+    },
+    {
+      number: 6,
+      name: "Policies",
+      icon: <MdDirectionsCarFilled />,
+      link: "/admin/motor-third-party",
+      subMenu: [
+        {
+          name: "Add Policy",
+          link: "/admin/add-policy",
         },
         {
-            number: 8,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/admin/reports"
-        }
-    ],
-    Supervisor: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/supervisor/dashboard"
+          name: "MTP",
+          link: "/admin/motor-third-party",
         },
         {
-            number: 2,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/supervisor/clients"
+          name: "Comprehensive",
+          link: "/admin/comprehensive",
         },
         {
-            number: 3,
-            name: "Users",
-            icon: <MdPeople />,
-            link: "/supervisor/agents",
-            subMenu: [
-                {
-                    name: "Agents",
-                    link: "/supervisor/agents"
-                },
-                {
-                    name: "Log Trail",
-                    link: "/supervisor/view-log-trail"
-                }
-            ]
+          name: "Fire",
+          link: "/admin/windscreen",
         },
         {
-            number: 4,
-            name: "Policies",
-            icon: <MdDirectionsCarFilled />,
-            link: "/supervisor/motor-third-party",
-            subMenu: [
-                {
-                    name: "MTP",
-                    link: "/supervisor/motor-third-party"
-                },
-                {
-                    name: "Comprehensive",
-                    link: "/supervisor/comprehensive"
-                },
-                {
-                    name: "Windscreen",
-                    link: "/supervisor/windscreen"
-                },
-                {
-                    name: "New imports",
-                    link: "/supervisor/new-import"
-                },
-                {
-                    name: "Transit",
-                    link: "/supervisor/transit"
-                }
-            ]
+          name: "Travel",
+          link: "/admin/new-import",
         },
         {
-            number: 5,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/supervisor/claims"
+          name: "Agriculture",
+          link: "/admin/transit",
         },
         {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/supervisor/reports"
-        }
-    ],
-    Agent: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/agent/dashboard"
+          name: "Fidelity guarantee",
+          link: "/admin/transit",
         },
         {
-            number: 2,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/agent/clients"
+          name: "Public liability",
+          link: "/admin/transit",
+        },
+      ],
+    },
+    {
+      number: 7,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/admin/claims",
+    },
+    {
+      number: 8,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/admin/reports",
+    },
+  ],
+  Supervisor: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/supervisor/dashboard",
+    },
+    {
+      number: 2,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/supervisor/clients",
+    },
+    {
+      number: 3,
+      name: "Users",
+      icon: <MdPeople />,
+      link: "/supervisor/agents",
+      subMenu: [
+        {
+          name: "Agents",
+          link: "/supervisor/agents",
         },
         {
-            number: 3,
-            name: "Policies",
-            icon: <MdDirectionsCarFilled />,
-            link: "/agent/motor-third-party",
-            subMenu: [
-                {
-                    name: "MTP",
-                    link: "/agent/motor-third-party"
-                },
-                {
-                    name: "Comprehensive",
-                    link: "/agent/comprehensive"
-                },
-                {
-                    name: "Windscreen",
-                    link: "/agent/windscreen"
-                },
-                {
-                    name: "New imports",
-                    link: "/agent/new-import"
-                },
-                {
-                    name: "Transit",
-                    link: "/agent/transit"
-                }
-            ]
+          name: "Log Trail",
+          link: "/supervisor/view-log-trail",
+        },
+      ],
+    },
+    {
+      number: 4,
+      name: "Policies",
+      icon: <MdDirectionsCarFilled />,
+      link: "/supervisor/motor-third-party",
+      subMenu: [
+        {
+          name: "MTP",
+          link: "/supervisor/motor-third-party",
         },
         {
-            number: 4,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/agent/claims"
+          name: "Comprehensive",
+          link: "/supervisor/comprehensive",
         },
         {
-            number: 5,
-            name: "Log Trails",
-            icon: <RiCalendarTodoFill />,
-            link: "/agent/view-log-trail"
+          name: "Fire",
+          link: "/supervisor/windscreen",
         },
         {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/agent/reports"
-        }
-    ],
-    Agent_mtp: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/agent/dashboard"
+          name: "Travel",
+          link: "/supervisor/windscreen",
         },
         {
-            number: 2,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/agent/clients"
+          name: "Personal accident",
+          link: "/supervisor/windscreen",
         },
         {
-            number: 3,
-            name: "MTP",
-            icon: <MdDirectionsCarFilled />,
-            link: "/agent/motor-third-party"
+          name: "GPA",
+          link: "/supervisor/windscreen",
         },
         {
-            number: 4,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/agent/claims"
+          name: "New imports",
+          link: "/supervisor/new-import",
         },
         {
-            number: 5,
-            name: "Log Trails",
-            icon: <RiCalendarTodoFill />,
-            link: "/agent/view-log-trail"
+          name: "Transit",
+          link: "/supervisor/transit",
+        },
+      ],
+    },
+    {
+      number: 5,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/supervisor/claims",
+    },
+    {
+      number: 6,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/supervisor/reports",
+    },
+  ],
+  Agent: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/agent/dashboard",
+    },
+    {
+      number: 2,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/agent/clients",
+    },
+    {
+      number: 3,
+      name: "Policies",
+      icon: <MdDirectionsCarFilled />,
+      link: "/agent/motor-third-party",
+      subMenu: [
+        {
+          name: "MTP",
+          link: "/agent/motor-third-party",
         },
         {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/agent/reports"
-        }
-    ],
-    Agent_comprehensive: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/agent/dashboard"
+          name: "Comprehensive",
+          link: "/agent/comprehensive",
         },
         {
-            number: 2,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/agent/clients"
+          name: "Windscreen",
+          link: "/agent/windscreen",
         },
         {
-            number: 3,
-            name: "Comprehensive",
-            icon: <MdDirectionsCarFilled />,
-            link: "/agent/comprehensive"
+          name: "New imports",
+          link: "/agent/new-import",
         },
         {
-            number: 4,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/agent/claims"
+          name: "Transit",
+          link: "/agent/transit",
+        },
+      ],
+    },
+    {
+      number: 4,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/agent/claims",
+    },
+    {
+      number: 5,
+      name: "Log Trails",
+      icon: <RiCalendarTodoFill />,
+      link: "/agent/view-log-trail",
+    },
+    {
+      number: 6,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/agent/reports",
+    },
+  ],
+  Agent_mtp: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/agent/dashboard",
+    },
+    {
+      number: 2,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/agent/clients",
+    },
+    {
+      number: 3,
+      name: "MTP",
+      icon: <MdDirectionsCarFilled />,
+      link: "/agent/motor-third-party",
+    },
+    {
+      number: 4,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/agent/claims",
+    },
+    {
+      number: 5,
+      name: "Log Trails",
+      icon: <RiCalendarTodoFill />,
+      link: "/agent/view-log-trail",
+    },
+    {
+      number: 6,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/agent/reports",
+    },
+  ],
+  Agent_comprehensive: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/agent/dashboard",
+    },
+    {
+      number: 2,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/agent/clients",
+    },
+    {
+      number: 3,
+      name: "Comprehensive",
+      icon: <MdDirectionsCarFilled />,
+      link: "/agent/comprehensive",
+    },
+    {
+      number: 4,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/agent/claims",
+    },
+    {
+      number: 5,
+      name: "Log Trails",
+      icon: <RiCalendarTodoFill />,
+      link: "/agent/view-log-trail",
+    },
+    {
+      number: 6,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/agent/reports",
+    },
+  ],
+  Agent_windscreen: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/agent/dashboard",
+    },
+    {
+      number: 2,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/agent/clients",
+    },
+    {
+      number: 3,
+      name: "MTP",
+      icon: <MdDirectionsCarFilled />,
+      link: "/agent/motor-third-party",
+    },
+    {
+      number: 4,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/agent/claims",
+    },
+    {
+      number: 5,
+      name: "Log Trails",
+      icon: <RiCalendarTodoFill />,
+      link: "/agent/view-log-trail",
+    },
+    {
+      number: 6,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/agent/reports",
+    },
+  ],
+  Agent_newImport: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/agent/dashboard",
+    },
+    {
+      number: 2,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/agent/clients",
+    },
+    {
+      number: 3,
+      name: "New Import Policy",
+      icon: <MdDirectionsCarFilled />,
+      link: "/agent/new-import",
+    },
+    {
+      number: 4,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/agent/claims",
+    },
+    {
+      number: 5,
+      name: "Log Trails",
+      icon: <RiCalendarTodoFill />,
+      link: "/agent/view-log-trail",
+    },
+    {
+      number: 6,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/agent/reports",
+    },
+  ],
+  Agent_transit: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/agent/dashboard",
+    },
+    {
+      number: 2,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/agent/clients",
+    },
+    {
+      number: 3,
+      name: "Transit Policy",
+      icon: <MdDirectionsCarFilled />,
+      link: "/agent/transit",
+    },
+    {
+      number: 4,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/agent/claims",
+    },
+    {
+      number: 5,
+      name: "Log Trails",
+      icon: <RiCalendarTodoFill />,
+      link: "/agent/view-log-trail",
+    },
+    {
+      number: 6,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/agent/reports",
+    },
+  ],
+  Agent_mtp_comprehensive: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/agent/dashboard",
+    },
+    {
+      number: 2,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/agent/clients",
+    },
+    {
+      number: 3,
+      name: "Policies",
+      icon: <MdDirectionsCarFilled />,
+      link: "/agent/motor-third-party",
+      subMenu: [
+        {
+          name: "MTP",
+          link: "/agent/motor-third-party",
         },
         {
-            number: 5,
-            name: "Log Trails",
-            icon: <RiCalendarTodoFill />,
-            link: "/agent/view-log-trail"
+          name: "Comprehensive",
+          link: "/agent/comprehensive",
+        },
+      ],
+    },
+    {
+      number: 4,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/agent/claims",
+    },
+    {
+      number: 5,
+      name: "Log Trails",
+      icon: <RiCalendarTodoFill />,
+      link: "/agent/view-log-trail",
+    },
+    {
+      number: 6,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/agent/reports",
+    },
+  ],
+  Agent_mtp_comprehensive_windscreen: [
+    {
+      number: 1,
+      name: "Dashboard",
+      icon: <MdAccountBalance />,
+      link: "/agent/dashboard",
+    },
+    {
+      number: 2,
+      name: "Clients",
+      icon: <MdPerson />,
+      link: "/agent/clients",
+    },
+    {
+      number: 3,
+      name: "Policies",
+      icon: <MdDirectionsCarFilled />,
+      link: "/agent/motor-third-party",
+      subMenu: [
+        {
+          name: "MTP",
+          link: "/agent/motor-third-party",
         },
         {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/agent/reports"
-        }
-    ],
-    Agent_windscreen: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/agent/dashboard"
+          name: "Comprehensive",
+          link: "/agent/comprehensive",
         },
         {
-            number: 2,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/agent/clients"
+          name: "Windscreen",
+          link: "/agent/windscreen",
         },
-        {
-            number: 3,
-            name: "MTP",
-            icon: <MdDirectionsCarFilled />,
-            link: "/agent/motor-third-party"
-        },
-        {
-            number: 4,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/agent/claims"
-        },
-        {
-            number: 5,
-            name: "Log Trails",
-            icon: <RiCalendarTodoFill />,
-            link: "/agent/view-log-trail"
-        },
-        {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/agent/reports"
-        }
-    ],
-    Agent_newImport: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/agent/dashboard"
-        },
-        {
-            number: 2,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/agent/clients"
-        },
-        {
-            number: 3,
-            name: "New Import Policy",
-            icon: <MdDirectionsCarFilled />,
-            link: "/agent/new-import"
-        },
-        {
-            number: 4,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/agent/claims"
-        },
-        {
-            number: 5,
-            name: "Log Trails",
-            icon: <RiCalendarTodoFill />,
-            link: "/agent/view-log-trail"
-        },
-        {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/agent/reports"
-        }
-    ],
-    Agent_transit: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/agent/dashboard"
-        },
-        {
-            number: 2,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/agent/clients"
-        },
-        {
-            number: 3,
-            name: "Transit Policy",
-            icon: <MdDirectionsCarFilled />,
-            link: "/agent/transit"
-        },
-        {
-            number: 4,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/agent/claims"
-        },
-        {
-            number: 5,
-            name: "Log Trails",
-            icon: <RiCalendarTodoFill />,
-            link: "/agent/view-log-trail"
-        },
-        {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/agent/reports"
-        }
-    ],
-    Agent_mtp_comprehensive: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/agent/dashboard"
-        },
-        {
-            number: 2,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/agent/clients"
-        },
-        {
-            number: 3,
-            name: "Policies",
-            icon: <MdDirectionsCarFilled />,
-            link: "/agent/motor-third-party",
-            subMenu: [
-                {
-                    name: "MTP",
-                    link: "/agent/motor-third-party"
-                },
-                {
-                    name: "Comprehensive",
-                    link: "/agent/comprehensive"
-                }
-            ]
-        },
-        {
-            number: 4,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/agent/claims"
-        },
-        {
-            number: 5,
-            name: "Log Trails",
-            icon: <RiCalendarTodoFill />,
-            link: "/agent/view-log-trail"
-        },
-        {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/agent/reports"
-        }
-    ],
-    Agent_mtp_comprehensive_windscreen: [
-        {
-            number: 1,
-            name: "Dashboard",
-            icon: <MdAccountBalance />,
-            link: "/agent/dashboard"
-        },
-        {
-            number: 2,
-            name: "Clients",
-            icon: <MdPerson />,
-            link: "/agent/clients"
-        },
-        {
-            number: 3,
-            name: "Policies",
-            icon: <MdDirectionsCarFilled />,
-            link: "/agent/motor-third-party",
-            subMenu: [
-                {
-                    name: "MTP",
-                    link: "/agent/motor-third-party"
-                },
-                {
-                    name: "Comprehensive",
-                    link: "/agent/comprehensive"
-                },
-                {
-                    name: "Windscreen",
-                    link: "/agent/windscreen"
-                }
-            ]
-        },
-        {
-            number: 4,
-            name: "Claims",
-            icon: <MdAirlineSeatReclineExtra />,
-            link: "/agent/claims"
-        },
-        {
-            number: 5,
-            name: "Log Trails",
-            icon: <RiCalendarTodoFill />,
-            link: "/agent/view-log-trail"
-        },
-        {
-            number: 6,
-            name: "Reports",
-            icon: <MdAssessment />,
-            link: "/agent/reports"
-        }
-    ]
-}
-
+      ],
+    },
+    {
+      number: 4,
+      name: "Claims",
+      icon: <MdAirlineSeatReclineExtra />,
+      link: "/agent/claims",
+    },
+    {
+      number: 5,
+      name: "Log Trails",
+      icon: <RiCalendarTodoFill />,
+      link: "/agent/view-log-trail",
+    },
+    {
+      number: 6,
+      name: "Reports",
+      icon: <MdAssessment />,
+      link: "/agent/reports",
+    },
+  ],
+};
 
 export default menuData;
-

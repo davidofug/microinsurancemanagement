@@ -65,12 +65,6 @@ function StickerModal({ name, user_id }) {
 
 }
 
-//   console.log(rangeID)
-  console.log(stickerRange)
-
-  
-  
-
     return (
         <>
             <Modal.Header closeButton>
@@ -103,7 +97,7 @@ function StickerModal({ name, user_id }) {
                         <Form.Label htmlFor='category'>Assign Sticker Number to Agent</Form.Label>
                         <Form.Control type="text" placeholder='from' className='mb-2' id="agentFrom" required />
                         <Form.Control type="text" placeholder='to' id="agentTo" required />
-                        <input type="submit" className='btn btn-primary cta mt-2' value="submit" />
+                        <input type="submit" className='btn cta mt-2' value="submit" />
                     </Form.Group>
                 </form>
 

@@ -1,20 +1,21 @@
-import {
-    Route,
-    Redirect
-} from 'react-router-dom'
+import { Navigate } from "react-router-dom";
+import useAuth from "../contexts/Auth";
+import Container from "components/Layouts/Container";
+import { ToastContainer } from "react-toastify";
+import Chat from "components/messenger/Chat";
 
-import useAuth from '../contexts/Auth'
+function PrivateRoute({ children }) {
+  const { currentUser } = useAuth();
 
-function PrivateRoute({ children, ...rest }) {
-    const { currentUser } = useAuth()
-
-    return currentUser ? <Route {...rest} render={
-        props => {
-            localStorage.setItem('onRefresh', props.location.pathname, { path: '/' }) 
-            return children
-        }
-    } /> : <Redirect to='/login' />
+  return currentUser ? (
+    <Container>
+      <ToastContainer />
+      {children}
+      <Chat />
+    </Container>
+  ) : (
+    <Navigate to="/login" />
+  );
 }
-
 
 export default PrivateRoute;

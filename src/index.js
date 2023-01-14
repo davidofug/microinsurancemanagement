@@ -1,22 +1,32 @@
-import App from './App';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import AuthProvider from './providers/Auth';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.js'
-import reportWebVitals from './reportWebVitals';
-import { combineProviders } from './helpers/combineProviders';
-import './index.css'
+import App from "./App";
+import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
+import { StrictMode } from "react";
+import AuthProvider from "./providers/Auth";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
+import "bootstrap/dist/js/bootstrap.js";
+import reportWebVitals from "./reportWebVitals";
+import "./index.css";
 
-const Providers = combineProviders([AuthProvider]);
+const container = document.getElementById("root");
+const root = createRoot(container);
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Providers>
+root.render(
+  <StrictMode>
+    <AuthProvider>
       <App />
-    </Providers>
-  </React.StrictMode>,
-  document.getElementById('root')
+    </AuthProvider>
+  </StrictMode>
 );
+
+// ReactDOM.render(
+//   <StrictMode>
+//     <AuthProvider>
+//       <App />
+//     </AuthProvider>
+//   </StrictMode>,
+//   document.getElementById("root")
+// );
 
 reportWebVitals();
