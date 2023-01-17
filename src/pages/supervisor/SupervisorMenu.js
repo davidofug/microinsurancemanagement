@@ -43,7 +43,7 @@ function SupervisorMenu({ minimiseMenu, maximiseMenu }) {
       <MobileNav
         role={Supervisor}
         user="supervisor"
-        displayName={authentication?.currentUser?.displayName}
+        displayName={authentication && authentication?.currentUser?.displayName}
       />
       {toggleMenu ? (
         <nav className="sidebar">
@@ -64,7 +64,9 @@ function SupervisorMenu({ minimiseMenu, maximiseMenu }) {
           <SideBar
             role={Supervisor}
             user="supervisor"
-            displayName={authentication?.currentUser?.displayName}
+            displayName={
+              authentication && authentication?.currentUser?.displayName
+            }
           />
 
           <footer
@@ -75,13 +77,17 @@ function SupervisorMenu({ minimiseMenu, maximiseMenu }) {
             }}
           >
             <div className="footerContext tw-w-full tw-h-full tw-flex tw-px-3 tw-py-2 tw-gap-3 tw-items-center">
-              {authentication?.currentUser.photoURL !==
+              {authentication &&
+              authentication?.currentUser?.photoURL !==
                 "https://firebasestorage.googleapis.com/v0/b/car-insurance-app.appspot.com/o/default-user-image.png?alt=media&token=f9f8f8e9-f8f8-4f8f-8f8f-f8f8f8f8f8f8" &&
-              authentication?.currentUser.photoURL !==
+              authentication &&
+              authentication?.currentUser?.photoURL !==
                 "https://example.com/jane-doe/photo.jpg" ? (
                 <img
-                  src={authentication?.currentUser.photoURL}
-                  alt={authentication?.currentUser.displayName}
+                  src={authentication && authentication?.currentUser?.photoURL}
+                  alt={
+                    authentication && authentication?.currentUser?.displayName
+                  }
                   width={50}
                   height={50}
                   className="tw-rounded-full tw-overflow-hidden"
@@ -92,10 +98,20 @@ function SupervisorMenu({ minimiseMenu, maximiseMenu }) {
               <div className="">
                 <p className="tw-font-medium tw-text-lg tw-m-0">
                   <span>
-                    {(authentication?.currentUser?.displayName).split(" ")[0]}{" "}
+                    {
+                      (
+                        authentication &&
+                        authentication?.currentUser?.displayName
+                      ).split(" ")[0]
+                    }{" "}
                   </span>
                   <span>
-                    {(authentication?.currentUser?.displayName).split(" ")[1]}
+                    {
+                      (
+                        authentication &&
+                        authentication?.currentUser?.displayName
+                      ).split(" ")[1]
+                    }
                   </span>
                 </p>
                 <span className="tw-text-gray-400 tw-text-sm">Supervisor</span>

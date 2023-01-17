@@ -5,7 +5,6 @@ import { addDoc, collection, doc, getDocs, updateDoc} from 'firebase/firestore'
 import { authentication, db } from '../helpers/firebase'
 import Loader from '../components/Loader'
 import { RiCalendarTodoFill } from 'react-icons/ri'
-import Chat from '../components/messenger/Chat'
 import { convertStringToDate, timeConvert } from '../helpers/helpfulUtilities'
 import "../styles/ctas.css"
 
@@ -134,9 +133,6 @@ function Logs({parent_container}) {
                 :
                 <Loader />
             }
-            <div style={{width:"100%", position:"fixed", bottom:"0px", display:"flex", justifyContent:"flex-end"}} className={parent_container?"chat-container":"expanded-menu-chat-container"}>
-              <Chat />
-            </div> 
         </div>
     )
 }

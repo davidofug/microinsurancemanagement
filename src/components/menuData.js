@@ -10,7 +10,6 @@ import {
 } from "react-icons/md";
 import { ImDatabase } from "react-icons/im";
 import { RiCalendarTodoFill } from "react-icons/ri";
-import { GrSettingsOption } from "react-icons/gr";
 
 const menuData = {
   SuperAdmin: [

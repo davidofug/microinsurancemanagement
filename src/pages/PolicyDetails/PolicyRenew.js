@@ -1,4 +1,3 @@
-import { Form } from "react-bootstrap";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -7,13 +6,15 @@ import { db } from "../../helpers/firebase";
 import "./PolicyDetails.css";
 import Header from "../../components/header/Header";
 import { currencyFormatter } from "../../helpers/currency.format";
+import { toast } from "react-toastify";
+import { Formik } from "formik";
 
-import Chat from "../../components/messenger/Chat";
-
-function PolicyRenew({ parent_container }) {
+function PolicyRenew() {
   useEffect(() => {
     document.title = "Sticker Details - SWICO";
     getMTP();
+
+    return () => {};
   }, []);
 
   const { id } = useParams();
@@ -54,7 +55,9 @@ function PolicyRenew({ parent_container }) {
           vehicleUse: policy.stickersDetails[0].vehicleUse,
         },
       ],
-    });
+    }).then(() =>
+      toast.success("Successfully renewed", { position: "top-center" })
+    );
     getMTP();
   };
 
@@ -67,12 +70,17 @@ function PolicyRenew({ parent_container }) {
         onSubmit={modalSubmit}
       >
         <div style={{ width: "100%", padding: "20px" }}>
-          <Form.Group controlId="formGridAddress1">
-            <Form.Label>
+          <div className="tw-flex tw-flex-col">
+            <label htmlFor="policyStartDate tw-mt-3">
               Select the renewal Start Date and submit policy
-            </Form.Label>
-            <Form.Control type="date" id="policyStartDate" required />
-          </Form.Group>
+            </label>
+            <input
+              type="date"
+              id="policyStartDate"
+              className="tw-outline tw-outline-1 px-3 py-2 tw-rounded focus:tw-outline focus:tw-outline-1"
+              required
+            />
+          </div>
         </div>
 
         <div style={{ margin: "30px" }}>
@@ -147,20 +155,6 @@ function PolicyRenew({ parent_container }) {
           <input type="submit" className="btn-success" value="Renew Policy" />
         </div>
       </form>
-      <div
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-        className={
-          parent_container ? "chat-container" : "expanded-menu-chat-container"
-        }
-      >
-        <Chat />
-      </div>
     </div>
   );
 }
