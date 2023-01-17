@@ -72,8 +72,6 @@ export default function Organisations({ parent_container }) {
       : setOrganisations(organisationArray);
   };
 
-  console.log(organisations);
-
   const handleDelete = async (id) => {
     const organisationDoc = doc(db, "organisations", id);
     await deleteDoc(organisationDoc)

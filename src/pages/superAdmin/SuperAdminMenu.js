@@ -116,9 +116,18 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
               >
                 <ImProfile /> My Profile
               </Link>
-              <div className="tw-flex tw-hover:bg-gray-100 tw-gap-2 tw-cursor-pointer tw-items-center tw-py-3 tw-text-gray-500 hover:tw-text-gray-500 hover:tw-bg-gray-100 tw-px-5 tw-rounded">
+              <Link
+                to="/superadmin/account-settings"
+                className="tw-flex tw-hover:bg-gray-100 tw-gap-2 tw-cursor-pointer tw-items-center tw-py-3 tw-text-gray-500 hover:tw-text-gray-500 hover:tw-bg-gray-100 tw-px-5 tw-rounded"
+                onClick={() =>
+                  localStorage.setItem(
+                    "onRefresh",
+                    "/superadmin/account-settings"
+                  )
+                }
+              >
                 <MdSettings /> Account Settings
-              </div>
+              </Link>
 
               <hr className="tw-my-3 tw-border-gray-600" />
 
@@ -170,14 +179,23 @@ function SuperAdminMenu({ minimiseMenu, maximiseMenu }) {
                 to="/superadmin/settings"
                 className="tw-flex tw-hover:bg-gray-100 tw-gap-2 tw-cursor-pointer tw-items-center tw-py-3 tw-text-gray-500 hover:tw-text-gray-500 hover:tw-bg-gray-100 tw-px-5 tw-rounded"
                 onClick={() =>
-                  localStorage.setItem("onRefresh", "/agent/settings")
+                  localStorage.setItem("onRefresh", "/superadmin/settings")
                 }
               >
                 <ImProfile /> My Profile
               </Link>
-              <div className="tw-flex tw-hover:bg-gray-100 tw-gap-2 tw-cursor-pointer tw-items-center tw-py-3 tw-text-gray-500 hover:tw-text-gray-500 hover:tw-bg-gray-100 tw-px-5 tw-rounded">
+              <Link
+                to="/superadmin/account-settings"
+                className="tw-flex tw-hover:bg-gray-100 tw-gap-2 tw-cursor-pointer tw-items-center tw-py-3 tw-text-gray-500 hover:tw-text-gray-500 hover:tw-bg-gray-100 tw-px-5 tw-rounded"
+                onClick={() =>
+                  localStorage.setItem(
+                    "onRefresh",
+                    "/superadmin/account-settings"
+                  )
+                }
+              >
                 <MdSettings /> Account Settings
-              </div>
+              </Link>
 
               <hr className="tw-my-3 tw-border-gray-600" />
 

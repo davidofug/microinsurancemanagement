@@ -25,8 +25,6 @@ import { handleAllCheckStickers } from "../helpers/helpfulUtilities";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import Chat from "../components/messenger/Chat";
 import "../styles/ctas.css";
 import moment from "moment";
 
@@ -47,18 +45,13 @@ export default function Mtp({ parent_container, policyCategory }) {
     getMTP();
     updateExpiredStickers();
 
-    return () => {
-      getMTP();
-      updateExpiredStickers();
-    };
+    return () => {};
   }, []);
 
   // policies
   const { authClaims } = useAuth();
   const [policies, setPolicies] = useState([]);
   const policyCollectionRef = collection(db, "policies");
-
-  console.log(policies);
 
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
@@ -232,11 +225,7 @@ export default function Mtp({ parent_container, policyCategory }) {
 
   // delete multiple policies
   const handleMultipleDelete = async (arr) => {
-    console.log(arr);
-    console.log(arr[0]);
     const policyDoc = doc(db, "policies", arr[0]);
-
-    // console.log(policyDoc)
 
     await updateDoc(policyDoc, {
       stickersDetails: [{ status: "deleted" }],
@@ -723,7 +712,13 @@ export default function Mtp({ parent_container, policyCategory }) {
                             }
                             onClick={(event) => event.stopPropagation()}
                           >
-                            <Link to={`/admin/policy-details/${policy.id}`}>
+                            <Link
+                              to={`${
+                                authClaims.supervisor
+                                  ? `/supervisor/policy-details/${policy.id}`
+                                  : `/admin/policy-details/${policy.id}`
+                              }`}
+                            >
                               <div className="actionDiv">
                                 <i>
                                   <MdInfo />
@@ -731,7 +726,13 @@ export default function Mtp({ parent_container, policyCategory }) {
                                 Details
                               </div>
                             </Link>
-                            <Link to={`/admin/policy-renew/${policy.id}`}>
+                            <Link
+                              to={`${
+                                authClaims.supervisor
+                                  ? `/supervisor/policy-renew/${policy.id}`
+                                  : `/admin/policy-renew/${policy.id}`
+                              }`}
+                            >
                               <div className="actionDiv">
                                 <i>
                                   <MdAutorenew />
@@ -856,20 +857,6 @@ export default function Mtp({ parent_container, policyCategory }) {
       ) : (
         <Loader />
       )}
-      <div
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-        className={
-          parent_container ? "chat-container" : "expanded-menu-chat-container"
-        }
-      >
-        <Chat />
-      </div>
     </div>
   );
 }

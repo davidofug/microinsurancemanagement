@@ -1,4 +1,3 @@
-import MyRouter from "./routes/MyRouter";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   Login,
@@ -9,6 +8,8 @@ import {
   Agents,
   Logs,
   Reports,
+  Policies,
+  PolicyDetails,
 } from "./pages";
 import PrivateRoute from "./routes/PrivateRoute";
 import { SuperAdminRoutes } from "routes";
@@ -18,10 +19,12 @@ import Admins from "pages/superAdmin/Admins";
 import { Mtp, AddUsers, Claims, Settings } from "./pages";
 import SystemLogs from "./pages/superAdmin/SystemLogs";
 import Windscreen from "components/forms/Windscreen";
-import Comprehensive from "components/forms/Comprehensive";
 import StickerMgt from "pages/admin/StickerMgt";
 import Supervisors from "pages/admin/Supervisors";
 import { useToggleMenu } from "hooks";
+import PolicyRenew from "pages/PolicyDetails/PolicyRenew";
+import AddStickerRange from "pages/admin/AddStickerRange";
+import AccountSettings from "pages/superAdmin/AccountSettings";
 
 export default function App() {
   const [largeContentClass] = useToggleMenu();
@@ -92,6 +95,14 @@ export default function App() {
             }
           />
           <Route
+            path="add-superadmin"
+            element={
+              <PrivateRoute>
+                <AddUsers role="superadmin" />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="claims"
             element={
               <PrivateRoute>
@@ -112,6 +123,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Settings />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="account-settings"
+            element={
+              <PrivateRoute>
+                <AccountSettings />
               </PrivateRoute>
             }
           />
@@ -231,6 +250,14 @@ export default function App() {
             }
           />
           <Route
+            path="user-management"
+            element={
+              <PrivateRoute>
+                <Supervisors />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="claims"
             element={
               <PrivateRoute>
@@ -243,6 +270,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <StickerMgt />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="sticker-number"
+            element={
+              <PrivateRoute>
+                <AddStickerRange />
               </PrivateRoute>
             }
           />
@@ -342,7 +377,7 @@ export default function App() {
             path="add-clients"
             element={
               <PrivateRoute>
-                <AddUsers role="customer" />
+                <AddUsers role="Customer" />
               </PrivateRoute>
             }
           />
@@ -411,6 +446,34 @@ export default function App() {
             }
           />
           <Route
+            path="add-mtp"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="mtp"
+                  btn_txt="Process 3rd Party"
+                  pol="motor third party"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="policy-details/:id"
+            element={
+              <PrivateRoute>
+                <PolicyDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="policy-renew/:id"
+            element={
+              <PrivateRoute>
+                <PolicyRenew />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="windscreen"
             element={
               <PrivateRoute>
@@ -474,7 +537,7 @@ export default function App() {
             path="add-clients"
             element={
               <PrivateRoute>
-                <AddUsers role="customer" />
+                <AddUsers role="Customer" />
               </PrivateRoute>
             }
           />
