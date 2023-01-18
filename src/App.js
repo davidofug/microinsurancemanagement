@@ -1,4 +1,3 @@
-import MyRouter from "./routes/MyRouter";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   Login,
@@ -21,7 +20,6 @@ import Admins from "pages/superAdmin/Admins";
 import { Mtp, AddUsers, Claims, Settings } from "./pages";
 import SystemLogs from "./pages/superAdmin/SystemLogs";
 import Windscreen from "components/forms/Windscreen";
-import Comprehensive from "components/forms/Comprehensive";
 import StickerMgt from "pages/admin/StickerMgt";
 import Supervisors from "pages/admin/Supervisors";
 import { useToggleMenu } from "hooks";
