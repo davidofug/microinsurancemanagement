@@ -19,30 +19,28 @@ import {
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import UpdateUser from "../components/UpdateUser";
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import Chat from "../components/messenger/Chat";
 import "../styles/ctas.css";
 
-function Settings({ parent_container }) {
+function Settings() {
   const [show, handleShow, handleClose] = useDialog();
-  useEffect(() => {
-    document.title = "User Profile - SWICO";
-    getUserMeta();
-  }, []);
   const [meta, setMeta] = useState({});
   const { currentUser, setCurrentUser } = getAuth();
   const { authClaims } = useAuth();
+  const [shouldUpdate, setShouldUpdate] = useState(false);
 
-  console.log(show);
+  useEffect(() => {
+    document.title = "User Profile - SWICO";
+    getUserMeta();
+    console.log("hellow")
+    return () => {};
+  }, [show]);
 
   const getUserMeta = async () => {
     const docRef = doc(db, "usermeta", currentUser.uid);
     const docSnap = await getDoc(docRef);
     setMeta(docSnap.data());
-    console.log("something new in meta");
-    console.log(currentUser.displayName);
   };
 
   const handlePasswordChange = async (event) => {
@@ -80,18 +78,13 @@ function Settings({ parent_container }) {
           }
           document.passwordForm.reset();
         })
-        .catch((error) => {
-          // console.log("password failed", error)
-        });
-    } catch (error) {
-      // console.log('re-auth failed',error)
-    }
+        .catch((error) => {});
+    } catch (error) {}
   };
 
   return (
     <div className="components">
       <Header title="Setting" subtitle="CUSTOMIZE YOUR ACCOUNT" />
-      <ToastContainer />
 
       <Modal show={show} onHide={handleClose}>
         <UpdateUser
@@ -279,20 +272,6 @@ function Settings({ parent_container }) {
           </Form.Group>
           <input type="submit" value="Update Password" className="btn cta" />
         </form>
-      </div>
-      <div
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-        className={
-          parent_container ? "chat-container" : "expanded-menu-chat-container"
-        }
-      >
-        <Chat />
       </div>
     </div>
   );

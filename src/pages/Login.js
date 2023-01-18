@@ -4,7 +4,7 @@ import { Navigate, Link, useNavigate, redirect } from "react-router-dom";
 import logo from "../assets/imgs/SWICO-LOGO.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, setPersistence } from "firebase/auth";
 import { Alert } from "react-bootstrap";
 import "../assets/styles/login.css";
 import Loader from "../components/Loader";
@@ -47,22 +47,9 @@ function Login() {
         email,
         password
       );
-      console.log(result);
-      console.log("authclaims: ", authClaims);
       if (result) {
         setLoading(false);
         onAuthStateChange(setCurrentUser, setAuthClaims);
-        console.log(authClaims);
-        // return redirect("/supervisor");
-        // if (authClaims.superadmin) {
-        //   navigate("/superadmin/dashboard");
-        // } else if (authClaims.admin) {
-        //   navigate("/admin/dashboard");
-        // } else if (authClaims.supervisor) {
-        //   navigate("/supervisor");
-        // } else if (authClaims.agent) {
-        //   navigate("/agent/dashboard");
-        // }
       }
     } catch (err) {
       setLoading(false);

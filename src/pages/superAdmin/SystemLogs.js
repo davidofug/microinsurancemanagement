@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../../helpers/firebase";
-import { Table, Form } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import Pagination from "../../helpers/Pagination";
 import Loader from "../../components/Loader";
 import { ImFilesEmpty } from "react-icons/im";
-import Chat from "../../components/messenger/Chat";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoIosCloseCircle } from "react-icons/io";
 
-function SystemLogs({ parent_container }) {
+function SystemLogs() {
   useEffect(() => {
     document.title = "System Logs - SWICO";
     getLogs();
@@ -36,6 +35,8 @@ function SystemLogs({ parent_container }) {
   const [switchStatus, setSwitchStatus] = useState(null);
   const [logType, setLogType] = useState(null);
   const [date, setDate] = useState(null);
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
 
   const convertStringToDate = (stringDate) => {
     return new Date(stringDate);
@@ -56,19 +57,16 @@ function SystemLogs({ parent_container }) {
           !date ||
           (typeof log.timeCreated === "string" &&
             log.timeCreated.slice(0, 10) === date)
+      )
+      .filter(
+        (log) =>
+          !(dateFrom && dateTo) ||
+          (log.timeCreated >= dateFrom && log.timeCreated <= dateTo)
       );
 
   const paginatedShownLogs =
     !logs || shownLogs.slice(indexOfFirstLog, indexOfLastLog);
   const totalPagesNum = !logs || Math.ceil(shownLogs.length / logsPerPage);
-
-  const dt2 = new Date("2022-01-31 10:48:29");
-  const dt1 = new Date("2022-01-31 9:47:10");
-  var diff = (dt1.getTime() - dt2.getTime()) / 1000;
-  diff /= 60 * 60;
-  /* console.log(Math.abs(Math.round(diff)));
-  console.log(3679000/1000/3600)
-  console.log(1440/60) */
 
   return (
     <div className="components">
@@ -160,46 +158,58 @@ function SystemLogs({ parent_container }) {
                   />
                 )}
               </div>
-              {/* <Form.Group
-                className="categories tw-outline tw-outline-1"
-                width="180px"
-              >
-                <Form.Label htmlFor="category">Status</Form.Label>
-                <Form.Select
-                  id="category"
-                  onChange={({ target: { value } }) => setSwitchStatus(value)}
-                >
-                  <option value="">Select Log Status</option>
-                  <option value="successful">Successful</option>
-                  <option value="failed">Failed</option>
-                </Form.Select>
-              </Form.Group> */}
-              {/* <Form.Group className="categories">
-                <Form.Label htmlFor="date">Date</Form.Label>
-                <br />
-                <input
-                  type="date"
-                  id="date"
-                  style={{ padding: "10px" }}
-                  onChange={({ target: { value } }) => setDate(value)}
-                  max={today}
-                />
-              </Form.Group> */}
-              {/* <Form.Group className="categories" width="200px">
-                <Form.Label htmlFor="logType">Logs</Form.Label>
-                <Form.Select
-                  id="logType"
-                  onChange={({ target: { value } }) => setLogType(value)}
-                >
-                  <option value="">Select Log Type</option>
-                  <option value="user creation">User Creation</option>
-                  <option value="user deletion">User Deletion</option>
-                  <option value="sticker creation">Sticker Creation</option>
-                  <option value="sticker deletion">Sticker Deletion</option>
-                  <option value="claim creation">Claim Creation</option>
-                  <option value="claim deletion">Claim Deletion</option>
-                </Form.Select>
-              </Form.Group> */}
+              <div className="tw-outline tw-outline-1 tw-outline-[#dee1e4] tw-bg-transparent tw-rounded tw-flex tw-items-center tw-px-2">
+                <p>From:</p>
+                <div className="tw-cursor-pointer tw-appearance-none tw-flex tw-items-center tw-w-40 tw-relative">
+                  <input
+                    type="date"
+                    id="pickDate1"
+                    onChange={({ target: { value } }) => setDateFrom(value)}
+                    max={today}
+                    className="tw-bg-transparent tw-w-full tw-cursor-pointer tw-appearance-none tw-px-3 tw-py-2"
+                  />
+                  {dateFrom ? (
+                    <IoIosCloseCircle
+                      size={20}
+                      className="tw-absolute tw-text-gray-400 tw-right-2"
+                      onClick={() => {
+                        setDateFrom("");
+                        document.getElementById("pickDate1").value = "";
+                      }}
+                    />
+                  ) : (
+                    <MdKeyboardArrowDown
+                      size={20}
+                      className="tw-absolute tw-right-2 tw-pointer-events-none"
+                    />
+                  )}
+                </div>
+                <div className="tw-outline-1 tw-bg-transparent tw-cursor-pointer tw-appearance-none tw-flex tw-items-center tw-w-40 tw-relative">
+                  <p>To:</p>
+                  <input
+                    type="date"
+                    id="pickDate2"
+                    onChange={({ target: { value } }) => setDateTo(value)}
+                    max={today}
+                    className="tw-bg-transparent tw-w-full tw-cursor-pointer tw-appearance-none tw-px-3 tw-py-2"
+                  />
+                  {dateTo ? (
+                    <IoIosCloseCircle
+                      size={20}
+                      className="tw-absolute tw-text-gray-400 tw-right-2"
+                      onClick={() => {
+                        setDateTo("");
+                        document.getElementById("pickDate2").value = "";
+                      }}
+                    />
+                  ) : (
+                    <MdKeyboardArrowDown
+                      size={20}
+                      className="tw-absolute tw-right-2 tw-pointer-events-none"
+                    />
+                  )}
+                </div>
+              </div>
             </div>
 
             {shownLogs.length > 0 ? (
@@ -279,21 +289,6 @@ function SystemLogs({ parent_container }) {
       ) : (
         <Loader />
       )}
-
-      <div
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-        className={
-          parent_container ? "chat-container" : "expanded-menu-chat-container"
-        }
-      >
-        <Chat />
-      </div>
     </div>
   );
 }

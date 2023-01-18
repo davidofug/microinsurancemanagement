@@ -25,12 +25,13 @@ function UsersContainer({ authClaims, users }) {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, index) => (
-                  <tr key={user.uid} className="tw-bg-white">
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                  </tr>
-                ))}
+                {users &&
+                  users.map((user, index) => (
+                    <tr key={user.uid} className="tw-bg-white">
+                      <td>{user.name}</td>
+                      <td>{user.email}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

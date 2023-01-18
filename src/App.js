@@ -9,6 +9,9 @@ import {
   Agents,
   Logs,
   Reports,
+  Policies,
+  PolicyDetails,
+  AddClaims,
 } from "./pages";
 import PrivateRoute from "./routes/PrivateRoute";
 import { SuperAdminRoutes } from "routes";
@@ -22,6 +25,9 @@ import Comprehensive from "components/forms/Comprehensive";
 import StickerMgt from "pages/admin/StickerMgt";
 import Supervisors from "pages/admin/Supervisors";
 import { useToggleMenu } from "hooks";
+import PolicyRenew from "pages/PolicyDetails/PolicyRenew";
+import AddStickerRange from "pages/admin/AddStickerRange";
+import AccountSettings from "pages/superAdmin/AccountSettings";
 
 export default function App() {
   const [largeContentClass] = useToggleMenu();
@@ -92,6 +98,14 @@ export default function App() {
             }
           />
           <Route
+            path="add-superadmin"
+            element={
+              <PrivateRoute>
+                <AddUsers role="superadmin" />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="claims"
             element={
               <PrivateRoute>
@@ -112,6 +126,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Settings />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="account-settings"
+            element={
+              <PrivateRoute>
+                <AccountSettings />
               </PrivateRoute>
             }
           />
@@ -231,6 +253,14 @@ export default function App() {
             }
           />
           <Route
+            path="user-management"
+            element={
+              <PrivateRoute>
+                <Supervisors />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="claims"
             element={
               <PrivateRoute>
@@ -243,6 +273,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <StickerMgt />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="sticker-number"
+            element={
+              <PrivateRoute>
+                <AddStickerRange />
               </PrivateRoute>
             }
           />
@@ -342,7 +380,7 @@ export default function App() {
             path="add-clients"
             element={
               <PrivateRoute>
-                <AddUsers role="customer" />
+                <AddUsers role="Customer" />
               </PrivateRoute>
             }
           />
@@ -403,6 +441,14 @@ export default function App() {
             }
           />
           <Route
+            path="add-claim"
+            element={
+              <PrivateRoute>
+                <AddClaims />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="motor-third-party"
             element={
               <PrivateRoute>
@@ -411,10 +457,86 @@ export default function App() {
             }
           />
           <Route
+            path="add-mtp"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="mtp"
+                  btn_txt="Process 3rd Party"
+                  pol="motor third party"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-comprehensive"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="comprehensive"
+                  btn_txt="Process Comprehensive"
+                  pol="comprehensive"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-newImport"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="newImport"
+                  btn_txt="Process New import"
+                  pol="new import"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-transit"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="transit"
+                  btn_txt="Process Transit"
+                  pol="transit"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-windscreen"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="windscreen"
+                  btn_txt="Process Windscreen"
+                  pol="windscreen"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="policy-details/:id"
+            element={
+              <PrivateRoute>
+                <PolicyDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="policy-renew/:id"
+            element={
+              <PrivateRoute>
+                <PolicyRenew />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="windscreen"
             element={
               <PrivateRoute>
-                <Windscreen policyCategory="windscreen" />
+                <Mtp policyCategory="windscreen" />
               </PrivateRoute>
             }
           />
@@ -474,7 +596,7 @@ export default function App() {
             path="add-clients"
             element={
               <PrivateRoute>
-                <AddUsers role="customer" />
+                <AddUsers role="Customer" />
               </PrivateRoute>
             }
           />
@@ -535,6 +657,14 @@ export default function App() {
             }
           />
           <Route
+            path="add-claim"
+            element={
+              <PrivateRoute>
+                <AddClaims />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="motor-third-party"
             element={
               <PrivateRoute>
@@ -546,7 +676,7 @@ export default function App() {
             path="windscreen"
             element={
               <PrivateRoute>
-                <Windscreen policyCategory="windscreen" />
+                <Mtp policyCategory="windscreen" />
               </PrivateRoute>
             }
           />
@@ -571,6 +701,66 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Mtp policyCategory="transit" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-mtp"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="mtp"
+                  btn_txt="Process 3rd Party"
+                  pol="motor third party"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-comprehensive"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="comprehensive"
+                  btn_txt="Process Comprehensive"
+                  pol="comprehensive"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-newImport"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="newImport"
+                  btn_txt="Process New import"
+                  pol="new import"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-transit"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="transit"
+                  btn_txt="Process Transit"
+                  pol="transit"
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="add-windscreen"
+            element={
+              <PrivateRoute>
+                <Policies
+                  cat="windscreen"
+                  btn_txt="Process Windscreen"
+                  pol="windscreen"
+                />
               </PrivateRoute>
             }
           />

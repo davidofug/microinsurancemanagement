@@ -127,7 +127,7 @@ function AgentMtpMenu({ largeContentClass, minimiseMenu, maximiseMenu }) {
                 <MdSettings /> Account Settings
               </div>
 
-              <hr class="tw-my-3 tw-border-gray-600" />
+              <hr className="tw-my-3 tw-border-gray-600" />
 
               <li
                 onClick={handleLogout}
@@ -186,7 +186,7 @@ function AgentMtpMenu({ largeContentClass, minimiseMenu, maximiseMenu }) {
                 <MdSettings /> Account Settings
               </div>
 
-              <hr class="tw-my-3 tw-border-gray-600" />
+              <hr className="tw-my-3 tw-border-gray-600" />
 
               <li
                 onClick={handleLogout}
