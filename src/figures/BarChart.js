@@ -126,9 +126,6 @@ function BarChart({ policies }) {
           }
         }
         if (yearCreated === currentYear - 1) {
-          console.log(
-            policy?.stickersDetails ? policy?.stickersDetails.length : 0
-          );
           switch (date.getMonth()) {
             case 0:
               obj2.January += policy?.stickersDetails
@@ -197,9 +194,6 @@ function BarChart({ policies }) {
     setLastSales(obj2);
     setSales(obj);
   }, [policies]);
-
-  console.log("this: ", sales);
-  console.log("last: ", lastSales);
 
   const labels = Object.keys(sales);
   ChartJS.register(

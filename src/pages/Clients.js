@@ -14,41 +14,38 @@ import { ImFilesEmpty } from "react-icons/im";
 import useDialog from "../hooks/useDialog";
 import { addDoc, collection } from "firebase/firestore";
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import Chat from "../components/messenger/Chat";
 import "../styles/clients.css";
 import "../styles/ctas.css";
 
 export default function Clients({ parent_container }) {
+  const [singleDoc, setSingleDoc] = useState();
+  const [show, handleShow, handleClose] = useDialog();
+  const [clients, setClients] = useState([]);
   useEffect(() => {
     document.title = "Clients - SWICO";
     getClients();
 
-    return () => getClients();
-  }, []);
+    return () => {};
+  }, [clients]);
 
   const { authClaims } = useAuth();
-  const [clients, setClients] = useState([]);
-  const [show, handleShow, handleClose] = useDialog();
 
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
 
-  console.log(authClaims)
-
-  // edit client
-  const [singleDoc, setSingleDoc] = useState();
-
   // getting Clients under a particular user.
-  const getClients = () => {
+  const getClients = async () => {
     const listUsers = httpsCallable(functions, "listUsers");
     if (authClaims.agent) {
-      listUsers()
+      await listUsers()
         .then(({ data }) => {
           const myUsers = data
-            .filter((user) => user.role.Customer === true)
+            .filter(
+              (user) =>
+                user.role.Customer === true || user.role.customer === true
+            )
             .filter(
               (client) =>
                 client.meta.added_by_uid === authentication.currentUser.uid
@@ -57,31 +54,34 @@ export default function Clients({ parent_container }) {
         })
         .catch();
     } else if (authClaims.supervisor) {
-      listUsers()
-        .then(({ data }) => {
-          const myAgents = data
-            .filter((user) => user.role.agent === true)
-            .filter(
-              (agent) =>
-                agent.meta.added_by_uid === authentication.currentUser.uid
-            )
-            .map((agentuid) => agentuid.uid);
+      try {
+        const { data } = await listUsers();
+        const myAgents = data
+          .filter((user) => user.role.agent === true)
+          .filter(
+            (agent) =>
+              agent.meta.added_by_uid === authentication.currentUser.uid
+          )
+          .map((agentuid) => agentuid.uid);
 
-          const usersUnderSupervisor = [
-            ...myAgents,
-            authentication.currentUser.uid,
-          ];
+        const usersUnderSupervisor = [
+          ...myAgents,
+          authentication.currentUser.uid,
+        ];
 
-          const myUsers = data
-            .filter((user) => user.role.Customer === true)
-            .filter((client) =>
-              usersUnderSupervisor.includes(client.meta.added_by_uid)
-            );
-          myUsers.length === 0 ? setClients(null) : setClients(myUsers);
-        })
-        .catch();
+        const myUsers = data
+          .filter(
+            (user) => user.role.Customer === true || user.role.customer === true
+          )
+          .filter((client) =>
+            usersUnderSupervisor.includes(client.meta.added_by_uid)
+          );
+        myUsers.length === 0 ? setClients(null) : setClients(myUsers);
+      } catch (err) {
+        // console.log("Error: ", err.message);
+      }
     } else if (authClaims.admin) {
-      listUsers()
+      await listUsers()
         .then(({ data }) => {
           const myAgents = data
             .filter((user) => user.role.agent === true)
@@ -112,7 +112,10 @@ export default function Clients({ parent_container }) {
           ];
 
           const myUsers = data
-            .filter((user) => user.role.Customer === true)
+            .filter(
+              (user) =>
+                user.role.Customer === true || user.role.customer === true
+            )
             .filter((client) =>
               usersUnderAdmin.includes(client.meta.added_by_uid)
             );
@@ -161,7 +164,7 @@ export default function Clients({ parent_container }) {
         });
       })
       .catch(async (error) => {
-        console.log(error)
+        console.log(error);
         toast.error(`Failed to deleted ${singleDoc.name}`, {
           position: "top-center",
         });
@@ -179,8 +182,6 @@ export default function Clients({ parent_container }) {
           }`,
         });
       });
-
-    getClients();
   };
 
   // search for client
@@ -206,7 +207,6 @@ export default function Clients({ parent_container }) {
   return (
     <div className="components">
       <Header title="Clients" subtitle="MANAGING CLIENTS" />
-      <ToastContainer />
 
       <div id="add_client_group" className="add_client_group">
         <div></div>
@@ -217,6 +217,13 @@ export default function Clients({ parent_container }) {
               (authClaims.agent && "/agent/add-clients")
             }
             className="classic"
+            onClick={() => {
+              if (authClaims.supervisor) {
+                localStorage.setItem("onRefresh", "/supervisor/add-clients");
+              } else if (authClaims.agent) {
+                localStorage.setItem("onRefresh", "/agent/add-clients");
+              }
+            }}
           >
             <button className="btn cta m-2">Add Client</button>
           </Link>
@@ -413,20 +420,6 @@ export default function Clients({ parent_container }) {
       ) : (
         <Loader />
       )}
-      <div
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-        className={
-          parent_container ? "chat-container" : "expanded-menu-chat-container"
-        }
-      >
-        <Chat />
-      </div>
     </div>
   );
 }
