@@ -31,10 +31,6 @@ function AccountSettings() {
 
   return (
     <div className="components">
-      <Helmet>
-        <title>User profile - SWICO</title>
-        <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/britam-apps.appspot.com/o/icons%2Ffavicon.ico?alt=media&token=176602dc-fd1b-47d1-8839-b5b34889ce70" />
-      </Helmet>
       <Header title="System Settings" subtitle="CUSTOMIZE SYSTEM SETTINGS" />
       <div
         id="edit_profile"
