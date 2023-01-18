@@ -23,13 +23,21 @@ import { useMemo } from "react";
 
 function Supervisors({ parent_container }) {
   const [supervisors, setSupervisors] = useState([]);
-  const memoizedAgents = useMemo(() => supervisors, [supervisors]);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+
+  useEffect(() => {
+    // your code here
+    setShouldUpdate(true);
+  }, []);
+
   useEffect(() => {
     document.title = "Supervisors - Statewide Insurance";
     getSupervisors();
     console.log("something");
+    setShouldUpdate(false);
     return () => {};
-  }, [memoizedAgents]);
+  }, [shouldUpdate]);
+
   const { authClaims } = useAuth();
   // initialising the logs collection.
   const logCollectionRef = collection(db, "logs");
@@ -76,6 +84,7 @@ function Supervisors({ parent_container }) {
           position: "top-center",
         })
       )
+      .then(() => setShouldUpdate(true))
       .then(async () => {
         await addDoc(logCollectionRef, {
           timeCreated: `${new Date()
@@ -223,6 +232,7 @@ function Supervisors({ parent_container }) {
           singleDoc={singleDoc}
           handleClose={handleClose}
           getUsers={getSupervisors}
+          setShouldUpdate={setShouldUpdate}
         />
       </Modal>
 
