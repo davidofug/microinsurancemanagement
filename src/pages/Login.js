@@ -14,9 +14,7 @@ function Login() {
   const [isVisible, setIsVisible] = useState(false);
   const { currentUser, setCurrentUser, authClaims, setAuthClaims, logo } = useAuth();
   const [error, setError] = useState("");
-  const [isLoading, setLoading] = useState(false);
-
-
+  const [isLoading, setLoading] = useState(true);
   const pageOnRefreshSuperAdmin =
     localStorage.getItem("onRefresh") || "/superadmin/dashboard";
   const pageOnRefreshAdmin =
@@ -60,7 +58,7 @@ function Login() {
     }
   };
 
-  if (isLoading) return <Loader />;
+  console.log(isLoading)
 
   if (currentUser?.loggedIn) {
     if (authClaims.admin) {
@@ -78,8 +76,13 @@ function Login() {
   }
 
   return (
+    isLoading ? 
+    <Loader />
+    :
     <div className="auth-wrapper">
-      <img src={logo} width={150} alt="SWICO" />
+      {
+        logo && <img src={logo} width={150} alt="SWICO" />
+      }
       <form onSubmit={handleSignIn} className="tw-text-gray-500">
         <p className="mb-3">Enter Email and Password to sign in</p>
         {error && <Alert variant="danger">{error}</Alert>}
