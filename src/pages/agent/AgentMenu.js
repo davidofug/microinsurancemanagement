@@ -1,9 +1,6 @@
 import menuData from "../../components/menuData";
 import "../../assets/styles/menu.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import logo from "../../assets/imgs/SWICO-LOGO.png";
-import logoSm from "../../assets/imgs/SWICO-LOGO-sm.png";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import MobileNav from "../../components/menu/MobileNav";
 import SideBar from "../../components/menu/SideBar";
@@ -11,10 +8,8 @@ import MinimisedSideBar from "../../components/menu/MinimisedSideBar";
 import { authentication } from "../../helpers/firebase";
 import { MdLogout } from "react-icons/md";
 import DefaultAvatar from "../../components/DefaultAvatar";
-import { Badge } from "react-bootstrap";
 import { ImProfile } from "react-icons/im";
 import useDialog from "../../hooks/useDialog";
-import { getAuth, signOut } from "firebase/auth";
 import useAuth from "../../contexts/Auth";
 import { MdSettings } from "react-icons/md";
 
@@ -27,7 +22,7 @@ function AgentMtpMenu({ minimiseMenu, maximiseMenu }) {
   );
   const [show, handleShow, handleClose] = useDialog();
 
-  const { logout } = useAuth();
+  const { logout, logo, logoSm } = useAuth();
   const handleLogout = async () => {
     try {
       window.location = "/";

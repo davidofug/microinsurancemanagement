@@ -1,7 +1,5 @@
 import menuData from "../../components/menuData";
 import "../../assets/styles/menu.css";
-import logo from "../../assets/imgs/SWICO-LOGO.png";
-import logoSm from "../../assets/imgs/SWICO-LOGO-sm.png";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import MobileNav from "../../components/menu/MobileNav";
 import SideBar from "../../components/menu/SideBar";
@@ -10,7 +8,6 @@ import { authentication } from "../../helpers/firebase";
 import { Link } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import DefaultAvatar from "../../components/DefaultAvatar";
-import { Badge } from "react-bootstrap";
 import { ImProfile } from "react-icons/im";
 import useDialog from "../../hooks/useDialog";
 import useAuth from "../../contexts/Auth";
@@ -25,7 +22,7 @@ export default function AdminMenu({ minimiseMenu, maximiseMenu }) {
   );
   const [show, handleShow, handleClose] = useDialog();
 
-  const { logout } = useAuth();
+  const { logout, logo, logoSm } = useAuth();
   const handleLogout = async () => {
     try {
       localStorage.removeItem("onRefresh");
