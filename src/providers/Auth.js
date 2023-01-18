@@ -13,31 +13,21 @@ function AuthProvider({ children }) {
   const [logo, setLogo] = useState(null)
   const [logoSm, setLogoSm] = useState(null)
 
-  const downloadFavicon = () =>  {
-    const storage = getStorage()
-    getDownloadURL(ref(storage, 'icons/favicon.ico'))
-      .then((url) => {
-        setFavicon(() => url)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+  const downloadFavicon = async () =>  {
 
-    getDownloadURL(ref(storage, 'icons/logo.png'))
-      .then((url) => {
-        setLogo(() => url)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-
-    getDownloadURL(ref(storage, 'icons/logoSm.png'))
-      .then((url) =>  {
-        setLogoSm(() => url)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    try {
+      const storage = getStorage()
+      const favicon = await getDownloadURL(ref(storage, 'icons/favicon.ico'))
+      if ( favicon ) setFavicon(() => favicon)
+      const logo = await getDownloadURL(ref(storage, 'icons/logo.png'))
+      if ( logo ) setLogo(() => logo)
+      const logoSm = await getDownloadURL(ref(storage, 'icons/logoSm.png'))
+      if ( logoSm ) setLogoSm(() => logoSm)
+      setLoading(false)
+    } catch ( error ) {
+      console.log( error )
+      setLoading(false)
+    }   
   }
 
   useEffect(() => {
