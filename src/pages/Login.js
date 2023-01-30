@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
 import useAuth from "../contexts/Auth";
+<<<<<<< HEAD
 import { Navigate, Link, useNavigate, redirect } from "react-router-dom";
 import logo from "../assets/imgs/SWICO-LOGO.png";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { authentication, onAuthStateChange } from "../helpers/firebase";
 import { signInWithEmailAndPassword, setPersistence } from "firebase/auth";
+=======
+import { Navigate, Link } from "react-router-dom";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { authentication, onAuthStateChange } from "../helpers/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+>>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
 import { Alert } from "react-bootstrap";
 import "../assets/styles/login.css";
 import Loader from "../components/Loader";
@@ -13,6 +20,7 @@ function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
   const [password, setPassword] = useState("password");
   const [isVisible, setIsVisible] = useState(false);
+<<<<<<< HEAD
 
   const navigate = useNavigate();
 
@@ -37,6 +45,28 @@ function Login() {
     // currentUser?.loggedIn && history.push(from);
   }, []);
 
+=======
+  const { currentUser, setCurrentUser, authClaims, setAuthClaims, logo } = useAuth();
+  const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(true);
+  const pageOnRefreshSuperAdmin =
+    localStorage.getItem("onRefresh") || "/superadmin/dashboard";
+  const pageOnRefreshAdmin =
+    localStorage.getItem("onRefresh") || "/admin/dashboard";
+  const pageOnRefreshSupervisor =
+    localStorage.getItem("onRefresh") || "/supervisor/dashboard";
+  const pageOnRefreshAgent =
+    localStorage.getItem("onRefresh") || "/agent/dashboard";
+
+  useEffect(() => {
+    // const unsubscribe = onAuthStateChange(setCurrentUser)
+    document.title = "Welcome to Statewide Insurance";
+    onAuthStateChange(setCurrentUser, setAuthClaims, setLoading);
+    // return () => { unsubscribe() }
+    // currentUser?.loggedIn && history.push(from);
+  }, []);
+
+>>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
   const handleSignIn = async (event) => {
     event.preventDefault();
     const { email, password } = user;
@@ -63,7 +93,11 @@ function Login() {
     }
   };
 
+<<<<<<< HEAD
   if (isLoading) return <Loader />;
+=======
+  console.log(isLoading)
+>>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
 
   if (currentUser?.loggedIn) {
     if (authClaims.admin) {
@@ -81,8 +115,18 @@ function Login() {
   }
 
   return (
+<<<<<<< HEAD
     <div className="auth-wrapper">
       <img src={logo} width={150} alt="SWICO" />
+=======
+    isLoading ? 
+    <Loader />
+    :
+    <div className="auth-wrapper">
+      {
+        logo && <img src={logo} width={150} alt="SWICO" />
+      }
+>>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
       <form onSubmit={handleSignIn} className="tw-text-gray-500">
         <p className="mb-3">Enter Email and Password to sign in</p>
         {error && <Alert variant="danger">{error}</Alert>}

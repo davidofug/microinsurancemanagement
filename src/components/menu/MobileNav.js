@@ -10,7 +10,10 @@ import { authentication } from "../../helpers/firebase";
 import useAuth from "../../contexts/Auth";
 import useDialog from "../../hooks/useDialog";
 import { BsFillCaretDownFill, BsFillCaretUpFill } from "react-icons/bs";
+<<<<<<< HEAD
 import logo from "../../assets/imgs/SWICO-LOGO.png";
+=======
+>>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
 // import './mobilenav.css'
 
 export default function MobileNav({ role, user, displayName }) {
@@ -18,6 +21,11 @@ export default function MobileNav({ role, user, displayName }) {
   const [show, handleShow, handleClose] = useDialog();
   const [subMenu, setSubMenu] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
+<<<<<<< HEAD
+=======
+ 
+  
+>>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
 
   if (show) {
     window.onclick = (event) =>
@@ -38,7 +46,11 @@ export default function MobileNav({ role, user, displayName }) {
     sessionStorage.setItem("session1", selected.role[index]["number"]);
   };
 
+<<<<<<< HEAD
   const { logout } = useAuth();
+=======
+  const { logout, logo } = useAuth();
+>>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
 
   const handleLogout = async () => {
     try {
