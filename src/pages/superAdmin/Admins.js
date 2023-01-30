@@ -1,9 +1,5 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
-import { MdDownload } from "react-icons/md";
-=======
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
 import Pagination from "../../helpers/Pagination";
 import SearchBar from "../../components/searchBar/SearchBar";
 import Header from "../../components/header/Header";
