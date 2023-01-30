@@ -13,10 +13,7 @@
     "react-bootstrap": "^2.7.0",
     "react-chartjs-2": "^4.0.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
-=======
     "react-helmet": "^6.1.0",
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
     "react-icons": "^4.7.1",
     "react-router-dom": "^6.6.2",
     "react-scripts": "^5.0.1",
@@ -51,18 +48,10 @@
     ]
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "tailwindcss": "^3.2.4",
-    "react-devtools": "^4.27.1",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10"
-=======
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "react-devtools": "^4.27.1",
     "tailwindcss": "^3.2.4"
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
   }
 }
