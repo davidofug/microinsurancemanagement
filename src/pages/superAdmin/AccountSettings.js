@@ -1,49 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "../../styles/Settings.css";
 import Header from "../../components/header/Header";
-<<<<<<< HEAD
-import { db } from "../../helpers/firebase";
-import useDialog from "../../hooks/useDialog";
-import { getAuth } from "firebase/auth";
-import { getDoc, doc } from "firebase/firestore";
-import "../../styles/ctas.css";
-import logo from "../../assets/imgs/SWICO-LOGO.png";
-import favicon from "../../assets/imgs/favicon.ico";
-import { updateIcons } from "helpers/uploadIcons";
-import { Formik, ErrorMessage, Form } from "formik";
-import { toBase64 } from "helpers/toBase64";
-import * as Yup from 'yup';
-
-
-
-function getImageDimensions (url) {
-  return new Promise ( function (resolve, reject) {
-    var image = new Image()
-    image.onload = function(){
-      resolve({ width: image.width, height: image.height})
-    };
-    image.src = url
-  })
-}
-
-function AccountSettings() {
-  const [show] = useDialog();
-  const [/* meta */, setMeta] = useState({});
-  const { currentUser } = getAuth();
-
-  useEffect(() => {
-    document.title = "User Profile - SWICO";
-    getUserMeta();
-    return () => {};
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ show ]);
-
-  const getUserMeta = async () => {
-    const docRef = doc(db, "usermeta", currentUser.uid);
-    const docSnap = await getDoc(docRef);
-    setMeta(docSnap.data());
-  };
-=======
 import useDialog from "../../hooks/useDialog";
 import "../../styles/ctas.css";
 import { Formik, ErrorMessage, Form } from "formik";
@@ -70,7 +27,6 @@ function AccountSettings() {
         console.log(url)
       })
   }
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
 
   return (
     <div className="components">
@@ -82,37 +38,6 @@ function AccountSettings() {
         <Formik
           initialValues={{
             logoURL: null,
-<<<<<<< HEAD
-            faviconURL: null
-          }}
-          onSubmit={async ({logoURL, faviconURL}, resetForm) => {
-            const logos = { logo: logoURL, favicon: faviconURL }
-
-            console.log("logos: ", logos)
-            updateIcons(logos)
-              .then( response => response.json())
-              .then( ({ data, error }) => {
-                if ( error ) throw error
-                console.log(data)
-              })
-              .catch( error => console.log(error))
-
-            
-
-            // console.log("logos", logos)
-            // fetch("/api/updateIcons", {
-            //   method: "POST",
-            //   headers: {
-            //     "Content-Type": "application/json"
-            //   },
-            //   body: JSON.stringify(logos)
-            // })
-            // .then(response => response.json())
-            // .then(data => console.log(data))
-
-
-            
-=======
             faviconURL: null,
             logoSm: null
           }}
@@ -163,18 +88,12 @@ function AccountSettings() {
                   console.log(error)
                 });
             } 
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
           }}
           validationSchema={
             Yup.object().shape({
               logoURL: Yup.mixed()
-<<<<<<< HEAD
-              .test('either_logo', 'At least one of the icons is required', ( value, { createError, parent: { faviconURL }} ) => {
-                return !faviconURL && !value ? createError({ message:"At least one of the icons is required." }) : true;
-=======
               .test('either_logo', 'At least one of the icons is required', ( value, { createError, parent: { faviconURL, logoSm }} ) => {
                 return !faviconURL && !value && !logoSm ? createError({ message:"At least one of the icons is required." }) : true;
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
               })
               .test('image_dimensions', 'Invalid logo dimensions', async ( value, { createError }) => {
                 if( value?.length > 0) {
@@ -197,13 +116,8 @@ function AccountSettings() {
                 } else return true
               }),
               faviconURL: Yup.mixed()
-<<<<<<< HEAD
-              .test('either_favicon', 'The width and height should be equal', ( value, { createError, parent: { logoURL }} ) => {
-                return !logoURL && !value ? createError({ message:"At least one of the icons is required." }) : true;
-=======
               .test('either_favicon', 'The width and height should be equal', ( value, { createError, parent: { logoURL, logoSm }} ) => {
                 return !logoURL && !value && !logoSm ? createError({ message:"At least one of the icons is required." }) : true;
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
               })
               .test('image_dimensions', 'Invalid favicon dimensions', async ( value, { createError }) => {
                 if( value?.length > 0) {
@@ -222,11 +136,6 @@ function AccountSettings() {
                     return true
                   }
                 } else return true
-<<<<<<< HEAD
-              })
-            },
-            [["logoURL", "faviconURL"]]
-=======
               }),
               logoSm: Yup.mixed()
               .test('either_favicon', 'The width and height should be equal', ( value, { createError, parent: { logoURL, faviconURL }} ) => {
@@ -251,7 +160,6 @@ function AccountSettings() {
                 } else return true
               })
             }
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
           )}
         > 
         {({ values, setFieldValue, handleBlur, errors, isValid, dirty }) => (
@@ -291,8 +199,6 @@ function AccountSettings() {
                 />
               </div>
               <ErrorMessage name="logoURL">{msg => <div style={{color:"red", fontSize:"12px"}}>{msg}</div>}</ErrorMessage>
-<<<<<<< HEAD
-=======
 
               <div>
                 <h3 className="mb-2">Logo SM</h3>
@@ -329,7 +235,6 @@ function AccountSettings() {
               <ErrorMessage name="logoSm">{msg => <div style={{color:"red", fontSize:"12px"}}>{msg}</div>}</ErrorMessage>
 
 
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
               <div>
                 <h3 className="mb-2">Favicon</h3>
                 <div className="tw-flex tw-flex-wrap tw-gap-3">
@@ -362,11 +267,7 @@ function AccountSettings() {
                   onBlur={handleBlur("faviconURL")}
                 />
               </div>
-<<<<<<< HEAD
-              <ErrorMessage name="favicon">{msg => <div style={{color:"red", fontSize:"12px"}}>{msg}</div>}</ErrorMessage>
-=======
               <ErrorMessage name="faviconURL">{msg => <div style={{color:"red", fontSize:"12px"}}>{msg}</div>}</ErrorMessage>
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
             </div>
             <div>
               <h2 className="tw-text-lg tw-font-medium">System Name</h2>
