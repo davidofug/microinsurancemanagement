@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "../../styles/Settings.css";
 import Header from "../../components/header/Header";
 import useDialog from "../../hooks/useDialog";
