@@ -1,25 +1,14 @@
 import { useState, useEffect } from "react";
 import { AuthContext } from "../contexts/Auth";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
-<<<<<<< HEAD
-=======
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import Helmet from 'react-helmet'
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
 
 function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authClaims, setAuthClaims] = useState(null);
-<<<<<<< HEAD
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setUser(user);
-      //   console.log('user status changed: ', user);
-=======
   const [favicon, setFavicon] = useState(null)
   const [logo, setLogo] = useState(null)
   const [logoSm, setLogoSm] = useState(null)
@@ -47,7 +36,6 @@ function AuthProvider({ children }) {
       setCurrentUser(user);
       setUser(user);
       // console.log('user status changed: ', user);
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
     });
     return unsubscribe;
   }, []);
@@ -63,22 +51,14 @@ function AuthProvider({ children }) {
     currentUser,
     authClaims,
     user,
-<<<<<<< HEAD
-=======
     logo,
     favicon,
     logoSm,
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
     setUser,
     logout,
     setAuthClaims,
     setCurrentUser,
     setLoading,
-<<<<<<< HEAD
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-=======
     setLogo,
     setFavicon,
     setLogoSm
@@ -94,7 +74,6 @@ function AuthProvider({ children }) {
       </AuthContext.Provider>
     </>
   );
->>>>>>> 0d47b77138df1e594b214bd566a6ff6edf9cfe4a
 }
 
 export default AuthProvider;
